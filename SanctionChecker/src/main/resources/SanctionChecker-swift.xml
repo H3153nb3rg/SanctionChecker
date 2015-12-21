@@ -1,0 +1,325 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+
+   
+   <!-- Stream Definition -->
+   <bean id="SanctionChecker" class="at.jps.sanction.domain.SanctionStreamManager" init-method="initialize" destroy-method="close" >
+   
+   		<property name="streamManagers" >
+		    <list>
+		    	<ref local="StreamManagerSwift"/>    
+		    </list>			
+		</property>
+
+		<property name="watchlists" >
+				<list>
+					<ref local="OFACList"/>    
+					<ref local="EUList"/>
+					<ref local="INDSANList"/>
+					<ref local="DowJonesList"/>
+				</list>			
+			</property>
+
+			<property name="referencelists" >
+				<list>
+					<ref local="CountryList"/>    
+					<ref local="CurrencyList"/>
+					<ref local="BICList"/>
+					<ref local="NCCTList"/>
+				</list>			
+			</property>
+								
+			<property name="valuelists" >
+				<list>
+					<ref local="SWList"/>    
+					<ref local="NSWHList"/>
+				</list>			
+			</property>
+		
+   </bean>
+   
+   
+   <bean id="StreamManagerSwift" class="at.jps.sanction.domain.SanctionStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+
+		<property name="streamName" value="Swift"/>
+   
+		<property name="purgeQueuesOnStartup" value="true"/>
+   
+		<!-- fields & fuzziness -->
+		
+		<property name="minTokenLen" value="2"/>
+		<property name="minRelVal" value="79"/>
+		<property name="minAbsVal" value="60"/>		
+		<property name="fuzzyVal" value="20"/>		
+		
+		<property name="checkFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		
+		<property name="BICFilds" value="53A,56A,57A,58A,59A,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA"/>		
+		<property name="fuzzyFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		
+		
+		<!-- workers counters -->
+		
+		<property name="nrWorkersInput" value="1"/>
+		<property name="nrWorkersOutputHit" value="0"/>
+		<property name="nrWorkersOutputNoHit" value="0"/>
+		<property name="nrWorkersError" value="1"/>
+		<property name="nrWorkersChecker" value="4"/>
+		<property name="nrWorkersPostHit" value="1"/>
+		<property name="nrWorkersPostNoHit" value="1"/>
+				
+		<!-- used queues -->
+				
+		<property name="InputQueue" >
+			<ref local="InputQueueJMS"/>
+		</property>
+		
+		<property name="DefectQueue" >
+			<ref local="DefectQueueJMS"/>
+		</property>
+		
+		<property name="HitQueue" >
+			<ref local="HitQueueJMS"/>
+		</property>
+		
+		<property name="NoHitQueue" >
+			<ref local="NoHitQueueJMS"/>
+		</property>
+		
+		<property name="PostHitQueue" >
+			<ref local="PostHitQueueJMS"/>
+		</property>
+		
+		<property name="PostNoHitQueue" >
+			<ref local="PostNoHitQueueJMS"/>
+		</property>
+		
+		<!-- used workers -->
+		<property name="InputReader" >
+			<ref local="InputReader"/>
+		</property>
+				
+		<property name="OutputWriter" >
+			<ref local="OutputWriter"/>
+		</property>
+
+		<property name="ErrorProcessor" >
+			<ref local="ErrorProcessor"/>
+		</property>
+		
+		<property name="MessageParser" >
+			<ref local="MessageParser"/>
+		</property>
+
+		<property name="MessageChecker" >
+			<ref local="MessageChecker"/>
+		</property>
+		
+		<property name="PostProcessorHit" >
+			<ref local="PostProcessorHit"/>
+		</property>
+		
+		<property name="PostProcessorNoHit" >
+			<ref local="PostProcessorNoHit"/>
+		</property>
+		
+
+		<property name="txNoHitOptimizationListHandler" >   
+   			<ref local="OptiNoHitList"/>
+		</property>
+		
+		<property name="txHitOptimizationListHandler" >   
+   			<ref local="OptiHitList"/>
+		</property>
+						
+		<property name="noWordHitListHandler" >   
+   			<ref local="NoWordHitList"/>
+		</property>
+		
+	</bean>
+
+   <!-- workers -->
+   
+	<bean id="InputReader" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<property name="path" value="C:\temp\SanctionTest\in\swift"/>
+		<property name="pattern" value="*.txt"/>
+		
+		<property name="FileParser" >
+			<ref local="FileParser"/>
+		</property>
+
+		
+	</bean>
+	
+	<bean id="FileParser" class="at.jps.sanction.domain.swift.SwiftFileParser" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean>
+	
+	<bean id="OutputWriter" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
+		<property name="path" value="C:\temp\SanctionTest\out\swift"/>
+		<property name="sleepMillisBetween" value="0"/>
+		
+	</bean>
+	
+	<bean id="ErrorProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean>
+				
+	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean -->
+	
+	<bean id="MessageChecker" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean>
+	
+   	
+	<!-- Queue Definitions -->
+	
+	<bean id="GloablJMSQueueConfig" abstract="true" init-method="initialize" destroy-method="close">
+		<property name="QueueBase" value="C:\\temp\\SanctionTest\\queues\\swift"/>
+		<property name="QueueSize" value="1234"	   	 />
+		<property name="JMSServerURL" value="tcp://localhost:61616"	   	 />		
+		<property name="StreamName" value="Swift"/>		
+	</bean>
+	
+	<bean id="InputQueueJMS" class="at.jps.sanction.core.queue.jms.JMSInputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="InputQueue"/>		
+	</bean>
+	
+	<bean id="DefectQueueJMS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="DefectQueue"/>		
+	</bean>
+	
+	<bean id="HitQueueJMS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="HitQueue"/>		
+	</bean>
+	
+	<bean id="NoHitQueueJMS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="NoHitQueue"/>		
+	</bean>
+	
+	<bean id="PostHitQueueJMS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="PostHitQueue"/>		
+	</bean>
+	
+	<bean id="PostNoHitQueueJMS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfig" scope="singleton">		
+		<property name="Name" value="PostNoHitQueue"/>		
+	</bean>
+	
+    <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
+		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
+	</bean>
+	
+    <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Queues"/>		
+	</bean>
+   
+   <!-- Listloader -->
+   
+   <bean id="GlobalListConfig" abstract="true" init-method="initialize" destroy-method="close">
+
+		<property name="histPath" value="C:\\temp\\SanctionTest\\listhist"/>		
+		<property name="useSysProxy" value="true"	   	 />		
+		
+		<property name="delimiters" value=";,., ,(,),$,.,'"  />
+		<property name="deadChars" value=";,?,|,(,),$,.,',"""/>
+		<property name="replaceChars" value="-=|�?=Z|Ł=L|Ż=Z|�?=N|�?=O|�?=E|Á=A"/>
+		
+		<property name="fuzzySearch" value="true"/>
+		<property name="fourEyesPrinciple" value="true"/>
+		<property name="loadWeak" value="false"/>
+		<property name="loadNonPrimary" value="true"/>		
+	</bean>
+   
+   <bean id="OFACList" class="at.jps.sanction.core.listhandler.watchlist.OFAC_ASDM_ListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="OFAC"/>
+		<property name="description" value="Specially Designated Nationals List (SDN) from the Office of Foreign Assets Control"/>
+	
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ofac-sdn_advanced.xml"/>
+		<!-- property name="url" value="http://www.treasury.gov/ofac/downloads/sanctions/1.0/sdn_advanced.xml"/ -->
+		
+		<property name="type" value="SL"/>
+			
+	</bean>
+   
+   <bean id="EUList" class="at.jps.sanction.core.listhandler.watchlist.EUListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="EUList"/>
+		<property name="description" value="Consolidated list of persons, groups and entities subject to EU financial sanctions"/>
+
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/global.xml"/>
+		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
+		
+		<property name="type" value="SL"/>
+			
+	</bean>
+	   
+   <bean id="INDSANList" class="at.jps.sanction.core.listhandler.watchlist.INDSANListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="INDSAN"/>
+		<property name="description" value="Individual Sanction List"/>
+
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/indsan.csv"/>
+			
+		<property name="type" value="SAN"/>
+			
+	</bean>
+   
+   
+    <bean id="DowJonesList" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="DowJones"/>
+		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
+
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ST_xml_1039_001_201511230002_f.xml"/>
+		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
+		
+		<property name="type" value="SL"/>
+		
+		<property name="loadDescription" value="1,2,3,4"/>
+			
+	</bean>
+   
+   <!-- Reference Lists -->
+    <bean id="CountryList" class="at.jps.sanction.core.listhandler.reflist.CountryListHandler" scope="singleton">    
+		<property name="listName" value="DowJones"/>
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/countries.properties"/>
+	</bean>
+   
+    <bean id="CurrencyList" class="at.jps.sanction.core.listhandler.reflist.CurrencyListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/currencies.properties"/>
+	</bean>
+    
+    <bean id="BICList" class="at.jps.sanction.core.listhandler.reflist.BicListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/BICs.csv"/>
+	</bean>
+    
+    <bean id="NCCTList" class="at.jps.sanction.core.listhandler.reflist.NCCTListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/NCCTcountries.properties"/>
+	</bean>
+    
+   <!-- Value Lists -->
+    <bean id="SWList" class="at.jps.sanction.core.listhandler.valuelist.SWListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/SWL.txt"/>
+	</bean>
+    
+    <bean id="NSWHList" class="at.jps.sanction.core.listhandler.valuelist.NSWHListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/NSWH.txt"/>
+	</bean>
+    
+    <!-- Special optimization Lists -->
+   
+    <bean id="OptiNoHitList" class="at.jps.sanction.core.listhandler.optilist.TXNoHitOptimizationListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/TXNOHIT-OPTI.txt"/>
+		<property name="autoDiscardHitsOnConfirmStatus" value="true"/>
+	</bean>
+    
+    <bean id="OptiHitList" class="at.jps.sanction.core.listhandler.optilist.TXHitOptimizationListHandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/TXHIT-OPTI.txt"/>		
+	</bean>
+    
+    <bean id="NoWordHitList" class="at.jps.sanction.core.listhandler.optilist.NonWordHitOptimizationListhandler" scope="singleton">    
+		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/NOWORDHIT.txt"/>		
+	</bean>
+    
+   
+   
+</beans>
