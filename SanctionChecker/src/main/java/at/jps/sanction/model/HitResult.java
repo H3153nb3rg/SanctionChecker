@@ -18,7 +18,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 @Entity
 @Inheritance
-@DiscriminatorColumn(name = "HIT_TYPE")
+@DiscriminatorColumn(name = "HITRES_TYPE")
 public class HitResult extends BaseModel implements Serializable, Comparable<HitResult> {
 
     /**
@@ -33,8 +33,8 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
     private int               relativeHit;
     private int               phraseHit;
 
-    private String            hitType;                                                                           // SL,PEP
-    private String            entityType;                                                                  // person / company / vessel / etc...
+    private String            hitType;                                   // SL,PEP
+    private String            entityType;                             // person / company / vessel / etc...
 
     @Override
     public int compareTo(final HitResult other) {

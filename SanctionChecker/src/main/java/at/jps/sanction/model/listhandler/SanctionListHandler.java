@@ -10,7 +10,7 @@ package at.jps.sanction.model.listhandler;
 
 import java.util.List;
 
-import at.jps.sanction.model.sl.entities.Entity;
+import at.jps.sanction.model.sl.entities.WL_Entity;
 
 public interface SanctionListHandler {
 
@@ -18,7 +18,7 @@ public interface SanctionListHandler {
 
     public String getDelimiters();
 
-    public List<Entity> getEntityList();
+    public List<WL_Entity> getEntityList();
 
     // public ListHandler getInstance();
 

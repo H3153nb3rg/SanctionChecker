@@ -22,15 +22,15 @@ import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitRate;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
+import at.jps.sanction.model.MessageContent;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.WordHitInfo;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 import at.jps.sanction.model.worker.AnalyzerWorker;
-import at.jps.sanction.model.worker.MessageFields;
 
 public abstract class SanctionAnalyzer extends AnalyzerWorker {
 
@@ -42,7 +42,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
 
     boolean firstIteration = true; // for checks that have to only be done once
 
-    public abstract MessageFields getFieldsToCheck(final Message message);
+    public abstract MessageContent getFieldsToCheck(final Message message);
 
     @Override
     public void processMessage(final Message message) {
@@ -170,13 +170,15 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
 
         if ((listhandler.getEntityList() != null) && !listhandler.getEntityList().isEmpty()) {
 
-            MessageFields fieldAndValues = getFieldsToCheck(analyzeresult.getMessage());
+            MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
 
-            for (final Entity entity : listhandler.getEntityList()) {
+            // TODO: add MessageContent to Message
+
+            for (final WL_Entity entity : listhandler.getEntityList()) {
 
                 // iterate over all entities / addresses /
 
-                for (final Name name : entity.getNames()) {
+                for (final WL_Name name : entity.getNames()) {
 
                     List<String> nameTokens = name.getTokenizedNames();
                     if (nameTokens == null) {
@@ -189,7 +191,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                     }
 
                     // iterate over all Msg fields
-                    for (final String msgFieldName : fieldAndValues.getFieldsAndValues().keySet()) {
+                    for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                         // should field be checked ?
                         if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName())) {
@@ -201,9 +203,9 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                         int totalHitRateAbsolute = 0;
                         int totalHitRatePhrase = 0;
 
-                        final String msgFieldText = fieldAndValues.getFieldsAndValues().get(msgFieldName);
+                        final String msgFieldText = messageContent.getFieldsAndValues().get(msgFieldName);
 
-                        List<String> msgFieldTokens = fieldAndValues.getTokenizedField(msgFieldName);
+                        List<String> msgFieldTokens = messageContent.getTokenizedField(msgFieldName);
                         if (msgFieldTokens == null) {
                             String longText = null;
 
@@ -239,7 +241,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                             msgFieldTokens = TokenTool.getTokenList(longText != null ? msgFieldText + " " + longText : msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(),
                                     getStreamManager().getMinTokenLen(), getStreamManager().getStopwordList().getValues(), false);
 
-                            fieldAndValues.setTokenizedField(msgFieldName, msgFieldTokens);
+                            messageContent.setTokenizedField(msgFieldName, msgFieldTokens);
                         }
                         else {
                             // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 2 !! ");
@@ -269,7 +271,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                                     if (hitValue > getStreamManager().getMinRelVal()) {
                                         totalHitRateRelative += hitValue;
 
-                                        SanctionWordHitInfo swhi = new SanctionWordHitInfo(listhandler.getListName(), entity.getId(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
+                                        SanctionWordHitInfo swhi = new SanctionWordHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
 
                                         // single word hit list if not already in
                                         if (!analyzeresult.getHitTokensList().contains(swhi)) {
@@ -371,7 +373,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                                     // check optimizer if we have to cleanup some mess ;-)
                                     if (getStreamManager().getTxNoHitOptimizationListHandler() != null) {
                                         for (OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
-                                            if (optimizationRecord.getWatchListName().equals(listhandler.getListName()) && optimizationRecord.getWatchListId().equals(entity.getId())
+                                            if (optimizationRecord.getWatchListName().equals(listhandler.getListName()) && optimizationRecord.getWatchListId().equals(entity.getWL_Id())
                                                     && optimizationRecord.getFieldName().equals(msgFieldName) && optimizationRecord.getToken().equals(msgFieldText))
                                             // TODO: make this more
                                             // versatile !!
@@ -393,7 +395,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                                         hr.setHitField(msgFieldName);
                                         hr.setHitDescripton(name.getWholeName());
                                         hr.setHitListName(listhandler.getListName());
-                                        hr.setHitId(entity.getId());
+                                        hr.setHitId(entity.getWL_Id());
                                         hr.setHitLegalBasis(entity.getLegalBasis());
                                         hr.setHitExternalUrl(entity.getInformationUrl());
                                         hr.setHitType(listhandler.getType());

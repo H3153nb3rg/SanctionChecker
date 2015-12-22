@@ -43,8 +43,8 @@ dependencies {
     compile 'org.avaje.ebeanorm:avaje-ebeanorm-agent:4.7.+'
     compile 'org.avaje:avaje-agentloader:2.1.2'
 
-    compile 'org.apache.derby:derby:10.12.1.+'       
-
+    // compile 'org.apache.derby:derby:10.12.1.+'       
+	compile 'com.h2database:h2:1.4.186'
     compile 'commons-io:commons-io:2.+'
     compile 'org.apache.commons:commons-collections4:4.+'
     compile 'org.apache.commons:commons-lang3:3.+'

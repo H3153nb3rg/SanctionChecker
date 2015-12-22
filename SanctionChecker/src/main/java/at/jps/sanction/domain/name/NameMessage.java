@@ -19,7 +19,7 @@ public class NameMessage extends Message {
 
     public NameMessage(final String text) {
         super();
-        setContent(text);
+        setRawContent(text);
     }
 
 }

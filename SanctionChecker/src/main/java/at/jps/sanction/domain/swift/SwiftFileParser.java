@@ -11,6 +11,7 @@ package at.jps.sanction.domain.swift;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,32 +30,38 @@ public class SwiftFileParser extends FileParserImpl {
 
         final long starttime = System.currentTimeMillis();
         int nrTx = 0;
+        BufferedReader input = null;
         try {
-            final BufferedReader input = new BufferedReader(new FileReader(file));
-            try {
+            input = new BufferedReader(new FileReader(file));
+            int c;
+            do {
+                final StringBuilder textmsg = new StringBuilder();
+                // read one msg
+                while (((c = input.read()) != -1) && (c != '$')) {
+                    textmsg.append((char) c);
+                }
+                if (textmsg.length() > 0) {
+                    final Message message = new SwiftMessage(textmsg.toString());
+                    nrTx++;
+                    prepareMessage(message);
+                }
+            } while (c != -1);
 
-                int c;
-                do {
-                    final StringBuilder textmsg = new StringBuilder();
-                    // read one msg
-                    while (((c = input.read()) != -1) && (c != '$')) {
-                        textmsg.append((char) c);
-                    }
-                    if (textmsg.length() > 0) {
-                        final Message message = new SwiftMessage(textmsg.toString());
-                        nrTx++;
-                        prepareMessage(message);
-                    }
-                } while (c != -1);
-            }
-            finally {
-                input.close();
-            }
             parsedOK = true;
         }
         catch (final Exception x) {
             logger.error("parsing failed:" + file.getAbsoluteFile());
             logger.debug("Exception: ", x);
+        }
+        finally {
+            if (input != null) {
+                try {
+                    input.close();
+                }
+                catch (IOException e) {
+                    logger.debug("Exception: ", e);
+                }
+            }
         }
 
         final long stoptime = System.currentTimeMillis();

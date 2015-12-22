@@ -27,7 +27,7 @@ public class SepaMessage extends Message {
 
     public SepaMessage(final String text) {
         super();
-        setContent(text);
+        setRawContent(text);
     }
 
     public String getBusinessId() {

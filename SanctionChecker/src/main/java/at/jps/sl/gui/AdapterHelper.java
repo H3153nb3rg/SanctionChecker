@@ -16,7 +16,7 @@ import at.jps.sanction.model.Message;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.Entity;
+import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sl.gui.model.swift.SwiftTableModelHandler;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.sl.gui.util.RingBufferQueue;
@@ -71,10 +71,10 @@ public class AdapterHelper {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // !!)
     private String                   streamName;
 
     // public void initializeFields2BIC() {
@@ -201,7 +201,7 @@ public class AdapterHelper {
 
     }
 
-    public TableModel getEntityDetailsNamesTableModel(final Entity entity) {
+    public TableModel getEntityDetailsNamesTableModel(final WL_Entity entity) {
 
         TableModel tm = SwiftTableModelHandler.getEntityNameTableModel(entity);
 
@@ -289,14 +289,14 @@ public class AdapterHelper {
         TokenUpdater.addNoHitInfo(fieldToken, listToken, config.getNoWordHitListHandler().getFilename());
     }
 
-    public Entity getSanctionListEntityDetails(final String listname, final String id) {
-        Entity entity = null;
+    public WL_Entity getSanctionListEntityDetails(final String listname, final String id) {
+        WL_Entity entity = null;
 
         SanctionListHandler sanctionListHandler = config.getWatchLists().get(listname);
 
         if (sanctionListHandler != null) {
-            for (Entity listEntity : sanctionListHandler.getEntityList()) {
-                if (listEntity.getId().equals(id)) {
+            for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
+                if (listEntity.getWL_Id().equals(id)) {
                     entity = listEntity;
                     break;
                 }

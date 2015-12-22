@@ -35,7 +35,7 @@ import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.queue.QueueEventListener;
-import at.jps.sanction.model.sl.entities.Entity;
+import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 import at.jps.sanction.model.worker.Worker;
 import at.jps.sanction.model.worker.in.InputWorker;
@@ -122,6 +122,8 @@ public class StreamManager implements Runnable {
         getHitQueue().addMessage(analsysisResult);
         incrementHitCounter();
 
+        // DBHelper.saveNewAnalysisResult(analsysisResult);
+
         // // try to persist
         // EntityManager em = getEntityManager(null);
         // //
@@ -134,7 +136,11 @@ public class StreamManager implements Runnable {
     }
 
     public void addToInputList(final Message message) {
+
+        // DBHelper.saveMessage(message);
+
         getInputQueue().addMessage(message);
+
         incrementInputCounter();
     }
 
@@ -352,7 +358,7 @@ public class StreamManager implements Runnable {
         for (int i = 0; i < size; i++) {
 
             // final AnalyzerWorker worker = BaseFactory.createAnaylzer(this);
-            final AnalyzerWorker worker = (AnalyzerWorker) ListConfigHolder.getApplicationContext().getBean("MessageChecker");
+            final AnalyzerWorker worker = (AnalyzerWorker) ListConfigHolder.getApplicationContext().getBean("MessageAnalyser");
             worker.setStreamManager(this);
             analyzeWorkers.add(worker);
 
@@ -371,7 +377,7 @@ public class StreamManager implements Runnable {
         for (int i = 0; i < size; i++) {
 
             // final InputWorker worker = BaseFactory.createInputWorker(this);
-            final InputWorker worker = (InputWorker) ListConfigHolder.getApplicationContext().getBean("InputReader");
+            final InputWorker worker = (InputWorker) ListConfigHolder.getApplicationContext().getBean("InputProcessor");
             worker.setStreamManager(this);
             inputWorkers.add(worker);
 
@@ -391,7 +397,7 @@ public class StreamManager implements Runnable {
         for (int i = 0; i < size; i++) {
 
             // final OutputWorker worker = BaseFactory.createOutputWorker(this);
-            final OutputWorker worker = (OutputWorker) ListConfigHolder.getApplicationContext().getBean("OutputWriter");
+            final OutputWorker worker = (OutputWorker) ListConfigHolder.getApplicationContext().getBean("OutputProcessor");
             worker.setStreamManager(this);
             outputWorkers.add(worker);
 
@@ -407,7 +413,7 @@ public class StreamManager implements Runnable {
         for (int i = 0; i < size; i++) {
 
             // final OutputWorker worker = BaseFactory.createOutputWorker(this);
-            final OutputWorker worker = (OutputWorker) ListConfigHolder.getApplicationContext().getBean("OutputWriter");
+            final OutputWorker worker = (OutputWorker) ListConfigHolder.getApplicationContext().getBean("OutputProcessor");
             worker.setStreamManager(this);
             outputWorkers.add(worker);
 
@@ -752,14 +758,14 @@ public class StreamManager implements Runnable {
         return queueDictionary;
     }
 
-    public Entity getSanctionListEntityDetails(final String listname, final String id) {
-        Entity entity = null;
+    public WL_Entity getSanctionListEntityDetails(final String listname, final String id) {
+        WL_Entity entity = null;
 
         SanctionListHandler sanctionListHandler = sanctionListHandlers.get(listname);
 
         if (sanctionListHandler != null) {
-            for (Entity listEntity : sanctionListHandler.getEntityList()) {
-                if (listEntity.getId().equals(id)) {
+            for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
+                if (listEntity.getWL_Id().equals(id)) {
                     entity = listEntity;
                     break;
                 }

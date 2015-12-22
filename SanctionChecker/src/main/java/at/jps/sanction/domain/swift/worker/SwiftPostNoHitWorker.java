@@ -26,7 +26,7 @@ public class SwiftPostNoHitWorker extends PostNoHitWorker {
 
         // TODO: this is NOT good - we have to parse again.....
 
-        final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(message.getMessage().getContent());
+        final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(message.getMessage().getRawContent());
 
         ArrayList<OptimizationRecord> orList = new ArrayList<OptimizationRecord>();
 

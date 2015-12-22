@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 
@@ -17,7 +18,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
  * whenCreated and whenUpdated are generally useful for maintaining external search services (like elasticsearch) and audit.
  */
 @MappedSuperclass
-public abstract class BaseModel { // extends Model {
+public abstract class BaseModel extends Model {
 
     @Id
     Long      id;

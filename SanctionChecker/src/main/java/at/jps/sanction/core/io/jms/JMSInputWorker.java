@@ -60,7 +60,7 @@ public class JMSInputWorker extends InputWorker {
                     if (msg != null) {
                         Message message = new Message();
                         try {
-                            message.setContent(msg.getText());
+                            message.setRawContent(msg.getText());
 
                             handleMessage(message);
                         }

@@ -8,15 +8,10 @@
  *******************************************************************************/
 package at.jps.sanction.core.queue.jms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.queue.jms.JMSQueue;
 
 public class JMSInputQueue extends JMSQueue<Message> {
-
-    static final Logger logger = LoggerFactory.getLogger(JMSInputQueue.class);
 
     public JMSInputQueue() {
         super();

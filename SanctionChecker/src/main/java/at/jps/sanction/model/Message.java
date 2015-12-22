@@ -17,6 +17,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
@@ -34,27 +36,35 @@ public class Message extends BaseModel implements Serializable {
      */
     private static final long serialVersionUID = 6731885812749283091L;
 
-    private String            content;
+    @Lob
+    private String            rawContent;
 
     private String            uuid;
 
     private long              inTime;
     private long              outTime;
 
+    private MessageStatus     messageProcessingStatus;
+
+    // TODO: content should also be persisted
+    @Transient
+    private MessageContent    messageContent;
+
     public Message() {
-        getId();
+        getUUID();
+        setMessageProcessingStatus(MessageStatus.NEW);
     }
 
     public Message(final String text) {
-        setContent(text);
+        setRawContent(text);
     }
 
     private String generateUUID() {
         return UUID.randomUUID().toString();
     }
 
-    public String getContent() {
-        return content;
+    public String getRawContent() {
+        return rawContent;
     }
 
     public String getUUID() {
@@ -74,8 +84,8 @@ public class Message extends BaseModel implements Serializable {
         return outTime;
     }
 
-    public void setContent(final String content) {
-        this.content = content;
+    public void setRawContent(final String content) {
+        this.rawContent = content;
     }
 
     public void setId(final String id) {
@@ -95,7 +105,7 @@ public class Message extends BaseModel implements Serializable {
 
         final StringBuilder msg = new StringBuilder();
 
-        msg.append("ID: ").append(getId()).append(System.lineSeparator()).append("Content: ").append(getContent()).append(System.lineSeparator());
+        msg.append("ID: ").append(getId()).append(System.lineSeparator()).append("Content: ").append(getRawContent()).append(System.lineSeparator());
 
         return msg.toString();
     }
@@ -123,7 +133,7 @@ public class Message extends BaseModel implements Serializable {
                 for (int i = 0; i < 10; i++) {
                     Message msg = new Message();
                     msg.setInTime(System.currentTimeMillis());
-                    msg.setContent("Content" + i);
+                    msg.setRawContent("Content" + i);
 
                     server.save(msg);
                 }
@@ -139,5 +149,21 @@ public class Message extends BaseModel implements Serializable {
          * System.out.println(message); } Query q1 = em.createQuery("delete from Message"); q1.executeUpdate(); } // Commit the transaction, which will cause the entity to // be stored in the database
          * em.getTransaction().commit();
          */
+    }
+
+    public MessageContent getMessageContent() {
+        return messageContent;
+    }
+
+    public void setMessageContent(MessageContent messageContent) {
+        this.messageContent = messageContent;
+    }
+
+    public MessageStatus getMessageProcessingStatus() {
+        return messageProcessingStatus;
+    }
+
+    public void setMessageProcessingStatus(MessageStatus messageProcessingStatus) {
+        this.messageProcessingStatus = messageProcessingStatus;
     }
 }

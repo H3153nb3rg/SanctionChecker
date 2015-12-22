@@ -19,8 +19,8 @@ import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 
 public class NameAnalyzer extends AnalyzerWorker {
@@ -65,13 +65,13 @@ public class NameAnalyzer extends AnalyzerWorker {
 
         if ((listhandler.getEntityList() != null) && listhandler.getEntityList().isEmpty()) {
 
-            final String msgText = analyzeresult.getMessage().getContent();
+            final String msgText = analyzeresult.getMessage().getRawContent();
 
             final List<String> textTokens = TokenTool.getTokenList(msgText, listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinTokenLen(),
                     getStreamManager().getStopwordList().getValues(), false);
 
-            for (final Entity entity : listhandler.getEntityList()) {
-                for (final Name name : entity.getNames()) {
+            for (final WL_Entity entity : listhandler.getEntityList()) {
+                for (final WL_Name name : entity.getNames()) {
                     final List<String> nameTokens = TokenTool.getTokenList(name.getWholeName(), listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinTokenLen(),
                             getStreamManager().getIndexAusschlussList().getValues(), true);
 
@@ -127,7 +127,7 @@ public class NameAnalyzer extends AnalyzerWorker {
                             hr.setHitField("flat");
                             hr.setHitDescripton(listhandler.getListName() + " :" + name.getWholeName());
 
-                            hr.setHitId(entity.getId());
+                            hr.setHitId(entity.getWL_Id());
                             hr.setHitLegalBasis(entity.getLegalBasis());
                             // hr.setHitExternalUrl(entity.getPdfLink());
 
@@ -147,7 +147,7 @@ public class NameAnalyzer extends AnalyzerWorker {
                             hr.setHitField("flat");
                             hr.setHitDescripton(listhandler.getListName() + " :" + name.getWholeName());
 
-                            hr.setHitId(entity.getId());
+                            hr.setHitId(entity.getWL_Id());
                             hr.setHitLegalBasis(entity.getLegalBasis());
                             hr.setHitExternalUrl(entity.getInformationUrl());
 

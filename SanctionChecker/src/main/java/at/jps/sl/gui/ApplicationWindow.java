@@ -60,7 +60,7 @@ import at.jps.sanction.core.EntityManagementConfig;
 import at.jps.sanction.domain.SanctionListHitResult;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
-import at.jps.sanction.model.sl.entities.Entity;
+import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sl.gui.core.TableColumnAdjuster;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.sl.gui.util.URLHelper;
@@ -900,7 +900,7 @@ public class ApplicationWindow {
 
                         SanctionListHitResult slhr = (SanctionListHitResult) guiAdapter.getFocussedHitResult();
 
-                        Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
+                        WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
                         if (entity != null) {
                             for (String url : entity.getInformationUrls()) {
@@ -1158,7 +1158,7 @@ public class ApplicationWindow {
 
             SanctionListHitResult slhr = (SanctionListHitResult) guiAdapter.getFocussedHitResult();
 
-            Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
+            WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
             if (entity != null) {
                 textField_Type.setText((entity.getType() != null ? entity.getType() : " ") + (entity.getEntryType() != null ? " | " + entity.getEntryType() : " "));

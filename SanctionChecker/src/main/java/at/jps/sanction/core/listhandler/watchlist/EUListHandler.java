@@ -25,21 +25,21 @@ import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.list.eu.WHOLE;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
-import at.jps.sanction.model.sl.entities.Passport;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.sl.entities.WL_Passport;
 
 public class EUListHandler extends SanctionListHandlerImpl {
 
-    private final static String  LISTNAME = "EUList";
+    private final static String    LISTNAME = "EUList";
 
-    private static final Logger  logger   = LoggerFactory.getLogger(EUListHandler.class);
+    private static final Logger    logger   = LoggerFactory.getLogger(EUListHandler.class);
 
-    private static EUListHandler instance;
+    private static EUListHandler   instance;
 
-    private static WHOLE         whole;
+    private static WHOLE           whole;
 
-    static private List<Entity>  entityList;
+    static private List<WL_Entity> entityList;
 
     public static void buildEntityList(final WHOLE whole) {
 
@@ -52,7 +52,7 @@ public class EUListHandler extends SanctionListHandlerImpl {
             synchronized (whole) {
 
                 if (entityList == null) {
-                    entityList = new ArrayList<Entity>();
+                    entityList = new ArrayList<WL_Entity>();
 
                     // TODO: complete loading should be implemented
 
@@ -60,10 +60,10 @@ public class EUListHandler extends SanctionListHandlerImpl {
                         // StringBuilder line = new StringBuilder();
                         // line.append("Name : ");
 
-                        final Entity entity = new Entity();
+                        final WL_Entity entity = new WL_Entity();
                         entityList.add(entity);
 
-                        entity.setId(wentity.getId());
+                        entity.setWL_Id(wentity.getId());
 
                         if (wentity.getType().equalsIgnoreCase("P")) {
                             entity.setType("Individual");
@@ -93,7 +93,7 @@ public class EUListHandler extends SanctionListHandlerImpl {
                                 wnamet = wname.getFIRSTNAME() + " " + wname.getMIDDLENAME() + " " + wname.getLASTNAME();
                             }
 
-                            final Name name = new Name();
+                            final WL_Name name = new WL_Name();
                             name.setWholeName(wnamet);
                             name.setFirstName(wname.getFIRSTNAME());
                             name.setMiddleName(wname.getMIDDLENAME());
@@ -109,7 +109,7 @@ public class EUListHandler extends SanctionListHandlerImpl {
 
                         for (final WHOLE.ENTITY.PASSPORT wpass : wentity.getPASSPORT()) {
 
-                            final Passport passport = new Passport();
+                            final WL_Passport passport = new WL_Passport();
 
                             passport.setCountry(wpass.getCOUNTRY());
                             passport.setIssueDate(wpass.getNUMBER());
@@ -177,7 +177,7 @@ public class EUListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<Entity> getEntityList() {
+    public List<WL_Entity> getEntityList() {
 
         return entityList;
     }

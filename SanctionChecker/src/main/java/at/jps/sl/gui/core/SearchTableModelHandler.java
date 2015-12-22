@@ -17,8 +17,8 @@ import at.jps.sanction.model.listhandler.NoWordHitListHandler;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class SearchTableModelHandler {
 
@@ -621,13 +621,13 @@ public class SearchTableModelHandler {
         for (String key : watchlistHandlers.keySet()) {
             SanctionListHandler wlHandler = watchlistHandlers.get(key);
 
-            for (Entity entity : wlHandler.getEntityList()) {
-                for (Name name : entity.getNames()) {
+            for (WL_Entity entity : wlHandler.getEntityList()) {
+                for (WL_Name name : entity.getNames()) {
                     if (name.getWholeName().toUpperCase().contains(searchString)) {
                         SearchResultRecord sr = new SearchResultRecord();
                         sr.setComment(entity.getComment());
                         sr.setListName(wlHandler.getListName());
-                        sr.setListId(entity.getId());
+                        sr.setListId(entity.getWL_Id());
                         sr.setToken(name.getWholeName());
                         // Listname | ID | Pattern | Comment
                         resultSet.add(sr);

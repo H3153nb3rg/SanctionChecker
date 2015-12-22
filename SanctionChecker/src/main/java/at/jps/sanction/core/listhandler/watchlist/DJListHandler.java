@@ -35,21 +35,21 @@ import at.jps.sanction.core.list.dj.PFA.Description3List;
 import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.sl.entities.Address;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
-import at.jps.sanction.model.sl.entities.Passport;
+import at.jps.sanction.model.sl.entities.WL_Address;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.sl.entities.WL_Passport;
 
 public class DJListHandler extends SanctionListHandlerImpl {
 
-    private static String       LISTNAME = "DowJones";
-    static final Logger         logger   = LoggerFactory.getLogger(DJListHandler.class);
+    private static String          LISTNAME = "DowJones";
+    static final Logger            logger   = LoggerFactory.getLogger(DJListHandler.class);
 
-    static private List<Entity> entityList;
+    static private List<WL_Entity> entityList;
 
-    private List<String>        descr1ToUse;
+    private List<String>           descr1ToUse;
 
-    private String              loadDescription;
+    private String                 loadDescription;
 
     public static void main(final String[] args) {
 
@@ -86,7 +86,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return pfa;
     }
 
-    private static void addSourceDescription(Entity entity, List<SourceDescription> sourceDescriptions) {
+    private static void addSourceDescription(WL_Entity entity, List<SourceDescription> sourceDescriptions) {
         for (SourceDescription sourceDescription : sourceDescriptions) {
             for (Source source : sourceDescription.getSource()) {
                 if (source.getName().startsWith("http")) {
@@ -99,7 +99,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addDescriptions(PFA pfa, Entity entity, List<Descriptions> descriptions) {
+    private static void addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {
 
         for (Descriptions descrs : descriptions) {
             for (Description descr : descrs.getDescription()) {
@@ -118,12 +118,12 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addName(Entity entity, List<NameDetails> nameDatails) {
+    private static void addName(WL_Entity entity, List<NameDetails> nameDatails) {
         for (NameDetails nameDetails : nameDatails) {
             for (NameDetails.Name pfaname : nameDetails.getName()) {
 
                 for (NameDetails.Name.NameValue nameValue : pfaname.getNameValue()) {
-                    Name name = new Name();
+                    WL_Name name = new WL_Name();
 
                     entity.getNames().add(name);
 
@@ -149,9 +149,9 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    private static void addAddress(Entity entity, List<PFA.Records.Person.Address> addresses) {
+    private static void addAddress(WL_Entity entity, List<PFA.Records.Person.Address> addresses) {
         for (PFA.Records.Person.Address pfaAddress : addresses) {
-            Address address = new Address();
+            WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
 
             address.setCountry(pfaAddress.getAddressCountry());
@@ -160,12 +160,12 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addIDs(Entity entity, List<IDNumberTypes> numbers) {
+    private static void addIDs(WL_Entity entity, List<IDNumberTypes> numbers) {
         for (IDNumberTypes ids : numbers) {
             for (IDNumberTypes.ID id : ids.getID()) {
                 for (IDNumberTypes.ID.IDValue value : id.getIDValue()) {
 
-                    Passport passport = new Passport();
+                    WL_Passport passport = new WL_Passport();
                     passport.setType(id.getIDType());
                     passport.setNumber(value.getValue());
 
@@ -217,17 +217,17 @@ public class DJListHandler extends SanctionListHandlerImpl {
     }
 
     public static void buildEntityList(PFA pfa) {
-        entityList = new ArrayList<Entity>();
+        entityList = new ArrayList<WL_Entity>();
 
         for (PFA.Records records : pfa.getRecords()) {
 
             for (PFA.Records.Person pfaPerson : records.getPerson()) {
 
                 if (pfaPerson.getActiveStatus().equalsIgnoreCase("Active")) {
-                    Entity entity = new Entity();
+                    WL_Entity entity = new WL_Entity();
 
                     entity.setType("Individual");
-                    entity.setId(pfaPerson.getId());
+                    entity.setWL_Id(pfaPerson.getId());
                     entity.setIssueDate(pfaPerson.getDate());
 
                     entityList.add(entity);
@@ -245,10 +245,10 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                 if (pfaEntity.getActiveStatus().equalsIgnoreCase("Active")) {
 
-                    Entity entity = new Entity();
+                    WL_Entity entity = new WL_Entity();
 
                     entity.setType("Entity");
-                    entity.setId(pfaEntity.getId());
+                    entity.setWL_Id(pfaEntity.getId());
                     entity.setIssueDate(pfaEntity.getDate());
 
                     entityList.add(entity);
@@ -290,7 +290,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<Entity> getEntityList() {
+    public List<WL_Entity> getEntityList() {
 
         return entityList;
     }

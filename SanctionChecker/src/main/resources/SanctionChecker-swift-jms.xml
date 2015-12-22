@@ -3,7 +3,12 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-
+   <!-- EntityManagement -->
+   <bean id="EntityManagement" class="at.jps.sanction.core.EntityManagementConfig" init-method="initialize" >
+   		<property name="enhancementCP" value="debug=10;packages=at.jps.sanction.domain.**,at.jps.sanction.core.**,at.jps.sanction.model.**"/>
+       
+   </bean>
+   		
    
    <!-- Stream Definition -->
    <bean id="SanctionChecker" class="at.jps.sanction.core.Checker" init-method="initialize" destroy-method="close" lazy-init="true">
@@ -20,7 +25,7 @@
 		
    </bean>
    
-   <bean id="ListConfig" class="at.jps.sanction.core.ListConfigHolder" scope="singleton">
+   <bean id="ListConfig" class="at.jps.sanction.core.ListConfigHolder" init-method="initialize" scope="singleton">
    
 		<property name="watchLists" >
 			<list>
@@ -130,7 +135,7 @@
 
    <!-- workers -->
    
-	<bean id="InputReader" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="InputProcessor" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="path" value="C:\temp\SanctionTest\in\swift"/>
 		<property name="pattern" value="*.txt"/>
 		<property name="sleepMillisBetween" value="10000"/>
@@ -140,9 +145,15 @@
 	</bean>
 	
 	<bean id="FileParser" class="at.jps.sanction.domain.swift.SwiftFileParser" scope="prototype">
+	    
+	    <property name="streamManager" >		    
+		    	<ref local="StreamManagerSwift"/>    		    
+		</property>
+	    
+	    
 	</bean>
 	
-	<bean id="OutputWriter" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="OutputProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
 		<property name="path" value="C:\temp\SanctionTest\out\swift"/>
 		<property name="sleepMillisBetween" value="0"/>
@@ -150,7 +161,10 @@
 	</bean>
 	
 	<bean id="ErrorProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-	</bean>
+		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
+		<property name="path" value="C:\temp\SanctionTest\out\swift"/>
+		<property name="sleepMillisBetween" value="0"/>
+		</bean>
 	
 	<bean id="PostProcessorHit" class="at.jps.sanction.domain.swift.worker.SwiftPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
@@ -161,7 +175,7 @@
 	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean -->
 	
-	<bean id="MessageChecker" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="MessageAnalyser" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="sleepMillisBetween" value="100"/>
 	</bean>
 	
@@ -226,7 +240,7 @@
    
    <!-- Listloader -->
    
-   <bean id="GlobalListConfig" abstract="true" init-method="initialize" destroy-method="close"  lazy-init="true">
+   <bean id="GlobalListConfig" abstract="true"  lazy-init="true">
 
 		<property name="histPath" value="C:\\temp\\SanctionTest\\listhist"/>		
 		<property name="useSysProxy" value="true"	   	 />		
@@ -243,7 +257,7 @@
    <bean id="OFACList" class="at.jps.sanction.core.listhandler.watchlist.OFAC_ASDM_ListHandler" parent="GlobalListConfig" scope="singleton">
 		<property name="listName" value="OFAC"/>
 		<property name="description" value="Specially Designated Nationals List (SDN) from the Office of Foreign Assets Control"/>
-	
+		<property name="orderNr" value="3"/>
 		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ofac-sdn_advanced.xml"/>
 		<!-- property name="url" value="http://www.treasury.gov/ofac/downloads/sanctions/1.0/sdn_advanced.xml"/ -->
 		
@@ -254,7 +268,7 @@
    <bean id="EUList" class="at.jps.sanction.core.listhandler.watchlist.EUListHandler" parent="GlobalListConfig" scope="singleton">
 		<property name="listName" value="EUList"/>
 		<property name="description" value="Consolidated list of persons, groups and entities subject to EU financial sanctions"/>
-
+		<property name="orderNr" value="2"/>
 		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/global.xml"/>
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
@@ -265,7 +279,7 @@
    <bean id="INDSANList" class="at.jps.sanction.core.listhandler.watchlist.INDSANListHandler" parent="GlobalListConfig" scope="singleton">
 		<property name="listName" value="INDSAN"/>
 		<property name="description" value="Individual Sanction List"/>
-
+		<property name="orderNr" value="4"/>
 		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/indsan.csv"/>
 			
 		<property name="listType" value="SAN"/>
@@ -276,7 +290,8 @@
     <bean id="DowJonesList" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" scope="singleton">
 		<property name="listName" value="DowJones"/>
 		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
-
+		<property name="orderNr" value="1"/>
+		
 		<property name="filename" value="C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ST_xml_1039_001_201511230002_f.xml"/>
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		

@@ -18,8 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class INDSANListHandler extends SanctionListHandlerImpl {
 
@@ -29,7 +29,7 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
     private static INDSANListHandler instance;
 
-    static private List<Entity>      entityList;
+    static private List<WL_Entity>   entityList;
 
     public static INDSANListHandler getInstance() {
         return instance;
@@ -47,7 +47,7 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<Entity> getEntityList() {
+    public List<WL_Entity> getEntityList() {
 
         return entityList;
     }
@@ -96,8 +96,8 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
     public void printEntries() {
         if (getEntityList() != null) {
-            for (final Entity entity : getEntityList()) {
-                System.out.println("ID: " + entity.getId());
+            for (final WL_Entity entity : getEntityList()) {
+                System.out.println("ID: " + entity.getWL_Id());
                 System.out.println("name: " + entity.getNames().get(0).getLastName());
                 System.out.println("Legal Basis: " + entity.getLegalBasis());
                 System.out.println("--------------");
@@ -108,7 +108,7 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
     private void readList(final String filename) {
         logger.info("start reading " + LISTNAME + " file:" + filename);
 
-        entityList = new ArrayList<Entity>();
+        entityList = new ArrayList<WL_Entity>();
         try {
             final BufferedReader input = new BufferedReader(new FileReader(filename));
             try {
@@ -122,14 +122,14 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
                         }
 
                         final StringTokenizer tokenizer = new StringTokenizer(line, ";");
-                        final Entity entity = new Entity();
+                        final WL_Entity entity = new WL_Entity();
                         while (tokenizer.hasMoreTokens()) {
 
                             entity.setEntryType("SL");
                             entity.setType("Individual");
-                            entity.setId(tokenizer.nextToken());
+                            entity.setWL_Id(tokenizer.nextToken());
 
-                            final Name name = new Name();
+                            final WL_Name name = new WL_Name();
                             name.setLastName(tokenizer.nextToken());
                             name.setWholeName(name.getLastName());
 

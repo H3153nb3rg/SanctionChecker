@@ -147,7 +147,7 @@ public class FileInputWorker extends InputWorker {
 
     public void setStreamManager(final StreamManager manager) {
         super.setStreamManager(manager);
-        fileParser.setStreamManager(manager);
+        // fileParser.setStreamManager(manager);
     }
 
 }

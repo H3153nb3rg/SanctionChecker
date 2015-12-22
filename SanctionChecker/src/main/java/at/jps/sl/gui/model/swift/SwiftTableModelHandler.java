@@ -17,8 +17,8 @@ import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.WordHitInfo;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class SwiftTableModelHandler implements Serializable {
 
@@ -529,7 +529,7 @@ public class SwiftTableModelHandler implements Serializable {
             @Override
             public void setMessage(final Message message) {
 
-                final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(message.getContent());
+                final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(message.getRawContent());
 
                 for (final SwiftMessageParser.MessageBlock messageBlock : msgBlocks) {
                     if (messageBlock.getFields().size() > 0) {
@@ -553,7 +553,7 @@ public class SwiftTableModelHandler implements Serializable {
         return tm;
     }
 
-    public static TableModel getEntityNameTableModel(final Entity entity) {
+    public static TableModel getEntityNameTableModel(final WL_Entity entity) {
 
         TableModel tableModel = new TableModel() {
 
@@ -576,7 +576,7 @@ public class SwiftTableModelHandler implements Serializable {
             public Object getValueAt(int rowIndex, int columnIndex) {
                 String colName = "";
 
-                Name name = entity.getNames().get(rowIndex);
+                WL_Name name = entity.getNames().get(rowIndex);
                 switch (columnIndex) {
                     case 0:
                         colName = name.getFirstName() != null ? name.getFirstName() : " ";

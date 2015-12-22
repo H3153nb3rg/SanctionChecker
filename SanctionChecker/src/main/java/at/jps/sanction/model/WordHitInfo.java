@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "HIT_TYPE")
+@DiscriminatorColumn(name = "HITRES_TYPE")
 public class WordHitInfo extends BaseModel implements Serializable {
 
     /**
@@ -30,14 +30,11 @@ public class WordHitInfo extends BaseModel implements Serializable {
 
     public WordHitInfo(final String token, final String fieldName, final String fieldText, final int value) {
         super();
-        // setToken(token);
-        // setValue(value);
-        // setFieldName(fieldName);
-        // setFieldText(fieldText);
 
         this.value = value;
         this.token = token;
         this.fieldText = fieldText;
+        this.fieldName = fieldName;
 
     }
 

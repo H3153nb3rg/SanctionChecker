@@ -28,8 +28,8 @@ public class AnalysisResult extends BaseModel implements Serializable {
      */
     private static final long serialVersionUID = -678664716203619959L;
 
-    @OneToOne
-    @JoinColumn(name = "AR_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MSG_ID", referencedColumnName = "ID")
     private Message           message;
 
     private String            exceptionInfo;
@@ -51,6 +51,8 @@ public class AnalysisResult extends BaseModel implements Serializable {
 
     private long              analysisStartTime;
     private long              analysisStopTime;
+
+    private MessageStatus     analysisStatus;
 
     public AnalysisResult() {
 
@@ -184,6 +186,17 @@ public class AnalysisResult extends BaseModel implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public MessageStatus getAnalysisStatus() {
+        return analysisStatus;
+    }
+
+    public void setAnalysisStatus(MessageStatus analysisStatus) {
+        this.analysisStatus = analysisStatus;
+        if (getMessage() != null) {
+            getMessage().setMessageProcessingStatus(analysisStatus);
+        }
     }
 
 }

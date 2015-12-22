@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import at.jps.sanction.domain.SanctionAnalyzer;
 import at.jps.sanction.model.HitRate;
 import at.jps.sanction.model.Message;
-import at.jps.sanction.model.worker.MessageFields;
+import at.jps.sanction.model.MessageContent;
 
 public class SwiftAnalyzer extends SanctionAnalyzer {
 
@@ -27,13 +27,13 @@ public class SwiftAnalyzer extends SanctionAnalyzer {
         super();
     }
 
-    public MessageFields getFieldsToCheck(final Message message) {
-        MessageFields messageFields = new MessageFields();
+    public MessageContent getFieldsToCheck(final Message message) {
+        MessageContent messageContent = new MessageContent();
 
         HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
-        messageFields.setFieldsAndValues(fieldsAndValues);
+        messageContent.setFieldsAndValues(fieldsAndValues);
 
-        final String msgText = message.getContent();
+        final String msgText = message.getRawContent();
         final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(msgText);
 
         for (final SwiftMessageParser.MessageBlock messageBlock : msgBlocks) {
@@ -51,7 +51,8 @@ public class SwiftAnalyzer extends SanctionAnalyzer {
                 }
             }
         }
-        return messageFields;
+
+        return messageContent;
     }
 
     @Override

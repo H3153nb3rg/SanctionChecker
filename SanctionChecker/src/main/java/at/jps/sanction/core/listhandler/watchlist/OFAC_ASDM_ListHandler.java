@@ -40,8 +40,8 @@ import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType.EntryEvent;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
-import at.jps.sanction.model.sl.entities.Entity;
-import at.jps.sanction.model.sl.entities.Name;
+import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
@@ -51,7 +51,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
     private static OFAC_ASDM_ListHandler instance;
 
     static Sanctions                     sanctions = null;
-    static private List<Entity>          entityList;
+    static private List<WL_Entity>       entityList;
 
     static String getAliasType(final BigInteger aliasType) {
         String aliastype = "";
@@ -263,16 +263,16 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
     private void buildEntityList(final Sanctions sanctions) {
 
-        entityList = new ArrayList<Entity>();
+        entityList = new ArrayList<WL_Entity>();
 
         for (final DistinctPartySchemaType dpst : sanctions.getDistinctParties().getDistinctParty()) {
 
             for (final Profile prof : dpst.getProfile()) {
 
-                final Entity entity = new Entity();
+                final WL_Entity entity = new WL_Entity();
                 entityList.add(entity);
 
-                entity.setId(prof.getID().toString());
+                entity.setWL_Id(prof.getID().toString());
                 entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
 
                 String lbt = "( ";
@@ -292,7 +292,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                 for (final IdentitySchemaType ide : prof.getIdentity()) {
                     for (final Alias alias : ide.getAlias()) {
 
-                        final Name name = new Name();
+                        final WL_Name name = new WL_Name();
 
                         name.setAka(!alias.isPrimary());
                         name.setWaka(alias.isLowQuality());
@@ -325,7 +325,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                             }
                         }
                         else {
-                            logger.debug("Skipped WAKA for Entity: ", entity.getId());
+                            logger.debug("Skipped WAKA for Entity: ", entity.getWL_Id());
                         }
                         // System.out.println("Name: " + name.getWholeName());
                     }
@@ -337,7 +337,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<Entity> getEntityList() {
+    public List<WL_Entity> getEntityList() {
 
         return entityList;
     }

@@ -6,18 +6,18 @@
  * A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
-package at.jps.sanction.core.queue.jms;
+package at.jps.sanction.core.queue.file;
 
-import at.jps.sanction.model.AnalysisResult;
-import at.jps.sanction.model.queue.jms.JMSQueue;
+import at.jps.sanction.model.Message;
+import at.jps.sanction.model.queue.file.FileQueue;
 
-public class JMSOutputQueue extends JMSQueue<AnalysisResult> {
+public class FileInputQueue extends FileQueue<Message> {
 
-    public JMSOutputQueue() {
+    public FileInputQueue() {
         super();
     }
 
-    public JMSOutputQueue(final String name, final int capacity) {
+    public FileInputQueue(final String name, final int capacity) {
         super(name, capacity);
     }
 

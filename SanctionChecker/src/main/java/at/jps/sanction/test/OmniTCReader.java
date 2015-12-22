@@ -74,7 +74,7 @@ public class OmniTCReader {
         int foundctr = 0;
         for (final Message message : parser.getMessages()) {
 
-            final List<MessageBlock> messageDetails = SwiftMessageParser.parseMessage(message.getContent());
+            final List<MessageBlock> messageDetails = SwiftMessageParser.parseMessage(message.getRawContent());
 
             found = false;
             for (final MessageBlock messageBlock : messageDetails) {
@@ -192,7 +192,7 @@ public class OmniTCReader {
 
             for (final Message message : messages) {
 
-                final List<MessageBlock> messageDetails = SwiftMessageParser.parseMessage(message.getContent());
+                final List<MessageBlock> messageDetails = SwiftMessageParser.parseMessage(message.getRawContent());
 
                 found = false;
                 for (final MessageBlock messageBlock : messageDetails) {

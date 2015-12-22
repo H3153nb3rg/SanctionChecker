@@ -2,7 +2,7 @@ package at.jps.sl.gui.util;
 
 import java.util.Properties;
 
-import at.jps.sanction.core.queue.persisted.FileOutputQueue;
+import at.jps.sanction.core.queue.file.FileOutputQueue;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.PropertyKeys;
 import at.jps.sanction.model.queue.Queue;

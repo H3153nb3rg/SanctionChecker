@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.domain.SanctionAnalyzer;
 import at.jps.sanction.model.Message;
-import at.jps.sanction.model.worker.MessageFields;
+import at.jps.sanction.model.MessageContent;
 
 public class SepaAnalyzer extends SanctionAnalyzer {
 
@@ -25,14 +25,14 @@ public class SepaAnalyzer extends SanctionAnalyzer {
         super();
     }
 
-    public MessageFields getFieldsToCheck(final Message message) {
-        MessageFields messageFields = new MessageFields();
+    public MessageContent getFieldsToCheck(final Message message) {
+        MessageContent messageContent = new MessageContent();
 
-        final String msgText = message.getContent();
+        final String msgText = message.getRawContent();
         HashMap<String, String> fieldsAndValues = SepaMessageParser.parseMessage(msgText, ((SepaStreamManager) getStreamManager()).getSupportedMessageTypes());
-        messageFields.setFieldsAndValues(fieldsAndValues);
+        messageContent.setFieldsAndValues(fieldsAndValues);
 
-        return messageFields;
+        return messageContent;
     }
 
 }

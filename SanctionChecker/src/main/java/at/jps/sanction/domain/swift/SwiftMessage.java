@@ -27,7 +27,7 @@ public class SwiftMessage extends Message {
 
     public SwiftMessage(final String text) {
         super();
-        setContent(text);
+        setRawContent(text);
     }
 
     public String getBusinessId() {
