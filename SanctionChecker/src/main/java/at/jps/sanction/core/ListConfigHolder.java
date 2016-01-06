@@ -74,7 +74,7 @@ public class ListConfigHolder implements ApplicationContextAware {
         final CountDownLatch reflatch = new CountDownLatch(getValueLists().size() + getWatchLists().size() + getReferenceLists().size());
 
         for (String listname : getValueLists().keySet()) {
-            ValueListHandler lh = getValueLists().get(listname);
+            final ValueListHandler lh = getValueLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 
             new Thread(new Runnable() {
@@ -90,7 +90,7 @@ public class ListConfigHolder implements ApplicationContextAware {
         }
 
         for (String listname : getReferenceLists().keySet()) {
-            ReferenceListHandler lh = getReferenceLists().get(listname);
+            final ReferenceListHandler lh = getReferenceLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 
             new Thread(new Runnable() {
@@ -106,7 +106,7 @@ public class ListConfigHolder implements ApplicationContextAware {
         }
 
         for (String listname : getWatchLists().keySet()) {
-            SanctionListHandler lh = getWatchLists().get(listname);
+            final SanctionListHandler lh = getWatchLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 
             new Thread(new Runnable() {

@@ -1,5 +1,7 @@
 package at.jps.sanction.core.util.persistance;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,17 +43,17 @@ public class DBHelper {
 
     }
 
-    public static AnalysisResult getNextAnalysisResult(MessageStatus status) {
+    public static List<AnalysisResult> getNextAnalysisResults(MessageStatus status, final int maxRecords) {
 
-        AnalysisResult message = null;
+        List<AnalysisResult> messages = null;
         try {
-            message = Ebean.find(AnalysisResult.class).where().eq("messageProcessingStatus", status).order().asc("inTime").setMaxRows(1).findList().get(0);
+            messages = Ebean.find(AnalysisResult.class).where().eq("messageProcessingStatus", status).order().asc("analysisStartTime").setMaxRows(maxRecords).findList();
         }
         catch (Exception x) {
             logger.error("DB fetch Message failed ");
             logger.debug("DB fetch Message - ", x);
         }
-        return message;
+        return messages;
 
     }
 

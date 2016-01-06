@@ -123,7 +123,7 @@ public class Message extends BaseModel implements Serializable {
         // using "pg" as the server name
         config.loadFromProperties();
 
-        EbeanServer server = EbeanServerFactory.create(config);
+        final EbeanServer server = EbeanServerFactory.create(config);
 
         // EbeanServer server = Ebean.getServer("embargo");
 

@@ -53,17 +53,17 @@ public class JMXAMQClient {
         }
     }
 
-    private void jmxTest() {
-        if (System.getProperty("com.sun.management.jmxremote") == null) {
-            System.out.println("JMX remote is disabled");
-        }
-        else {
-            String portString = System.getProperty("com.sun.management.jmxremote.port");
-            if (portString != null) {
-                System.out.println("JMX running on port " + Integer.parseInt(portString));
-            }
-        }
-    }
+    // private void jmxTest() {
+    // if (System.getProperty("com.sun.management.jmxremote") == null) {
+    // System.out.println("JMX remote is disabled");
+    // }
+    // else {
+    // String portString = System.getProperty("com.sun.management.jmxremote.port");
+    // if (portString != null) {
+    // System.out.println("JMX running on port " + Integer.parseInt(portString));
+    // }
+    // }
+    // }
 
     public void purge(final String queuename) {
         QueueViewMBean queueMbean = queueViewBeanCache.get(queuename);

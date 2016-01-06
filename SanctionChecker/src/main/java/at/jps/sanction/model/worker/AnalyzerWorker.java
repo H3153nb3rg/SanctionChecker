@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import at.jps.sanction.core.StreamManager;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.Message;
+import at.jps.sanction.model.MessageStatus;
 import at.jps.sanction.model.listhandler.NoWordHitListHandler;
 import at.jps.sanction.model.worker.in.InputWorker;
 
@@ -38,15 +39,20 @@ public class AnalyzerWorker extends InputWorker {
     @Override
     public Message getNewMessage() {
         final Message message = getStreamManager().getInputQueue().getNextMessage(true);
+
         return message;
     }
 
     @Override
     public void handleMessage(final Message message) {
 
+        // super.handleMessage(message); NO
+
         try {
             if (message != null) {
                 logger.info("start check message: " + message.getUUID());
+
+                message.setMessageProcessingStatus(MessageStatus.BUSY_ANALYSE);
 
                 processMessage(message);
 

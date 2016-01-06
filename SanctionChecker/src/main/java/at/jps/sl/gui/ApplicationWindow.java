@@ -1271,7 +1271,7 @@ public class ApplicationWindow {
         // important to do this here !!
         final EntityManagementConfig emmCfg = (EntityManagementConfig) context.getBean("EntityManagement");
 
-        GUIConfigHolder config = (GUIConfigHolder) context.getBean("GUIConfig");
+        final GUIConfigHolder config = (GUIConfigHolder) context.getBean("GUIConfig");
 
         EventQueue.invokeLater(new Runnable() {
             @Override
