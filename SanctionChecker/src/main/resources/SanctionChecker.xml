@@ -93,27 +93,27 @@
 		<!-- used queues -->
 				
 		<property name="inputQueue" >
-			<ref local="InputQueueDB"/>
+			<ref local="InputQueueFile"/>
 		</property>
 		
 		<property name="defectQueue" >
-			<ref local="DefectQueueDB"/>
+			<ref local="DefectQueueFile"/>
 		</property>
 		
 		<property name="hitQueue" >
-			<ref local="HitQueueDB"/>
+			<ref local="HitQueueFile"/>
 		</property>
 		
 		<property name="noHitQueue" >
-			<ref local="NoHitQueueDB"/>
+			<ref local="NoHitQueueFile"/>
 		</property>
 		
 		<property name="postProcessHitQueue" >
-			<ref local="PostHitQueueDB"/>
+			<ref local="PostHitQueueFile"/>
 		</property>
 		
 		<property name="postProcessNoHitQueue" >
-			<ref local="PostNoHitQueueDB"/>
+			<ref local="PostNoHitQueueFile"/>
 		</property>
 	
 
@@ -171,65 +171,66 @@
 	
 	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.swift.worker.SwiftPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
-		
+				
+	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean -->
+	
 	<bean id="MessageAnalyser" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="sleepMillisBetween" value="100"/>
 	</bean>
 	
    	
 	<!-- Queue Definitions -->
-		
-	<bean id="InputQueueDB" class="at.jps.sanction.core.queue.db.DBInputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="InputQueue"/>
+	
+	<bean id="GloablFileQueueConfig" abstract="true" init-method="initialize" destroy-method="close">
+		<property name="basePath" value="C:\\temp\\SanctionTest\\queues\\swift"/>
+		<property name="capacity" value="1234"	   	 />		
+		<property name="streamName" value="Swift"/>		
 	</bean>
 	
-	<bean id="DefectQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="DefectQueue"/>
-		<property name="messageStatusFlag" value="X"/>		
+	<bean id="InputQueueFile" class="at.jps.sanction.core.queue.file.FileInputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="InputQueue"/>		
 	</bean>
 	
-	<bean id="HitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+	<bean id="DefectQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="DefectQueue"/>		
+	</bean>
+	
+	<bean id="HitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
 		<property name="name" value="HitQueue"/>		
-		<property name="messageStatusFlag" value="H"/>
 	</bean>
 	
-	<bean id="NoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+	<bean id="NoHitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
 		<property name="name" value="NoHitQueue"/>		
-		<property name="messageStatusFlag" value="I"/>
 	</bean>
 	
-	<bean id="PostHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="PostHitQueue"/>	
-		<property name="messageStatusFlag" value="B"/>	
+	<bean id="PostHitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostHitQueue"/>		
 	</bean>
 	
-	<bean id="PostNoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="PostNoHitQueue"/>
-		<property name="messageStatusFlag" value="R"/>		
+	<bean id="PostNoHitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostNoHitQueue"/>		
 	</bean>
 
 	
 	
-	<bean id="FinalNoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="FinalNoHitQueue"/>
-		<property name="messageStatusFlag" value="R"/>		
+	<bean id="FinalNoHitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalNoHitQueue"/>		
 	</bean>
 	
-	<bean id="FinalHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="FinalHitQueue"/>
-		<property name="messageStatusFlag" value="B"/>		
+	<bean id="FinalHitQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalHitQueue"/>		
 	</bean>
 
-	<bean id="BacklogQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
-		<property name="name" value="BacklogQueue"/>	
-		<property name="messageStatusFlag" value="L"/>	
+	<bean id="BacklogQueueFile" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		
+		<property name="name" value="BacklogQueue"/>		
 	</bean>
 	
 	
-    <!-- bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
+    <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
 		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
 		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
-	</bean -->
+	</bean>
 	
     <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
 		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
@@ -371,31 +372,31 @@
 		<!-- Queues that will be used by GUI application -->
 		
 		<property name="hitQueue" >
-			<ref local="HitQueueDB"/>
+			<ref local="HitQueueFile"/>
 		</property>
 		
 		<property name="noHitQueue" >
-			<ref local="NoHitQueueDB"/>
+			<ref local="NoHitQueueFile"/>
 		</property>
 		
 		<property name="postProcessHitQueue" >
-			<ref local="PostHitQueueDB"/>
+			<ref local="PostHitQueueFile"/>
 		</property>
 		
 		<property name="postProcessNoHitQueue" >
-			<ref local="PostNoHitQueueDB"/>
+			<ref local="PostNoHitQueueFile"/>
 		</property>
 		
 		<property name="finalNoHitQueue" >
-			<ref local="FinalNoHitQueueDB"/>
+			<ref local="FinalNoHitQueueFile"/>
 		</property>
 		
 		<property name="finalHitQueue" >
-			<ref local="FinalHitQueueDB"/>
+			<ref local="FinalHitQueueFile"/>
 		</property>
 		
 		<property name="backlogQueue" >
-			<ref local="BacklogQueueDB"/>
+			<ref local="BacklogQueueFile"/>
 		</property>
 		
 		<!-- field colors -->

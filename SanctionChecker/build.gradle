@@ -39,12 +39,12 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
 
-    compile 'org.avaje.ebeanorm:avaje-ebeanorm:6.13.+'
-    compile 'org.avaje.ebeanorm:avaje-ebeanorm-agent:4.7.+'
-    compile 'org.avaje:avaje-agentloader:2.1.2'
+    compile 'org.avaje.ebeanorm:avaje-ebeanorm:6.15.+'
+    compile 'org.avaje.ebeanorm:avaje-ebeanorm-agent:4.8.+'
+    compile 'org.avaje:avaje-agentloader:2.1.+'
 
     // compile 'org.apache.derby:derby:10.12.1.+'       
-	compile 'com.h2database:h2:1.4.186'
+	compile 'com.h2database:h2:1.4.190'
     compile 'commons-io:commons-io:2.+'
     compile 'org.apache.commons:commons-collections4:4.+'
     compile 'org.apache.commons:commons-lang3:3.+'

@@ -32,6 +32,7 @@ import at.jps.sanction.core.list.dj.PFA;
 import at.jps.sanction.core.list.dj.PFA.Description1List;
 import at.jps.sanction.core.list.dj.PFA.Description2List;
 import at.jps.sanction.core.list.dj.PFA.Description3List;
+import at.jps.sanction.core.list.dj.SanctionsReferences;
 import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
@@ -95,6 +96,16 @@ public class DJListHandler extends SanctionListHandlerImpl {
                 else {
                     entity.addLegalBasis(source.getName());
                 }
+            }
+        }
+    }
+
+    private static void addSanctionReferenzes(WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
+        for (SanctionsReferences sanctionReference : sanctionreferences) {
+
+            for (SanctionsReferences.Reference reference : sanctionReference.getReference()) {
+
+                entity.addLegalBasis(reference.getValue() + " (" + reference.getSinceDay() + "." + reference.getSinceMonth() + "." + reference.getSinceYear() + ")"); // todo date formatter !!
             }
         }
     }
@@ -232,6 +243,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                     entityList.add(entity);
 
+                    addSanctionReferenzes(entity, pfaPerson.getSanctionsReferences());
+
                     addDescriptions(pfa, entity, pfaPerson.getDescriptions());
                     addSourceDescription(entity, pfaPerson.getSourceDescription());
                     addName(entity, pfaPerson.getNameDetails());
@@ -252,6 +265,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setIssueDate(pfaEntity.getDate());
 
                     entityList.add(entity);
+
+                    addSanctionReferenzes(entity, pfaEntity.getSanctionsReferences());
 
                     addDescriptions(pfa, entity, pfaEntity.getDescriptions());
                     addSourceDescription(entity, pfaEntity.getSourceDescription());
