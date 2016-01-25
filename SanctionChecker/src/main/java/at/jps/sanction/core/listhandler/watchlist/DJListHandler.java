@@ -100,12 +100,15 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addSanctionReferenzes(WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
+    private static void addSanctionReferenzes(PFA pfa, WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
         for (SanctionsReferences sanctionReference : sanctionreferences) {
 
             for (SanctionsReferences.Reference reference : sanctionReference.getReference()) {
 
-                entity.addLegalBasis(reference.getValue() + " (" + reference.getSinceDay() + "." + reference.getSinceMonth() + "." + reference.getSinceYear() + ")"); // todo date formatter !!
+                entity.addLegalBasis(getSanctionreference(pfa, reference.getValue()) + " (" + reference.getSinceDay() + "." + reference.getSinceMonth() + "." + reference.getSinceYear() + ")"); // todo
+                                                                                                                                                                                                 // date
+                                                                                                                                                                                                 // formatter
+                                                                                                                                                                                                 // !!
             }
         }
     }
@@ -227,6 +230,19 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
+    static private String getSanctionreference(PFA pfa, final String code) {
+        String srlName = "";
+        for (PFA.SanctionsReferencesList srl : pfa.getSanctionsReferencesList()) {
+            for (PFA.SanctionsReferencesList.ReferenceName srln : srl.getReferenceName()) {
+                if (srln.getCode().equals(code)) {
+                    srlName = srln.getName() + " [" + srln.getStatus() + "]";
+                    break;
+                }
+            }
+        }
+        return srlName;
+    }
+
     public static void buildEntityList(PFA pfa) {
         entityList = new ArrayList<WL_Entity>();
 
@@ -243,7 +259,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                     entityList.add(entity);
 
-                    addSanctionReferenzes(entity, pfaPerson.getSanctionsReferences());
+                    addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
                     addDescriptions(pfa, entity, pfaPerson.getDescriptions());
                     addSourceDescription(entity, pfaPerson.getSourceDescription());
@@ -266,7 +282,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                     entityList.add(entity);
 
-                    addSanctionReferenzes(entity, pfaEntity.getSanctionsReferences());
+                    addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
 
                     addDescriptions(pfa, entity, pfaEntity.getDescriptions());
                     addSourceDescription(entity, pfaEntity.getSourceDescription());

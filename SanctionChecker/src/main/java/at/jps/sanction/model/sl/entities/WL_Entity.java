@@ -14,18 +14,18 @@ public class WL_Entity implements Serializable {
      */
     private static final long serialVersionUID = 350588830084232520L;
 
-    private List<String>      legalBasises;
+    private List<String>      legalBasises;                            // to add date to LB !!!!
 
     private String            comment;
     private String            issueDate;
-    private String            type;                                                                                                                                         // Individual
-                                                                                                                                                                            // /
-                                                                                                                                                                            // Entity
-                                                                                                                                                                            // /
-                                                                                                                                                                            // Transport
-                                                                                                                                                                            // /
-                                                                                                                                                                            // Other
-                                                                                                                                                                            // ...
+    private String            type;                                                                                                                                                                           // Individual
+                                                                                                                                                                                                              // /
+                                                                                                                                                                                                              // Entity
+                                                                                                                                                                                                              // /
+                                                                                                                                                                                                              // Transport
+                                                                                                                                                                                                              // /
+                                                                                                                                                                                                              // Other
+                                                                                                                                                                                                              // ...
     private String            wl_id;
     private List<String>      informationUrls;
 
@@ -33,9 +33,9 @@ public class WL_Entity implements Serializable {
     private List<WL_Passport> passports;
     private List<WL_Address>  addresses;
 
-    private String            entryType;                                                                                                                     // PEP
-                                                                                                                                                             // /
-                                                                                                                                                             // Sanctiontype
+    private String            entryType;                                                                                                                                                  // PEP
+                                                                                                                                                                                          // /
+                                                                                                                                                                                          // Sanctiontype
 
     public String getComment() {
         return comment;
