@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NameDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NameValue" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="MaidenName" type="xs:string" minOccurs="0" />
+                    <xs:element name="TitleHonorific" type="xs:string" minOccurs="0" />
+                    <xs:element name="FirstName" type="xs:string" minOccurs="0" />
+                    <xs:element name="MiddleName" type="xs:string" minOccurs="0" />
+                    <xs:element name="Surname" type="xs:string" minOccurs="0" />
+                    <xs:element name="Suffix" type="xs:string" minOccurs="0" />
+                    <xs:element name="EntityName" type="xs:string" minOccurs="0" />
+                    <xs:element name="SingleStringName" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="SingleStringName_Text" msdata:Ordinal="0">
+                          <xs:extension base="xs:string">
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OriginalScriptName" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="OriginalScriptName_Text" msdata:Ordinal="0">
+                          <xs:extension base="xs:string">
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="NameType" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Descriptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Description" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Description1" type="xs:string" />
+            <xs:attribute name="Description2" type="xs:string" />
+            <xs:attribute name="Description3" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DateDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Date" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DateValue" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Day" type="xs:string" />
+                  <xs:attribute name="Month" type="xs:string" />
+                  <xs:attribute name="Year" type="xs:string" />
+                  <xs:attribute name="Dnotes" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="DateType" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SanctionsReferences">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Reference" nillable="true" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:simpleContent msdata:ColumnName="Reference_Text" msdata:Ordinal="3">
+              <xs:extension base="xs:string">
+                <xs:attribute name="SinceDay" type="xs:string" />
+                <xs:attribute name="SinceMonth" type="xs:string" />
+                <xs:attribute name="SinceYear" type="xs:string" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountryDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Country" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CountryValue" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Code" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="CountryType" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IDNumberTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ID" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IDValue" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="IDValue_Text" msdata:Ordinal="1">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="IDnotes" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="IDType" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SourceDescription">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Source" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="name" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PFA">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Associations" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+        <xs:element name="CountryList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CountryName" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                  <xs:attribute name="IsTerritory" type="xs:string" />
+                  <xs:attribute name="ProfileURL" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OccupationList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Occupation" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RelationshipList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Relationship" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SanctionsReferencesList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReferenceName" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                  <xs:attribute name="status" type="xs:string" />
+                  <xs:attribute name="Description2Id" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Description1List" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description1Name" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="Description1Name_Text" msdata:Ordinal="2">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Description1Id" type="xs:string" />
+                      <xs:attribute name="RecordType" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Description2List" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description2Name" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="Description2Name_Text" msdata:Ordinal="2">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Description2Id" type="xs:string" />
+                      <xs:attribute name="Description1Id" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Description3List" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description3Name" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="Description3Name_Text" msdata:Ordinal="2">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Description3Id" type="xs:string" />
+                      <xs:attribute name="Description2Id" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DateTypeList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DateType" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="RecordType" type="xs:string" />
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="NameTypeList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NameType" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="NameType_Text" msdata:Ordinal="2">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="NameTypeID" type="xs:string" />
+                      <xs:attribute name="RecordType" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RoleTypeList" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RoleType" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="name" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Records" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Person" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Gender" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element name="ActiveStatus" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                    <xs:element name="Deceased" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                    <xs:element ref="NameDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="Descriptions" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="DateDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="BirthPlace" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Place" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element ref="SanctionsReferences" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Address" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="AddressLine" type="xs:string" minOccurs="0" />
+                          <xs:element name="AddressCity" type="xs:string" minOccurs="0" />
+                          <xs:element name="AddressCountry" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element ref="CountryDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="IDNumberTypes" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="SourceDescription" minOccurs="0" maxOccurs="unbounded" />
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:string" />
+                  <xs:attribute name="action" type="xs:string" />
+                  <xs:attribute name="date" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Entity" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ActiveStatus" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element ref="NameDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="Descriptions" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="DateDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="SanctionsReferences" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="VesselDetails" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="VesselCallSign" type="xs:string" minOccurs="0" />
+                          <xs:element name="VesselType" type="xs:string" minOccurs="0" />
+                          <xs:element name="VesselTonnage" type="xs:string" minOccurs="0" />
+                          <xs:element name="VesselGRT" type="xs:string" minOccurs="0" />
+                          <xs:element name="VesselOwner" type="xs:string" minOccurs="0" />
+                          <xs:element name="VesselFlag" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CompanyDetails" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="AddressLine" type="xs:string" minOccurs="0" />
+                          <xs:element name="AddressCity" type="xs:string" minOccurs="0" />
+                          <xs:element name="AddressCountry" type="xs:string" minOccurs="0" />
+                          <xs:element name="URL" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element ref="CountryDetails" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="IDNumberTypes" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element ref="SourceDescription" minOccurs="0" maxOccurs="unbounded" />
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:string" />
+                  <xs:attribute name="action" type="xs:string" />
+                  <xs:attribute name="date" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="date" type="xs:string" />
+      <xs:attribute name="type" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="NameDetails" />
+        <xs:element ref="Descriptions" />
+        <xs:element ref="DateDetails" />
+        <xs:element ref="SanctionsReferences" />
+        <xs:element ref="CountryDetails" />
+        <xs:element ref="IDNumberTypes" />
+        <xs:element ref="SourceDescription" />
+        <xs:element ref="PFA" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="WHOLE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ENTITY" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NAME" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LASTNAME" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element name="FIRSTNAME" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                    <xs:element name="MIDDLENAME" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                    <xs:element name="WHOLENAME" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+                    <xs:element name="GENDER" type="xs:string" minOccurs="0" msdata:Ordinal="4" />
+                    <xs:element name="TITLE" type="xs:string" minOccurs="0" msdata:Ordinal="5" />
+                    <xs:element name="FUNCTION" type="xs:string" minOccurs="0" msdata:Ordinal="6" />
+                    <xs:element name="LANGUAGE" type="xs:string" minOccurs="0" msdata:Ordinal="7" />
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="Entity_id" type="xs:string" />
+                  <xs:attribute name="legal_basis" type="xs:string" />
+                  <xs:attribute name="reg_date" type="xs:string" />
+                  <xs:attribute name="pdf_link" type="xs:string" />
+                  <xs:attribute name="programme" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="BIRTH" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="DATE" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element name="PLACE" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                    <xs:element name="COUNTRY" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="Entity_id" type="xs:string" />
+                  <xs:attribute name="legal_basis" type="xs:string" />
+                  <xs:attribute name="reg_date" type="xs:string" />
+                  <xs:attribute name="pdf_link" type="xs:string" />
+                  <xs:attribute name="programme" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CITIZEN" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="COUNTRY" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="Entity_id" type="xs:string" />
+                  <xs:attribute name="legal_basis" type="xs:string" />
+                  <xs:attribute name="reg_date" type="xs:string" />
+                  <xs:attribute name="pdf_link" type="xs:string" />
+                  <xs:attribute name="programme" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PASSPORT" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="NUMBER" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element name="COUNTRY" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="Entity_id" type="xs:string" />
+                  <xs:attribute name="legal_basis" type="xs:string" />
+                  <xs:attribute name="reg_date" type="xs:string" />
+                  <xs:attribute name="pdf_link" type="xs:string" />
+                  <xs:attribute name="programme" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ADDRESS" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="NUMBER" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                    <xs:element name="STREET" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                    <xs:element name="ZIPCODE" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                    <xs:element name="CITY" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+                    <xs:element name="COUNTRY" type="xs:string" minOccurs="0" msdata:Ordinal="4" />
+                    <xs:element name="OTHER" type="xs:string" minOccurs="0" msdata:Ordinal="5" />
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" />
+                  <xs:attribute name="Entity_id" type="xs:string" />
+                  <xs:attribute name="legal_basis" type="xs:string" />
+                  <xs:attribute name="reg_date" type="xs:string" />
+                  <xs:attribute name="pdf_link" type="xs:string" />
+                  <xs:attribute name="programme" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Id" type="xs:string" />
+            <xs:attribute name="Type" type="xs:string" />
+            <xs:attribute name="legal_basis" type="xs:string" />
+            <xs:attribute name="reg_date" type="xs:string" />
+            <xs:attribute name="pdf_link" type="xs:string" />
+            <xs:attribute name="programme" type="xs:string" />
+            <xs:attribute name="remark" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Date" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="WHOLE" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
