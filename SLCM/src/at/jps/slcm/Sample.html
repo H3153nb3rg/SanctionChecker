@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:true,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;GRID_TYPE&quot;:&quot;RegularGrid,20&quot;,&quot;PAPER_WIDTH&quot;:1440,&quot;PAPER_HEIGHT&quot;:900,&quot;PAPER_SCROLL_LEFT&quot;:1585,&quot;PAPER_SCROLL_TOP&quot;:2264,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src&quot;,&quot;THEME&quot;:&quot;slcm&quot;}">
+ </head> 
+ <body> 
+  <v-vertical-layout size-full="true" margin="true"> 
+   <v-menu-bar visible="false" size-full="true" plain-text="" :center="" :expand="2"></v-menu-bar> 
+   <v-tab-sheet size-full="true" :middle="" :center="" :expand="75"> 
+    <tab caption="TX No Hit" selected="true"> 
+     <v-vertical-layout spacing="true" size-full="true" margin="true"> 
+      <v-table size-full="true"></v-table> 
+     </v-vertical-layout> 
+    </tab> 
+    <tab caption="TX Hits"> 
+     <v-horizontal-split-panel> 
+      <v-vertical-layout spacing="true" size-full="true" margin="true"> 
+       <v-panel size-full="true" :center=""> 
+        <v-table size-full="true"></v-table> 
+       </v-panel> 
+       <v-panel size-full="true" :bottom="" :center=""> 
+        <v-vertical-layout spacing="true" size-full="true" margin="true"> 
+         <v-text-field caption="Processing Time" size-full="true" readonly="true" _id="processingTime" :expand="2"></v-text-field> 
+         <v-combo-box caption="Category" item-caption-mode="id" size-full="true" _id="category" :expand="2"></v-combo-box> 
+         <v-text-area caption="Comment" rows="3" size-full="true" _id="comment2" :expand="3"></v-text-area> 
+        </v-vertical-layout> 
+       </v-panel> 
+      </v-vertical-layout> 
+      <v-vertical-layout spacing="true" size-full="true"> 
+       <v-tab-sheet size-full="true"> 
+        <tab caption="Results" selected="true"> 
+         <v-panel size-full="true"> 
+          <v-vertical-layout size-full="true"> 
+           <v-table size-full="true" :center=""></v-table> 
+           <v-vertical-layout spacing="true" size-full="true" margin="true" :center=""> 
+            <v-text-field caption="Legal Background" size-full="true" _id="legalBackground" :center=""></v-text-field> 
+            <v-text-area size-full="true" :middle="" :center=""></v-text-area> 
+           </v-vertical-layout> 
+           <v-panel size-full="true" :middle="" :center=""></v-panel> 
+          </v-vertical-layout> 
+         </v-panel> 
+        </tab> 
+        <tab caption="Tokens"> 
+         <v-panel size-full="true"> 
+          <v-table size-full="true"></v-table> 
+         </v-panel> 
+        </tab> 
+       </v-tab-sheet> 
+      </v-vertical-layout> 
+     </v-horizontal-split-panel> 
+    </tab> 
+   </v-tab-sheet> 
+   <v-horizontal-layout width="50%" height="25%" :bottom="" :center="" :expand="9"> 
+    <v-button plain-text="" _id="hit">
+      Hit 
+    </v-button> 
+    <v-button plain-text="" _id="noHit">
+      No Hit 
+    </v-button> 
+    <v-button plain-text="" _id="prev">
+      Prev 
+    </v-button> 
+    <v-button plain-text="" _id="next">
+      Next 
+    </v-button> 
+   </v-horizontal-layout> 
+  </v-vertical-layout>  
+ </body>
+</html>

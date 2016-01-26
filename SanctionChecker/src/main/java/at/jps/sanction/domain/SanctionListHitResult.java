@@ -85,4 +85,9 @@ public class SanctionListHitResult extends HitResult {
         this.hitOptimized = hitComment;
     }
 
+    // TODO order by Listpriority
+    // @Override
+    // public int compareTo(final HitResult other) {
+    // }
+
 }

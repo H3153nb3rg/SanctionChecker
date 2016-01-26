@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE ivy-module [
+	<!ENTITY vaadin.version "7.6.1">
+]>
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.example" module="v7proj" />
+	<configurations>
+		<!-- The default configuration, which should be deployed to the server -->
+		<conf name="default" />
+		<!-- A configuration only needed when compiling the widget set. Should 
+			not be deployed to the server -->
+		<conf name="widgetset-compile" />
+		<!-- A configuration used in compilation of server side classes only. Should 
+			be deployed to the server -->
+		<conf name="nodeploy" />
+		
+		<conf name="base-sc" />
+		
+	</configurations>
+	<dependencies defaultconf="default" defaultconfmapping="default->default">
+		<!-- The core server part of Vaadin -->
+		<dependency org="com.vaadin" name="vaadin-server" rev="&vaadin.version;" />
+
+		<!-- Vaadin themes -->
+		<dependency org="com.vaadin" name="vaadin-themes" rev="&vaadin.version;" />
+
+		<!-- Push support -->
+		<dependency org="com.vaadin" name="vaadin-push" rev="&vaadin.version;" />
+
+		<dependency    org="com.vaadin.addon"    name="vaadin-context-menu"   rev="0.7.1" />
+
+		
+		<!-- Servlet 3.0 API -->
+		<dependency org="javax.servlet" name="javax.servlet-api"
+			rev="3.0.1" conf="nodeploy->default" />
+
+		<!-- TestBench 4 -->
+		<dependency org="com.vaadin" name="vaadin-testbench-api"
+			rev="latest.release" conf="nodeploy -> default" />
+
+		<!-- Precompiled DefaultWidgetSet -->
+		<dependency org="com.vaadin" name="vaadin-client-compiled"
+			rev="&vaadin.version;" />
+
+		<!-- Vaadin client side, needed for widget set compilation -->
+		<dependency org="com.vaadin" name="vaadin-client" rev="&vaadin.version;"
+			conf="widgetset-compile->default" />
+
+		<!-- Compiler for custom widget sets. Should not be deployed -->
+		<dependency org="com.vaadin" name="vaadin-client-compiler"
+			rev="&vaadin.version;" conf="widgetset-compile->default" />
+
+		<dependency org="org.vaadin.addon" name="confirmdialog"
+			rev="2.1.3" />
+
+		<!-- SC  -->
+		<!-- spring -->  
+		<dependency org="org.springframework" name="spring-beans" rev="4.2.4.RELEASE" conf="default->default"/> 
+		<dependency org="org.springframework" name="spring-context" rev="4.2.4.RELEASE" conf="default->default"/>  
+		<dependency org="org.springframework" name="spring-core" rev="4.2.4.RELEASE" conf="default->default"/>        
+
+		<dependency org="com.h2database" name="h2" rev="1.4.190" conf="default->default"/>
+		<dependency org="commons-io" name="commons-io" rev="2.4" conf="default->default"/>
+		<dependency org="org.apache.commons" name="commons-collections4" rev="4.1" conf="default->default"/>
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.4" conf="default->default"/>
+		<dependency org="commons-codec" name="commons-codec" rev="1.10" conf="default->default"/>
+		<dependency org="org.apache.activemq" name="activemq-all" rev="5.13.0" conf="default->default"/>
+		<dependency org="com.squareup" name="otto" rev="1.3.8" conf="default->default"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.13" conf="default->default"/>
+		<dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.7.13" conf="default->default"/>
+		<dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.5" conf="default->default"/>
+		<dependency org="org.avaje.ebeanorm" name="avaje-ebeanorm-agent" rev="4.8.1" conf="default->default"/>
+		<dependency org="org.avaje.ebeanorm" name="avaje-ebeanorm" rev="6.15.1" conf="default->default"/>
+		<dependency org="org.avaje" name="avaje-agentloader" rev="2.1.2" conf="default->default"/>
+		
+		
+	</dependencies>
+</ivy-module>

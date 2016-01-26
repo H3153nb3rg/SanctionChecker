@@ -30,6 +30,8 @@ public class GUIConfigHolder extends ListConfigHolder {
 
     private String                  name;
 
+    private boolean                 autolearnMode = true;
+
     public OptimizationListHandler getTxNoHitOptimizationListHandler() {
         return txNoHitOptimizationListHandler;
     }
@@ -137,6 +139,14 @@ public class GUIConfigHolder extends ListConfigHolder {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAutolearnMode() {
+        return autolearnMode;
+    }
+
+    public void setAutolearnMode(boolean autolearnMode) {
+        this.autolearnMode = autolearnMode;
     }
 
 }

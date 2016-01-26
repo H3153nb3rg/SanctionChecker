@@ -192,7 +192,6 @@ public class ApplicationWindow {
 
     private boolean           hitsViewActive            = true;
     private boolean           resultsViewActive         = true;
-    private boolean           autolearnMode             = true;
 
     private String            selectedToken             = "";
     private String            selectedFieldContent      = "";
@@ -334,7 +333,7 @@ public class ApplicationWindow {
         frmCaseManagement.getContentPane().add(panel, BorderLayout.SOUTH);
 
         final JCheckBox chckbxAutoLearnMode = new JCheckBox("auto learn mode");
-        chckbxAutoLearnMode.setSelected(autolearnMode);
+        chckbxAutoLearnMode.setSelected(guiAdapter.getConfig().isAutolearnMode());
         chckbxAutoLearnMode.setToolTipText("enable for mystic meta analysis ");
         panel.add(chckbxAutoLearnMode);
 
@@ -343,7 +342,7 @@ public class ApplicationWindow {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
 
-                autolearnMode = chckbxAutoLearnMode.isSelected();
+                guiAdapter.getConfig().setAutolearnMode(chckbxAutoLearnMode.isSelected());
 
             }
         });
@@ -1090,11 +1089,7 @@ public class ApplicationWindow {
         int dialogResult = JOptionPane.showConfirmDialog(null, "Postpone Transaction ?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
-            guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
-
-            addProcessStep("Backlogged");
-
-            guiAdapter.addToBacklogQueue(guiAdapter.getCurrentMessage());
+            doPostpone();
 
         }
     }
@@ -1103,18 +1098,8 @@ public class ApplicationWindow {
         int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as Hit?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
-            guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
+            doProcessHit();
 
-            if (autolearnMode) {
-
-                guiAdapter.addToPostProcessHitQueue(guiAdapter.getCurrentMessage());
-                addProcessStep("Autolearned Hit");
-            }
-
-            addProcessStep("Confirmed Hit");
-            guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
-
-            doNextMessage(true);
         }
     }
 
@@ -1122,24 +1107,14 @@ public class ApplicationWindow {
         int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as NON Hit?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
-            guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
+            doProcessNoHit();
 
-            if (autolearnMode) {
-                guiAdapter.addToPostProcessNoHitQueue(guiAdapter.getCurrentMessage());
-                addProcessStep("Autolearned Miss");
-            }
-
-            addProcessStep("Confirmed Miss");
-
-            guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
-
-            doNextMessage(true);
         }
     }
 
     void updateMessageDetails() {
 
-        textField_AnalysisTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(guiAdapter.getCurrentMessage().getAnalysisStopTime())));
+        textField_AnalysisTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(guiAdapter.getCurrentMessage().getAnalysisStopTime())));
         textPane_Comment.setText(guiAdapter.getCurrentMessage().getComment());
         if (guiAdapter.getCurrentMessage().getCategory() != null) {
             comboBox_Category.setSelectedItem(guiAdapter.getCurrentMessage().getCategory());
@@ -1225,24 +1200,6 @@ public class ApplicationWindow {
 
     void doAbout() {
 
-    }
-
-    void doAddTokenToStopword() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addStopWord(selectedToken);
-    }
-
-    void doAddTokenToNSWH() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addNSWH(selectedToken);
-    }
-
-    void doAddTokenToIA() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addIA(selectedToken);
-    }
-
-    void doAddTokenToNoHit() {
-        if (((selectedToken != null) && (selectedToken.length() > 1)) && ((selectedFieldContent != null) && (selectedFieldContent.length() > 1)))
-
-            guiAdapter.addNoHit(selectedFieldContent, selectedToken);
     }
 
     /**
@@ -1331,4 +1288,64 @@ public class ApplicationWindow {
             }
         });
     }
+
+    // -------
+
+    private void doProcessHit() {
+        guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
+
+        if (guiAdapter.getConfig().isAutolearnMode()) {
+
+            guiAdapter.addToPostProcessHitQueue(guiAdapter.getCurrentMessage());
+            addProcessStep("Autolearned Hit");
+        }
+
+        addProcessStep("Confirmed Hit");
+        guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
+
+        doNextMessage(true);
+
+    }
+
+    private void doProcessNoHit() {
+        guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
+
+        if (guiAdapter.getConfig().isAutolearnMode()) {
+            guiAdapter.addToPostProcessNoHitQueue(guiAdapter.getCurrentMessage());
+            addProcessStep("Autolearned Miss");
+        }
+
+        addProcessStep("Confirmed Miss");
+
+        guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
+
+        doNextMessage(true);
+    }
+
+    private void doPostpone() {
+        guiAdapter.getCurrentMessage().setComment(textPane_Comment.getText());
+
+        addProcessStep("Backlogged");
+
+        guiAdapter.addToBacklogQueue(guiAdapter.getCurrentMessage());
+    }
+
+    void doAddTokenToStopword() {
+        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addStopWord(selectedToken);
+    }
+
+    void doAddTokenToNSWH() {
+        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addNSWH(selectedToken);
+    }
+
+    void doAddTokenToIA() {
+        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addIA(selectedToken);
+    }
+
+    void doAddTokenToNoHit() {
+        if (((selectedToken != null) && (selectedToken.length() > 1)) && ((selectedFieldContent != null) && (selectedFieldContent.length() > 1)))
+
+            guiAdapter.addNoHit(selectedFieldContent, selectedToken);
+    }
+
 }

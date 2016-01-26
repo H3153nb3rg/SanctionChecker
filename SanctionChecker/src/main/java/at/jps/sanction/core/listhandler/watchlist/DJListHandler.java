@@ -105,10 +105,13 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
             for (SanctionsReferences.Reference reference : sanctionReference.getReference()) {
 
-                entity.addLegalBasis(getSanctionreference(pfa, reference.getValue()) + " (" + reference.getSinceDay() + "." + reference.getSinceMonth() + "." + reference.getSinceYear() + ")"); // todo
-                                                                                                                                                                                                 // date
-                                                                                                                                                                                                 // formatter
-                                                                                                                                                                                                 // !!
+                String entry = getSanctionreference(pfa, reference.getValue());
+
+                if ((reference.getSinceDay() != null) && (reference.getSinceDay().length() > 0)) {
+                    entry += " (" + reference.getSinceDay() + "." + reference.getSinceMonth() + "." + reference.getSinceYear() + ")";
+                }
+
+                entity.addLegalBasis(entry); // todo
             }
         }
     }
