@@ -27,6 +27,7 @@ public class GUIConfigHolder extends ListConfigHolder {
     private Queue<AnalysisResult>   backlogQueue;
 
     private HashMap<String, Color>  fieldColors;
+    private HashMap<String, Color>  fieldNames;
 
     private String                  name;
 

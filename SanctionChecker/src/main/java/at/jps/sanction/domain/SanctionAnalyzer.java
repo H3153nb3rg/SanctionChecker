@@ -395,6 +395,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                                         hr.setHitField(msgFieldName);
                                         hr.setHitDescripton(name.getWholeName());
                                         hr.setHitListName(listhandler.getListName());
+                                        hr.setHitListPriority(listhandler.getOrderNr());
                                         hr.setHitId(entity.getWL_Id());
                                         hr.setHitLegalBasis(entity.getLegalBasis());
                                         hr.setHitExternalUrl(entity.getInformationUrl());

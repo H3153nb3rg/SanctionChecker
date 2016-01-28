@@ -58,6 +58,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import at.jps.sanction.core.EntityManagementConfig;
 import at.jps.sanction.domain.SanctionListHitResult;
+import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.sl.entities.WL_Entity;
@@ -1112,13 +1113,53 @@ public class ApplicationWindow {
         }
     }
 
+    String calcCriticality() {
+        String description = "";
+        int hits = guiAdapter.getCurrentMessage().getHitList().size();
+        double count = 0.0;
+        for (HitResult hitresult : guiAdapter.getCurrentMessage().getHitList()) {
+            if (hitresult instanceof SanctionListHitResult) {
+                // see OptimizationRecords this still is a hack
+
+                // public final static String OPTI_STATUS_NEW = "N";
+                // public final static String OPTI_STATUS_PENDING = "P";
+                // public final static String OPTI_STATUS_CONFIRMED = "C";
+
+                if (((SanctionListHitResult) hitresult).getHitOptimized().equals("N")) {
+                    count += 0.75;
+                }
+                else if (((SanctionListHitResult) hitresult).getHitOptimized().equals("P")) {
+                    count += 0.50;
+                }
+                else if (((SanctionListHitResult) hitresult).getHitOptimized().equals("P")) {
+                    count += 0.25;
+                }
+                else {
+                    count += 1.0;
+                }
+            }
+            else {
+                count += 1.0;
+            }
+        }
+
+        count = (count / hits) * 100;
+
+        description = String.format(" criticality %d", (int) count) + "%";
+
+        return description;
+    }
+
     void updateMessageDetails() {
 
-        textField_AnalysisTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(guiAdapter.getCurrentMessage().getAnalysisStopTime())));
+        // TODO: this is just a quick test
+        textField_AnalysisTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(guiAdapter.getCurrentMessage().getAnalysisStopTime())) + " -> " + calcCriticality());
         textPane_Comment.setText(guiAdapter.getCurrentMessage().getComment());
         if (guiAdapter.getCurrentMessage().getCategory() != null) {
             comboBox_Category.setSelectedItem(guiAdapter.getCurrentMessage().getCategory());
         }
+
+        // calc criticality
 
     }
 

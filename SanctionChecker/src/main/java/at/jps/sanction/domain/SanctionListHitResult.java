@@ -9,7 +9,7 @@ import at.jps.sanction.model.HitResult;
 
 @Entity
 @DiscriminatorValue("S")
-public class SanctionListHitResult extends HitResult {
+public class SanctionListHitResult extends HitResult implements Comparable<HitResult> {
 
     /**
      *
@@ -21,6 +21,7 @@ public class SanctionListHitResult extends HitResult {
     private String            hitLegalBasis;
     private String            hitListName;
     private String            hitRemark;
+    private int               hitListPriority  = 99;
 
     private String            hitOptimized     = " ";
 
@@ -85,9 +86,31 @@ public class SanctionListHitResult extends HitResult {
         this.hitOptimized = hitComment;
     }
 
+    public int getHitListPriority() {
+        return hitListPriority;
+    }
+
+    public void setHitListPriority(int hitListPriority) {
+        this.hitListPriority = hitListPriority;
+    }
+
     // TODO order by Listpriority
-    // @Override
-    // public int compareTo(final HitResult other) {
-    // }
+    @Override
+    public int compareTo(final HitResult other) {
+
+        int comp = super.compareTo(other);
+
+        if (comp == 0) {  // lower order == higher priority
+            if (getHitListPriority() < ((SanctionListHitResult) other).getHitListPriority()) {
+                comp = -1;
+            }
+            else {
+                if (getHitListPriority() > ((SanctionListHitResult) other).getHitListPriority()) {
+                    comp = 1;
+                }
+            }
+        }
+        return comp;
+    }
 
 }
