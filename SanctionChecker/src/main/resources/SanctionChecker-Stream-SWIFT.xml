@@ -1,0 +1,134 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!--                          -->
+   <!-- Stream Definition SWIFT  -->
+   <!--                          -->
+   
+	<bean id="StreamConfigSwift" class="at.jps.sanction.domain.swift.StreamConfig" scope="singleton" lazy-init="true">
+	
+			<!-- fields & fuzziness -->
+		
+		<property name="minTokenLen" value="2"/>
+		<property name="minRelVal" value="79"/>
+		<property name="minAbsVal" value="60"/>		
+		<property name="fuzzyVal" value="20"/>		
+		
+		<property name="checkFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		
+		<property name="BICFields" value="53A,56A,57A,58A,59A,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA"/>		
+		<property name="fuzzyFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		
+		
+	</bean>
+
+   
+   <bean id="StreamManagerSwift" class="at.jps.sanction.domain.SanctionStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+
+		<property name="streamName" value="Swift"/>
+		
+		<property name="streamConfig">
+			<ref bean="StreamConfigSwift"/>
+		</property>
+   
+		<property name="purgeQueuesOnStartup" value="true"/>
+   
+		<!-- workers counters -->
+		
+		<property name="nrWorkersInput" value="1"/>
+		<property name="nrWorkersOutputHit" value="0"/>
+		<property name="nrWorkersOutputNoHit" value="0"/>
+		<property name="nrWorkersError" value="1"/>
+		<property name="nrWorkersChecker" value="4"/>
+		<property name="nrWorkersPostHit" value="1"/>
+		<property name="nrWorkersPostNoHit" value="1"/>
+				
+		<!-- used queues -->
+				
+		<property name="inputQueue" >
+			<ref bean="InputQueueFile"/>
+		</property>
+		
+		<property name="defectQueue" >
+			<ref bean="DefectQueueFile"/>
+		</property>
+		
+		<property name="hitQueue" >
+			<ref bean="HitQueueFile"/>
+		</property>
+		
+		<property name="noHitQueue" >
+			<ref bean="NoHitQueueFile"/>
+		</property>
+		
+		<property name="postProcessHitQueue" >
+			<ref bean="PostHitQueueFile"/>
+		</property>
+		
+		<property name="postProcessNoHitQueue" >
+			<ref bean="PostNoHitQueueFile"/>
+		</property>
+
+		<property name="txNoHitOptimizationListHandler" >   
+   			<ref bean="OptiNoHitList"/>
+		</property>
+		
+		<property name="txHitOptimizationListHandler" >   
+   			<ref bean="OptiHitList"/>
+		</property>
+						
+		<property name="noWordHitListHandler" >   
+   			<ref bean="NoWordHitList"/>
+		</property>
+		
+	</bean>
+
+   <!-- workers -->
+   
+	<bean id="InputProcessor" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<property name="path" value="C:\temp\SanctionTest\in\swift"/>
+		<property name="pattern" value="*.txt"/>
+		<property name="sleepMillisBetween" value="10000"/>
+		
+		<property name="fileParser" >
+			<ref bean="FileParser"/>
+		</property>
+	</bean>
+	
+	<bean id="FileParser" class="at.jps.sanction.domain.swift.SwiftFileParser" scope="prototype">
+	    
+	    <property name="streamManager" >		    
+		    	<ref bean="StreamManagerSwift"/>    		    
+		</property>
+	    
+	    
+	</bean>
+	
+	<bean id="OutputProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
+		<property name="path" value="C:\temp\SanctionTest\out\swift"/>
+		<property name="sleepMillisBetween" value="0"/>
+		
+	</bean>
+	
+	<bean id="ErrorProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
+		<property name="path" value="C:\temp\SanctionTest\out\swift"/>
+		<property name="sleepMillisBetween" value="0"/>
+		</bean>
+	
+	<bean id="PostProcessorHit" class="at.jps.sanction.domain.swift.worker.SwiftPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean>
+	
+	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.swift.worker.SwiftPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean>
+				
+	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean -->
+	
+	<bean id="MessageAnalyser" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+		<property name="sleepMillisBetween" value="100"/>
+	</bean>
+
+</beans>	

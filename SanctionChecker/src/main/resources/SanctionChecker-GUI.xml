@@ -1,0 +1,119 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+<!-- GUI specific config -->
+	
+    <bean id="GUIConfig" class="at.jps.sl.gui.util.GUIConfigHolder" parent="ListConfig" scope="singleton" lazy-init="true">    
+
+		<property name="name" value="Swift Transactions"/>   
+	
+		<property name="txNoHitOptimizationListHandler" >   
+   			<ref bean="OptiNoHitList"/>
+		</property>
+		
+		<property name="txHitOptimizationListHandler" >   
+   			<ref bean="OptiHitList"/>
+		</property>
+						
+		<property name="noWordHitListHandler" >   
+   			<ref bean="NoWordHitList"/>
+		</property>
+
+		<property name="streamConfig">
+			<ref bean="StreamConfigSwift"/>
+		</property>
+
+		<!-- Queues that will be used by GUI application -->
+		
+		<property name="hitQueue" >
+			<ref bean="HitQueueFile"/>
+		</property>
+		
+		<property name="noHitQueue" >
+			<ref bean="NoHitQueueFile"/>
+		</property>
+		
+		<property name="postProcessHitQueue" >
+			<ref bean="PostHitQueueFile"/>
+		</property>
+		
+		<property name="postProcessNoHitQueue" >
+			<ref  bean="PostNoHitQueueFile"/>
+		</property>
+		
+		<property name="finalNoHitQueue" >
+			<ref bean="FinalNoHitQueueFile"/>
+		</property>
+		
+		<property name="finalHitQueue" >
+			<ref bean="FinalHitQueueFile"/>
+		</property>
+		
+		<property name="backlogQueue" >
+			<ref bean="BacklogQueueFile"/>
+		</property>
+		
+		<!-- field colors -->
+		<property name="fieldColors" >
+			<map>
+				<entry key="UNCHECKED" value="#EBE9DA"/>
+				<entry key="HIT" value="#DDFFFF"/>
+				<entry key="SL" value="#C390D4"/>
+				<entry key="PEP" value="#A1D490"/>
+				<entry key="SAN" value="#90C3D4"/>
+				<entry key="KTO" value="#92C5D6"/>
+				<entry key="NCCT" value="#A3C695"/>
+			</map>
+		</property>
+		
+		<!-- field name mapping for TX -->
+    		<property name="fieldNames" >
+			<map>
+				<entry key="&lt;PmtInfId&gt;" value="Payment information ID"/>
+				<entry key="&lt;PmtMtd&gt;" value="Payment method"/>
+				<entry key="&lt;BtchBookg&gt;" value="Batch booking"/>
+				<entry key="&lt;NbOfTxs&gt;" value="Number of Transactions"/>
+				<entry key="&lt;CtrlSum&gt;" value="Control Sum"/>
+				<entry key="&lt;Pmt TpInf&gt;&lt;InstrPrty&gt;" value="Instruction priority"/>
+				<entry key="&lt;SvcLvl&gt;&lt;Cd&gt;" value="Service level code"/>
+				<entry key="&lt;LclInstrm&gt;&lt;Cd&gt;" value="Local instrument code"/>
+				<entry key="&lt;CtgyPurp&gt;&lt;Cd&gt;" value="Category purpose code"/>
+				<entry key="&lt;ReqdExctnDt&gt;" value="Requested execution date"/>
+				<entry key="&lt;Dbtr&gt;&lt;Nm&gt;" value="Debtor name"/>
+				<entry key="&lt;Dbtr&gt;&lt;PstlAdr&gt;&lt;PstCd&gt;" value="Debtor postal code"/>
+				<entry key="&lt;Dbtr&gt;&lt;PstlAdr&gt;&lt;TwnNm&gt;" value="Debtor town name"/>
+				<entry key="&lt;Dbtr&gt;&lt;PstlAdr&gt;&lt;Ctry&gt;" value="Debtor country"/>
+				<entry key="&lt;Dbtr&gt;&lt;PstlAdr&gt;&lt;AdrLine&gt;" value="Debtor postal address line"/>
+				<entry key="&lt;DbtrAcct&gt;&lt;Id&gt;" value="Debtor organization identification"/>
+				<entry key="&lt;DbtrAcct&gt;&lt;Id&gt;&lt;IBAN&gt;" value="Debtor account ID IBAN"/>
+				<entry key="&lt;Ccy&gt;" value="Debtor account ID currency"/>
+				<entry key="&lt;DbtrAcct&gt;&lt;FinInstnId&gt;&lt;BIC&gt;" value="Debtor agent BIC"/>
+				<entry key="&lt;UltmtDbtr&gt;&lt;Nm&gt;" value="Ultimate debtor name"/>
+				<entry key="&lt;UltmtDbtr&gt;&lt;Id&gt;" value="Ultimate debtor organization ID"/>
+				
+				<entry key="&lt;ChrgBr&gt;" value="Charge bearer"/>
+				<entry key="&lt;InstrId&gt;" value="Instruction identification"/>
+				<entry key="&lt;EndToEndId&gt;" value="End to end identification"/>
+				<entry key="&lt;InstdAmt Ccy&gt;" value="Instructed amount"/>
+				<entry key="&lt;CdtrAgt&gt;&lt;FinInstnId&gt;&lt;BIC&gt;" value="Creditor agent BIC"/>
+				<entry key="&lt;Cdtr&gt;&lt;Nm&gt;" value="Creditor name"/>
+				<entry key="&lt;Cdtr&gt;&lt;PstlAdr&gt;&lt;PstCd&gt;" value="Creditor postal code"/>
+				<entry key="&lt;Cdtr&gt;&lt;PstlAdr&gt;&lt;TwnNm&gt;" value="Creditor town name"/>				
+				<entry key="&lt;Cdtr&gt;&lt;PstlAdr&gt;&lt;Ctry&gt;" value="Creditor country"/>
+				<entry key="&lt;Cdtr&gt;&lt;PstlAdr&gt;&lt;AdrLine&gt;" value="Creditor postal address line"/>
+				<entry key="&lt;CdtrAcct&gt;&lt;Id&gt;" value="Creditor organization identification"/>
+				<entry key="&lt;CdtrAcct&gt;&lt;Id&gt;&lt;IBAN&gt;" value="Creditor account ID IBAN"/>
+				<entry key="&lt;UltmtCdtr&gt;&lt;Id&gt;" value="Ultimate creditor organization ID"/>
+				<entry key="&lt;Purp&gt;&lt;Cd&gt;" value="Purpose Code"/>
+				<entry key="&lt;UltmtCdtr&gt;&lt;RmtInf&gt;" value="Remittance Information"/>
+				<entry key="&lt;UltmtCdtr&gt;&lt;Nm&gt;" value="Ultimate creditor name"/>
+				<entry key="&lt;Id&gt;" value="Ultimate creditor organization ID"/>
+		</map>
+		</property>
+    			
+				
+	</bean>
+</beans>

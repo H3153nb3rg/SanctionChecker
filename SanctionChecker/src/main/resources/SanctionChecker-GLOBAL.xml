@@ -1,0 +1,58 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- EntityManagement -->
+   <bean id="EntityManagement" class="at.jps.sanction.core.EntityManagementConfig" init-method="initialize" >
+   		<property name="enhancementCP" value="debug=10;packages=at.jps.sanction.domain.**,at.jps.sanction.core.**,at.jps.sanction.model.**"/>
+       
+   </bean>
+   		
+   
+   <!-- Global Stream Definition -->
+   <bean id="SanctionChecker" class="at.jps.sanction.core.Checker" init-method="initialize" destroy-method="close" lazy-init="true">
+   
+		<property name="listConfig">
+			<ref local ="ListConfig"/>
+		</property>
+		
+   		<property name="streamManagers" >
+		    <list>
+		    	<ref bean="StreamManagerSwift"/>    
+		    </list>			
+		</property>
+   </bean>
+   
+   <!-- Global Watchlist Definition -->
+   <bean id="ListConfig" class="at.jps.sanction.core.ListConfigHolder" init-method="initialize" scope="singleton">
+   
+		<property name="watchLists" >
+			<list>
+				<ref bean="OFACList"/>    
+				<ref bean="EUList"/>
+				<ref bean="INDSANList"/>
+				<ref bean="DowJonesList"/>
+			</list>			
+		</property>
+
+		<property name="referenceLists" >
+			<list>
+				<ref bean="CountryList"/>    
+				<ref bean="CurrencyList"/>
+				<ref bean="BICList"/>
+				<ref bean="NCCTList"/>
+			</list>			
+		</property>
+							
+		<property name="valueLists" >
+			<list>
+				<ref bean="SWList"/>    
+				<ref bean="NSWHList"/>
+				<ref bean="IAList"/>
+			</list>			
+		</property>
+	
+   </bean>
+ </beans>

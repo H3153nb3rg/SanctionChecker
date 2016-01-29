@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Queue Definitions -->
+		
+	<bean id="InputQueueDB" class="at.jps.sanction.core.queue.db.DBInputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="InputQueue"/>
+	</bean>
+	
+	<bean id="DefectQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="DefectQueue"/>
+		<property name="messageStatusFlag" value="X"/>		
+	</bean>
+	
+	<bean id="HitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="HitQueue"/>		
+		<property name="messageStatusFlag" value="H"/>
+	</bean>
+	
+	<bean id="NoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="NoHitQueue"/>		
+		<property name="messageStatusFlag" value="I"/>
+	</bean>
+	
+	<bean id="PostHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostHitQueue"/>	
+		<property name="messageStatusFlag" value="B"/>	
+	</bean>
+	
+	<bean id="PostNoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostNoHitQueue"/>
+		<property name="messageStatusFlag" value="R"/>		
+	</bean>
+
+	
+	
+	<bean id="FinalNoHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalNoHitQueue"/>
+		<property name="messageStatusFlag" value="R"/>		
+	</bean>
+	
+	<bean id="FinalHitQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalHitQueue"/>
+		<property name="messageStatusFlag" value="B"/>		
+	</bean>
+
+	<bean id="BacklogQueueDB" class="at.jps.sanction.core.queue.db.DBOutputQueue" scope="singleton" lazy-init="true">		
+		<property name="name" value="BacklogQueue"/>	
+		<property name="messageStatusFlag" value="L"/>	
+	</bean>
+	
+	
+    <!-- bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
+		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
+	</bean -->
+	
+    <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Queues"/>		
+	</bean>
+
+</beans>

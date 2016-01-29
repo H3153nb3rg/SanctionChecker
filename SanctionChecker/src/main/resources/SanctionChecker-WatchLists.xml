@@ -1,0 +1,115 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+       <!-- Listloader -->
+   
+   <bean id="GlobalListConfig" abstract="true"  lazy-init="true">
+
+		<property name="histPath" value="C:\\temp\\SanctionTest\\listhist"/>		
+		<property name="useSysProxy" value="true"	   	 />		
+		
+		<property name="delimiters" value=";,., ,(,),$,.,'"/>
+		<property name="deadCharacters" value=";,?,|,(,),$,.,'"/>
+				
+		<property name="fuzzySearch" value="true"/>
+		<property name="fourEyesPrinciple" value="true"/>
+		<property name="loadWeak" value="false"/>
+		<property name="loadNonPrimary" value="true"/>		
+	</bean>
+   
+   <bean id="OFACList" class="at.jps.sanction.core.listhandler.watchlist.OFAC_ASDM_ListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="OFAC"/>
+		<property name="description" value="Specially Designated Nationals List (SDN) from the Office of Foreign Assets Control"/>
+		<property name="orderNr" value="3"/>
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ofac-sdn_advanced.xml"/>
+		<!-- property name="url" value="http://www.treasury.gov/ofac/downloads/sanctions/1.0/sdn_advanced.xml"/ -->
+		
+		<property name="listType" value="SL"/>
+			
+	</bean>
+   
+   <bean id="EUList" class="at.jps.sanction.core.listhandler.watchlist.EUListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="EUList"/>
+		<property name="description" value="Consolidated list of persons, groups and entities subject to EU financial sanctions"/>
+		<property name="orderNr" value="2"/>
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/global.xml"/>
+		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
+		
+		<property name="listType" value="SL"/>
+			
+	</bean>
+	   
+   <bean id="INDSANList" class="at.jps.sanction.core.listhandler.watchlist.INDSANListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="INDSAN"/>
+		<property name="description" value="Individual Sanction List"/>
+		<property name="orderNr" value="4"/>
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/indsan.csv"/>
+			
+		<property name="listType" value="SAN"/>
+			
+	</bean>
+   
+   
+    <bean id="DowJonesList" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" scope="singleton">
+		<property name="listName" value="DowJones"/>
+		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
+		<property name="orderNr" value="1"/>
+		
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/>
+		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
+		
+		<property name="listType" value="SL"/>
+		
+		<property name="loadDescription" value="1,2,3,4"/>
+			
+	</bean>
+   
+   <!-- Reference Lists -->
+    <bean id="CountryList" class="at.jps.sanction.core.listhandler.reflist.CountryListHandler" init-method="initialize" scope="singleton">    
+		<property name="listName" value="DowJones"/>
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/countries.properties"/>
+	</bean>
+   
+    <bean id="CurrencyList" class="at.jps.sanction.core.listhandler.reflist.CurrencyListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/currencies.properties"/>
+	</bean>
+    
+    <bean id="BICList" class="at.jps.sanction.core.listhandler.reflist.BicListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/BICs.csv"/>
+	</bean>
+    
+    <bean id="NCCTList" class="at.jps.sanction.core.listhandler.reflist.NCCTListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/NCCTcountries.properties"/>
+	</bean>
+    
+   <!-- Value Lists -->
+    <bean id="SWList" class="at.jps.sanction.core.listhandler.valuelist.SWListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/SWL.txt"/>
+	</bean>
+    
+    <bean id="NSWHList" class="at.jps.sanction.core.listhandler.valuelist.NSWHListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/NSWH.txt"/>
+	</bean>
+
+    <bean id="IAList" class="at.jps.sanction.core.listhandler.valuelist.IAListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/IAL.txt"/>
+	</bean>
+    
+    <!-- Special optimization Lists -->
+   
+    <bean id="OptiNoHitList" class="at.jps.sanction.core.listhandler.optilist.TXNoHitOptimizationListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/TXNOHIT-OPTI.txt"/>
+		<property name="autoDiscardHitsOnConfirmStatus" value="true"/>
+	</bean>
+    
+    <bean id="OptiHitList" class="at.jps.sanction.core.listhandler.optilist.TXHitOptimizationListHandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/TXHIT-OPTI.txt"/>		
+	</bean>
+    
+    <bean id="NoWordHitList" class="at.jps.sanction.core.listhandler.optilist.NonWordHitOptimizationListhandler" init-method="initialize" scope="singleton">    
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/NOWORDHIT.txt"/>		
+	</bean>
+	
+</beans>
