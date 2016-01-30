@@ -253,7 +253,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
             for (PFA.Records.Person pfaPerson : records.getPerson()) {
 
-                if (pfaPerson.getActiveStatus().equalsIgnoreCase("Active")) {
+                if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
                     WL_Entity entity = new WL_Entity();
 
                     entity.setType("Individual");
@@ -275,7 +275,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
             for (PFA.Records.Entity pfaEntity : records.getEntity()) {
 
-                if (pfaEntity.getActiveStatus().equalsIgnoreCase("Active")) {
+                if ((pfaEntity.getActiveStatus() != null) && (pfaEntity.getActiveStatus().equalsIgnoreCase("Active"))) {
 
                     WL_Entity entity = new WL_Entity();
 
@@ -359,6 +359,11 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
 
         buildEntityList(pfa);
+
+        // sort for id -- NIX soo good
+        for (WL_Entity entity : getEntityList()) {
+            addWLEntry(entity);
+        }
 
     }
 

@@ -155,47 +155,50 @@ public class ApplicationWindow {
         }
     }
 
-    TableColumnAdjuster       tca;
-    private JFrame            frmCaseManagement;
-    private JTable            tableTXHits;
-    private JTable            tableTXNoHits;
-    private JTable            tableResults;
-    private JTable            tableWordHits;
+    private JTabbedPane         tabbedPane_Sanction;
+    private TableColumnAdjuster tabColAdjuster_EntityNameDetails;
+    private TableColumnAdjuster tabColAdjuster_EntityRelations;
+    private JFrame              frmCaseManagement;
+    private JTable              tableTXHits;
+    private JTable              tableTXNoHits;
+    private JTable              tableResults;
+    private JTable              tableWordHits;
 
-    private JTable            table_EntityNameDetails;
+    private JTable              table_EntityNameDetails;
+    private JTable              table_EntityRelationDetails;
 
-    private JTabbedPane       tabbedPane;
+    private JTabbedPane         tabbedPane;
 
-    private JTextField        textField_AnalysisTime;
-    private JTextPane         textPane_Comment;
-    private JTextPane         textPane_LegalBack;
-    private JTextField        textField_Type;
-    private JTextField        textField_ListDescription;
-    private JTextPane         textPane_Remark;
-    private JButton           btn_ExternalUrl;
-    private JComboBox<String> comboBox_Category;
+    private JTextField          textField_AnalysisTime;
+    private JTextPane           textPane_Comment;
+    private JTextPane           textPane_LegalBack;
+    private JTextField          textField_Type;
+    private JTextField          textField_ListDescription;
+    private JTextPane           textPane_Remark;
+    private JButton             btn_ExternalUrl;
+    private JComboBox<String>   comboBox_Category;
 
-    private JButton           btnNextButton;
-    private JButton           btnPrevButton;
+    private JButton             btnNextButton;
+    private JButton             btnPrevButton;
 
-    private boolean           recursionProhibitorTX     = false;
-    private boolean           recursionProhibitorResult = false;
+    private boolean             recursionProhibitorTX     = false;
+    private boolean             recursionProhibitorResult = false;
     // private boolean recursionProhibitorToken = false;
 
-    private SearchWindow      searchWindow;
+    private SearchWindow        searchWindow;
 
-    private JMenuItem         mntmAddToStopwords;
-    private JMenuItem         mntmAddToNon;
-    private JMenuItem         mntmAddToIA;
-    private JMenuItem         mntmAddToNoHit;
+    private JMenuItem           mntmAddToStopwords;
+    private JMenuItem           mntmAddToNon;
+    private JMenuItem           mntmAddToIA;
+    private JMenuItem           mntmAddToNoHit;
 
-    private AdapterHelper     guiAdapter;
+    private AdapterHelper       guiAdapter;
 
-    private boolean           hitsViewActive            = true;
-    private boolean           resultsViewActive         = true;
+    private boolean             hitsViewActive            = true;
+    private boolean             resultsViewActive         = true;
 
-    private String            selectedToken             = "";
-    private String            selectedFieldContent      = "";
+    private String              selectedToken             = "";
+    private String              selectedFieldContent      = "";
 
     /**
      * Create the application.
@@ -722,7 +725,7 @@ public class ApplicationWindow {
 
         panel_SanctionInfo.setLayout(new BorderLayout(0, 0));
 
-        JTabbedPane tabbedPane_Sanction = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane_Sanction = new JTabbedPane(JTabbedPane.TOP);
         panel_SanctionInfo.add(tabbedPane_Sanction);
 
         JPanel panel_Sanction1 = new JPanel();
@@ -826,17 +829,31 @@ public class ApplicationWindow {
 
         JPanel panel_Sanction2 = new JPanel();
         panel_Sanction2.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JPanel panel_Sanction3 = new JPanel();
+        panel_Sanction3.setBorder(new EmptyBorder(5, 5, 5, 5));
+
         tabbedPane_Sanction.addTab("NameDetails", null, panel_Sanction2, null);
+        tabbedPane_Sanction.addTab("Relations", null, panel_Sanction3, null);
+
         panel_Sanction2.setLayout(new BorderLayout(0, 0));
+        panel_Sanction3.setLayout(new BorderLayout(0, 0));
 
         table_EntityNameDetails = new JTable();
         table_EntityNameDetails.setDefaultRenderer(String.class, new ResultSideRenderer());
         table_EntityNameDetails.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tca = new TableColumnAdjuster(table_EntityNameDetails);
-        // tca.adjustColumns();
+        tabColAdjuster_EntityNameDetails = new TableColumnAdjuster(table_EntityNameDetails);
 
         table_EntityNameDetails.setBackground(tableResults.getBackground());
         panel_Sanction2.add(new JScrollPane(table_EntityNameDetails));
+
+        table_EntityRelationDetails = new JTable();
+        table_EntityRelationDetails.setDefaultRenderer(String.class, new ResultSideRenderer());
+        table_EntityRelationDetails.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tabColAdjuster_EntityRelations = new TableColumnAdjuster(table_EntityRelationDetails);
+
+        table_EntityRelationDetails.setBackground(tableResults.getBackground());
+        panel_Sanction3.add(new JScrollPane(table_EntityRelationDetails));
 
         btn_ExternalUrl = new JButton("external URL");
         btn_ExternalUrl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1203,8 +1220,12 @@ public class ApplicationWindow {
             // details
             if (entity != null) {
                 table_EntityNameDetails.setModel(guiAdapter.getEntityDetailsNamesTableModel(entity));
+                tabColAdjuster_EntityNameDetails.adjustColumns();
 
-                tca.adjustColumns();
+                tabbedPane_Sanction.setEnabledAt(2, entity.getReleations().size() > 0); // TODO : tab hardcoded....
+                table_EntityRelationDetails.setModel(guiAdapter.getEntityRelationsTableModel(slhr));
+                tabColAdjuster_EntityRelations.adjustColumns();
+
             }
 
         }

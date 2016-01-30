@@ -90,6 +90,11 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
         readList(filename);
 
+        // sort for id -- NIX soo good
+        for (WL_Entity entity : getEntityList()) {
+            addWLEntry(entity);
+        }
+
         archiveFile(filename, getHistPath(), getListName());
 
     }

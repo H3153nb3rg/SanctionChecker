@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -13,24 +14,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.model.listhandler.SanctionListHandler;
+import at.jps.sanction.model.sl.entities.WL_Entity;
 
 public abstract class SanctionListHandlerImpl extends BaseFileHandler implements SanctionListHandler {
 
-    static final Logger logger            = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
+    static final Logger                logger            = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
 
-    private String      delimiters        = " ";
-    private String      deadCharacters    = "";
-    private String      listType          = "";
-    private String      description;
-    private int         orderId           = 0;
-    private int         severity          = 0;
+    private String                     delimiters        = " ";
+    private String                     deadCharacters    = "";
+    private String                     listType          = "";
+    private String                     description;
+    private int                        orderId           = 0;
+    private int                        severity          = 0;
 
-    private boolean     fuzzySearch       = false;
-    private boolean     fourEyesPrinciple = false;
-    private boolean     useSysProxy       = true;
+    private boolean                    fuzzySearch       = false;
+    private boolean                    fourEyesPrinciple = false;
+    private boolean                    useSysProxy       = true;
 
-    boolean             loadWeak          = false;
-    boolean             loadNonPrimary    = true;
+    boolean                            loadWeak          = false;
+    boolean                            loadNonPrimary    = true;
+
+    private HashMap<String, WL_Entity> entityListSortedById;
 
     protected void archiveFile(final String filename, final String targetDir, final String targetfilename) {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
@@ -243,6 +247,27 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     public void setFuzzySearch(boolean fuzzySearch) {
         this.fuzzySearch = fuzzySearch;
+    }
+
+    protected HashMap<String, WL_Entity> getEntityListSortedById() {
+
+        if (entityListSortedById == null) {
+            entityListSortedById = new HashMap<String, WL_Entity>();
+        }
+
+        return entityListSortedById;
+    }
+
+    protected void setEntityListSortedById(HashMap<String, WL_Entity> entityListSortedById) {
+        this.entityListSortedById = entityListSortedById;
+    }
+
+    public void addWLEntry(final WL_Entity entry) {
+        getEntityListSortedById().put(entry.getWL_Id(), entry);
+    }
+
+    public WL_Entity getEntityById(final String wl_id) {
+        return getEntityListSortedById().get(wl_id);
     }
 
 }

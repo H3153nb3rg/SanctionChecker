@@ -57,7 +57,9 @@
 		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
 		<property name="orderNr" value="1"/>
 		
-		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/>
+		<!-- property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/ -->
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/PFA2_201601222200_I.xml"/>
+		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
 		<property name="listType" value="SL"/>

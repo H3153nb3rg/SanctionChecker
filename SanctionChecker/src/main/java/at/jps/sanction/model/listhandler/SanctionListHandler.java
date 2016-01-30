@@ -20,6 +20,8 @@ public interface SanctionListHandler {
 
     public List<WL_Entity> getEntityList();
 
+    public WL_Entity getEntityById(final String wl_id);
+
     // public ListHandler getInstance();
 
     public String getListName();

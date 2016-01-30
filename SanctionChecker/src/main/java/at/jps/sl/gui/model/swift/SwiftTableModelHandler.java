@@ -1,6 +1,7 @@
 package at.jps.sl.gui.model.swift;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import at.jps.sanction.domain.swift.SwiftMessageParser;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
+import at.jps.sanction.model.WatchListInformant;
 import at.jps.sanction.model.WordHitInfo;
 import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sanction.model.sl.entities.WL_Name;
@@ -633,6 +635,101 @@ public class SwiftTableModelHandler implements Serializable {
             public int getColumnCount() {
 
                 return 5;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+
+                return String.class;
+            }
+
+            @Override
+            public void addTableModelListener(TableModelListener l) {
+
+            }
+        };
+
+        return tableModel;
+    }
+
+    public static TableModel getEntityRelationsTableModel(final WatchListInformant watchlistInformat, final SanctionListHitResult slhr) {
+
+        final String listname = slhr.getHitListName();
+        final WatchListInformant watchlistInformatLocal = watchlistInformat;
+        final WL_Entity focusedEntity = watchlistInformat.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
+        // final SanctionListHandler listhandler = watchlistInformat.getWatchListByName(slhr.getHitListName());
+
+        final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getReleations().keySet());
+
+        TableModel tableModel = new TableModel() {
+
+            @Override
+            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+
+            }
+
+            @Override
+            public void removeTableModelListener(TableModelListener l) {
+
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                String colName = "";
+
+                // WL_Name name = focusedEntity.getReleations().keySet()..getNames().get(rowIndex);
+
+                WL_Entity enity = watchlistInformatLocal.getSanctionListEntityDetails(listname, refIdList.get(rowIndex));
+
+                switch (columnIndex) {
+                    case 0:
+                        colName = focusedEntity.getReleations().get(refIdList.get(rowIndex));
+                        break;
+                    case 1:
+                        colName = enity.getNames().get(0).getWholeName();
+                        break;
+                    case 2:
+                        colName = enity.getType();
+                        break;
+                }
+                return colName;
+
+            }
+
+            @Override
+            public int getRowCount() {
+
+                return focusedEntity.getReleations().size();
+            }
+
+            @Override
+            public String getColumnName(int columnIndex) {
+                String value = "";
+                switch (columnIndex) {
+                    case 0:
+                        value = "Relationship";
+                        break;
+                    case 1:
+                        value = "Entity";
+                        break;
+                    case 2:
+                        value = "Type";
+                        break;
+
+                }
+
+                return value;
+            }
+
+            @Override
+            public int getColumnCount() {
+
+                return 3;
             }
 
             @Override

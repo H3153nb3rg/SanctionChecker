@@ -46,10 +46,12 @@ import at.jps.sl.gui.AdapterHelper;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.slcm.gui.model.DisplayMessage;
 import at.jps.slcm.gui.model.DisplayNameDetails;
+import at.jps.slcm.gui.model.DisplayRelation;
 import at.jps.slcm.gui.model.DisplayResult;
 import at.jps.slcm.gui.model.DisplayWordHit;
 import at.jps.slcm.gui.service.DisplayMessageService;
 import at.jps.slcm.gui.service.DisplayNameDetailsService;
+import at.jps.slcm.gui.service.DisplayRelationService;
 import at.jps.slcm.gui.service.DisplayResultService;
 import at.jps.slcm.gui.service.DisplayWordHitService;
 
@@ -65,7 +67,8 @@ public class SlcmUI extends UI {
     private Grid                      tableTXWithHits           = new Grid();
     private Grid                      tableResults              = new Grid();
     private Grid                      tableWordHits             = new Grid();
-    private Grid                      tableNameDetails          = new Grid();
+    private Grid                      tableEntityNameDetails    = new Grid();
+    private Grid                      tableEntityRelations      = new Grid();
 
     private TextField                 textField_AnalysisTime;
     private TextArea                  textPane_Comment;
@@ -87,6 +90,7 @@ public class SlcmUI extends UI {
     private DisplayMessageService     displayMessageService     = new DisplayMessageService();
     private DisplayNameDetailsService displayNameDetailsService = new DisplayNameDetailsService();
     private DisplayWordHitService     displayWordHitService     = new DisplayWordHitService();
+    private DisplayRelationService    displayRelationService    = new DisplayRelationService();
 
     private String                    selectedToken             = "";
     private String                    selectedFieldContent      = "";
@@ -164,16 +168,30 @@ public class SlcmUI extends UI {
             i++;
         }
 
-        tableNameDetails.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
-        tableNameDetails.setColumnOrder("firstname", "middleName", "surname", "wholename", "aka");
-        tableNameDetails.removeColumn("id");
-        tableNameDetails.setSelectionMode(Grid.SelectionMode.SINGLE);
+        tableEntityNameDetails.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
+        tableEntityNameDetails.setColumnOrder("firstname", "middleName", "surname", "wholename", "aka");
+        tableEntityNameDetails.removeColumn("id");
+        tableEntityNameDetails.setSelectionMode(Grid.SelectionMode.SINGLE);
         // tableNameDetails.addActionHandler(new SpreadsheetDefaultActionHandler());
 
         int cratioND[] = { 1, 1, 2, 3, 1 };
-        for (Column c : tableNameDetails.getColumns()) {
+        for (Column c : tableEntityNameDetails.getColumns()) {
             if (i < cratioND.length - 1) {
                 c.setExpandRatio(cratioND[i]);
+            }
+            i++;
+        }
+
+        tableEntityRelations.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
+        tableEntityRelations.setColumnOrder("relationship", "entity", "type");
+        tableEntityRelations.removeColumn("id");
+        tableEntityRelations.setSelectionMode(Grid.SelectionMode.SINGLE);
+        // tableNameDetails.addActionHandler(new SpreadsheetDefaultActionHandler());
+
+        int cratioER[] = { 1, 2, 1 };
+        for (Column c : tableEntityRelations.getColumns()) {
+            if (i < cratioER.length - 1) {
+                c.setExpandRatio(cratioER[i]);
             }
             i++;
         }
@@ -186,8 +204,8 @@ public class SlcmUI extends UI {
         tableTXWithHits.setSizeFull();
         tableResults.setSizeFull();
         tableWordHits.setSizeFull();
-        tableNameDetails.setSizeFull();
-
+        tableEntityNameDetails.setSizeFull();
+        tableEntityRelations.setSizeFull();
         // special popup
         addWordHitPopup();
 
@@ -466,8 +484,10 @@ public class SlcmUI extends UI {
             if (entity != null) {
 
                 displayNameDetailsService.setModel(guiAdapter.getEntityDetailsNamesTableModel(entity));
+                tableEntityNameDetails.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class, displayNameDetailsService.displayAllFields()));
 
-                tableNameDetails.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class, displayNameDetailsService.displayAllFields()));
+                displayRelationService.setModel(guiAdapter.getEntityRelationsTableModel(slhr));
+                tableEntityRelations.setContainerDataSource(new BeanItemContainer<>(DisplayRelation.class, displayRelationService.displayAllFields()));
 
                 // tca.adjustColumns();
             }
@@ -706,7 +726,8 @@ public class SlcmUI extends UI {
 
         TabSheet sLDetails = new TabSheet();
         sLDetails.addTab(listDetails).setCaption("General");
-        sLDetails.addTab(tableNameDetails).setCaption("NameDetails");
+        sLDetails.addTab(tableEntityNameDetails).setCaption("NameDetails");
+        sLDetails.addTab(tableEntityRelations).setCaption("Relations");
         sLDetails.setSizeFull();
 
         VerticalSplitPanel hitsAndDetails = new VerticalSplitPanel();

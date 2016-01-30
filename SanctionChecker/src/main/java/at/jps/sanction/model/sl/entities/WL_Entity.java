@@ -2,6 +2,7 @@ package at.jps.sanction.model.sl.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,30 +13,33 @@ public class WL_Entity implements Serializable {
     /**
      *
      */
-    private static final long serialVersionUID = 350588830084232520L;
+    private static final long       serialVersionUID = 350588830084232520L;
 
-    private List<String>      legalBasises;                            // to add date to LB !!!!
+    private List<String>            legalBasises;                                                                                                          // to add date to LB !!!!
 
-    private String            comment;
-    private String            issueDate;
-    private String            type;                                                                                                                                                                           // Individual
-                                                                                                                                                                                                              // /
-                                                                                                                                                                                                              // Entity
-                                                                                                                                                                                                              // /
-                                                                                                                                                                                                              // Transport
-                                                                                                                                                                                                              // /
-                                                                                                                                                                                                              // Other
-                                                                                                                                                                                                              // ...
-    private String            wl_id;
-    private List<String>      informationUrls;
+    private String                  comment;
+    private String                  issueDate;
+    private String                  type;                                                                                                                                                                                                                                                                                 // Individual
+                                                                                                                                                                                                                                                                                                                          // /
+                                                                                                                                                                                                                                                                                                                          // Entity
+                                                                                                                                                                                                                                                                                                                          // /
+                                                                                                                                                                                                                                                                                                                          // Transport
+                                                                                                                                                                                                                                                                                                                          // /
+                                                                                                                                                                                                                                                                                                                          // Other
+                                                                                                                                                                                                                                                                                                                          // ...
+    private String                  wl_id;
+    private List<String>            informationUrls;
 
-    private List<WL_Name>     names;
-    private List<WL_Passport> passports;
-    private List<WL_Address>  addresses;
+    private List<WL_Name>           names;
+    private List<WL_Passport>       passports;
+    private List<WL_Address>        addresses;
 
-    private String            entryType;                                                                                                                                                  // PEP
-                                                                                                                                                                                          // /
-                                                                                                                                                                                          // Sanctiontype
+    private String                  entryType;                                                                                                                                                                                                                                         // PEP
+
+    // /
+    // Sanctiontype
+
+    private HashMap<String, String> releations;
 
     public String getComment() {
         return comment;
@@ -156,6 +160,19 @@ public class WL_Entity implements Serializable {
 
     public void setType(final String type) {
         this.type = type;
+    }
+
+    public HashMap<String, String> getReleations() {
+
+        if (releations == null) {
+            releations = new HashMap<String, String>();
+        }
+
+        return releations;
+    }
+
+    public void addReleation(final String wl_id, final String type) {
+        getReleations().put(wl_id, type);
     }
 
 }

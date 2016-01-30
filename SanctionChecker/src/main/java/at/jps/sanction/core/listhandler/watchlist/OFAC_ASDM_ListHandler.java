@@ -30,6 +30,8 @@ import at.jps.sanction.core.list.ofac.ASDM.DistinctPartySchemaType.Profile;
 import at.jps.sanction.core.list.ofac.ASDM.DocumentedNameSchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.IdentitySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.IdentitySchemaType.Alias;
+import at.jps.sanction.core.list.ofac.ASDM.ProfileRelationshipSchemaType;
+import at.jps.sanction.core.list.ofac.ASDM.ReferenceValueSetsSchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.ReferenceValueSetsSchemaType.AliasTypeValues.AliasType;
 import at.jps.sanction.core.list.ofac.ASDM.ReferenceValueSetsSchemaType.LegalBasisValues.LegalBasis;
 import at.jps.sanction.core.list.ofac.ASDM.ReferenceValueSetsSchemaType.NamePartTypeValues.NamePartType;
@@ -261,6 +263,29 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         }
     }
 
+    private String getRelationshipType(final Sanctions sanctions, BigInteger typid) {
+        String typeText = "";
+        for (ReferenceValueSetsSchemaType.RelationTypeValues.RelationType rt : sanctions.getReferenceValueSets().getRelationTypeValues().getRelationType()) {
+            if (rt.getID().equals(typid)) {
+                typeText = rt.getValue();
+                break;
+            }
+        }
+        return typeText;
+    }
+
+    private void addRelations(final Sanctions sanctions, WL_Entity entity) {
+
+        for (ProfileRelationshipSchemaType prt : sanctions.getProfileRelationships().getProfileRelationship()) {
+
+            if (prt.getFromProfileID().toString().equals(entity.getWL_Id())) {
+
+                entity.addReleation(prt.getToProfileID().toString(), getRelationshipType(sanctions, prt.getRelationTypeID()));
+
+            }
+        }
+    }
+
     private void buildEntityList(final Sanctions sanctions) {
 
         entityList = new ArrayList<WL_Entity>();
@@ -274,6 +299,8 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
                 entity.setWL_Id(prof.getID().toString());
                 entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
+
+                addRelations(sanctions, entity);
 
                 String lbt = "( ";
                 final SanctionsEntrySchemaType st = getSanctionEntryForProfil(prof.getID());
@@ -382,6 +409,11 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         }
 
         buildEntityList(readList(filename));
+
+        // sort for id -- NIX soo good
+        for (WL_Entity entity : getEntityList()) {
+            addWLEntry(entity);
+        }
 
         archiveFile(filename, getHistPath(), getListName());
 

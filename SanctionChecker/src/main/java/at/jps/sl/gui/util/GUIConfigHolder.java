@@ -27,7 +27,7 @@ public class GUIConfigHolder extends ListConfigHolder {
     private Queue<AnalysisResult>   backlogQueue;
 
     private HashMap<String, Color>  fieldColors;
-    private HashMap<String, Color>  fieldNames;
+    private HashMap<String, String> fieldNames;
 
     private String                  name;
 
@@ -148,6 +148,14 @@ public class GUIConfigHolder extends ListConfigHolder {
 
     public void setAutolearnMode(boolean autolearnMode) {
         this.autolearnMode = autolearnMode;
+    }
+
+    public HashMap<String, String> getFieldNames() {
+        return fieldNames;
+    }
+
+    public void setFieldNames(HashMap<String, String> fieldNames) {
+        this.fieldNames = fieldNames;
     }
 
 }

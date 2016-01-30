@@ -9,10 +9,12 @@ import javax.swing.table.TableModel;
 import at.jps.sanction.core.listhandler.valuelist.IAListHandler;
 import at.jps.sanction.core.listhandler.valuelist.NSWHListHandler;
 import at.jps.sanction.core.listhandler.valuelist.SWListHandler;
+import at.jps.sanction.domain.SanctionListHitResult;
 import at.jps.sanction.domain.swift.SwiftMessage;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
+import at.jps.sanction.model.WatchListInformant;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
@@ -23,7 +25,7 @@ import at.jps.sl.gui.util.RingBufferQueue;
 import at.jps.sl.gui.util.RingBufferQueueImpl;
 import at.jps.sl.gui.util.TokenUpdater;
 
-public class AdapterHelper {
+public class AdapterHelper implements WatchListInformant {
 
     static final String              PROP_FILENAME = "checker.properties";
     public static final String       PROP_GUI_MAIN = "GUI.Stream.Name";
@@ -71,10 +73,10 @@ public class AdapterHelper {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // !!)
     private String                   streamName;
 
     // public void initializeFields2BIC() {
@@ -201,6 +203,13 @@ public class AdapterHelper {
 
     }
 
+    public TableModel getEntityRelationsTableModel(final SanctionListHitResult slhr) {
+
+        TableModel tm = SwiftTableModelHandler.getEntityRelationsTableModel(this, slhr);
+
+        return tm;
+    }
+
     public TableModel getEntityDetailsNamesTableModel(final WL_Entity entity) {
 
         TableModel tm = SwiftTableModelHandler.getEntityNameTableModel(entity);
@@ -292,17 +301,23 @@ public class AdapterHelper {
     public WL_Entity getSanctionListEntityDetails(final String listname, final String id) {
         WL_Entity entity = null;
 
-        SanctionListHandler sanctionListHandler = config.getWatchLists().get(listname);
+        SanctionListHandler sanctionListHandler = getWatchListByName(listname);
 
         if (sanctionListHandler != null) {
-            for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
-                if (listEntity.getWL_Id().equals(id)) {
-                    entity = listEntity;
-                    break;
-                }
-            }
+            // for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
+            // if (listEntity.getWL_Id().equals(id)) {
+            // entity = listEntity;
+            // break;
+            // }
+            // }
+            entity = sanctionListHandler.getEntityById(id);
+
         }
         return entity;
+    }
+
+    public SanctionListHandler getWatchListByName(final String listname) {
+        return config.getWatchLists().get(listname);
     }
 
     public ReferenceListHandler getReferenceListByName(final String name) {
