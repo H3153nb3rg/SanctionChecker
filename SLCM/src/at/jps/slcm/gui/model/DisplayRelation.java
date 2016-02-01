@@ -15,6 +15,7 @@ public class DisplayRelation implements Serializable {
     private String            relation;
     private String            entity;
     private String            type;
+    private String            wlid;
 
     private Long              id;
 
@@ -52,6 +53,14 @@ public class DisplayRelation implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getWlid() {
+        return wlid;
+    }
+
+    public void setWlid(String wlid) {
+        this.wlid = wlid;
     }
 
 }

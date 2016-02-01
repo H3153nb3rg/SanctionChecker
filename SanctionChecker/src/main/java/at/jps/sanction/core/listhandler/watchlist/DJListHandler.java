@@ -24,6 +24,7 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.jps.sanction.core.list.dj.Associate;
 import at.jps.sanction.core.list.dj.Descriptions;
 import at.jps.sanction.core.list.dj.Descriptions.Description;
 import at.jps.sanction.core.list.dj.IDNumberTypes;
@@ -32,6 +33,7 @@ import at.jps.sanction.core.list.dj.PFA;
 import at.jps.sanction.core.list.dj.PFA.Description1List;
 import at.jps.sanction.core.list.dj.PFA.Description2List;
 import at.jps.sanction.core.list.dj.PFA.Description3List;
+import at.jps.sanction.core.list.dj.PFA.RelationshipList.Relationship;
 import at.jps.sanction.core.list.dj.SanctionsReferences;
 import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
@@ -177,6 +179,17 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
+    private static void addCompanyAddress(WL_Entity entity, List<PFA.Records.Entity.CompanyDetails> companyDetails) {
+        for (PFA.Records.Entity.CompanyDetails cd : companyDetails) {
+            WL_Address address = new WL_Address();
+            entity.getAddresses().add(address);
+
+            address.setCountry(cd.getAddressCountry());
+            address.setPlace(cd.getAddressCity());
+            address.setLine(cd.getAddressLine());
+        }
+    }
+
     private static void addIDs(WL_Entity entity, List<IDNumberTypes> numbers) {
         for (IDNumberTypes ids : numbers) {
             for (IDNumberTypes.ID id : ids.getID()) {
@@ -246,6 +259,48 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return srlName;
     }
 
+    private String getAssociationType(PFA pfa, final String code) {
+        String type = "";
+
+        for (PFA.RelationshipList rl : pfa.getRelationshipList()) {
+            for (Relationship r : rl.getRelationship()) {
+                if (r.getCode().equals(code)) {
+                    type = r.getName();
+                    break;
+                }
+            }
+        }
+
+        return type;
+    }
+
+    void getAssociations(PFA pfa, List<Associate> associates, final String id) {
+
+        WL_Entity entity = getEntityById(id);
+
+        if (entity != null) {
+
+            for (Associate asso : associates) {
+
+                entity.addReleation(asso.getId(), getAssociationType(pfa, asso.getCode()));
+                asso.getEx();
+            }
+        }
+
+    }
+
+    void getAssociations(PFA pfa) {
+        for (PFA.Associations assosiations : pfa.getAssociations()) {
+            for (PFA.Associations.SpecialEntity specialEntity : assosiations.getSpecialEntity()) {
+                getAssociations(pfa, specialEntity.getAssociate(), specialEntity.getId());
+            }
+
+            for (PFA.Associations.PublicFigure publicfigure : assosiations.getPublicFigure()) {
+                getAssociations(pfa, publicfigure.getAssociate(), publicfigure.getId());
+            }
+        }
+    }
+
     public static void buildEntityList(PFA pfa) {
         entityList = new ArrayList<WL_Entity>();
 
@@ -284,6 +339,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setIssueDate(pfaEntity.getDate());
 
                     entityList.add(entity);
+
+                    addCompanyAddress(entity, pfaEntity.getCompanyDetails());
 
                     addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
 
@@ -334,22 +391,19 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return LISTNAME;
     }
 
-    @Override
-    public List<String> getStopwordList() {
-        logger.error("Stopword list for (" + LISTNAME + ") not yet implemented!");
-        return null;
-    }
+    // @Override
+    // public List<String> getStopwordList() {
+    // logger.error("Stopword list for (" + LISTNAME + ") not yet implemented!");
+    // return null;
+    // }
 
     @Override
     public void initialize() {
         super.initialize();
 
-        // final String filename = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".filename");
         PFA pfa = readList(getFilename());
 
         archiveFile(getFilename(), getHistPath(), getListName());
-
-        // String descr1 = // properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".LoadDescription1");
 
         final StringTokenizer tokenizer = new StringTokenizer(getLoadDescription(), ",");
 
@@ -358,13 +412,17 @@ public class DJListHandler extends SanctionListHandlerImpl {
             descr1ToUse.add(tokenizer.nextToken());
         }
 
+        // !! 1. Step
         buildEntityList(pfa);
 
+        // 2. Step index
         // sort for id -- NIX soo good
         for (WL_Entity entity : getEntityList()) {
             addWLEntry(entity);
         }
 
+        // 3. step build associations
+        getAssociations(pfa);
     }
 
     public String getLoadDescription() {

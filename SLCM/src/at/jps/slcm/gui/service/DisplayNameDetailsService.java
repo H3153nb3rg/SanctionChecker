@@ -29,6 +29,7 @@ public class DisplayNameDetailsService {
                 dnd.setMiddleName((String) tableModel.getValueAt(i, 1));
                 dnd.setSurname((String) tableModel.getValueAt(i, 2));
                 dnd.setWholename((String) tableModel.getValueAt(i, 3));
+                dnd.setAka((String) tableModel.getValueAt(i, 4));
 
             }
         }

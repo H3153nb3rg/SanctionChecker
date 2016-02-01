@@ -27,7 +27,8 @@ public class DisplayRelationService {
                 dnd.setId((long) i);
                 dnd.setRelation((String) tableModel.getValueAt(i, 0));
                 dnd.setEntity((String) tableModel.getValueAt(i, 1));
-                dnd.setType((String) tableModel.getValueAt(i, 2));
+                dnd.setWlid((String) tableModel.getValueAt(i, 2));
+                dnd.setType((String) tableModel.getValueAt(i, 3));
 
             }
         }

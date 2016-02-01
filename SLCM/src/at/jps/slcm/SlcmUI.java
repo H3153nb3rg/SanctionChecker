@@ -183,7 +183,7 @@ public class SlcmUI extends UI {
         }
 
         tableEntityRelations.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
-        tableEntityRelations.setColumnOrder("relationship", "entity", "type");
+        tableEntityRelations.setColumnOrder("relationship", "entity", "wlid", "type");
         tableEntityRelations.removeColumn("id");
         tableEntityRelations.setSelectionMode(Grid.SelectionMode.SINGLE);
         // tableNameDetails.addActionHandler(new SpreadsheetDefaultActionHandler());
@@ -512,13 +512,13 @@ public class SlcmUI extends UI {
             public void buttonClick(ClickEvent event) {
 
                 // The quickest way to confirm
-                ConfirmDialog.show(getMainWindow(), "Postpone Decission", new ConfirmDialog.Listener() {
+                ConfirmDialog.show(getMainWindow(), "Postpone Decision", new ConfirmDialog.Listener() {
 
                     public void onClose(ConfirmDialog dialog) {
                         if (dialog.isConfirmed()) {
 
                             // Confirmed to continue
-                            doProcessNoHit();
+                            doPostpone();
                         }
                         else {
                             // User did not confirm
@@ -543,6 +543,8 @@ public class SlcmUI extends UI {
                             // Confirmed to continue
                             // feedback(dialog.isConfirmed());
                             // layout.addComponent(new Label("confirmed!!"));
+
+                            doProcessNoHit();
                         }
                         else {
                             // User did not confirm

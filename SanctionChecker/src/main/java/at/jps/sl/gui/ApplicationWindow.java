@@ -171,7 +171,8 @@ public class ApplicationWindow {
 
     private JTextField          textField_AnalysisTime;
     private JTextPane           textPane_Comment;
-    private JTextPane           textPane_LegalBack;
+    // private JTextPane textPane_LegalBack;
+    private JComboBox           combobox_LegalBack;
     private JTextField          textField_Type;
     private JTextField          textField_ListDescription;
     private JTextPane           textPane_Remark;
@@ -777,12 +778,11 @@ public class ApplicationWindow {
         gbc_textField_legal1.gridx = 0;
         gbc_textField_legal1.gridy = 3;
 
-        textPane_LegalBack = new JTextPane();
-        textPane_LegalBack.setText("");
-        textPane_LegalBack.setEditable(false);
+        combobox_LegalBack = new JComboBox<String>();
+        combobox_LegalBack.setEditable(false);
         // textPane_legal.setColumns(10);
 
-        panel_Sanction1.add(textPane_LegalBack, gbc_textField_legal1);
+        panel_Sanction1.add(combobox_LegalBack, gbc_textField_legal1);
 
         JLabel lbType = new JLabel("Entity Type");
         lbType.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1196,15 +1196,21 @@ public class ApplicationWindow {
             if (entity != null) {
                 textField_Type.setText((entity.getType() != null ? entity.getType() : " ") + (entity.getEntryType() != null ? " | " + entity.getEntryType() : " "));
 
-                StringBuilder lbs = new StringBuilder();
+                // StringBuilder lbs = new StringBuilder();
+                // for (String lb : entity.getLegalBasises()) {
+                // lbs.append(lb).append(newline);
+                // }
+                // textPane_LegalBack.setText(lbs.toString());
+
+                combobox_LegalBack.removeAllItems();
                 for (String lb : entity.getLegalBasises()) {
-                    lbs.append(lb).append(newline);
+                    combobox_LegalBack.addItem(lb);
                 }
-                textPane_LegalBack.setText(lbs.toString());
+
             }
             else {
                 textField_Type.setText(slhr.getEntityType());
-                textPane_LegalBack.setText(slhr.getHitLegalBasis());
+                // textPane_LegalBack.setText(slhr.getHitLegalBasis());
             }
 
             textField_ListDescription.setText(guiAdapter.getSanctionListDescription(slhr.getHitListName()));
@@ -1226,6 +1232,7 @@ public class ApplicationWindow {
                 table_EntityRelationDetails.setModel(guiAdapter.getEntityRelationsTableModel(slhr));
                 tabColAdjuster_EntityRelations.adjustColumns();
 
+                tabbedPane_Sanction.setSelectedIndex(0); // TODO: good to refocus ?!
             }
 
         }
@@ -1242,7 +1249,6 @@ public class ApplicationWindow {
             @Override
             public void run() {
                 searchWindow = new SearchWindow(guiAdapter.getConfig());
-
             }
         });
 

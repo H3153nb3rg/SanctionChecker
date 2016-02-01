@@ -185,6 +185,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                 final SanctionsEntrySchemaType st = getSanctionEntryForProfil(prof.getID());
                 for (final EntryEvent ee : st.getEntryEvent()) {
                     lbt += getLegalBasisValue(ee.getLegalBasisID()) + ";";
+
                 }
                 lbt += ")";
                 // for (SanctionsMeasure sm : st.getSanctionsMeasure())
@@ -302,19 +303,18 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
                 addRelations(sanctions, entity);
 
-                String lbt = "( ";
+                // String lbt = "( ";
                 final SanctionsEntrySchemaType st = getSanctionEntryForProfil(prof.getID());
                 for (final EntryEvent ee : st.getEntryEvent()) {
-                    lbt += getLegalBasisValue(ee.getLegalBasisID()) + ";";
+
+                    // lbt += getLegalBasisValue(ee.getLegalBasisID()) + ";";
+
+                    entity.addLegalBasis(getLegalBasisValue(ee.getLegalBasisID()));
+
                 }
-                lbt += ")";
+                // lbt += ")";
 
-                entity.setLegalBasis(lbt);
-
-                // for (SanctionsMeasure sm : st.getSanctionsMeasure())
-                // {
-                // sm.
-                // }
+                // entity.setLegalBasis(lbt);
 
                 for (final IdentitySchemaType ide : prof.getIdentity()) {
                     for (final Alias alias : ide.getAlias()) {

@@ -691,10 +691,13 @@ public class SwiftTableModelHandler implements Serializable {
                         colName = focusedEntity.getReleations().get(refIdList.get(rowIndex));
                         break;
                     case 1:
-                        colName = enity.getNames().get(0).getWholeName();
+                        colName = enity != null ? (enity.getNames().get(0).getWholeName()) : "unknown";
                         break;
                     case 2:
-                        colName = enity.getType();
+                        colName = refIdList.get(rowIndex);
+                        break;
+                    case 3:
+                        colName = enity != null ? enity.getType() : "unknown";
                         break;
                 }
                 return colName;
@@ -718,6 +721,9 @@ public class SwiftTableModelHandler implements Serializable {
                         value = "Entity";
                         break;
                     case 2:
+                        value = "Id";
+                        break;
+                    case 3:
                         value = "Type";
                         break;
 
@@ -729,7 +735,7 @@ public class SwiftTableModelHandler implements Serializable {
             @Override
             public int getColumnCount() {
 
-                return 3;
+                return 4;
             }
 
             @Override
