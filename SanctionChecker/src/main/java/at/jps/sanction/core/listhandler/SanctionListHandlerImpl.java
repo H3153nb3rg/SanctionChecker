@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,8 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     boolean                            loadWeak          = false;
     boolean                            loadNonPrimary    = true;
+
+    private List<WL_Entity>            entityList;
 
     private HashMap<String, WL_Entity> entityListSortedById;
 
@@ -262,12 +265,26 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         this.entityListSortedById = entityListSortedById;
     }
 
-    public void addWLEntry(final WL_Entity entry) {
-        getEntityListSortedById().put(entry.getWL_Id(), entry);
+    public void addWLEntry(final WL_Entity entity) {
+        getEntityList().add(entity);
+        getEntityListSortedById().put(entity.getWL_Id(), entity);
     }
 
     public WL_Entity getEntityById(final String wl_id) {
         return getEntityListSortedById().get(wl_id);
+    }
+
+    public List<WL_Entity> getEntityList() {
+
+        if (entityList == null) {
+            entityList = new ArrayList<WL_Entity>();
+        }
+
+        return entityList;
+    }
+
+    public void setEntityList(List<WL_Entity> entityList) {
+        this.entityList = entityList;
     }
 
 }

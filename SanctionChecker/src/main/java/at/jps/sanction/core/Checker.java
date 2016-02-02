@@ -133,9 +133,7 @@ public class Checker {
         addListHandlersToManagers();
         for (final StreamManager sm : streamManagers) {
             // logger.info(" attach ListHandlers StreamMananger: " + sm.getStreamName());
-            sm.setSanctionListHandlers(listConfig.getWatchLists());
-            sm.setReferenceListHandlers(listConfig.getReferenceLists());
-            sm.setValueListHandlers(listConfig.getValueLists());
+            sm.setListConfig(listConfig);
 
             sm.setTxNoHitOptimizationListHandler(txNoHitOptimizationListHandler);
             sm.setTxHitOptimizationListHandler(txHitOptimizationListHandler);
@@ -147,9 +145,7 @@ public class Checker {
         // set listhandlers
         for (final StreamManager sm : streamManagers) {
             logger.info(" attach ListHandlers StreamMananger: " + sm.getStreamName());
-            sm.setSanctionListHandlers(getListConfig().getWatchLists());
-            sm.setReferenceListHandlers(getListConfig().getReferenceLists());
-            sm.setValueListHandlers(getListConfig().getValueLists());
+            sm.setListConfig(listConfig);
         }
     }
 

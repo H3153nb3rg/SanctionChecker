@@ -73,10 +73,10 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // !!)
     private String                   streamName;
 
     // public void initializeFields2BIC() {
@@ -316,38 +316,22 @@ public class AdapterHelper implements WatchListInformant {
     }
 
     public SanctionListHandler getWatchListByName(final String listname) {
-        return config.getWatchLists().get(listname);
+        return config.getWatchListByName(listname);
     }
 
     public ReferenceListHandler getReferenceListByName(final String name) {
-        ReferenceListHandler list = null;
-
-        for (String key : config.getReferenceLists().keySet()) {
-            if (key.equals(name)) {
-                list = config.getReferenceLists().get(key);
-                break;
-            }
-        }
-
+        ReferenceListHandler list = config.getReferenceListByName(name);
         return list;
     }
 
     public ValueListHandler getValueListByName(final String name) {
-        ValueListHandler list = null;
-
-        for (String key : config.getValueLists().keySet()) {
-            if (key.equals(name)) {
-                list = config.getValueLists().get(key);
-                break;
-            }
-        }
-
+        ValueListHandler list = config.getValueListByName(name);
         return list;
     }
 
     public String getSanctionListDescription(final String listname) {
 
-        SanctionListHandler sanctionListHandler = config.getWatchLists().get(listname);
+        SanctionListHandler sanctionListHandler = getWatchListByName(listname);
 
         return (sanctionListHandler != null ? sanctionListHandler.getListDescription() : "unknown");
     }

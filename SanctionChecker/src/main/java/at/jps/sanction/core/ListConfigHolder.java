@@ -33,6 +33,10 @@ public class ListConfigHolder implements ApplicationContextAware {
         context = ac;
     }
 
+    public SanctionListHandler getWatchListByName(final String listname) {
+        return watchLists.get(listname);
+    }
+
     public HashMap<String, SanctionListHandler> getWatchLists() {
         return watchLists;
     }
@@ -41,8 +45,16 @@ public class ListConfigHolder implements ApplicationContextAware {
         return referenceLists;
     }
 
+    public ReferenceListHandler getReferenceListByName(final String listname) {
+        return referenceLists.get(listname);
+    }
+
     public HashMap<String, ValueListHandler> getValueLists() {
         return valueLists;
+    }
+
+    public ValueListHandler getValueListByName(final String listname) {
+        return valueLists.get(listname);
     }
 
     public void setReferenceLists(final List<ReferenceListHandler> referenceListHandlers) {

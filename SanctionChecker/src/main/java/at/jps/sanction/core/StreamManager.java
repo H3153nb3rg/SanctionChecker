@@ -43,67 +43,65 @@ import at.jps.sanction.model.worker.out.OutputWorker;
 
 public class StreamManager implements Runnable {
 
-    final static int                              QUEUESIZE             = 10000;
-    final static int                              MAX_WORKER_IN         = 2;
+    final static int                    QUEUESIZE             = 10000;
+    final static int                    MAX_WORKER_IN         = 2;
 
-    final static int                              MAX_WORKER_ANALYSE    = 5;
-    final static int                              MAX_WORKER_OUT        = 2;
+    final static int                    MAX_WORKER_ANALYSE    = 5;
+    final static int                    MAX_WORKER_OUT        = 2;
 
-    private static final Logger                   logger                = LoggerFactory.getLogger(StreamManager.class);
+    private static final Logger         logger                = LoggerFactory.getLogger(StreamManager.class);
 
-    private static final String                   PERSISTENCE_UNIT_NAME = "embargo";
+    private static final String         PERSISTENCE_UNIT_NAME = "embargo";
 
-    private String                                streamName;
-    private Properties                            properties;
+    private String                      streamName;
+    private Properties                  properties;
 
-    private int                                   nrWorkersInput;
-    private int                                   nrWorkersOutputHit;
-    private int                                   nrWorkersOutputNoHit;
-    private int                                   nrWorkersError;
-    private int                                   nrWorkersChecker;
-    private int                                   nrWorkersPostHit;
-    private int                                   nrWorkersPostNoHit;
+    private int                         nrWorkersInput;
+    private int                         nrWorkersOutputHit;
+    private int                         nrWorkersOutputNoHit;
+    private int                         nrWorkersError;
+    private int                         nrWorkersChecker;
+    private int                         nrWorkersPostHit;
+    private int                         nrWorkersPostNoHit;
 
-    private Queue<Message>                        inputQueue;
+    private Queue<Message>              inputQueue;
 
-    private Queue<AnalysisResult>                 defectQueue;
-    private Queue<AnalysisResult>                 hitQueue;
+    private Queue<AnalysisResult>       defectQueue;
+    private Queue<AnalysisResult>       hitQueue;
 
-    private Queue<AnalysisResult>                 noHitQueue;
+    private Queue<AnalysisResult>       noHitQueue;
 
-    private Queue<AnalysisResult>                 postProcessHitQueue;
-    private Queue<AnalysisResult>                 postProcessNoHitQueue;
+    private Queue<AnalysisResult>       postProcessHitQueue;
+    private Queue<AnalysisResult>       postProcessNoHitQueue;
 
-    private HashMap<String, Queue<?>>             queueDictionary;
+    private HashMap<String, Queue<?>>   queueDictionary;
 
-    private ArrayList<OutputWorker>               errorWorkers;
-    private ArrayList<AnalyzerWorker>             analyzeWorkers;
-    private ArrayList<InputWorker>                inputWorkers;
-    private ArrayList<OutputWorker>               outputWorkers;
-    private ArrayList<OutputWorker>               ppHitWorkers;
-    private ArrayList<OutputWorker>               ppNoHitWorkers;
+    private ArrayList<OutputWorker>     errorWorkers;
+    private ArrayList<AnalyzerWorker>   analyzeWorkers;
+    private ArrayList<InputWorker>      inputWorkers;
+    private ArrayList<OutputWorker>     outputWorkers;
+    private ArrayList<OutputWorker>     ppHitWorkers;
+    private ArrayList<OutputWorker>     ppNoHitWorkers;
 
-    private HashMap<String, SanctionListHandler>  sanctionListHandlers;
-    private HashMap<String, ReferenceListHandler> referenceListHandlers;
-    private HashMap<String, ValueListHandler>     valueListHandlers;
+    private OptimizationListHandler     txNoHitOptimizationListHandler;
+    private OptimizationListHandler     txHitOptimizationListHandler;
 
-    private OptimizationListHandler               txNoHitOptimizationListHandler;
-    private OptimizationListHandler               txHitOptimizationListHandler;
+    private NoWordHitListHandler        noWordHitListHandler;
 
-    private NoWordHitListHandler                  noWordHitListHandler;
+    private int                         hitCntr;
+    private int                         noHitCntr;
+    private int                         errorCntr;
+    private int                         inputCntr;
 
-    private int                                   hitCntr;
-    private int                                   noHitCntr;
-    private int                                   errorCntr;
-    private int                                   inputCntr;
+    private boolean                     purgeQueuesOnStartup;
 
-    private boolean                               purgeQueuesOnStartup;
+    private static EntityManagerFactory entityManagerfactory;
 
-    private static EntityManagerFactory           entityManagerfactory;
+    private EntityManager               entityManager;
 
-    private EntityManager                         entityManager;
+    private StreamConfig                streamConfig;
 
-    private StreamConfig                          streamConfig;
+    private ListConfigHolder            listConfig;
 
     public StreamManager() {
     }
@@ -248,11 +246,11 @@ public class StreamManager implements Runnable {
     }
 
     public HashMap<String, ReferenceListHandler> getReferenceListHandlers() {
-        return referenceListHandlers;
+        return listConfig.getReferenceLists();
     }
 
     public HashMap<String, SanctionListHandler> getSanctionListHandlers() {
-        return sanctionListHandlers;
+        return listConfig.getWatchLists();
     }
 
     // TO BE Overwritten !!
@@ -265,7 +263,7 @@ public class StreamManager implements Runnable {
     }
 
     public HashMap<String, ValueListHandler> getValueListHandlers() {
-        return valueListHandlers;
+        return listConfig.getValueLists();
     }
 
     public synchronized int incrementErrorCounter() {
@@ -625,20 +623,8 @@ public class StreamManager implements Runnable {
         this.properties = properties;
     }
 
-    public void setReferenceListHandlers(final HashMap<String, ReferenceListHandler> referenceListHandlers) {
-        this.referenceListHandlers = referenceListHandlers;
-    }
-
-    public void setSanctionListHandlers(final HashMap<String, SanctionListHandler> sanctionListHandlers) {
-        this.sanctionListHandlers = sanctionListHandlers;
-    }
-
     public void setStreamName(final String streamName) {
         this.streamName = streamName;
-    }
-
-    public void setValueListHandlers(final HashMap<String, ValueListHandler> valueListHandlers) {
-        this.valueListHandlers = valueListHandlers;
     }
 
     public void shutdown() {
@@ -759,18 +745,9 @@ public class StreamManager implements Runnable {
     }
 
     public WL_Entity getSanctionListEntityDetails(final String listname, final String id) {
-        WL_Entity entity = null;
 
-        SanctionListHandler sanctionListHandler = sanctionListHandlers.get(listname);
-
-        if (sanctionListHandler != null) {
-            for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
-                if (listEntity.getWL_Id().equals(id)) {
-                    entity = listEntity;
-                    break;
-                }
-            }
-        }
+        SanctionListHandler sanctionListHandler = listConfig.getWatchListByName(listname);
+        WL_Entity entity = sanctionListHandler.getEntityById(id);
 
         return entity;
     }
@@ -861,6 +838,14 @@ public class StreamManager implements Runnable {
 
     public void setStreamConfig(StreamConfig streamConfig) {
         this.streamConfig = streamConfig;
+    }
+
+    public ListConfigHolder getListConfig() {
+        return listConfig;
+    }
+
+    public void setListConfig(ListConfigHolder listConfig) {
+        this.listConfig = listConfig;
     }
 
 }

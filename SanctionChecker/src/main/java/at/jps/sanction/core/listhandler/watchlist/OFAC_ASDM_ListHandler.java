@@ -14,8 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -41,21 +39,17 @@ import at.jps.sanction.core.list.ofac.ASDM.Sanctions;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType.EntryEvent;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
-    private final static String          LISTNAME  = "OFACList";
-    static final Logger                  logger    = LoggerFactory.getLogger(OFAC_ASDM_ListHandler.class);
+    private final static String LISTNAME  = "OFACList";
+    static final Logger         logger    = LoggerFactory.getLogger(OFAC_ASDM_ListHandler.class);
 
-    private static OFAC_ASDM_ListHandler instance;
+    Sanctions                   sanctions = null;
 
-    static Sanctions                     sanctions = null;
-    static private List<WL_Entity>       entityList;
-
-    static String getAliasType(final BigInteger aliasType) {
+    String getAliasType(final BigInteger aliasType) {
         String aliastype = "";
 
         for (final AliasType atv : sanctions.getReferenceValueSets().getAliasTypeValues().getAliasType()) {
@@ -69,11 +63,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return aliastype;
     }
 
-    public static SanctionListHandler getInstance() {
-        return instance;
-    }
-
-    static String getLegalBasisValue(final BigInteger id) {
+    String getLegalBasisValue(final BigInteger id) {
         String lbtxt = "";
 
         for (final LegalBasis lb : sanctions.getReferenceValueSets().getLegalBasisValues().getLegalBasis()) {
@@ -86,7 +76,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return lbtxt;
     }
 
-    static String getNamePartType(final BigInteger id) {
+    String getNamePartType(final BigInteger id) {
         String np = "";
         for (final NamePartType npt : sanctions.getReferenceValueSets().getNamePartTypeValues().getNamePartType()) {
 
@@ -98,7 +88,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return np;
     }
 
-    static String getNameTypeDesc(final IdentitySchemaType ide, final BigInteger id) {
+    String getNameTypeDesc(final IdentitySchemaType ide, final BigInteger id) {
         final String ids = "";
 
         for (final IdentitySchemaType.NamePartGroups.MasterNamePartGroup mnpg : ide.getNamePartGroups().getMasterNamePartGroup()) {
@@ -116,7 +106,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return ids;
     }
 
-    static String getPartyType(final BigInteger partyTypeId) {
+    String getPartyType(final BigInteger partyTypeId) {
 
         String partyTypeDesc = "";
 
@@ -129,7 +119,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
     }
 
-    static String getPartyTypeFromSubType(final BigInteger SubtypeId) {
+    String getPartyTypeFromSubType(final BigInteger SubtypeId) {
         String partyTypeDesc = "";
 
         for (final PartySubType pst : sanctions.getReferenceValueSets().getPartySubTypeValues().getPartySubType()) {
@@ -143,7 +133,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return partyTypeDesc;
     }
 
-    static String getPartySubType(final BigInteger aliasType) {
+    String getPartySubType(final BigInteger aliasType) {
         String aliastype = "";
 
         for (final PartySubType pst : sanctions.getReferenceValueSets().getPartySubTypeValues().getPartySubType()) {
@@ -157,7 +147,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return aliastype;
     }
 
-    static SanctionsEntrySchemaType getSanctionEntryForProfil(final BigInteger profileID) {
+    SanctionsEntrySchemaType getSanctionEntryForProfil(final BigInteger profileID) {
         SanctionsEntrySchemaType rsest = null;
         for (final SanctionsEntrySchemaType sest : sanctions.getSanctionsEntries().getSanctionsEntry()) {
             if (sest.getProfileID().equals(profileID)) {
@@ -171,13 +161,15 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
     public static void main(final String[] args) {
 
-        final Sanctions sanctions = readList("E:/Workspace/SanctionList/SLHandler/src/lists/ofac-sdn_advanced.xml");
+        OFAC_ASDM_ListHandler ofac_handler = new OFAC_ASDM_ListHandler();
+
+        final Sanctions sanctions = ofac_handler.readList("E:/Workspace/SanctionList/SLHandler/src/lists/ofac-sdn_advanced.xml");
         System.out.println("size: " + sanctions.getSanctionsEntries().getSanctionsEntry().size());
 
-        printEntries();
+        ofac_handler.printEntries();
     }
 
-    static void printEntries() {
+    void printEntries() {
         for (final DistinctPartySchemaType dpst : sanctions.getDistinctParties().getDistinctParty()) {
 
             for (final Profile prof : dpst.getProfile()) {
@@ -211,9 +203,9 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    public static Sanctions readList(final String filename) {
+    public Sanctions readList(final String filename) {
 
-        logger.info("start reading " + LISTNAME + " file:" + filename);
+        logger.info("start reading " + getListName() + " file:" + filename);
 
         Reader reader = null;
         try {
@@ -233,24 +225,24 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
             // sdnList = (SdnList) unmarshaller.unmarshal(reader);
             sanctions = (Sanctions) unmarshaller.unmarshal(reader);
 
-            logger.info("finished reading " + LISTNAME + " file:" + filename);
-            logger.info(LISTNAME + "Records read: " + sanctions.getSanctionsEntries().getSanctionsEntry().size());
+            logger.info("finished reading " + getListName() + " file:" + filename);
+            logger.info(getListName() + "Records read: " + sanctions.getSanctionsEntries().getSanctionsEntry().size());
 
             final String datum = String.format("%04d%02d%02d", sanctions.getDateOfIssue().getYear().getValue().intValue(), sanctions.getDateOfIssue().getMonth().getValue().intValue(),
                     sanctions.getDateOfIssue().getDay().getValue().intValue());
 
-            logger.info("Date of Issue: " + LISTNAME + " : " + datum);
+            logger.info("Date of Issue: " + getListName() + " : " + datum);
 
         }
         catch (final Exception x) {
-            logger.error("JAXB Problem (" + LISTNAME + ")- reading failed: " + x.toString());
+            logger.error("JAXB Problem (" + getListName() + ")- reading failed: " + x.toString());
             logger.debug("Exception : ", x);
         }
 
         return sanctions;
     }
 
-    public static void writeList(final String filename, final SdnList sdnList) {
+    public void writeList(final String filename, final SdnList sdnList) {
 
         try {
             final JAXBContext ctx = JAXBContext.newInstance(SdnList.class);
@@ -259,7 +251,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
             marshaller.marshal(sdnList, new File(filename));
         }
         catch (final Exception x) {
-            logger.error("JAXB Problem (" + LISTNAME + ")- storing failed: " + x.toString());
+            logger.error("JAXB Problem (" + getListName() + ")- storing failed: " + x.toString());
             logger.debug("Exception : ", x);
         }
     }
@@ -289,17 +281,16 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
     private void buildEntityList(final Sanctions sanctions) {
 
-        entityList = new ArrayList<WL_Entity>();
-
         for (final DistinctPartySchemaType dpst : sanctions.getDistinctParties().getDistinctParty()) {
 
             for (final Profile prof : dpst.getProfile()) {
 
                 final WL_Entity entity = new WL_Entity();
-                entityList.add(entity);
 
                 entity.setWL_Id(prof.getID().toString());
                 entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
+
+                addWLEntry(entity);
 
                 addRelations(sanctions, entity);
 
@@ -364,21 +355,8 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<WL_Entity> getEntityList() {
-
-        return entityList;
-    }
-
-    @Override
-    public String getListName() {
-        return LISTNAME;
-    }
-
-    @Override
     public void initialize() {
         super.initialize();
-
-        instance = this;
 
         // String filename = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".filename");
         // final String url = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".url");
@@ -409,11 +387,6 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         }
 
         buildEntityList(readList(filename));
-
-        // sort for id -- NIX soo good
-        for (WL_Entity entity : getEntityList()) {
-            addWLEntry(entity);
-        }
 
         archiveFile(filename, getHistPath(), getListName());
 

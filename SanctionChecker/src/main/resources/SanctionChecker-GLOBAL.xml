@@ -33,7 +33,8 @@
 				<ref bean="OFACList"/>    
 				<ref bean="EUList"/>
 				<ref bean="INDSANList"/>
-				<ref bean="DowJonesList"/>
+				<ref bean="FACPEP"/>
+				<ref bean="FACSAN"/>
 			</list>			
 		</property>
 

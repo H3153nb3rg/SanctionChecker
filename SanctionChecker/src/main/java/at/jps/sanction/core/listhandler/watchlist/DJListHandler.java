@@ -45,26 +45,26 @@ import at.jps.sanction.model.sl.entities.WL_Passport;
 
 public class DJListHandler extends SanctionListHandlerImpl {
 
-    private static String          LISTNAME = "DowJones";
-    static final Logger            logger   = LoggerFactory.getLogger(DJListHandler.class);
+    private static String LISTNAME = "DowJones";
+    static final Logger   logger   = LoggerFactory.getLogger(DJListHandler.class);
 
-    static private List<WL_Entity> entityList;
+    private List<String>  descr1ToUse;
 
-    private List<String>           descr1ToUse;
-
-    private String                 loadDescription;
+    private String        loadDescription;
 
     public static void main(final String[] args) {
 
-        final PFA pfa = readList("C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ST_xml_1039_001_201511230002_f.xml");
+        DJListHandler djh = new DJListHandler();
 
-        buildEntityList(pfa);
+        final PFA pfa = djh.readList("C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ST_xml_1039_001_201511230002_f.xml");
 
-        System.out.println("size: " + entityList.size());
+        djh.buildEntityList(pfa);
+
+        System.out.println("size: " + djh.getEntityList().size());
 
     }
 
-    public static PFA readList(final String filename) {
+    public PFA readList(final String filename) {
         PFA pfa = null;
         Reader reader = null;
         try {
@@ -89,7 +89,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return pfa;
     }
 
-    private static void addSourceDescription(WL_Entity entity, List<SourceDescription> sourceDescriptions) {
+    private void addSourceDescription(WL_Entity entity, List<SourceDescription> sourceDescriptions) {
         for (SourceDescription sourceDescription : sourceDescriptions) {
             for (Source source : sourceDescription.getSource()) {
                 if (source.getName().startsWith("http")) {
@@ -102,7 +102,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addSanctionReferenzes(PFA pfa, WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
+    private void addSanctionReferenzes(PFA pfa, WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
         for (SanctionsReferences sanctionReference : sanctionreferences) {
 
             for (SanctionsReferences.Reference reference : sanctionReference.getReference()) {
@@ -118,7 +118,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {
+    private void addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {
 
         for (Descriptions descrs : descriptions) {
             for (Description descr : descrs.getDescription()) {
@@ -137,7 +137,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addName(WL_Entity entity, List<NameDetails> nameDatails) {
+    private void addName(WL_Entity entity, List<NameDetails> nameDatails) {
         for (NameDetails nameDetails : nameDatails) {
             for (NameDetails.Name pfaname : nameDetails.getName()) {
 
@@ -168,7 +168,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    private static void addAddress(WL_Entity entity, List<PFA.Records.Person.Address> addresses) {
+    private void addAddress(WL_Entity entity, List<PFA.Records.Person.Address> addresses) {
         for (PFA.Records.Person.Address pfaAddress : addresses) {
             WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
@@ -179,7 +179,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addCompanyAddress(WL_Entity entity, List<PFA.Records.Entity.CompanyDetails> companyDetails) {
+    private void addCompanyAddress(WL_Entity entity, List<PFA.Records.Entity.CompanyDetails> companyDetails) {
         for (PFA.Records.Entity.CompanyDetails cd : companyDetails) {
             WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
@@ -190,7 +190,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private static void addIDs(WL_Entity entity, List<IDNumberTypes> numbers) {
+    private void addIDs(WL_Entity entity, List<IDNumberTypes> numbers) {
         for (IDNumberTypes ids : numbers) {
             for (IDNumberTypes.ID id : ids.getID()) {
                 for (IDNumberTypes.ID.IDValue value : id.getIDValue()) {
@@ -206,7 +206,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    static String getDescription1(PFA pfa, final String descriptionId1) {
+    private String getDescription1(PFA pfa, final String descriptionId1) {
         String value = "";
         for (PFA.Description1List list1 : pfa.getDescription1List()) {
             for (Description1List.Description1Name name1 : list1.getDescription1Name()) {
@@ -220,7 +220,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    static String getDescription2(PFA pfa, final String descriptionId1, final String descriptionId2) {
+    private String getDescription2(PFA pfa, final String descriptionId1, final String descriptionId2) {
         String value = "";
         for (PFA.Description2List list2 : pfa.getDescription2List()) {
             for (Description2List.Description2Name name2 : list2.getDescription2Name()) {
@@ -233,7 +233,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    static String getDescription3(PFA pfa, final String descriptionId3) {
+    private String getDescription3(PFA pfa, final String descriptionId3) {
         String value = "";
         for (PFA.Description3List list3 : pfa.getDescription3List()) {
             for (Description3List.Description3Name name3 : list3.getDescription3Name()) {
@@ -246,7 +246,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    static private String getSanctionreference(PFA pfa, final String code) {
+    private String getSanctionreference(PFA pfa, final String code) {
         String srlName = "";
         for (PFA.SanctionsReferencesList srl : pfa.getSanctionsReferencesList()) {
             for (PFA.SanctionsReferencesList.ReferenceName srln : srl.getReferenceName()) {
@@ -301,12 +301,13 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    public static void buildEntityList(PFA pfa) {
-        entityList = new ArrayList<WL_Entity>();
+    public void buildEntityList(PFA pfa) {
 
         for (PFA.Records records : pfa.getRecords()) {
 
             for (PFA.Records.Person pfaPerson : records.getPerson()) {
+
+                // add description filter !!
 
                 if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
                     WL_Entity entity = new WL_Entity();
@@ -315,7 +316,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setWL_Id(pfaPerson.getId());
                     entity.setIssueDate(pfaPerson.getDate());
 
-                    entityList.add(entity);
+                    addWLEntry(entity);
 
                     addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
@@ -338,7 +339,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setWL_Id(pfaEntity.getId());
                     entity.setIssueDate(pfaEntity.getDate());
 
-                    entityList.add(entity);
+                    addWLEntry(entity);
 
                     addCompanyAddress(entity, pfaEntity.getCompanyDetails());
 
@@ -366,7 +367,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    public static void writeList(final String filename, final PFA pfa) {
+    public void writeList(final String filename, final PFA pfa) {
 
         try {
             final JAXBContext ctx = JAXBContext.newInstance(PFA.class);
@@ -378,17 +379,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
             logger.error("JAXB Problem (" + LISTNAME + ")- storing failed: " + x.toString());
             logger.debug("Exception : ", x);
         }
-    }
-
-    @Override
-    public List<WL_Entity> getEntityList() {
-
-        return entityList;
-    }
-
-    @Override
-    public String getListName() {
-        return LISTNAME;
     }
 
     // @Override
@@ -414,12 +404,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
         // !! 1. Step
         buildEntityList(pfa);
-
-        // 2. Step index
-        // sort for id -- NIX soo good
-        for (WL_Entity entity : getEntityList()) {
-            addWLEntry(entity);
-        }
 
         // 3. step build associations
         getAssociations(pfa);

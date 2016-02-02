@@ -52,8 +52,8 @@
 	</bean>
    
    
-    <bean id="DowJonesList" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" scope="singleton">
-		<property name="listName" value="DowJones"/>
+    <bean id="FACPEP" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" >
+		<property name="listName" value="FacPep"/>
 		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
 		<property name="orderNr" value="1"/>
 		
@@ -62,15 +62,30 @@
 		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
-		<property name="listType" value="SL"/>
+		<property name="listType" value="PEP"/>
 		
-		<property name="loadDescription" value="1,2,3,4"/>
+		<property name="loadDescription" value="1,2"/>
 			
 	</bean>
-   
+    
+    <bean id="FACSAN" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" >
+		<property name="listName" value="FacSan"/>
+		<property name="description" value="Dow Jones Sanctions and Other Official Lists"/>
+		<property name="orderNr" value="2"/>
+		
+		<!-- property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/ -->
+		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/PFA2_201601222200_I.xml"/>
+		
+		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
+		
+		<property name="listType" value="SL"/>
+		
+		<property name="loadDescription" value="3,4"/>
+			
+	</bean>
+    
    <!-- Reference Lists -->
-    <bean id="CountryList" class="at.jps.sanction.core.listhandler.reflist.CountryListHandler" init-method="initialize" scope="singleton">    
-		<property name="listName" value="DowJones"/>
+    <bean id="CountryList" class="at.jps.sanction.core.listhandler.reflist.CountryListHandler" init-method="initialize" scope="singleton">    		
 		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/countries.properties"/>
 	</bean>
    

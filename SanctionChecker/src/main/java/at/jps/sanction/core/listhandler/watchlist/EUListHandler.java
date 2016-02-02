@@ -13,8 +13,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -31,17 +29,13 @@ import at.jps.sanction.model.sl.entities.WL_Passport;
 
 public class EUListHandler extends SanctionListHandlerImpl {
 
-    private final static String    LISTNAME = "EUList";
+    private final static String LISTNAME = "EUList";
 
-    private static final Logger    logger   = LoggerFactory.getLogger(EUListHandler.class);
+    private static final Logger logger   = LoggerFactory.getLogger(EUListHandler.class);
 
-    private static EUListHandler   instance;
+    private static WHOLE        whole;
 
-    private static WHOLE           whole;
-
-    static private List<WL_Entity> entityList;
-
-    public static void buildEntityList(final WHOLE whole) {
+    public void buildEntityList(final WHOLE whole) {
 
         if (whole == null) {
             return;
@@ -51,102 +45,93 @@ public class EUListHandler extends SanctionListHandlerImpl {
 
             synchronized (whole) {
 
-                if (entityList == null) {
-                    entityList = new ArrayList<WL_Entity>();
+                // TODO: complete loading should be implemented
 
-                    // TODO: complete loading should be implemented
+                for (final WHOLE.ENTITY wentity : whole.getENTITY()) {
+                    // StringBuilder line = new StringBuilder();
+                    // line.append("Name : ");
 
-                    for (final WHOLE.ENTITY wentity : whole.getENTITY()) {
-                        // StringBuilder line = new StringBuilder();
-                        // line.append("Name : ");
+                    final WL_Entity entity = new WL_Entity();
+                    addWLEntry(entity);
 
-                        final WL_Entity entity = new WL_Entity();
-                        entityList.add(entity);
+                    entity.setWL_Id(wentity.getId());
 
-                        entity.setWL_Id(wentity.getId());
-
-                        if (wentity.getType().equalsIgnoreCase("P")) {
-                            entity.setType("Individual");
-                        }
-                        else if (wentity.getType().equalsIgnoreCase("E")) {
-                            entity.setType("Entity");
-                        }
-                        else {
-                            entity.setType(wentity.getType());
-                        }
-
-                        entity.setLegalBasis(wentity.getLegalBasis());
-                        entity.setInformationUrl(wentity.getPdfLink());
-                        entity.setComment(wentity.getRemark());
-                        entity.setIssueDate(wentity.getRegDate());
-
-                        for (final WHOLE.ENTITY.NAME wname : wentity.getNAME()) {
-                            // line.append(",").append(
-                            // name.getFIRSTNAME() + " - " +
-                            // name.getMIDDLENAME()
-                            // + " - " + name.getLASTNAME() + " wn: "
-                            // + name.getWHOLENAME());
-
-                            String wnamet = wname.getWHOLENAME();
-
-                            if ((wnamet == null) || (wnamet.length() < 1)) {
-                                wnamet = wname.getFIRSTNAME() + " " + wname.getMIDDLENAME() + " " + wname.getLASTNAME();
-                            }
-
-                            final WL_Name name = new WL_Name();
-                            name.setWholeName(wnamet);
-                            name.setFirstName(wname.getFIRSTNAME());
-                            name.setMiddleName(wname.getMIDDLENAME());
-                            name.setLastName(wname.getLASTNAME());
-                            name.setAka(false); // TODO: this is not sooo cool
-                            name.setWaka(false);
-
-                            if (!entity.getNames().contains(name)) {
-                                entity.getNames().add(name);
-                            }
-
-                        }
-
-                        for (final WHOLE.ENTITY.PASSPORT wpass : wentity.getPASSPORT()) {
-
-                            final WL_Passport passport = new WL_Passport();
-
-                            passport.setCountry(wpass.getCOUNTRY());
-                            passport.setIssueDate(wpass.getNUMBER());
-                            passport.setNumber(wpass.getNUMBER());
-
-                            entity.getPassports().add(passport);
-                        }
-
-                        // line.append("Address : ");
-                        // for (WHOLE.ENTITY.ADDRESS address :
-                        // entity.getADDRESS())
-                        // {
-                        // line.append(",").append(
-                        // address.getSTREET() + " - " + address.getCITY()
-                        // + " - " + address.getCOUNTRY());
-                        // }
-
-                        // System.out.println(entity.getId() + ":" +
-                        // line.toString());
+                    if (wentity.getType().equalsIgnoreCase("P")) {
+                        entity.setType("Individual");
+                    }
+                    else if (wentity.getType().equalsIgnoreCase("E")) {
+                        entity.setType("Entity");
+                    }
+                    else {
+                        entity.setType(wentity.getType());
                     }
 
+                    entity.addLegalBasis(wentity.getLegalBasis());
+                    entity.addInformationUrl(wentity.getPdfLink());
+                    entity.setComment(wentity.getRemark());
+                    entity.setIssueDate(wentity.getRegDate());
+
+                    for (final WHOLE.ENTITY.NAME wname : wentity.getNAME()) {
+                        // line.append(",").append(
+                        // name.getFIRSTNAME() + " - " +
+                        // name.getMIDDLENAME()
+                        // + " - " + name.getLASTNAME() + " wn: "
+                        // + name.getWHOLENAME());
+
+                        String wnamet = wname.getWHOLENAME();
+
+                        if ((wnamet == null) || (wnamet.length() < 1)) {
+                            wnamet = wname.getFIRSTNAME() + " " + wname.getMIDDLENAME() + " " + wname.getLASTNAME();
+                        }
+
+                        final WL_Name name = new WL_Name();
+                        name.setWholeName(wnamet);
+                        name.setFirstName(wname.getFIRSTNAME());
+                        name.setMiddleName(wname.getMIDDLENAME());
+                        name.setLastName(wname.getLASTNAME());
+                        name.setAka(false); // TODO: this is not sooo cool
+                        name.setWaka(false);
+
+                        if (!entity.getNames().contains(name)) {
+                            entity.getNames().add(name);
+                        }
+
+                    }
+
+                    for (final WHOLE.ENTITY.PASSPORT wpass : wentity.getPASSPORT()) {
+
+                        final WL_Passport passport = new WL_Passport();
+
+                        passport.setCountry(wpass.getCOUNTRY());
+                        passport.setIssueDate(wpass.getNUMBER());
+                        passport.setNumber(wpass.getNUMBER());
+
+                        entity.getPassports().add(passport);
+                    }
+
+                    // line.append("Address : ");
+                    // for (WHOLE.ENTITY.ADDRESS address :
+                    // entity.getADDRESS())
+                    // {
+                    // line.append(",").append(
+                    // address.getSTREET() + " - " + address.getCITY()
+                    // + " - " + address.getCOUNTRY());
+                    // }
+
+                    // System.out.println(entity.getId() + ":" +
+                    // line.toString());
                 }
+
             }
         }
     }
 
-    public static EUListHandler getInstance() {
-        return instance;
-    }
-
-    public static WHOLE readList(final String filename) {
+    public WHOLE readList(final String filename) {
         whole = null;
         Reader reader = null;
         try {
 
             final JAXBContext ctx = JAXBContext.newInstance(WHOLE.class);
-
             final Unmarshaller unmarshaller = ctx.createUnmarshaller();
 
             final InputStream inputStream = new FileInputStream(filename);
@@ -156,13 +141,13 @@ public class EUListHandler extends SanctionListHandlerImpl {
 
         }
         catch (final Exception x) {
-            logger.error("JAXB Problem (" + LISTNAME + ")- reading failed: " + x.toString());
+            logger.error("JAXB Problem (" + getListName() + ")- reading failed: " + x.toString());
             logger.debug("Exception : ", x);
         }
         return whole;
     }
 
-    public static void writeList(final String filename, final WHOLE whole) {
+    public void writeList(final String filename, final WHOLE whole) {
 
         try {
             final JAXBContext ctx = JAXBContext.newInstance(WHOLE.class);
@@ -171,26 +156,14 @@ public class EUListHandler extends SanctionListHandlerImpl {
             marshaller.marshal(whole, new File(filename));
         }
         catch (final Exception x) {
-            logger.error("JAXB Problem (" + LISTNAME + ")- storing failed: " + x.toString());
+            logger.error("JAXB Problem (" + getListName() + ")- storing failed: " + x.toString());
             logger.debug("Exception : ", x);
         }
     }
 
     @Override
-    public List<WL_Entity> getEntityList() {
-
-        return entityList;
-    }
-
-    @Override
-    public String getListName() {
-        return LISTNAME;
-    }
-
-    @Override
     public void initialize() {
         super.initialize();
-        instance = this;
 
         // String filename = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".filename");
         //
@@ -215,11 +188,6 @@ public class EUListHandler extends SanctionListHandlerImpl {
         }
 
         buildEntityList(readList(filename));
-
-        // sort for id -- NIX soo good
-        for (WL_Entity entity : getEntityList()) {
-            addWLEntry(entity);
-        }
 
         archiveFile(filename, getHistPath(), getListName());
 

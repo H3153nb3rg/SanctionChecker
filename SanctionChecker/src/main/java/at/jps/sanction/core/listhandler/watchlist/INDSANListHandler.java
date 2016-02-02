@@ -10,8 +10,6 @@ package at.jps.sanction.core.listhandler.watchlist;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
@@ -23,17 +21,9 @@ import at.jps.sanction.model.sl.entities.WL_Name;
 
 public class INDSANListHandler extends SanctionListHandlerImpl {
 
-    public final static String       LISTNAME = "INDSANList";
+    public final static String LISTNAME = "INDSANList";
 
-    static final Logger              logger   = LoggerFactory.getLogger(INDSANListHandler.class);
-
-    private static INDSANListHandler instance;
-
-    static private List<WL_Entity>   entityList;
-
-    public static INDSANListHandler getInstance() {
-        return instance;
-    }
+    static final Logger        logger   = LoggerFactory.getLogger(INDSANListHandler.class);
 
     public static void main(final String[] args) {
 
@@ -47,28 +37,14 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
     }
 
     @Override
-    public List<WL_Entity> getEntityList() {
-
-        return entityList;
-    }
-
-    @Override
-    public String getListName() {
-        return LISTNAME;
-    }
-
-    @Override
     public void initialize() {
         super.initialize();
-
-        instance = this;
 
         // String filename = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".filename");
         // final String url = properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".url");
         String filename = getFilename();
         if (getUrl() != null) {
             try {
-
                 // String test = properties.getProperty(PropertyKeys.PROP_USEPROXY_DEF);
                 // System.out.println(test + " : " + Boolean.getBoolean(properties.getProperty(PropertyKeys.PROP_USEPROXY_DEF, "true")) + " " + Boolean.getBoolean(test));
 
@@ -81,7 +57,7 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
             }
             catch (final Exception e) {
-                logger.error("Download (" + LISTNAME + ") - from URL: " + getUrl() + " failed!");
+                logger.error("Download (" + getListName() + ") - from URL: " + getUrl() + " failed!");
                 if (logger.isDebugEnabled()) {
                     logger.debug("Exception : ", e);
                 }
@@ -89,11 +65,6 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
         }
 
         readList(filename);
-
-        // sort for id -- NIX soo good
-        for (WL_Entity entity : getEntityList()) {
-            addWLEntry(entity);
-        }
 
         archiveFile(filename, getHistPath(), getListName());
 
@@ -113,7 +84,6 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
     private void readList(final String filename) {
         logger.info("start reading " + LISTNAME + " file:" + filename);
 
-        entityList = new ArrayList<WL_Entity>();
         try {
             final BufferedReader input = new BufferedReader(new FileReader(filename));
             try {
@@ -140,8 +110,8 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
                             entity.getNames().add(name);
 
-                            entity.setLegalBasis(tokenizer.nextToken());
-                            entityList.add(entity);
+                            entity.addLegalBasis(tokenizer.nextToken());
+                            addWLEntry(entity);
                         }
                     }
                 } while (line != null);
@@ -152,12 +122,12 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
             }
         }
         catch (final Exception x) {
-            logger.error("parsing failed reading " + LISTNAME + " file:" + filename + " Exception: " + x.toString());
+            logger.error("parsing failed reading " + getListName() + " file:" + filename + " Exception: " + x.toString());
             logger.debug("Exception : ", x);
         }
 
-        logger.info("finished reading " + LISTNAME + " file:" + filename);
-        logger.info("finished reading records :" + entityList.size());
+        logger.info("finished reading " + getListName() + " file:" + filename);
+        logger.info("finished reading records :" + getEntityList().size());
     }
 
 }
