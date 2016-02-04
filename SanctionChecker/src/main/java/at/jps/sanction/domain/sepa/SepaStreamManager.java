@@ -1,45 +1,45 @@
 package at.jps.sanction.domain.sepa;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import at.jps.sanction.domain.SanctionStreamManager;
 
 public class SepaStreamManager extends SanctionStreamManager {
 
-    private List<String> supportedMessageTypes;
+    private boolean internalIsTokenInFieldnameCheck(final List<String> fields, final String fieldName) {
+        boolean isfield = false;
 
-    public List<String> getSupportedMessageTypes() {
-        if (supportedMessageTypes == null) {
-            supportedMessageTypes = new ArrayList<String>();
-
-            final String types = getProperties().getProperty(getStreamName() + ".msgTypes");
-
-            final StringTokenizer tokenizer = new StringTokenizer(types, ",");
-
-            while (tokenizer.hasMoreTokens()) {
-                supportedMessageTypes.add(tokenizer.nextToken());
+        for (String fieldToken : fields) {
+            if (fieldName.contains(fieldToken)) {
+                isfield = true;
+                break;
             }
-
         }
-
-        return supportedMessageTypes;
+        return isfield;
     }
 
     @Override
     public boolean isFieldToCheck(final String fieldName, final String listName) {
-        return true;
+
+        boolean isfield = internalIsTokenInFieldnameCheck(getAllFieldsToCheck(), fieldName);
+        return isfield;
     }
 
     @Override
     public boolean isField2BICTranslate(final String fieldName) {
-        return fieldName.contains("/BIC");
+
+        boolean isfield = internalIsTokenInFieldnameCheck(getAllFieldsToBIC(), fieldName);
+        return isfield;
     }
 
     @Override
-    public boolean isFildIBAN(final String fieldName) {
-        return fieldName.contains("/IBAN");
+    public boolean isFieldIBAN(final String fieldName) {
+        return fieldName.contains("/IBAN");  // TODO: take from conf
     }
 
+    @Override
+    public boolean isField2Fuzzy(String fieldName) {
+        // TODO Auto-generated method stub
+        return super.isField2Fuzzy(fieldName);
+    }
 }

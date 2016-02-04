@@ -66,10 +66,12 @@ public class SwiftFileParser extends FileParserImpl {
 
         final long stoptime = System.currentTimeMillis();
         final long difftime = stoptime - starttime;
+        logger.info("================================================");
         logger.info("finished parsing file: " + file.getAbsoluteFile());
         logger.info("Time needed :  " + difftime + " ms");
         logger.info("TX processed: " + nrTx);
         logger.info("ms/Tx       : " + (nrTx > 0 ? difftime / nrTx : 0));
+        logger.info("================================================");
         return parsedOK;
     }
 

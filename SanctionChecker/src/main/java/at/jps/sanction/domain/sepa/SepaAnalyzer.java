@@ -9,6 +9,7 @@
 package at.jps.sanction.domain.sepa;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +20,46 @@ import at.jps.sanction.model.MessageContent;
 
 public class SepaAnalyzer extends SanctionAnalyzer {
 
-    static final Logger logger = LoggerFactory.getLogger(SepaAnalyzer.class);
+    static final Logger         logger = LoggerFactory.getLogger(SepaAnalyzer.class);
+
+    static private List<String> messageTypes;                                                                                                                                                                                                          // nix
+                                                                                                                                                                                                                                                       // good
 
     public SepaAnalyzer() {
         super();
     }
 
-    public MessageContent getFieldsToCheck(final Message message) {
-        MessageContent messageContent = new MessageContent();
+    public static MessageContent getFieldsToCheckInternal(final Message message) {
+        MessageContent messageContent = message.getMessageContent();
 
-        final String msgText = message.getRawContent();
-        HashMap<String, String> fieldsAndValues = SepaMessageParser.parseMessage(msgText, ((SepaStreamManager) getStreamManager()).getSupportedMessageTypes());
-        messageContent.setFieldsAndValues(fieldsAndValues);
+        if (messageContent == null) {
+            messageContent = new MessageContent();
 
+            final String msgText = message.getRawContent();
+            HashMap<String, String> fieldsAndValues = SepaMessageParser.parseMessage(msgText, messageTypes);
+            messageContent.setFieldsAndValues(fieldsAndValues);
+
+            // add business XT ID to Message
+            if (message instanceof SepaMessage) {
+                ((SepaMessage) message).setBusinessId(fieldsAndValues.get("/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/TxId"));
+            }
+
+            message.setMessageContent(messageContent);
+        }
         return messageContent;
+    }
+
+    public MessageContent getFieldsToCheck(final Message message) {
+
+        return getFieldsToCheckInternal(message);
+    }
+
+    public List<String> getMessageTypes() {
+        return messageTypes;
+    }
+
+    public void setMessageTypes(List<String> messageTypes) {
+        this.messageTypes = messageTypes;
     }
 
 }

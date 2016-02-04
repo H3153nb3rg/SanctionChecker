@@ -27,32 +27,45 @@ public class SwiftAnalyzer extends SanctionAnalyzer {
         super();
     }
 
-    public MessageContent getFieldsToCheck(final Message message) {
-        MessageContent messageContent = new MessageContent();
+    public static MessageContent getFieldsToCheckInternal(final Message message) {
 
-        HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
-        messageContent.setFieldsAndValues(fieldsAndValues);
+        MessageContent messageContent = message.getMessageContent();
 
-        final String msgText = message.getRawContent();
-        final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(msgText);
+        if (messageContent == null) {
+            messageContent = new MessageContent();
 
-        for (final SwiftMessageParser.MessageBlock messageBlock : msgBlocks) {
-            for (final String msgFieldName : messageBlock.getFields().keySet()) {
-                final String msgFieldText = messageBlock.getFields().get(msgFieldName);
+            HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
+            messageContent.setFieldsAndValues(fieldsAndValues);
 
-                fieldsAndValues.put(msgFieldName, msgFieldText);
+            final String msgText = message.getRawContent();
+            final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(msgText);
 
-                // add ID to Message
+            for (final SwiftMessageParser.MessageBlock messageBlock : msgBlocks) {
+                for (final String msgFieldName : messageBlock.getFields().keySet()) {
+                    final String msgFieldText = messageBlock.getFields().get(msgFieldName);
 
-                if (msgFieldName.contentEquals("20")) {
-                    if (message instanceof SwiftMessage) {
-                        ((SwiftMessage) message).setBusinessId(msgFieldText.trim());
+                    fieldsAndValues.put(msgFieldName, msgFieldText);
+
+                    // add business XT ID to Message
+
+                    if (msgFieldName.contentEquals("20")) {
+                        if (message instanceof SwiftMessage) {
+                            ((SwiftMessage) message).setBusinessId(msgFieldText.trim());
+                        }
                     }
                 }
             }
+
+            message.setMessageContent(messageContent);
+
         }
 
         return messageContent;
+    }
+
+    public MessageContent getFieldsToCheck(final Message message) {
+
+        return getFieldsToCheckInternal(message);
     }
 
     @Override

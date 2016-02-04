@@ -8,7 +8,7 @@
 	
     <bean id="GUIConfig" class="at.jps.sl.gui.util.GUIConfigHolder" parent="ListConfig" scope="singleton" lazy-init="true">    
 
-		<property name="name" value="Swift Transactions"/>   
+		<property name="name" value="Sepa Transactions"/>   
 	
 		<property name="txNoHitOptimizationListHandler" >   
    			<ref bean="OptiNoHitList"/>
@@ -70,6 +70,7 @@
 		</property>
 		
 		<!-- field name mapping for TX -->
+		<!-- SEPA -->
     		<property name="fieldNames" >
 			<map>
 				<entry key="&lt;PmtInfId&gt;" value="Payment information ID"/>

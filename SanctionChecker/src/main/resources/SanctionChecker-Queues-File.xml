@@ -7,9 +7,9 @@
 	<!-- Queue Definitions -->
 	
 	<bean id="GloablFileQueueConfig" abstract="true" init-method="initialize" destroy-method="close">
-		<property name="basePath" value="C:\\temp\\SanctionTest\\queues\\swift"/>
+		<property name="basePath" value="C:\\temp\\SanctionTest\\queues\\sepa"/>
 		<property name="capacity" value="1234"	   	 />		
-		<property name="streamName" value="Swift"/>		
+		<property name="streamName" value="Sepa"/>		
 	</bean>
 	
 	<bean id="InputQueueFile" class="at.jps.sanction.core.queue.file.FileInputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfig" scope="singleton" lazy-init="true">		

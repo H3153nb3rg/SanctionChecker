@@ -7,7 +7,7 @@
     <import resource="SanctionChecker-GLOBAL.xml" />
        
     <!-- STREAM CONFIG -->
-    <import resource="SanctionChecker-Stream-SWIFT.xml" />
+    <import resource="SanctionChecker-Stream-SEPA.xml" />
    		
     <!-- QUEUE CONFIG -->
     <import resource="SanctionChecker-Queues-File.xml" />

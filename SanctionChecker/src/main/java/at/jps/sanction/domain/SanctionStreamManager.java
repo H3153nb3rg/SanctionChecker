@@ -23,7 +23,7 @@ public class SanctionStreamManager extends StreamManager {
         return getValueListHandlers().get(SWListHandler.LISTNAME);  // TODO: This should be moved to propertyfile
     }
 
-    public boolean isFildIBAN(final String fieldname) {
+    public boolean isFieldIBAN(final String fieldname) {
         return false;
     }
 }
