@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.vaadin.cssinject.CSSInject;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.addon.contextmenu.ContextMenu;
@@ -16,6 +17,7 @@ import com.vaadin.addon.contextmenu.MenuItem;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanContainer;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
@@ -25,6 +27,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.CellReference;
+import com.vaadin.ui.Grid.CellStyleGenerator;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.Grid.GridContextClickEvent;
 import com.vaadin.ui.Grid.SingleSelectionModel;
@@ -39,7 +43,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
 import at.jps.sanction.core.EntityManagementConfig;
-import at.jps.sanction.domain.SanctionListHitResult;
+import at.jps.sanction.domain.payment.PaymentHitResult;
 import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.sl.entities.WL_Entity;
 import at.jps.sl.gui.AdapterHelper;
@@ -132,6 +136,17 @@ public class SlcmUI extends UI {
     }
 
     private void configureComponents() {
+
+        // loadColors
+        CSSInject css = new CSSInject(UI.getCurrent());
+        String csss = "";
+        for (String name : guiAdapter.getFieldColors().keySet()) {
+            // csss += "$v-grid-cell." + name + " { background-color: " + guiAdapter.getFieldColorsAsHex().get(name) + ";} ";
+            csss += "." + name + " { background-color: " + guiAdapter.getFieldColorsAsHex().get(name) + ";} ";
+        }
+
+        css.setStyles(csss);
+
         /*
          * Synchronous event handling. Receive user interaction events on the server-side. This allows you to synchronously handle those events. Vaadin automatically sends only the needed changes to
          * the web page without loading a new page.
@@ -168,6 +183,20 @@ public class SlcmUI extends UI {
             i++;
         }
 
+        // Cell Styler
+        tableTXWithHits.setCellStyleGenerator(new CellStyleGenerator() {
+
+            @Override
+            public String getStyle(CellReference cell) {
+                String stylename = null;
+                if ((Long) cell.getItemId() > 0) {
+                    stylename = ((BeanItem<DisplayMessage>) cell.getItem()).getBean().getHit();
+                }
+                // String stylename = (cell.getItemId())).getHit();
+                return stylename;
+            }
+        });
+
         tableEntityNameDetails.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
         tableEntityNameDetails.setColumnOrder("firstname", "middleName", "surname", "wholename", "aka");
         tableEntityNameDetails.removeColumn("id");
@@ -182,8 +211,8 @@ public class SlcmUI extends UI {
             i++;
         }
 
-        tableEntityRelations.setContainerDataSource(new BeanItemContainer<>(DisplayNameDetails.class));
-        tableEntityRelations.setColumnOrder("relationship", "entity", "wlid", "type");
+        tableEntityRelations.setContainerDataSource(new BeanItemContainer<>(DisplayRelation.class));
+        tableEntityRelations.setColumnOrder("relation", "entity", "wlid", "type");
         tableEntityRelations.removeColumn("id");
         tableEntityRelations.setSelectionMode(Grid.SelectionMode.SINGLE);
         // tableNameDetails.addActionHandler(new SpreadsheetDefaultActionHandler());
@@ -420,9 +449,9 @@ public class SlcmUI extends UI {
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
 
-        if (guiAdapter.getFocussedHitResult() instanceof SanctionListHitResult) {
+        if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
 
-            SanctionListHitResult slhr = (SanctionListHitResult) guiAdapter.getFocussedHitResult();
+            PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
 
             WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 

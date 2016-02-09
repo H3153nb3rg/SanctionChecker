@@ -8,7 +8,7 @@
    <!-- Stream Definition SEPA  -->
    <!--                          -->
    
-	<bean id="StreamConfigSEPA" class="at.jps.sanction.domain.swift.StreamConfig" scope="singleton" lazy-init="true">
+	<bean id="StreamConfigSEPA" class="at.jps.sanction.domain.payment.StreamConfig" scope="singleton" lazy-init="true">
 	
 			<!-- fields & fuzziness -->
 		
@@ -24,7 +24,7 @@
 	</bean>
 
    
-   <bean id="StreamManagerSEPA" class="at.jps.sanction.domain.SanctionStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+   <bean id="StreamManagerSEPA" class="at.jps.sanction.domain.payment.PaymentStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
 
 		<property name="streamName" value="SEPA"/>
 		
@@ -96,7 +96,7 @@
 		</property>
 	</bean>
 	
-	<bean id="FileParser" class="at.jps.sanction.domain.sepa.SepaFileParser" scope="prototype">
+	<bean id="FileParser" class="at.jps.sanction.domain.payment.sepa.SepaFileParser" scope="prototype">
 	    
 	    <property name="streamManager" >		    
 		    	<ref bean="StreamManagerSEPA"/>    		    
@@ -117,16 +117,16 @@
 		<property name="sleepMillisBetween" value="0"/>
 		</bean>
 	
-	<bean id="PostProcessorHit" class="at.jps.sanction.domain.sepa.worker.SepaPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="PostProcessorHit" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
 	
-	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.sepa.worker.SepaPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
 				
 	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean -->
 	
-	<bean id="MessageAnalyser" class="at.jps.sanction.domain.sepa.SepaAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="MessageAnalyser" class="at.jps.sanction.domain.payment.sepa.SepaAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="sleepMillisBetween" value="100"/>
 		<property name="messageTypes">
 		    <list>

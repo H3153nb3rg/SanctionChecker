@@ -392,6 +392,12 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
         sanctions = null; // !! list is GCed
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("-------------------");
+            logger.debug("Entities loaded: " + getEntityList().size());
+            logger.debug("-------------------");
+        }
+
     }
 
 }

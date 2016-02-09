@@ -8,7 +8,7 @@
    <!-- Stream Definition SWIFT  -->
    <!--                          -->
    
-	<bean id="StreamConfigSwift" class="at.jps.sanction.domain.swift.StreamConfig" scope="singleton" lazy-init="true">
+	<bean id="StreamConfigSwift" class="at.jps.sanction.domain.payment.StreamConfig" scope="singleton" lazy-init="true">
 	
 			<!-- fields & fuzziness -->
 		
@@ -24,7 +24,7 @@
 	</bean>
 
    
-   <bean id="StreamManagerSwift" class="at.jps.sanction.domain.SanctionStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+   <bean id="StreamManagerSwift" class="at.jps.sanction.domain.payment.PaymentStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
 
 		<property name="streamName" value="Swift"/>
 		
@@ -96,7 +96,7 @@
 		</property>
 	</bean>
 	
-	<bean id="FileParser" class="at.jps.sanction.domain.swift.SwiftFileParser" scope="prototype">
+	<bean id="FileParser" class="at.jps.sanction.domain.payment.swift.SwiftFileParser" scope="prototype">
 	    
 	    <property name="streamManager" >		    
 		    	<ref bean="StreamManagerSwift"/>    		    
@@ -118,16 +118,16 @@
 		<property name="sleepMillisBetween" value="0"/>
 		</bean>
 	
-	<bean id="PostProcessorHit" class="at.jps.sanction.domain.swift.worker.SwiftPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="PostProcessorHit" class="at.jps.sanction.domain.payment.swift.worker.SwiftPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
 	
-	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.swift.worker.SwiftPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.payment.swift.worker.SwiftPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean>
 				
 	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	</bean -->
 	
-	<bean id="MessageAnalyser" class="at.jps.sanction.domain.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="MessageAnalyser" class="at.jps.sanction.domain.payment.swift.SwiftAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="sleepMillisBetween" value="100"/>
 	</bean>
 

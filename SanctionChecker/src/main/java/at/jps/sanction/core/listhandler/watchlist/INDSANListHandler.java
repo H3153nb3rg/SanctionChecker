@@ -68,6 +68,12 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
 
         archiveFile(filename, getHistPath(), getListName());
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("-------------------");
+            logger.debug("Entities loaded: " + getEntityList().size());
+            logger.debug("-------------------");
+        }
+
     }
 
     public void printEntries() {

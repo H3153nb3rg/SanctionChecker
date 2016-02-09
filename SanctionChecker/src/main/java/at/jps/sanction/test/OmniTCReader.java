@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import at.jps.sanction.domain.swift.SwiftMessageParser;
-import at.jps.sanction.domain.swift.SwiftMessageParser.MessageBlock;
+import at.jps.sanction.domain.payment.swift.SwiftMessageParser;
+import at.jps.sanction.domain.payment.swift.SwiftMessageParser.MessageBlock;
 import at.jps.sanction.model.Message;
 
 public class OmniTCReader {

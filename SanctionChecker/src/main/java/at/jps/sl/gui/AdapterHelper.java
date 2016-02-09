@@ -9,8 +9,9 @@ import javax.swing.table.TableModel;
 import at.jps.sanction.core.listhandler.valuelist.IAListHandler;
 import at.jps.sanction.core.listhandler.valuelist.NSWHListHandler;
 import at.jps.sanction.core.listhandler.valuelist.SWListHandler;
-import at.jps.sanction.domain.SanctionListHitResult;
-import at.jps.sanction.domain.swift.SwiftMessage;
+import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.payment.sepa.SepaMessage;
+import at.jps.sanction.domain.payment.swift.SwiftMessage;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
@@ -19,7 +20,7 @@ import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sl.gui.model.swift.SwiftTableModelHandler;
+import at.jps.sl.gui.model.sanction.SanctionTableModelHandler;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.sl.gui.util.RingBufferQueue;
 import at.jps.sl.gui.util.RingBufferQueueImpl;
@@ -73,10 +74,10 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // !!)
     private String                   streamName;
 
     // public void initializeFields2BIC() {
@@ -154,9 +155,9 @@ public class AdapterHelper implements WatchListInformant {
 
         // implemented for swiftMessages only
         // TODO: generic
-        SwiftTableModelHandler.SwiftAnalysisResultTableModel tm = null;
+        SanctionTableModelHandler.SanctionAnalysisResultTableModel tm = null;
         if (analysisResult instanceof AnalysisResult) {
-            tm = SwiftTableModelHandler.generateSwiftAnalysisResultTableModel(analysisResult);
+            tm = SanctionTableModelHandler.generateSwiftAnalysisResultTableModel(analysisResult);
             resultRowFields = tm.getHitRowFieldList();
         }
 
@@ -168,9 +169,9 @@ public class AdapterHelper implements WatchListInformant {
 
         // implemented for swiftMessages only
         // TODO: generic
-        SwiftTableModelHandler.SwiftAnalysisResultTableModel tm = null;
+        SanctionTableModelHandler.SanctionAnalysisResultTableModel tm = null;
         if (analysisResult instanceof AnalysisResult) {
-            tm = SwiftTableModelHandler.generateSwiftAnalysisWordListTableModel(analysisResult);
+            tm = SanctionTableModelHandler.generateSwiftAnalysisWordListTableModel(analysisResult);
 
             tokenRowFields = tm.getHitRowFieldList();
         }
@@ -181,12 +182,11 @@ public class AdapterHelper implements WatchListInformant {
 
     public TableModel getMessageTableModel(final Message message) {
 
-        // implemented for swiftMessages only
-        // TODO: generic
+        // TODO: make generic
 
-        SwiftTableModelHandler.SwiftTableModel tm = null;
-        if (message instanceof SwiftMessage) {
-            tm = SwiftTableModelHandler.generateSwiftMessageTableModel((SwiftMessage) message, getFields2Check(), getFields2BIC());
+        SanctionTableModelHandler.SanctionTableModel tm = null;
+        if ((message instanceof SwiftMessage) || (message instanceof SepaMessage)) {  // TODO: this should be factory based
+            tm = SanctionTableModelHandler.generateSanctionMessageTableModel((Message) message, getFields2Check(), getFields2BIC(), config.getFieldNames());
 
             // mapping lists
 
@@ -202,16 +202,16 @@ public class AdapterHelper implements WatchListInformant {
 
     }
 
-    public TableModel getEntityRelationsTableModel(final SanctionListHitResult slhr) {
+    public TableModel getEntityRelationsTableModel(final PaymentHitResult slhr) {
 
-        TableModel tm = SwiftTableModelHandler.getEntityRelationsTableModel(this, slhr);
+        TableModel tm = SanctionTableModelHandler.getEntityRelationsTableModel(this, slhr);
 
         return tm;
     }
 
     public TableModel getEntityDetailsNamesTableModel(final WL_Entity entity) {
 
-        TableModel tm = SwiftTableModelHandler.getEntityNameTableModel(entity);
+        TableModel tm = SanctionTableModelHandler.getEntityNameTableModel(entity);
 
         return tm;
 
@@ -271,6 +271,10 @@ public class AdapterHelper implements WatchListInformant {
 
     public ArrayList<String> getFields2BIC() {
         return config.getStreamConfig().getFields2BIC();
+    }
+
+    public HashMap<String, String> getFieldColorsAsHex() {
+        return config.getFieldColorsAsHex();
     }
 
     public HashMap<String, Color> getFieldColors() {

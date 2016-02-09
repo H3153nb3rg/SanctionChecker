@@ -20,8 +20,8 @@
 		
    		<property name="streamManagers" >
 		    <list>
-		    	<!-- ref bean="StreamManagerSwift"/ -->    
-		    	<ref bean="StreamManagerSEPA"/>
+		    	<ref bean="StreamManagerSwift"/>    
+		    	<!-- ref bean="StreamManagerSEPA"/ -->
 		    </list>			
 		</property>
    </bean>

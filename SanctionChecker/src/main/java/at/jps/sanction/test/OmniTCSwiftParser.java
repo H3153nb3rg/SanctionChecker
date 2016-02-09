@@ -10,7 +10,7 @@ package at.jps.sanction.test;
 
 import java.util.ArrayList;
 
-import at.jps.sanction.domain.swift.SwiftFileParser;
+import at.jps.sanction.domain.payment.swift.SwiftFileParser;
 import at.jps.sanction.model.Message;
 
 public class OmniTCSwiftParser extends SwiftFileParser {

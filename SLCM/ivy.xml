@@ -52,8 +52,9 @@
 		<dependency org="com.vaadin" name="vaadin-client-compiler"
 			rev="&vaadin.version;" conf="widgetset-compile->default" />
 
-		<dependency org="org.vaadin.addon" name="confirmdialog"
-			rev="2.1.3" />
+		<dependency org="org.vaadin.addon" name="confirmdialog" rev="2.1.3" />
+		
+		<dependency org="org.vaadin.addons" name="cssinject" rev="2.0.3" />
 
 		<!-- SC  -->
 		<!-- spring -->  

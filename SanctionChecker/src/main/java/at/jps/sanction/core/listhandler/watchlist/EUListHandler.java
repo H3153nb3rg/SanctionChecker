@@ -227,5 +227,12 @@ public class EUListHandler extends SanctionListHandlerImpl {
         // } catch (Exception x) {
         // logger.error("Error loading list " + LISTNAME + " from " + filename);
         // }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("-------------------");
+            logger.debug("Entities loaded: " + getEntityList().size());
+            logger.debug("-------------------");
+        }
+
     }
 }

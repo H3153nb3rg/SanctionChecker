@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.util.TokenTool;
-import at.jps.sanction.domain.SanctionListHitResult;
+import at.jps.sanction.domain.payment.PaymentHitResult;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
@@ -121,7 +121,7 @@ public class NameAnalyzer extends AnalyzerWorker {
 
                                 logger.debug("RELATIVE SUM: " + msgText + ": " + keys + "- total --> " + totalHitRateRelative);
                             }
-                            final SanctionListHitResult hr = new SanctionListHitResult();
+                            final PaymentHitResult hr = new PaymentHitResult();
 
                             hr.setRelativeHit((int) totalHitRateRelative);
                             hr.setHitField("flat");
@@ -141,7 +141,7 @@ public class NameAnalyzer extends AnalyzerWorker {
 
                                 logger.debug("ABSOLUTE SUM: " + msgText + ": " + keys + "- total --> " + totalHitRateAbsolute);
                             }
-                            final SanctionListHitResult hr = new SanctionListHitResult();
+                            final PaymentHitResult hr = new PaymentHitResult();
 
                             hr.setAbsolutHit(totalHitRateAbsolute);
                             hr.setHitField("flat");

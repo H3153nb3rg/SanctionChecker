@@ -57,7 +57,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import at.jps.sanction.core.EntityManagementConfig;
-import at.jps.sanction.domain.SanctionListHitResult;
+import at.jps.sanction.domain.payment.PaymentHitResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
@@ -158,6 +158,8 @@ public class ApplicationWindow {
     private JTabbedPane         tabbedPane_Sanction;
     private TableColumnAdjuster tabColAdjuster_EntityNameDetails;
     private TableColumnAdjuster tabColAdjuster_EntityRelations;
+    private TableColumnAdjuster tabColAdjuster_TXNoHits;
+    private TableColumnAdjuster tabColAdjuster_TXHits;
     private JFrame              frmCaseManagement;
     private JTable              tableTXHits;
     private JTable              tableTXNoHits;
@@ -172,7 +174,7 @@ public class ApplicationWindow {
     private JTextField          textField_AnalysisTime;
     private JTextPane           textPane_Comment;
     // private JTextPane textPane_LegalBack;
-    private JComboBox           combobox_LegalBack;
+    private JComboBox<String>   combobox_LegalBack;
     private JTextField          textField_Type;
     private JTextField          textField_ListDescription;
     private JTextPane           textPane_Remark;
@@ -181,6 +183,8 @@ public class ApplicationWindow {
 
     private JButton             btnNextButton;
     private JButton             btnPrevButton;
+    private JButton             btnHitButton;
+    private JButton             btnNoHitButton;
 
     private boolean             recursionProhibitorTX     = false;
     private boolean             recursionProhibitorResult = false;
@@ -237,7 +241,8 @@ public class ApplicationWindow {
                             for (int i = 0; i < 2; i++) {
                                 final TableColumn column = tableTXHits.getColumnModel().getColumn(i);
                                 column.setMinWidth(columnWidthMsg[i]);
-                                column.setMaxWidth(columnWidthMsg[i]);
+
+                                // column.setMaxWidth(columnWidthMsg[i]);
                                 column.setPreferredWidth(columnWidthMsg[i]);
                             }
 
@@ -259,10 +264,16 @@ public class ApplicationWindow {
                                 column.setPreferredWidth(columnWidthWordHits[i]);
                             }
 
+                            tabColAdjuster_TXHits.adjustColumns();
+
                             updateMessageDetails();
 
                             tableResults.setRowSelectionInterval(0, 0);
                         }
+
+                        btnHitButton.setEnabled(guiAdapter.getCurrentMessage() != null);
+                        btnNoHitButton.setEnabled(guiAdapter.getCurrentMessage() != null);
+
                     }
                 }
                 else { // NOHITS
@@ -277,13 +288,20 @@ public class ApplicationWindow {
                             //
                             // Configures table's column width.
                             //
-
-                            for (int i = 0; i < 2; i++) {
-                                final TableColumn column = tableTXNoHits.getColumnModel().getColumn(i);
-                                column.setMinWidth(50);
-                                column.setMaxWidth(50);
-                                column.setPreferredWidth(50);
+                            if (tabColAdjuster_TXNoHits == null) {
+                                tabColAdjuster_TXNoHits = new TableColumnAdjuster(tableTXNoHits);
                             }
+
+                            tabColAdjuster_TXNoHits.adjustColumns();
+
+                            // for (int i = 0; i < 2; i++) {
+                            // final TableColumn column = tableTXNoHits.getColumnModel().getColumn(i);
+                            // column.setMinWidth(50);
+                            // if (i == 1) {
+                            // column.setMaxWidth(50);
+                            // }
+                            // column.setPreferredWidth(50);
+                            // }
                         }
                     }
                 }
@@ -352,7 +370,8 @@ public class ApplicationWindow {
             }
         });
 
-        final JButton btnHitButton = new JButton("Hit");
+        btnHitButton = new JButton("Hit");
+        btnHitButton.setEnabled(false);
         btnHitButton.setToolTipText("mark as Hit");
         panel.add(btnHitButton);
 
@@ -366,7 +385,8 @@ public class ApplicationWindow {
             }
         });
 
-        final JButton btnNoHitButton = new JButton("No Hit");
+        btnNoHitButton = new JButton("No Hit");
+        btnNoHitButton.setEnabled(false);
         btnNoHitButton.setToolTipText("mark as NO hit");
         panel.add(btnNoHitButton);
 
@@ -456,8 +476,8 @@ public class ApplicationWindow {
 
                 hitsViewActive = tabbedPane.getSelectedIndex() < 1;
 
-                btnHitButton.setEnabled(hitsViewActive);
-                btnNoHitButton.setEnabled(hitsViewActive);
+                btnHitButton.setEnabled(hitsViewActive && guiAdapter.getCurrentMessage() != null);
+                btnNoHitButton.setEnabled(hitsViewActive && guiAdapter.getCurrentMessage() != null);
 
                 btnNextButton.setEnabled(checkNextMessage(true));
                 btnPrevButton.setEnabled(checkNextMessage(false));
@@ -624,6 +644,7 @@ public class ApplicationWindow {
 
         tableTXHits.setDefaultRenderer(String.class, new TXSideRenderer());
         tableTXHits.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabColAdjuster_TXHits = new TableColumnAdjuster(tableTXHits);
 
         final JPanel panel_tableResults = new JPanel();
         panel_tableResults.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -908,14 +929,14 @@ public class ApplicationWindow {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
 
-                if (guiAdapter.getFocussedHitResult() instanceof SanctionListHitResult) {
+                if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
                     // try
                     {
                         JPopupMenu urlMenu = new JPopupMenu();  // should be moved to refresh method and only SHOWN here
 
                         urlMenu.removeAll();
 
-                        SanctionListHitResult slhr = (SanctionListHitResult) guiAdapter.getFocussedHitResult();
+                        PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
 
                         WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
@@ -1135,20 +1156,20 @@ public class ApplicationWindow {
         int hits = guiAdapter.getCurrentMessage().getHitList().size();
         double count = 0.0;
         for (HitResult hitresult : guiAdapter.getCurrentMessage().getHitList()) {
-            if (hitresult instanceof SanctionListHitResult) {
+            if (hitresult instanceof PaymentHitResult) {
                 // see OptimizationRecords this still is a hack
 
                 // public final static String OPTI_STATUS_NEW = "N";
                 // public final static String OPTI_STATUS_PENDING = "P";
                 // public final static String OPTI_STATUS_CONFIRMED = "C";
 
-                if (((SanctionListHitResult) hitresult).getHitOptimized().equals("N")) {
+                if (((PaymentHitResult) hitresult).getHitOptimized().equals("N")) {
                     count += 0.75;
                 }
-                else if (((SanctionListHitResult) hitresult).getHitOptimized().equals("P")) {
+                else if (((PaymentHitResult) hitresult).getHitOptimized().equals("P")) {
                     count += 0.50;
                 }
-                else if (((SanctionListHitResult) hitresult).getHitOptimized().equals("P")) {
+                else if (((PaymentHitResult) hitresult).getHitOptimized().equals("P")) {
                     count += 0.25;
                 }
                 else {
@@ -1187,9 +1208,9 @@ public class ApplicationWindow {
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
 
-        if (guiAdapter.getFocussedHitResult() instanceof SanctionListHitResult) {
+        if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
 
-            SanctionListHitResult slhr = (SanctionListHitResult) guiAdapter.getFocussedHitResult();
+            PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
 
             WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 

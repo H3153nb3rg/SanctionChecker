@@ -27,6 +27,7 @@ public class GUIConfigHolder extends ListConfigHolder {
     private Queue<AnalysisResult>   backlogQueue;
 
     private HashMap<String, Color>  fieldColors;
+    private HashMap<String, String> fieldColorsHex;
     private HashMap<String, String> fieldNames;
 
     private String                  name;
@@ -121,12 +122,18 @@ public class GUIConfigHolder extends ListConfigHolder {
         this.hitQueue = hitQueue;
     }
 
+    public HashMap<String, String> getFieldColorsAsHex() {
+        return fieldColorsHex;
+    }
+
     public HashMap<String, Color> getFieldColors() {
         return fieldColors;
     }
 
     public void setFieldColors(HashMap<String, String> fieldColorsText) {
         fieldColors = new HashMap<String, Color>();
+
+        fieldColorsHex = fieldColorsText;
 
         for (String key : fieldColorsText.keySet()) {
             fieldColors.put(key, Color.decode(fieldColorsText.get(key)));

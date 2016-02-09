@@ -50,7 +50,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     private List<String>  descr1ToUse;
 
-    private String        loadDescription;
+    private String        loadDescription1;
+    private String        loadDescription2;
 
     public static void main(final String[] args) {
 
@@ -118,23 +119,25 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private void addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {
+    private String addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {  // DOR: at the moment onnly for descr1 filtering!!
+
+        String id = "";
 
         for (Descriptions descrs : descriptions) {
             for (Description descr : descrs.getDescription()) {
-                String descr1 = descr.getDescription1();
+                id = descr.getDescription1();
+                String descr1 = getDescription1(pfa, id);
 
-                descr1 = getDescription1(pfa, descr.getDescription1());
+                descr1 += " | " + getDescription2(pfa, descr.getDescription1(), descr.getDescription2());
+
+                descr1 += " | " + getDescription3(pfa, descr.getDescription3());
 
                 entity.setEntryType(descr1); // PEP / RCA / SIP ??
 
-                // String descr2 = descr.getDescription2(); // ??
-
-                // descr2 = getDescription2(pfa, descr.getDescription1(), descr.getDescription2());
-
-                // String descr3 = descr.getDescription3();
+                break;
             }
         }
+        return id;
     }
 
     private void addName(WL_Entity entity, List<NameDetails> nameDatails) {
@@ -316,16 +319,19 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setWL_Id(pfaPerson.getId());
                     entity.setIssueDate(pfaPerson.getDate());
 
-                    addWLEntry(entity);
+                    String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
 
-                    addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
+                    if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+                        addWLEntry(entity);
 
-                    addDescriptions(pfa, entity, pfaPerson.getDescriptions());
-                    addSourceDescription(entity, pfaPerson.getSourceDescription());
-                    addName(entity, pfaPerson.getNameDetails());
-                    addAddress(entity, pfaPerson.getAddress());
+                        addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
-                    addIDs(entity, pfaPerson.getIDNumberTypes());
+                        addSourceDescription(entity, pfaPerson.getSourceDescription());
+                        addName(entity, pfaPerson.getNameDetails());
+                        addAddress(entity, pfaPerson.getAddress());
+
+                        addIDs(entity, pfaPerson.getIDNumberTypes());
+                    }
                 }
             }
 
@@ -339,32 +345,35 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setWL_Id(pfaEntity.getId());
                     entity.setIssueDate(pfaEntity.getDate());
 
-                    addWLEntry(entity);
+                    String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
 
-                    addCompanyAddress(entity, pfaEntity.getCompanyDetails());
+                    if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
 
-                    addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
+                        addWLEntry(entity);
 
-                    addDescriptions(pfa, entity, pfaEntity.getDescriptions());
-                    addSourceDescription(entity, pfaEntity.getSourceDescription());
-                    addName(entity, pfaEntity.getNameDetails());
+                        addCompanyAddress(entity, pfaEntity.getCompanyDetails());
 
-                    addIDs(entity, pfaEntity.getIDNumberTypes());
+                        addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
 
-                    if ((pfaEntity.getVesselDetails() != null) && (pfaEntity.getVesselDetails().size() > 0)) {
-                        entity.setType("Transport");
+                        addSourceDescription(entity, pfaEntity.getSourceDescription());
+                        addName(entity, pfaEntity.getNameDetails());
 
-                        // TODO: Implement VesselDetails !!
+                        addIDs(entity, pfaEntity.getIDNumberTypes());
 
-                        // for( PFA.Records.Entity.VesselDetails vd: pfaEntity.getVesselDetails())
-                        // {
-                        // vd.getVesselType()
-                        // }
+                        if ((pfaEntity.getVesselDetails() != null) && (pfaEntity.getVesselDetails().size() > 0)) {
+                            entity.setType("Transport");
+
+                            // TODO: Implement VesselDetails !!
+
+                            // for( PFA.Records.Entity.VesselDetails vd: pfaEntity.getVesselDetails())
+                            // {
+                            // vd.getVesselType()
+                            // }
+                        }
                     }
                 }
             }
         }
-
     }
 
     public void writeList(final String filename, final PFA pfa) {
@@ -395,7 +404,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
         archiveFile(getFilename(), getHistPath(), getListName());
 
-        final StringTokenizer tokenizer = new StringTokenizer(getLoadDescription(), ",");
+        final StringTokenizer tokenizer = new StringTokenizer(getLoadDescription1(), ",");
 
         descr1ToUse = new ArrayList<String>();
         while (tokenizer.hasMoreTokens()) {
@@ -403,18 +412,33 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
 
         // !! 1. Step
-        buildEntityList(pfa);
+        if (pfa != null) {
+            buildEntityList(pfa);
 
-        // 3. step build associations
-        getAssociations(pfa);
+            // 3. step build associations
+            getAssociations(pfa);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("-------------------");
+            logger.debug("Entities loaded: " + getEntityList().size());
+            logger.debug("-------------------");
+        }
     }
 
-    public String getLoadDescription() {
-        return loadDescription;
+    public String getLoadDescription1() {
+        return loadDescription1;
     }
 
-    public void setLoadDescription(String loadDescription) {
-        this.loadDescription = loadDescription;
+    public void setLoadDescription1(String loadDescription1) {
+        this.loadDescription1 = loadDescription1;
+    }
+
+    public String getLoadDescription2() {
+        return loadDescription2;
+    }
+
+    public void setLoadDescription2(String loadDescription2) {
+        this.loadDescription2 = loadDescription2;
     }
 
 }
