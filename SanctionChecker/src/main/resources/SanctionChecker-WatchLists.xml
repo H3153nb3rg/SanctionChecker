@@ -81,6 +81,9 @@
 		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
+		<!-- property name="httpUser" value="USERNAME"/ -->
+		<!-- property name="httpPwd" value="PWD"/ -->
+		
 		<property name="listType" value="SL"/>
 		
 		<property name="loadDescription1" value="3,4"/>

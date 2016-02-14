@@ -1,4 +1,4 @@
-package at.jps.slcm.gui.model;
+package at.jps.slcm.gui.models;
 
 import java.io.Serializable;
 
@@ -7,11 +7,7 @@ public class DisplayNameDetails implements Serializable {
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
-    /**
-     * 
-     */
-
+    private static final long serialVersionUID = -8711878219037513245L;
     private String            firstname;
     private String            middleName;
     private String            surname;
@@ -66,10 +62,6 @@ public class DisplayNameDetails implements Serializable {
 
     public void setAka(String aka) {
         this.aka = aka;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
 }

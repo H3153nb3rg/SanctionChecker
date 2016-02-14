@@ -411,17 +411,25 @@ public class DJListHandler extends SanctionListHandlerImpl {
             descr1ToUse.add(tokenizer.nextToken());
         }
 
-        // !! 1. Step
-        if (pfa != null) {
-            buildEntityList(pfa);
+        try {
+            // !! 1. Step
+            if (pfa != null) {
+                buildEntityList(pfa);
 
-            // 3. step build associations
-            getAssociations(pfa);
+                // 3. step build associations
+                getAssociations(pfa);
+            }
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("-------------------");
-            logger.debug("Entities loaded: " + getEntityList().size());
-            logger.debug("-------------------");
+        catch (final Exception e) {
+            logger.error("parsing list failed!!!!");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception : ", e);
+            }
+        }
+        if (logger.isInfoEnabled()) {
+            logger.info("-------------------");
+            logger.info("Entities loaded: " + getEntityList().size());
+            logger.info("-------------------");
         }
     }
 

@@ -1,11 +1,11 @@
-package at.jps.slcm.gui.service;
+package at.jps.slcm.gui.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.TableModel;
 
-import at.jps.slcm.gui.model.DisplayRelation;
+import at.jps.slcm.gui.models.DisplayRelation;
 
 public class DisplayRelationService {
 

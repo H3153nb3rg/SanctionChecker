@@ -1,4 +1,4 @@
-package at.jps.slcm.gui.service;
+package at.jps.slcm.gui.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.table.TableModel;
 
-import at.jps.slcm.gui.model.DisplayWordHit;
+import at.jps.slcm.gui.models.DisplayWordHit;
 
 public class DisplayWordHitService implements Serializable {
 

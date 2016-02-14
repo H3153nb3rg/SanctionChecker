@@ -749,12 +749,9 @@ public class SanctionTableModelHandler implements Serializable {
         return tableModel;
     }
 
-    public static TableModel getEntityRelationsTableModel(final WatchListInformant watchlistInformat, final PaymentHitResult slhr) {
+    public static TableModel getEntityRelationsTableModel(final WatchListInformant watchlistInformat, final String listname, final WL_Entity focusedEntity) {
 
-        final String listname = slhr.getHitListName();
         final WatchListInformant watchlistInformatLocal = watchlistInformat;
-        final WL_Entity focusedEntity = watchlistInformat.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
-        // final SanctionListHandler listhandler = watchlistInformat.getWatchListByName(slhr.getHitListName());
 
         final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getReleations().keySet());
 

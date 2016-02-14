@@ -343,7 +343,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                             }
                         }
                         else {
-                            logger.debug("Skipped WAKA for Entity: ", entity.getWL_Id());
+                            logger.debug("Skipped WAKA for Entity: " + entity.getWL_Id());
                         }
                         // System.out.println("Name: " + name.getWholeName());
                     }
@@ -379,23 +379,30 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
             }
             catch (final Exception e) {
-                logger.error("Download (" + LISTNAME + ") - from URL: " + getUrl() + " failed!");
+                logger.error("Download (" + getListName() + ") - from URL: " + getUrl() + " failed!");
                 if (logger.isDebugEnabled()) {
                     logger.debug("Exception : ", e);
                 }
             }
         }
 
-        buildEntityList(readList(filename));
-
+        try {
+            buildEntityList(readList(filename));
+        }
+        catch (final Exception e) {
+            logger.error("parsing list failed!!!!");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception : ", e);
+            }
+        }
         archiveFile(filename, getHistPath(), getListName());
 
         sanctions = null; // !! list is GCed
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("-------------------");
-            logger.debug("Entities loaded: " + getEntityList().size());
-            logger.debug("-------------------");
+        if (logger.isInfoEnabled()) {
+            logger.info("-------------------");
+            logger.info("Entities loaded: " + getEntityList().size());
+            logger.info("-------------------");
         }
 
     }

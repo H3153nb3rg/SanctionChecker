@@ -187,8 +187,15 @@ public class EUListHandler extends SanctionListHandlerImpl {
             }
         }
 
-        buildEntityList(readList(filename));
-
+        try {
+            buildEntityList(readList(filename));
+        }
+        catch (final Exception e) {
+            logger.error("parsing list failed!!!!");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception : ", e);
+            }
+        }
         archiveFile(filename, getHistPath(), getListName());
 
         // try {
@@ -228,10 +235,10 @@ public class EUListHandler extends SanctionListHandlerImpl {
         // logger.error("Error loading list " + LISTNAME + " from " + filename);
         // }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("-------------------");
-            logger.debug("Entities loaded: " + getEntityList().size());
-            logger.debug("-------------------");
+        if (logger.isInfoEnabled()) {
+            logger.info("-------------------");
+            logger.info("Entities loaded: " + getEntityList().size());
+            logger.info("-------------------");
         }
 
     }

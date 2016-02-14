@@ -111,7 +111,7 @@ public class SearchTableModelHandler {
             @Override
             public Object getValueAt(final int rowIndex, final int columnIndex) {
 
-                Entry<Object, Object> entry = entries.get(rowIndex);
+                final Entry<Object, Object> entry = entries.get(rowIndex);
 
                 String value = " ";
 
@@ -158,7 +158,7 @@ public class SearchTableModelHandler {
 
                 entries = new ArrayList<Entry<Object, Object>>();
 
-                for (Entry<Object, Object> e : refListhandler.getValues().entrySet()) {
+                for (final Entry<Object, Object> e : refListhandler.getValues().entrySet()) {
                     entries.add(e);
                 }
 
@@ -217,7 +217,7 @@ public class SearchTableModelHandler {
             @Override
             public Object getValueAt(final int rowIndex, final int columnIndex) {
 
-                String value = entries.get(rowIndex);
+                final String value = entries.get(rowIndex);
 
                 // switch (columnIndex) {
                 //
@@ -322,7 +322,7 @@ public class SearchTableModelHandler {
             @Override
             public Object getValueAt(final int rowIndex, final int columnIndex) {
 
-                SearchResultRecord sr = resultSet.get(rowIndex);
+                final SearchResultRecord sr = resultSet.get(rowIndex);
                 String value = "";
                 switch (columnIndex) {
 
@@ -430,7 +430,7 @@ public class SearchTableModelHandler {
 
                 int i = 0;
 
-                for (String key : entries.keySet()) {
+                for (final String key : entries.keySet()) {
                     if (i == rowIndex) {
                         switch (columnIndex) {
 
@@ -477,10 +477,10 @@ public class SearchTableModelHandler {
 
                 entries = new TreeMap<String, String>();
 
-                for (String key : mvm.keySet()) {
+                for (final String key : mvm.keySet()) {
                     String values = "";
 
-                    for (String value : mvm.get(key)) {
+                    for (final String value : mvm.get(key)) {
                         values += value + ";";
                     }
                     entries.put(key, values);
@@ -551,7 +551,7 @@ public class SearchTableModelHandler {
             @Override
             public Object getValueAt(final int rowIndex, final int columnIndex) {
 
-                OptimizationRecord sr = resultSet.get(rowIndex);
+                final OptimizationRecord sr = resultSet.get(rowIndex);
                 String value = "";
                 switch (columnIndex) {
 
@@ -612,31 +612,48 @@ public class SearchTableModelHandler {
         return tm;
     }
 
+    private static SearchResultRecord buildSearchResultRecord(String listname, WL_Entity entity, WL_Name name) {
+        final SearchResultRecord sr = new SearchResultRecord();
+        sr.setComment(entity.getComment());
+        sr.setListName(listname);
+        sr.setListId(entity.getWL_Id());
+        sr.setToken(name.getWholeName());
+
+        return sr;
+    }
+
     public static WatchListTableModel doSearch(final HashMap<String, SanctionListHandler> watchlistHandlers, final String searchPattern) {
 
-        String searchString = searchPattern.trim().toUpperCase();
+        final String searchString = searchPattern.trim().toUpperCase();
 
-        List<SearchResultRecord> resultSet = new ArrayList<SearchResultRecord>();
+        final List<SearchResultRecord> resultSet = new ArrayList<SearchResultRecord>();
 
-        for (String key : watchlistHandlers.keySet()) {
-            SanctionListHandler wlHandler = watchlistHandlers.get(key);
+        for (final String key : watchlistHandlers.keySet()) {
+            final SanctionListHandler wlHandler = watchlistHandlers.get(key);
 
-            for (WL_Entity entity : wlHandler.getEntityList()) {
-                for (WL_Name name : entity.getNames()) {
+            // search Names
+            for (final WL_Entity entity : wlHandler.getEntityList()) {
+                for (final WL_Name name : entity.getNames()) {
                     if (name.getWholeName().toUpperCase().contains(searchString)) {
-                        SearchResultRecord sr = new SearchResultRecord();
-                        sr.setComment(entity.getComment());
-                        sr.setListName(wlHandler.getListName());
-                        sr.setListId(entity.getWL_Id());
-                        sr.setToken(name.getWholeName());
                         // Listname | ID | Pattern | Comment
+                        final SearchResultRecord sr = buildSearchResultRecord(wlHandler.getListName(), entity, name);
                         resultSet.add(sr);
+                        break;
                     }
+                }
+            }
+            // search vor Id
+            final WL_Entity entity = wlHandler.getEntityById(searchString);
+            if (entity != null) {
+                for (final WL_Name name : entity.getNames()) {
+                    final SearchResultRecord sr = buildSearchResultRecord(wlHandler.getListName(), entity, name);
+                    resultSet.add(sr);
+                    break;  // TODO: is this correct ?
                 }
             }
         }
 
-        WatchListTableModel wltm = generateWatchListTableModel(resultSet);
+        final WatchListTableModel wltm = generateWatchListTableModel(resultSet);
 
         return wltm;
     }

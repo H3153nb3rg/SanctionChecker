@@ -1,4 +1,4 @@
-package at.jps.slcm.gui.model;
+package at.jps.slcm.gui.models;
 
 import java.io.Serializable;
 

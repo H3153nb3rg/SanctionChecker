@@ -64,14 +64,21 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
             }
         }
 
-        readList(filename);
-
+        try {
+            readList(filename);
+        }
+        catch (final Exception e) {
+            logger.error("parsing list failed!!!!");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception : ", e);
+            }
+        }
         archiveFile(filename, getHistPath(), getListName());
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("-------------------");
-            logger.debug("Entities loaded: " + getEntityList().size());
-            logger.debug("-------------------");
+        if (logger.isInfoEnabled()) {
+            logger.info("-------------------");
+            logger.info("Entities loaded: " + getEntityList().size());
+            logger.info("-------------------");
         }
 
     }

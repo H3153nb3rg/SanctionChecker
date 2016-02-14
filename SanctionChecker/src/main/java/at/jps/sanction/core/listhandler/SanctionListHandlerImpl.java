@@ -2,6 +2,8 @@ package at.jps.sanction.core.listhandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     boolean                            loadWeak          = false;
     boolean                            loadNonPrimary    = true;
 
+    private String                     httpUser;
+    private String                     httpPwd;
+
     private List<WL_Entity>            entityList;
 
     private HashMap<String, WL_Entity> entityListSortedById;
@@ -62,12 +67,33 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         }
     }
 
+    static class MyAuthenticator extends Authenticator {
+
+        String username;
+        String pwd;
+
+        public MyAuthenticator(final String username, final String pwd) {
+            super();
+            this.username = username;
+            this.pwd = pwd;
+        }
+
+        public PasswordAuthentication getPasswordAuthentication() {
+            // I haven't checked getRequestingScheme() here, since for NTLM
+            // and Negotiate, the usrname and password are all the same.
+            System.err.println("Feeding username and password for " + getRequestingScheme());
+            return (new PasswordAuthentication(username, pwd.toCharArray()));
+        }
+    }
+
     protected String downloadFile(final String url, final boolean useSysProxy) {
 
         File targetfile = null;
 
         if (useSysProxy) {
+
             System.setProperty("java.net.useSystemProxies", "true");
+
             if (logger.isDebugEnabled()) {
                 logger.debug("sysproxy: " + useSysProxy);
             }
@@ -76,6 +102,11 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
             final SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
             targetfile = File.createTempFile(getListName() + sdf.format(new Date()), ".dat");
             targetfile.deleteOnExit();
+
+            // if usr/pwd is set just do
+            if (getHttpUser() != null && getHttpPwd() != null) {
+                Authenticator.setDefault(new MyAuthenticator(getHttpUser(), getHttpPwd()));
+            }
 
             FileUtils.copyURLToFile(new URL(url), targetfile);
 
@@ -285,6 +316,22 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     public void setEntityList(List<WL_Entity> entityList) {
         this.entityList = entityList;
+    }
+
+    public String getHttpPwd() {
+        return httpPwd;
+    }
+
+    public void setHttpPwd(String httpPwd) {
+        this.httpPwd = httpPwd;
+    }
+
+    public String getHttpUser() {
+        return httpUser;
+    }
+
+    public void setHttpUser(String httpUser) {
+        this.httpUser = httpUser;
     }
 
 }
