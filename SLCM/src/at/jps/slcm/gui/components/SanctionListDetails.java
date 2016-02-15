@@ -107,6 +107,7 @@ public class SanctionListDetails extends VerticalLayout {
         textPane_Remark.setWidth("100%");
         textPane_Remark.setRows(2);
         listDetails.addComponent(textPane_Remark);
+        listDetails.setExpandRatio(textPane_Remark, 1);
 
         listDetails.setSizeFull();
 

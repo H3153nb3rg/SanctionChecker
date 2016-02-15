@@ -32,4 +32,6 @@
     <inherits name="com.ejt.vaadin.loginform.WidgetSet" />
 
     <inherits name="org.vaadin.cssinject.Cssinject_addonWidgetset" />
+
+    <inherits name="org.vaadin.sliderpanel.WidgetSet" />
 </module>

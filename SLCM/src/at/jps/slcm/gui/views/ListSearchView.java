@@ -9,6 +9,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -63,12 +64,19 @@ public class ListSearchView extends VerticalLayout implements View {
 
         // layout.setMargin(true);
 
-        layout.setSpacing(false);
+        layout.setSpacing(true);
+
+        final ComboBox combo_watchlist = new ComboBox();
+
+        for (final String watchlistname : guiAdapter.getConfig().getWatchLists().keySet()) {
+            combo_watchlist.addItem(watchlistname);
+        }
+        combo_watchlist.setNullSelectionAllowed(true);
 
         textField_searchToken = new TextField();
         final Button buttonSearch = new Button("start Search");
 
-        textField_searchToken.setWidth("100%");
+        // textField_searchToken.setWidth("100%");
 
         buttonSearch.addClickListener(new Button.ClickListener() {
 
@@ -83,17 +91,18 @@ public class ListSearchView extends VerticalLayout implements View {
                 final String textPattern = textField_searchToken.getValue();
 
                 if ((textPattern != null) && (textPattern.length() > 1)) {
-                    startSearch(textPattern);
+                    startSearch((String) combo_watchlist.getValue(), textPattern);
                 }
             }
         });
 
+        layout.addComponent(combo_watchlist);
         layout.addComponent(textField_searchToken);
+        layout.setExpandRatio(textField_searchToken, 1);
         layout.addComponent(buttonSearch);
 
         // layout.setComponentAlignment(buttonSearch, Alignment.MIDDLE_CENTER);
         layout.setWidth("100%");
-        layout.setHeight("250px");
 
         return layout;
     }
@@ -141,8 +150,8 @@ public class ListSearchView extends VerticalLayout implements View {
 
         layout2.addComponent(searchForm);
         layout2.addComponent(layout);
-        layout2.setExpandRatio(searchForm, 1);
-        layout2.setExpandRatio(layout, 9);
+
+        layout2.setExpandRatio(layout, 1);
 
         layout2.setSpacing(true);
         layout2.setSizeFull();
@@ -169,9 +178,10 @@ public class ListSearchView extends VerticalLayout implements View {
 
     }
 
-    private void startSearch(final String searchPattern) {
+    private void startSearch(final String listname, final String searchPattern) {
 
-        final TableModel tm = SearchTableModelHandler.doSearch(guiAdapter.getConfig().getWatchLists(), searchPattern);
+        final TableModel tm = (listname != null) ? SearchTableModelHandler.doSearch(guiAdapter.getConfig().getWatchLists().get(listname), searchPattern)
+                : SearchTableModelHandler.doSearch(guiAdapter.getConfig().getWatchLists(), searchPattern);
 
         displayEntitySearchService.setModel(tm);
         tableSearchResult.setContainerDataSource(new BeanItemContainer<>(DisplayEntitySearchDetails.class, displayEntitySearchService.displayAllFields()));

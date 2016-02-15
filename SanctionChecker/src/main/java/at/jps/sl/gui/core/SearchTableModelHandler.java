@@ -622,6 +622,42 @@ public class SearchTableModelHandler {
         return sr;
     }
 
+    public static WatchListTableModel doSearch(final SanctionListHandler watchlistHandler, final String searchPattern) {
+
+        WatchListTableModel wltm = null;
+
+        if (watchlistHandler != null) {
+            final String searchString = searchPattern.trim().toUpperCase();
+
+            final List<SearchResultRecord> resultSet = new ArrayList<SearchResultRecord>();
+
+            // search Names
+            for (final WL_Entity entity : watchlistHandler.getEntityList()) {
+                for (final WL_Name name : entity.getNames()) {
+                    if (name.getWholeName().toUpperCase().contains(searchString)) {
+                        // Listname | ID | Pattern | Comment
+                        final SearchResultRecord sr = buildSearchResultRecord(watchlistHandler.getListName(), entity, name);
+                        resultSet.add(sr);
+                        break;
+                    }
+                }
+            }
+            // search vor Id
+            final WL_Entity entity = watchlistHandler.getEntityById(searchString);
+            if (entity != null) {
+                for (final WL_Name name : entity.getNames()) {
+                    final SearchResultRecord sr = buildSearchResultRecord(watchlistHandler.getListName(), entity, name);
+                    resultSet.add(sr);
+                    break;  // TODO: is this correct ?
+                }
+            }
+            wltm = generateWatchListTableModel(resultSet);
+        }
+
+        return wltm;
+
+    }
+
     public static WatchListTableModel doSearch(final HashMap<String, SanctionListHandler> watchlistHandlers, final String searchPattern) {
 
         final String searchString = searchPattern.trim().toUpperCase();

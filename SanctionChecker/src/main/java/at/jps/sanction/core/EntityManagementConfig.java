@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 
 public class EntityManagementConfig {
 
-    static final Logger logger = LoggerFactory.getLogger(EntityManagementConfig.class);
+    static final Logger    logger      = LoggerFactory.getLogger(EntityManagementConfig.class);
 
-    private String      enhancementCP;
+    private static boolean initialized = false;
+
+    private String         enhancementCP;
 
     public String getEnhancementCP() {
         return enhancementCP;
@@ -27,6 +29,9 @@ public class EntityManagementConfig {
     }
 
     public void initialize() {
-        initializeORM();
+        if (!initialized) {
+            initialized = true;
+            initializeORM();
+        }
     }
 }
