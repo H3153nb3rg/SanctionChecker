@@ -9,7 +9,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sl.gui.AdapterHelper;
 import at.jps.slcm.gui.models.DisplayNameDetails;
 import at.jps.slcm.gui.models.DisplayRelation;
@@ -105,16 +105,17 @@ public class SanctionListDetails extends VerticalLayout {
         textPane_Remark = new TextArea("Remark");
         textPane_Remark.setReadOnly(true);
         textPane_Remark.setWidth("100%");
-        textPane_Remark.setRows(2);
+
         listDetails.addComponent(textPane_Remark);
         listDetails.setExpandRatio(textPane_Remark, 1);
 
         listDetails.setSizeFull();
 
         final TabSheet sLDetails = new TabSheet();
-        sLDetails.addTab(listDetails).setCaption("General");
-        sLDetails.addTab(tableEntityNameDetails).setCaption("NameDetails");
-        sLDetails.addTab(tableEntityRelations).setCaption("Relations");
+        sLDetails.addStyleName("framed");
+        sLDetails.addTab(UIHelper.wrapWithVertical(listDetails)).setCaption("General");
+        sLDetails.addTab(UIHelper.wrapWithVertical(tableEntityNameDetails)).setCaption("NameDetails");
+        sLDetails.addTab(UIHelper.wrapWithVertical(tableEntityRelations)).setCaption("Relations");
         sLDetails.setSizeFull();
 
         addComponent(sLDetails);
@@ -191,7 +192,13 @@ public class SanctionListDetails extends VerticalLayout {
 
             // tca.adjustColumns();
         }
+        else {
+            // TODO: reset detailsview !!!!!!!!!
+        }
 
     }
 
+    public Grid getRelationTable() {
+        return tableEntityRelations;
+    }
 }

@@ -1,4 +1,4 @@
-package at.jps.sl.gui.core;
+package at.jps.sl.gui.model.watchlist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +17,9 @@ import at.jps.sanction.model.listhandler.NoWordHitListHandler;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Name;
+import at.jps.sl.gui.core.SearchResultRecord;
 
 public class SearchTableModelHandler {
 

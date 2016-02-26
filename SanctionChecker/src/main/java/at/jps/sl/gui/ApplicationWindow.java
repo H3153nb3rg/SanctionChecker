@@ -56,12 +56,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import at.jps.sanction.core.EntityManagementConfig;
 import at.jps.sanction.domain.payment.PaymentHitResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sl.gui.core.TableColumnAdjuster;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.sl.gui.util.URLHelper;
@@ -86,7 +85,7 @@ public class ApplicationWindow {
             setBorder(new CompoundBorder(new EmptyBorder(new Insets(1, 4, 1, 4)), getBorder()));
 
             if (column == 4) {
-                String hintType = (String) table.getValueAt(row, column);
+                final String hintType = (String) table.getValueAt(row, column);
                 Color color = c.getBackground();
                 if (hintType.equals(OptimizationRecord.OPTI_STATUS_NEW)) {
                     color = ora;
@@ -197,7 +196,7 @@ public class ApplicationWindow {
     private JMenuItem           mntmAddToIA;
     private JMenuItem           mntmAddToNoHit;
 
-    private AdapterHelper       guiAdapter;
+    private final AdapterHelper guiAdapter;
 
     private boolean             hitsViewActive            = true;
     private boolean             resultsViewActive         = true;
@@ -251,7 +250,9 @@ public class ApplicationWindow {
                             for (int i = 0; i < columnWidthHits.length; i++) {
                                 final TableColumn column = tableResults.getColumnModel().getColumn(i);
                                 column.setMinWidth(columnWidthHits[i]);
-                                if (i < columnWidthHits.length - 1) column.setMaxWidth(columnWidthHits[i]);
+                                if (i < (columnWidthHits.length - 1)) {
+                                    column.setMaxWidth(columnWidthHits[i]);
+                                }
                                 column.setPreferredWidth(columnWidthHits[i]);
                             }
 
@@ -459,7 +460,7 @@ public class ApplicationWindow {
 
         // this.tableTXNoHits.setIntercellSpacing(new Dimension(10, 0));
 
-        JPanel transactionHandlingPanel = new JPanel();
+        final JPanel transactionHandlingPanel = new JPanel();
         transactionHandlingPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         final JSplitPane txSplitPane = new JSplitPane();
@@ -476,8 +477,8 @@ public class ApplicationWindow {
 
                 hitsViewActive = tabbedPane.getSelectedIndex() < 1;
 
-                btnHitButton.setEnabled(hitsViewActive && guiAdapter.getCurrentMessage() != null);
-                btnNoHitButton.setEnabled(hitsViewActive && guiAdapter.getCurrentMessage() != null);
+                btnHitButton.setEnabled(hitsViewActive && (guiAdapter.getCurrentMessage() != null));
+                btnNoHitButton.setEnabled(hitsViewActive && (guiAdapter.getCurrentMessage() != null));
 
                 btnNextButton.setEnabled(checkNextMessage(true));
                 btnPrevButton.setEnabled(checkNextMessage(false));
@@ -509,16 +510,16 @@ public class ApplicationWindow {
         tableTXHits.setToolTipText("Transaction");
         panel_tableTXHits.add(new JScrollPane(tableTXHits), BorderLayout.CENTER);
         panel_tableTXHits.add(transactionHandlingPanel, BorderLayout.SOUTH);
-        GridBagLayout gbl_transactionHandlingPanel = new GridBagLayout();
+        final GridBagLayout gbl_transactionHandlingPanel = new GridBagLayout();
         gbl_transactionHandlingPanel.columnWidths = new int[] { 615, 0 };
         gbl_transactionHandlingPanel.rowHeights = new int[] { 14, 20, 0, 0, 0, 0, 0 };
         gbl_transactionHandlingPanel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
         gbl_transactionHandlingPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
         transactionHandlingPanel.setLayout(gbl_transactionHandlingPanel);
 
-        JLabel lblNewLabel = new JLabel("TX Analysis Time: ");
+        final JLabel lblNewLabel = new JLabel("TX Analysis Time: ");
         lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+        final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
         gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
         gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -530,7 +531,7 @@ public class ApplicationWindow {
         lblNewLabel.setLabelFor(textField_AnalysisTime);
         textField_AnalysisTime.setEditable(false);
         textField_AnalysisTime.setText("");
-        GridBagConstraints gbc_textField_legal = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_legal = new GridBagConstraints();
         gbc_textField_legal.insets = new Insets(0, 0, 5, 0);
         gbc_textField_legal.anchor = GridBagConstraints.NORTH;
         gbc_textField_legal.fill = GridBagConstraints.HORIZONTAL;
@@ -539,9 +540,9 @@ public class ApplicationWindow {
         transactionHandlingPanel.add(textField_AnalysisTime, gbc_textField_legal);
         textField_AnalysisTime.setColumns(10);
 
-        JLabel lblCathegory = new JLabel("Category");
+        final JLabel lblCathegory = new JLabel("Category");
         lblCathegory.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblCathegory = new GridBagConstraints();
+        final GridBagConstraints gbc_lblCathegory = new GridBagConstraints();
         gbc_lblCathegory.fill = GridBagConstraints.HORIZONTAL;
         gbc_lblCathegory.anchor = GridBagConstraints.NORTH;
         gbc_lblCathegory.insets = new Insets(0, 0, 5, 0);
@@ -597,16 +598,16 @@ public class ApplicationWindow {
         //
         // });
 
-        GridBagConstraints gbc_comboBox_Category = new GridBagConstraints();
+        final GridBagConstraints gbc_comboBox_Category = new GridBagConstraints();
         gbc_comboBox_Category.insets = new Insets(0, 0, 5, 0);
         gbc_comboBox_Category.fill = GridBagConstraints.HORIZONTAL;
         gbc_comboBox_Category.gridx = 0;
         gbc_comboBox_Category.gridy = 3;
         transactionHandlingPanel.add(comboBox_Category, gbc_comboBox_Category);
 
-        JLabel lblNewLabel_1 = new JLabel("Comment");
+        final JLabel lblNewLabel_1 = new JLabel("Comment");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+        final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
         gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 0);
         gbc_lblNewLabel_1.anchor = GridBagConstraints.NORTH;
         gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
@@ -619,15 +620,15 @@ public class ApplicationWindow {
         textPane_Comment.setText(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
         textPane_Comment.setToolTipText("enter Comment");
-        GridBagConstraints gbc_textPane_Comment = new GridBagConstraints();
+        final GridBagConstraints gbc_textPane_Comment = new GridBagConstraints();
         gbc_textPane_Comment.fill = GridBagConstraints.BOTH;
         gbc_textPane_Comment.gridx = 0;
         gbc_textPane_Comment.gridy = 5;
         transactionHandlingPanel.add(textPane_Comment, gbc_textPane_Comment);
 
-        JButton btnPostpone = new JButton("Postpone");
+        final JButton btnPostpone = new JButton("Postpone");
         btnPostpone.setToolTipText("machma sp\u00E4ter");
-        GridBagConstraints gbc_btnPostpone = new GridBagConstraints();
+        final GridBagConstraints gbc_btnPostpone = new GridBagConstraints();
         gbc_btnPostpone.gridx = 0;
         gbc_btnPostpone.gridy = 6;
         transactionHandlingPanel.add(btnPostpone, gbc_btnPostpone);
@@ -680,7 +681,7 @@ public class ApplicationWindow {
         tableWordHits.setAutoCreateRowSorter(true);
         tableWordHits.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JPopupMenu popupMenu = new JPopupMenu();
+        final JPopupMenu popupMenu = new JPopupMenu();
         addWordHitPopup(tableWordHits, popupMenu);
 
         mntmAddToStopwords = new JMenuItem("add to Stopwords");
@@ -733,7 +734,7 @@ public class ApplicationWindow {
         tableResults.setAutoCreateRowSorter(true);
         tableResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JPanel panel_SanctionInfo = new JPanel();
+        final JPanel panel_SanctionInfo = new JPanel();
         panel_SanctionInfo.setBorder(new EmptyBorder(5, 5, 5, 5));
         // panel_table Results.add(panel_SanctionInfo, BorderLayout.SOUTH);
 
@@ -747,23 +748,23 @@ public class ApplicationWindow {
 
         panel_SanctionInfo.setLayout(new BorderLayout(0, 0));
 
-        tabbedPane_Sanction = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane_Sanction = new JTabbedPane(SwingConstants.TOP);
         panel_SanctionInfo.add(tabbedPane_Sanction);
 
-        JPanel panel_Sanction1 = new JPanel();
+        final JPanel panel_Sanction1 = new JPanel();
         panel_Sanction1.setBorder(new EmptyBorder(5, 5, 5, 5));
         tabbedPane_Sanction.addTab("General", null, panel_Sanction1, null);
-        GridBagLayout gbl_panel_Sanction1 = new GridBagLayout();
+        final GridBagLayout gbl_panel_Sanction1 = new GridBagLayout();
         gbl_panel_Sanction1.columnWidths = new int[] { 0, 0 };
         gbl_panel_Sanction1.rowHeights = new int[] { 0, 0, 0, 0, 0 };
         gbl_panel_Sanction1.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
         gbl_panel_Sanction1.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
         panel_Sanction1.setLayout(gbl_panel_Sanction1);
 
-        JLabel lbListDescription = new JLabel("List Description");
+        final JLabel lbListDescription = new JLabel("List Description");
         lbListDescription.setHorizontalAlignment(SwingConstants.LEFT);
 
-        GridBagConstraints gbc_lbListDescription = new GridBagConstraints();
+        final GridBagConstraints gbc_lbListDescription = new GridBagConstraints();
         gbc_lbListDescription.fill = GridBagConstraints.HORIZONTAL;
         gbc_lbListDescription.anchor = GridBagConstraints.NORTH;
         gbc_lbListDescription.insets = new Insets(0, 0, 5, 0);
@@ -771,7 +772,7 @@ public class ApplicationWindow {
         gbc_lbListDescription.gridy = 0;
         panel_Sanction1.add(lbListDescription, gbc_lbListDescription);
 
-        GridBagConstraints gbc_textField_ListDescription = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_ListDescription = new GridBagConstraints();
         gbc_textField_ListDescription.insets = new Insets(0, 0, 5, 0);
         gbc_textField_ListDescription.fill = GridBagConstraints.BOTH;
         gbc_textField_ListDescription.gridx = 0;
@@ -783,9 +784,9 @@ public class ApplicationWindow {
 
         panel_Sanction1.add(textField_ListDescription, gbc_textField_ListDescription);
 
-        JLabel lblLegalBackground = new JLabel("Legal Background");
+        final JLabel lblLegalBackground = new JLabel("Legal Background");
         lblLegalBackground.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblLegalBackground = new GridBagConstraints();
+        final GridBagConstraints gbc_lblLegalBackground = new GridBagConstraints();
         gbc_lblLegalBackground.fill = GridBagConstraints.HORIZONTAL;
         gbc_lblLegalBackground.anchor = GridBagConstraints.NORTH;
         gbc_lblLegalBackground.insets = new Insets(0, 0, 5, 0);
@@ -793,7 +794,7 @@ public class ApplicationWindow {
         gbc_lblLegalBackground.gridy = 2;
         panel_Sanction1.add(lblLegalBackground, gbc_lblLegalBackground);
 
-        GridBagConstraints gbc_textField_legal1 = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_legal1 = new GridBagConstraints();
         gbc_textField_legal1.insets = new Insets(0, 0, 5, 0);
         gbc_textField_legal1.fill = GridBagConstraints.BOTH;
         gbc_textField_legal1.gridx = 0;
@@ -805,9 +806,9 @@ public class ApplicationWindow {
 
         panel_Sanction1.add(combobox_LegalBack, gbc_textField_legal1);
 
-        JLabel lbType = new JLabel("Entity Type");
+        final JLabel lbType = new JLabel("Entity Type");
         lbType.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblType = new GridBagConstraints();
+        final GridBagConstraints gbc_lblType = new GridBagConstraints();
         gbc_lblType.fill = GridBagConstraints.HORIZONTAL;
         gbc_lblType.anchor = GridBagConstraints.NORTH;
         gbc_lblType.insets = new Insets(0, 0, 5, 0);
@@ -815,7 +816,7 @@ public class ApplicationWindow {
         gbc_lblType.gridy = 4;
         panel_Sanction1.add(lbType, gbc_lblType);
 
-        GridBagConstraints gbc_textField_Type = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_Type = new GridBagConstraints();
         gbc_textField_Type.insets = new Insets(0, 0, 5, 0);
         gbc_textField_Type.fill = GridBagConstraints.BOTH;
         gbc_textField_Type.gridx = 0;
@@ -827,9 +828,9 @@ public class ApplicationWindow {
 
         panel_Sanction1.add(textField_Type, gbc_textField_Type);
 
-        JLabel lblRemark = new JLabel("Remark");
+        final JLabel lblRemark = new JLabel("Remark");
         lblRemark.setHorizontalAlignment(SwingConstants.LEFT);
-        GridBagConstraints gbc_lblRemark = new GridBagConstraints();
+        final GridBagConstraints gbc_lblRemark = new GridBagConstraints();
         gbc_lblRemark.fill = GridBagConstraints.HORIZONTAL;
         gbc_lblRemark.anchor = GridBagConstraints.NORTH;
         gbc_lblRemark.insets = new Insets(0, 0, 5, 0);
@@ -841,17 +842,17 @@ public class ApplicationWindow {
         textPane_Remark.setToolTipText("Remark");
         textPane_Remark.setText(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        GridBagConstraints gbc_textPane = new GridBagConstraints();
+        final GridBagConstraints gbc_textPane = new GridBagConstraints();
         gbc_textPane.insets = new Insets(0, 0, 5, 0);
         gbc_textPane.fill = GridBagConstraints.BOTH;
         gbc_textPane.gridx = 0;
         gbc_textPane.gridy = 7;
         panel_Sanction1.add(textPane_Remark, gbc_textPane);
 
-        JPanel panel_Sanction2 = new JPanel();
+        final JPanel panel_Sanction2 = new JPanel();
         panel_Sanction2.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        JPanel panel_Sanction3 = new JPanel();
+        final JPanel panel_Sanction3 = new JPanel();
         panel_Sanction3.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         tabbedPane_Sanction.addTab("NameDetails", null, panel_Sanction2, null);
@@ -879,19 +880,19 @@ public class ApplicationWindow {
         btn_ExternalUrl = new JButton("external URL");
         btn_ExternalUrl.setHorizontalAlignment(SwingConstants.LEFT);
 
-        GridBagConstraints gbc_ExternalUrl = new GridBagConstraints();
+        final GridBagConstraints gbc_ExternalUrl = new GridBagConstraints();
         gbc_ExternalUrl.gridx = 0;
         gbc_ExternalUrl.gridy = 8;
 
         panel_Sanction1.add(btn_ExternalUrl, gbc_ExternalUrl);
 
-        JMenuBar menuBar = new JMenuBar();
+        final JMenuBar menuBar = new JMenuBar();
         frmCaseManagement.setJMenuBar(menuBar);
 
-        JMenu mnFile = new JMenu("File");
+        final JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
-        JMenuItem mntmClose = new JMenuItem("Close...");
+        final JMenuItem mntmClose = new JMenuItem("Close...");
         mntmClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -900,10 +901,10 @@ public class ApplicationWindow {
         });
         mnFile.add(mntmClose);
 
-        JMenu mnTools = new JMenu("Tools");
+        final JMenu mnTools = new JMenu("Tools");
         menuBar.add(mnTools);
 
-        JMenuItem mntmSearch = new JMenuItem("Search...");
+        final JMenuItem mntmSearch = new JMenuItem("Search...");
         mntmSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -912,10 +913,10 @@ public class ApplicationWindow {
         });
         mnTools.add(mntmSearch);
 
-        JMenu mnHelp = new JMenu("Help");
+        final JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
-        JMenuItem mntmAbout = new JMenuItem("About...");
+        final JMenuItem mntmAbout = new JMenuItem("About...");
         mntmAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -932,16 +933,16 @@ public class ApplicationWindow {
                 if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
                     // try
                     {
-                        JPopupMenu urlMenu = new JPopupMenu();  // should be moved to refresh method and only SHOWN here
+                        final JPopupMenu urlMenu = new JPopupMenu();  // should be moved to refresh method and only SHOWN here
 
                         urlMenu.removeAll();
 
-                        PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
+                        final PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
 
-                        WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
+                        final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
                         if (entity != null) {
-                            for (String url : entity.getInformationUrls()) {
+                            for (final String url : entity.getInformationUrls()) {
                                 final JMenuItem mi = new JMenuItem(url);
                                 urlMenu.add(mi);
 
@@ -952,7 +953,7 @@ public class ApplicationWindow {
                                         try {
                                             URLHelper.openWebpage(new URL(mi.getText()));
                                         }
-                                        catch (MalformedURLException x) {
+                                        catch (final MalformedURLException x) {
                                             System.err.println("External URL cannot be handled");
                                         }
 
@@ -987,18 +988,18 @@ public class ApplicationWindow {
             public void valueChanged(final ListSelectionEvent e) {
 
                 // handle Result selection change !!
-                if (((!e.getValueIsAdjusting()) && (tableResults.getSelectedRow() >= 0)) && recursionProhibitorResult == false) {
+                if (((!e.getValueIsAdjusting()) && (tableResults.getSelectedRow() >= 0)) && (recursionProhibitorResult == false)) {
                     // System.out.println(e.getFirstIndex() + ": " + hitRowFields.get(e.getFirstIndex()));
 
                     // String field = resultRowFields.get(tableResults.getSelectedRow());
 
-                    String field = guiAdapter.getResultRowFields().get(tableResults.convertRowIndexToModel(tableResults.getSelectedRow()));
+                    final String field = guiAdapter.getResultRowFields().get(tableResults.convertRowIndexToModel(tableResults.getSelectedRow()));
 
                     if (field != null) {
 
                         recursionProhibitorResult = true;
 
-                        int txHitTableRow = guiAdapter.getHitFieldRows().get(field);
+                        final int txHitTableRow = guiAdapter.getHitFieldRows().get(field);
 
                         // tableResults.convertRowIndexToView(tableResults.getSelectedRow());
                         // tableResults.convertRowIndexToModel(tableResults.getSelectedRow());
@@ -1027,18 +1028,18 @@ public class ApplicationWindow {
             public void valueChanged(final ListSelectionEvent e) {
 
                 // handle Result selection change !!
-                if (((!e.getValueIsAdjusting()) && (tableTXHits.getSelectedRow() >= 0)) && recursionProhibitorTX == false) {
+                if (((!e.getValueIsAdjusting()) && (tableTXHits.getSelectedRow() >= 0)) && (recursionProhibitorTX == false)) {
                     // System.out.println(e.getFirstIndex() + ": " + hitRowFields.get(e.getFirstIndex()));
 
                     recursionProhibitorTX = true;
 
                     int resultTableRow = -1;
 
-                    String field = guiAdapter.getHitRowFields().get(tableTXHits.getSelectedRow());
+                    final String field = guiAdapter.getHitRowFields().get(tableTXHits.getSelectedRow());
 
                     // find row on result side
 
-                    for (Map.Entry<Integer, String> entry : guiAdapter.getResultRowFields().entrySet()) {
+                    for (final Map.Entry<Integer, String> entry : guiAdapter.getResultRowFields().entrySet()) {
                         if (entry.getValue().equals(field)) {
                             resultTableRow = entry.getKey();
                             break;
@@ -1060,7 +1061,7 @@ public class ApplicationWindow {
                     // updateSanctionDetails(tableResults.getSelectedRow());
 
                     // update also word hits
-                    for (Map.Entry<Integer, String> entry : guiAdapter.getTokenRowFields().entrySet()) {
+                    for (final Map.Entry<Integer, String> entry : guiAdapter.getTokenRowFields().entrySet()) {
                         if (entry.getValue().equals(field)) {
                             resultTableRow = entry.getKey();
                             break;
@@ -1118,14 +1119,14 @@ public class ApplicationWindow {
     }
 
     private void addProcessStep(final String text) {
-        ProcessStep processStep = new ProcessStep();
+        final ProcessStep processStep = new ProcessStep();
         processStep.setRemark(text);
         guiAdapter.getCurrentMessage().addProcessStep(processStep);
 
     }
 
     protected void postponeTransaction() {
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Postpone Transaction ?", "Warning", JOptionPane.YES_NO_OPTION);
+        final int dialogResult = JOptionPane.showConfirmDialog(null, "Postpone Transaction ?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
             doPostpone();
@@ -1134,7 +1135,7 @@ public class ApplicationWindow {
     }
 
     protected void markAsHitTransaction() {
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as Hit?", "Warning", JOptionPane.YES_NO_OPTION);
+        final int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as Hit?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
             doProcessHit();
@@ -1143,7 +1144,7 @@ public class ApplicationWindow {
     }
 
     protected void markAsNonHitTransaction() {
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as NON Hit?", "Warning", JOptionPane.YES_NO_OPTION);
+        final int dialogResult = JOptionPane.showConfirmDialog(null, "Mark Transaction as NON Hit?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
 
             doProcessNoHit();
@@ -1153,9 +1154,9 @@ public class ApplicationWindow {
 
     String calcCriticality() {
         String description = "";
-        int hits = guiAdapter.getCurrentMessage().getHitList().size();
+        final int hits = guiAdapter.getCurrentMessage().getHitList().size();
         double count = 0.0;
-        for (HitResult hitresult : guiAdapter.getCurrentMessage().getHitList()) {
+        for (final HitResult hitresult : guiAdapter.getCurrentMessage().getHitList()) {
             if (hitresult instanceof PaymentHitResult) {
                 // see OptimizationRecords this still is a hack
 
@@ -1210,9 +1211,9 @@ public class ApplicationWindow {
 
         if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
 
-            PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
+            final PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
 
-            WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
+            final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
             if (entity != null) {
                 textField_Type.setText((entity.getType() != null ? entity.getType() : " ") + (entity.getEntryType() != null ? " | " + entity.getEntryType() : " "));
@@ -1224,7 +1225,7 @@ public class ApplicationWindow {
                 // textPane_LegalBack.setText(lbs.toString());
 
                 combobox_LegalBack.removeAllItems();
-                for (String lb : entity.getLegalBasises()) {
+                for (final String lb : entity.getLegalBasises()) {
                     combobox_LegalBack.addItem(lb);
                 }
 
@@ -1249,7 +1250,7 @@ public class ApplicationWindow {
                 table_EntityNameDetails.setModel(guiAdapter.getEntityDetailsNamesTableModel(entity));
                 tabColAdjuster_EntityNameDetails.adjustColumns();
 
-                tabbedPane_Sanction.setEnabledAt(2, entity.getReleations().size() > 0); // TODO : tab hardcoded....
+                tabbedPane_Sanction.setEnabledAt(2, entity.getRelations().size() > 0); // TODO : tab hardcoded....
                 table_EntityRelationDetails.setModel(guiAdapter.getEntityRelationsTableModel(slhr));
                 tabColAdjuster_EntityRelations.adjustColumns();
 
@@ -1305,7 +1306,7 @@ public class ApplicationWindow {
                 context = new FileSystemXmlApplicationContext(configFilename);
                 initialized = true;
             }
-            catch (Exception x) {
+            catch (final Exception x) {
                 x.printStackTrace();
                 System.out.println(x.toString());
             }
@@ -1314,8 +1315,7 @@ public class ApplicationWindow {
             context = new ClassPathXmlApplicationContext("SanctionChecker.xml");
         }
 
-        // important to do this here !!
-        final EntityManagementConfig emmCfg = (EntityManagementConfig) context.getBean("EntityManagement");
+        context.getBean("EntityManagement");
 
         final GUIConfigHolder config = (GUIConfigHolder) context.getBean("GUIConfig");
 
@@ -1353,7 +1353,7 @@ public class ApplicationWindow {
 
             private void showMenu(MouseEvent e) {
 
-                int row = tableWordHits.rowAtPoint(new Point(e.getX(), e.getY()));  // SwingUtilities.convertPoint(tableWordHits,
+                final int row = tableWordHits.rowAtPoint(new Point(e.getX(), e.getY()));  // SwingUtilities.convertPoint(tableWordHits,
 
                 selectedToken = (String) tableWordHits.getValueAt(row, 2); // TODO: this is crumpy !!
                 selectedFieldContent = (String) tableWordHits.getValueAt(row, 4);// TODO: this is crumpy !!
@@ -1364,7 +1364,7 @@ public class ApplicationWindow {
                     mntmAddToNon.setText("add '" + selectedToken + "' to phrase only");
                     mntmAddToIA.setText("add '" + selectedToken + "' to Index Exclusion");
                     if (selectedFieldContent != null) {
-                        boolean tokensAreGleich = selectedFieldContent.equals(selectedToken);
+                        final boolean tokensAreGleich = selectedFieldContent.equals(selectedToken);
                         if (!tokensAreGleich) {
                             mntmAddToNoHit.setText("'" + selectedToken + "' does NEVER match '" + selectedFieldContent + "'");
                         }
@@ -1420,21 +1420,27 @@ public class ApplicationWindow {
     }
 
     void doAddTokenToStopword() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addStopWord(selectedToken);
+        if ((selectedToken != null) && (selectedToken.length() > 1)) {
+            guiAdapter.addStopWord(selectedToken);
+        }
     }
 
     void doAddTokenToNSWH() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addNSWH(selectedToken);
+        if ((selectedToken != null) && (selectedToken.length() > 1)) {
+            guiAdapter.addNSWH(selectedToken);
+        }
     }
 
     void doAddTokenToIA() {
-        if ((selectedToken != null) && (selectedToken.length() > 1)) guiAdapter.addIA(selectedToken);
+        if ((selectedToken != null) && (selectedToken.length() > 1)) {
+            guiAdapter.addIA(selectedToken);
+        }
     }
 
     void doAddTokenToNoHit() {
-        if (((selectedToken != null) && (selectedToken.length() > 1)) && ((selectedFieldContent != null) && (selectedFieldContent.length() > 1)))
-
+        if (((selectedToken != null) && (selectedToken.length() > 1)) && ((selectedFieldContent != null) && (selectedFieldContent.length() > 1))) {
             guiAdapter.addNoHit(selectedFieldContent, selectedToken);
+        }
     }
 
 }

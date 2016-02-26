@@ -1,4 +1,4 @@
-package at.jps.sanction.model.sl.entities;
+package at.jps.sanction.model.wl.entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,19 +13,19 @@ public class WL_Name extends BaseModel implements Serializable {
     /**
      *
      */
-    private static final long serialVersionUID = -3439411802913057378L;
+    private static final long      serialVersionUID = -3439411802913057378L;
 
-    private String            firstName;
-    private String            middleName;
-    private String            LastName;
-    private String            wholeName;
+    private String                 firstName;
+    private String                 middleName;
+    private String                 LastName;
+    private String                 wholeName;
 
-    private String            description;
+    private String                 description;
 
-    private boolean           aka;
-    private boolean           waka;
+    private boolean                aka;
+    private boolean                waka;
 
-    private List<String>      tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                      // Helper
+    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                // Helper
 
     public void addToWholeName(final String wholeName) {
         if (wholeName != null) {
@@ -108,24 +108,24 @@ public class WL_Name extends BaseModel implements Serializable {
 
         if ((other != null)) {
 
-            equal = (((getFirstName() != null && ((WL_Name) other).getFirstName() != null)) && (getFirstName().equals(((WL_Name) other).getFirstName())))
-                    || ((getFirstName() == null && ((WL_Name) other).getFirstName() == null));
+            equal = ((((getFirstName() != null) && (((WL_Name) other).getFirstName() != null))) && (getFirstName().equals(((WL_Name) other).getFirstName())))
+                    || (((getFirstName() == null) && (((WL_Name) other).getFirstName() == null)));
             if (equal) {
-                equal = (((getLastName() != null && ((WL_Name) other).getLastName() != null)) && (getLastName().equals(((WL_Name) other).getLastName())))
-                        || ((getLastName() == null && ((WL_Name) other).getLastName() == null));
+                equal = ((((getLastName() != null) && (((WL_Name) other).getLastName() != null))) && (getLastName().equals(((WL_Name) other).getLastName())))
+                        || (((getLastName() == null) && (((WL_Name) other).getLastName() == null)));
             }
             if (equal) {
-                equal = (((getMiddleName() != null && ((WL_Name) other).getMiddleName() != null)) && (getMiddleName().equals(((WL_Name) other).getMiddleName())))
-                        || ((getMiddleName() == null && ((WL_Name) other).getMiddleName() == null));
+                equal = ((((getMiddleName() != null) && (((WL_Name) other).getMiddleName() != null))) && (getMiddleName().equals(((WL_Name) other).getMiddleName())))
+                        || (((getMiddleName() == null) && (((WL_Name) other).getMiddleName() == null)));
             }
             if (equal) {
-                equal = (((getWholeName() != null && ((WL_Name) other).getWholeName() != null)) && (getWholeName().equals(((WL_Name) other).getWholeName())))
-                        || ((getWholeName() == null && ((WL_Name) other).getWholeName() == null));
+                equal = ((((getWholeName() != null) && (((WL_Name) other).getWholeName() != null))) && (getWholeName().equals(((WL_Name) other).getWholeName())))
+                        || (((getWholeName() == null) && (((WL_Name) other).getWholeName() == null)));
             }
 
             if (equal) {
-                equal = (((getDescription() != null && ((WL_Name) other).getDescription() != null)) && (getDescription().equals(((WL_Name) other).getDescription())))
-                        || ((getDescription() == null && ((WL_Name) other).getDescription() == null));
+                equal = ((((getDescription() != null) && (((WL_Name) other).getDescription() != null))) && (getDescription().equals(((WL_Name) other).getDescription())))
+                        || (((getDescription() == null) && (((WL_Name) other).getDescription() == null)));
             }
         }
         return equal;

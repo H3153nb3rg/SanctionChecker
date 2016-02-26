@@ -10,7 +10,7 @@ package at.jps.sanction.model.listhandler;
 
 import java.util.List;
 
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 
 public interface SanctionListHandler {
 

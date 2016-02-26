@@ -39,8 +39,8 @@ import at.jps.sanction.core.list.ofac.ASDM.Sanctions;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType.EntryEvent;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Name;
 
 public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 

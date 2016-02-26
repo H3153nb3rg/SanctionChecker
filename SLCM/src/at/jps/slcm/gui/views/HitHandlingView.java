@@ -17,9 +17,11 @@ import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.CellReference;
 import com.vaadin.ui.Grid.CellStyleGenerator;
@@ -38,9 +40,10 @@ import com.vaadin.ui.VerticalSplitPanel;
 
 import at.jps.sanction.domain.payment.PaymentHitResult;
 import at.jps.sanction.model.ProcessStep;
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sl.gui.AdapterHelper;
 import at.jps.slcm.gui.components.SanctionListDetails;
+import at.jps.slcm.gui.components.UIHelper;
 import at.jps.slcm.gui.models.DisplayMessage;
 import at.jps.slcm.gui.models.DisplayResult;
 import at.jps.slcm.gui.models.DisplayWordHit;
@@ -115,6 +118,9 @@ public class HitHandlingView extends VerticalLayout implements View {
          */
         tableTXWithHits.setContainerDataSource(new BeanItemContainer<>(DisplayMessage.class));
         tableTXWithHits.setColumnOrder("field", "hit", "content");
+        tableTXWithHits.getColumn("field").setHeaderCaption("Field");
+        tableTXWithHits.getColumn("hit").setHeaderCaption("Hit");
+        tableTXWithHits.getColumn("content").setHeaderCaption("Content");
         tableTXWithHits.removeColumn("id");
 
         tableTXWithHits.setSelectionMode(Grid.SelectionMode.SINGLE);
@@ -134,6 +140,13 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         tableResults.setContainerDataSource(new BeanItemContainer<>(DisplayResult.class));
         tableResults.setColumnOrder("watchList", "wlid", "field", "value", "descr");
+        tableResults.getColumn("watchList").setHeaderCaption("Watchlist");
+
+        tableResults.getColumn("wlid").setHeaderCaption("WL ID");
+        tableResults.getColumn("field").setHeaderCaption("Field");
+        tableResults.getColumn("value").setHeaderCaption("Content");
+        tableResults.getColumn("descr").setHeaderCaption("Description");
+
         tableResults.removeColumn("id");
         tableResults.setSelectionMode(Grid.SelectionMode.SINGLE);
 
@@ -644,8 +657,10 @@ public class HitHandlingView extends VerticalLayout implements View {
         textPane_Comment = new TextArea("Comment");
         textPane_Comment.setSizeFull();
         txDetails.addComponent(textPane_Comment);
-
+        txDetails.setExpandRatio(textPane_Comment, 1);
         txDetails.setSizeFull();
+
+        Component component = UIHelper.wrapWithVerticalTopMargin(UIHelper.wrapWithPanel(UIHelper.wrapWithVertical(txDetails), "Transaction Details", FontAwesome.LIST));
 
         // left side
 
@@ -653,8 +668,9 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         // Put other components in the panel
         tableTXWithHits.setSizeFull();
-        listEntryAndDetails.setFirstComponent(tableTXWithHits);
-        listEntryAndDetails.setSecondComponent(txDetails);
+
+        listEntryAndDetails.setFirstComponent(UIHelper.wrapWithVerticalBottomMargin(tableTXWithHits));
+        listEntryAndDetails.setSecondComponent(component);
         listEntryAndDetails.setSplitPosition(75, Unit.PERCENTAGE);
         listEntryAndDetails.setSizeFull();
 
@@ -663,17 +679,21 @@ public class HitHandlingView extends VerticalLayout implements View {
         // listEntryAndDetails.setExpandRatio(txDetails, 2);
 
         final TabSheet tabsheetTX = new TabSheet();
-        tabsheetTX.addTab(listEntryAndDetails).setCaption("Transaction");
+        tabsheetTX.addStyleName("framed");
+        tabsheetTX.addTab(UIHelper.wrapWithVertical(listEntryAndDetails)).setCaption("Transaction");
         tabsheetTX.setSizeFull();
 
         // right side
         final TabSheet tabsheetHits = new TabSheet();
-
+        tabsheetHits.addStyleName("framed");
         final VerticalSplitPanel hitsAndDetails = new VerticalSplitPanel();
 
         // Put other components in the panel
-        hitsAndDetails.setFirstComponent(tableResults);
-        hitsAndDetails.setSecondComponent(sanctionListDetails);
+
+        component = UIHelper.wrapWithVerticalTopMargin(UIHelper.wrapWithPanel(UIHelper.wrapWithVertical(sanctionListDetails), "Watchlist Details", FontAwesome.LIST));
+
+        hitsAndDetails.setFirstComponent(UIHelper.wrapWithVerticalBottomMargin(tableResults));
+        hitsAndDetails.setSecondComponent(component);
         hitsAndDetails.setSplitPosition(60, Unit.PERCENTAGE);
 
         // VerticalLayout hitsAndDetails = new VerticalLayout(tableResults, listDetails);
@@ -681,15 +701,15 @@ public class HitHandlingView extends VerticalLayout implements View {
         // hitsAndDetails.setExpandRatio(listDetails, 1);
         hitsAndDetails.setSizeFull();
 
-        tabsheetHits.addTab(hitsAndDetails).setCaption("List Hits");
-        tabsheetHits.addTab(tableWordHits).setCaption("Word Hits");
+        tabsheetHits.addTab(UIHelper.wrapWithVertical(hitsAndDetails)).setCaption("List Hits");
+        tabsheetHits.addTab(UIHelper.wrapWithVertical(tableWordHits)).setCaption("Word Hits");
         tabsheetHits.setSizeFull();
 
         final VerticalLayout vll = new VerticalLayout(tabsheetTX);
         final VerticalLayout vlr = new VerticalLayout(tabsheetHits);
-        vll.setMargin(true);
+        // vll.setMargin(true);
         vll.setSizeFull();
-        vlr.setMargin(true);
+        // vlr.setMargin(true);
         vlr.setSizeFull();
 
         final HorizontalSplitPanel grids = new HorizontalSplitPanel();

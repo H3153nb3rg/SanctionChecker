@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +17,9 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.jps.sanction.core.io.db.DBHelper;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 
 public abstract class SanctionListHandlerImpl extends BaseFileHandler implements SanctionListHandler {
 
@@ -45,24 +47,27 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     private HashMap<String, WL_Entity> entityListSortedById;
 
     protected void archiveFile(final String filename, final String targetDir, final String targetfilename) {
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
 
-        final String targetfile = targetDir + File.separator + sdf.format(new Date()) + "-" + targetfilename;
+        if ((filename != null) && (targetDir != null) && (targetfilename != null)) {
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
 
-        try {
-            FileUtils.copyFile(new File(filename), new File(targetfile));
+            final String targetfile = targetDir + File.separator + sdf.format(new Date()) + "-" + targetfilename;
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("(" + getListName() + ") Copy File : [" + filename + "] to [" + targetfilename + "]");
+            try {
+                FileUtils.copyFile(new File(filename), new File(targetfile));
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("(" + getListName() + ") Copy File : [" + filename + "] to [" + targetfilename + "]");
+                }
             }
-        }
-        catch (final IOException e) {
+            catch (final IOException e) {
 
-            if (logger.isErrorEnabled()) {
-                logger.error("Copy File : [" + filename + "] to [" + targetfilename + "] failed!!");
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Exception : ", e);
+                if (logger.isErrorEnabled()) {
+                    logger.error("Copy File : [" + filename + "] to [" + targetfilename + "] failed!!");
+                }
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception : ", e);
+                }
             }
         }
     }
@@ -78,6 +83,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
             this.pwd = pwd;
         }
 
+        @Override
         public PasswordAuthentication getPasswordAuthentication() {
             // I haven't checked getRequestingScheme() here, since for NTLM
             // and Negotiate, the usrname and password are all the same.
@@ -104,7 +110,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
             targetfile.deleteOnExit();
 
             // if usr/pwd is set just do
-            if (getHttpUser() != null && getHttpPwd() != null) {
+            if ((getHttpUser() != null) && (getHttpPwd() != null)) {
                 Authenticator.setDefault(new MyAuthenticator(getHttpUser(), getHttpPwd()));
             }
 
@@ -198,6 +204,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return fuzzySearch;
     }
 
+    @Override
     public String getListDescription() {
         return description;
     }
@@ -208,13 +215,13 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     }
 
     public void setFourEyesPrinciple(boolean foureyesprincipleEnabled) {
-        this.fourEyesPrinciple = foureyesprincipleEnabled;
+        fourEyesPrinciple = foureyesprincipleEnabled;
     }
 
     public void setDelimiters(String delimiters) {
 
         this.delimiters = "";
-        StringTokenizer tokenizer = new StringTokenizer(delimiters, ",");
+        final StringTokenizer tokenizer = new StringTokenizer(delimiters, ",");
 
         while (tokenizer.hasMoreTokens()) {
             this.delimiters += tokenizer.nextToken(); // ,
@@ -224,7 +231,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     public void setDeadCharacters(String deadCharacters) {
 
         this.deadCharacters = "";
-        StringTokenizer tokenizer = new StringTokenizer(deadCharacters, ",");
+        final StringTokenizer tokenizer = new StringTokenizer(deadCharacters, ",");
 
         while (tokenizer.hasMoreTokens()) {
             this.deadCharacters += tokenizer.nextToken();
@@ -297,14 +304,19 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     }
 
     public void addWLEntry(final WL_Entity entity) {
+
+        entity.setListName(getListName());
+
         getEntityList().add(entity);
         getEntityListSortedById().put(entity.getWL_Id(), entity);
     }
 
+    @Override
     public WL_Entity getEntityById(final String wl_id) {
         return getEntityListSortedById().get(wl_id);
     }
 
+    @Override
     public List<WL_Entity> getEntityList() {
 
         if (entityList == null) {
@@ -332,6 +344,15 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     public void setHttpUser(String httpUser) {
         this.httpUser = httpUser;
+    }
+
+    public void saveToDB(Connection connection) {
+        final DBHelper dbh = new DBHelper();
+        dbh.setConnection(connection);
+
+        for (final WL_Entity entity : getEntityList()) {
+            dbh.save_WL_Entity(entity, true);
+        }
     }
 
 }

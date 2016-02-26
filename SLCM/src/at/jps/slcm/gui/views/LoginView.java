@@ -1,22 +1,25 @@
 package at.jps.slcm.gui.views;
 
 import com.ejt.vaadin.loginform.LoginForm;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Responsive;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
-@SuppressWarnings("serial")
 public class LoginView extends LoginForm implements View {
 
     // public class LoginView extends VerticalLayout implements View {
@@ -30,53 +33,64 @@ public class LoginView extends LoginForm implements View {
     @Override
     protected Component createContent(final TextField userNameField, final PasswordField passwordField, final Button loginButton) {
 
-        final HorizontalLayout layout = new HorizontalLayout();
+        final VerticalLayout loginPanel = new VerticalLayout();
+        loginPanel.setSizeUndefined();
+        loginPanel.setSpacing(true);
+        Responsive.makeResponsive(loginPanel);
+        loginPanel.addStyleName("login-panel");
 
-        final Panel loginPanel = new Panel("Login...");
+        loginPanel.addComponent(buildLabels());
+        loginPanel.addComponent(buildFields(userNameField, passwordField, loginButton));
+        loginPanel.addComponent(new CheckBox("Remember me", true));
+        return loginPanel;
 
-        loginPanel.setWidth("350px");
-        loginPanel.setHeight("250px");
-
-        final FormLayout loginForm = new FormLayout();
-        loginForm.setMargin(true);
-        loginForm.setStyleName("loginForm");
-
-        loginButton.setEnabled(false);
-        userNameField.setRequired(true);
-        passwordField.setRequired(true);
-
-        userNameField.addValidator(new StringLengthValidator("Must be between 2 and 10 characters in length", 2, 10, false));
-        passwordField.addValidator(new StringLengthValidator("Must be between 4 and 10 characters in length", 4, 10, false));
-
-        passwordField.addValueChangeListener(new ValueChangeListener() {
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-
-                loginButton.setEnabled(userNameField.isValid() && passwordField.isValid());
-
-            }
-        });
-        userNameField.addValueChangeListener(new ValueChangeListener() {
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-
-                loginButton.setEnabled(userNameField.isValid() && passwordField.isValid());
-
-            }
-        });
-
-        loginForm.addComponent(userNameField);
-        loginForm.addComponent(passwordField);
-        loginForm.addComponent(loginButton);
-
-        loginPanel.setContent(loginForm);
-        loginPanel.setWidth(null);
-
-        layout.addComponent(loginPanel);
-        layout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
-        layout.setSizeFull();
+        // final HorizontalLayout layout = new HorizontalLayout();
+        //
+        // final Panel loginPanel = new Panel("Login...");
+        //
+        // loginPanel.setWidth("350px");
+        // loginPanel.setHeight("250px");
+        //
+        // final FormLayout loginForm = new FormLayout();
+        // loginForm.setMargin(true);
+        // loginForm.setStyleName("loginForm");
+        //
+        // loginButton.setEnabled(false);
+        // userNameField.setRequired(true);
+        // passwordField.setRequired(true);
+        //
+        // userNameField.addValidator(new StringLengthValidator("Must be between 2 and 10 characters in length", 2, 10, false));
+        // passwordField.addValidator(new StringLengthValidator("Must be between 4 and 10 characters in length", 4, 10, false));
+        //
+        // passwordField.addValueChangeListener(new ValueChangeListener() {
+        //
+        // @Override
+        // public void valueChange(final ValueChangeEvent event) {
+        //
+        // loginButton.setEnabled(userNameField.isValid() && passwordField.isValid());
+        //
+        // }
+        // });
+        // userNameField.addValueChangeListener(new ValueChangeListener() {
+        //
+        // @Override
+        // public void valueChange(final ValueChangeEvent event) {
+        //
+        // loginButton.setEnabled(userNameField.isValid() && passwordField.isValid());
+        //
+        // }
+        // });
+        //
+        // loginForm.addComponent(userNameField);
+        // loginForm.addComponent(passwordField);
+        // loginForm.addComponent(loginButton);
+        //
+        // loginPanel.setContent(loginForm);
+        // loginPanel.setWidth(null);
+        //
+        // layout.addComponent(loginPanel);
+        // layout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        // layout.setSizeFull();
 
         // HorizontalLayout layout = new HorizontalLayout();
         // layout.setSpacing(true);
@@ -86,7 +100,57 @@ public class LoginView extends LoginForm implements View {
         // layout.addComponent(passwordField);
         // layout.addComponent(loginButton);
         // layout.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
-        return layout;
+        // return layout;
+    }
+
+    private Component buildLabels() {
+        final CssLayout labels = new CssLayout();
+        labels.addStyleName("labels");
+
+        final Label welcome = new Label("Welcome");
+        welcome.setSizeUndefined();
+        welcome.addStyleName(ValoTheme.LABEL_H4);
+        welcome.addStyleName(ValoTheme.LABEL_COLORED);
+        labels.addComponent(welcome);
+
+        // final Label title = new Label("Sanction Analyzer Case Management");
+        // title.setSizeUndefined();
+        // title.addStyleName(ValoTheme.LABEL_H3);
+        // title.addStyleName(ValoTheme.LABEL_LIGHT);
+        // labels.addComponent(title);
+        return labels;
+    }
+
+    private Component buildFields(final TextField userNameField, final PasswordField passwordField, final Button loginButton) {
+        final HorizontalLayout fields = new HorizontalLayout();
+        fields.setSpacing(true);
+        fields.addStyleName("fields");
+
+        // final TextField username = new TextField("Username");
+        userNameField.setIcon(FontAwesome.USER);
+        userNameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
+        // final PasswordField password = new PasswordField("Password");
+        passwordField.setIcon(FontAwesome.LOCK);
+        passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
+        // final Button signin = new Button("Sign In");
+        loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        loginButton.setClickShortcut(KeyCode.ENTER);
+        loginButton.focus();
+
+        fields.addComponents(userNameField, passwordField, loginButton);
+        fields.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
+
+        // loginButton.addClickListener(new ClickListener() {
+        // @Override
+        // public void buttonClick(final ClickEvent event) {
+        //// DashboardEventBus.post(new UserLoginRequestedEvent(username
+        //// .getValue(), password.getValue()));
+        // }
+        // });
+
+        return fields;
     }
 
     @Override
@@ -121,7 +185,7 @@ public class LoginView extends LoginForm implements View {
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        Notification.show("Howdy Fella.");
+        Notification.show("Login", "Login to play with this magnificent fundimental great application", Type.ASSISTIVE_NOTIFICATION);
     }
 
     // private Button loginButton() {

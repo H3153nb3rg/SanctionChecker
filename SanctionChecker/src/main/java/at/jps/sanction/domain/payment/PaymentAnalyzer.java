@@ -28,8 +28,8 @@ import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.WordHitInfo;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 
 public abstract class PaymentAnalyzer extends AnalyzerWorker {

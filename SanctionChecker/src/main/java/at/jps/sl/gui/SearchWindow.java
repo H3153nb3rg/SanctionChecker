@@ -39,7 +39,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sl.gui.core.SearchTableModelHandler;
+import at.jps.sl.gui.model.watchlist.SearchTableModelHandler;
 import at.jps.sl.gui.util.GUIConfigHolder;
 
 public class SearchWindow extends JFrame {

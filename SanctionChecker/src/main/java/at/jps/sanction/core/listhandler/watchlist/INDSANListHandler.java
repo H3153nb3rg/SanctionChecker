@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
-import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Name;
 
 public class INDSANListHandler extends SanctionListHandlerImpl {
 

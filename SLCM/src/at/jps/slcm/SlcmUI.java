@@ -1,5 +1,9 @@
 package at.jps.slcm;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+
 import javax.servlet.annotation.WebServlet;
 
 import org.springframework.context.ApplicationContext;
@@ -14,26 +18,40 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.DefaultErrorHandler;
+import com.vaadin.server.Responsive;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import at.jps.sanction.model.listhandler.ReferenceListHandler;
+import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sl.gui.AdapterHelper;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.slcm.gui.views.HitHandlingView;
 import at.jps.slcm.gui.views.ListSearchView;
 import at.jps.slcm.gui.views.LoginView;
+import at.jps.slcm.gui.views.OptiTxListView;
+import at.jps.slcm.gui.views.ReferenceListView;
+import at.jps.slcm.gui.views.ValueListView;
 
 @SuppressWarnings("serial")
 @Theme("slcm")
@@ -44,40 +62,24 @@ public class SlcmUI extends UI {
     public static class Servlet extends VaadinServlet {
     }
 
-    // private Grid tableTXWithHits = new Grid();
-    // private Grid tableResults = new Grid();
-    // private Grid tableWordHits = new Grid();
-    // private Grid tableEntityNameDetails = new Grid();
-    // private Grid tableEntityRelations = new Grid();
-    //
-    // private TextField textField_AnalysisTime;
-    // private TextArea textPane_Comment;
-    // private ComboBox textPane_LegalBack;
-    // private TextField textField_Type;
-    // private TextField textField_ListDescription;
-    // private TextArea textPane_Remark;
-    //
-    // private ComboBox comboBox_Category;
+    private static AdapterHelper                guiAdapter      = new AdapterHelper();
 
-    private static AdapterHelper guiAdapter  = new AdapterHelper();
+    private static boolean                      initialized     = false;
 
-    private static boolean       initialized = false;
+    public static String                        newline         = System.getProperty("line.separator");
 
-    public static String         newline     = System.getProperty("line.separator");
-                                             // -----------------------------
+    Navigator                                   navigator;
 
-    // private DisplayResultService displayResultService = new DisplayResultService();
-    // private DisplayMessageService displayMessageService = new DisplayMessageService();
-    // private DisplayNameDetailsService displayNameDetailsService = new DisplayNameDetailsService();
-    // private DisplayWordHitService displayWordHitService = new DisplayWordHitService();
-    // private DisplayRelationService displayRelationService = new DisplayRelationService();
-    //
-    // private String selectedToken = "";
-    // private String selectedFieldContent = "";
+    String                                      loggedInUser;
 
-    Navigator                    navigator;
+    ComponentContainer                          viewDisplay;
 
-    String                       loggedInUser;
+    CssLayout                                   menu            = new CssLayout();
+    CssLayout                                   menuItemsLayout = new CssLayout();
+
+    private final LinkedHashMap<String, String> menuItems       = new LinkedHashMap<String, String>();
+
+    private boolean                             testMode        = false;
 
     UI getMainWindow() {
         return this;
@@ -128,11 +130,21 @@ public class SlcmUI extends UI {
 
         }
 
+        if (request.getParameter("test") != null) {
+            testMode = true;
+        }
+        if (!testMode) {
+            Responsive.makeResponsive(this);
+        }
+
+        getPage().setTitle("Sanction Analysis Case Management");
+
         // left slider
         // final VerticalLayout leftDummyContent = dummyContent("Oke", 3);
         //
         // leftDummyContent.setWidth(200, Unit.PIXELS);
-        // final SliderPanel leftSlider = new SliderPanelBuilder(leftDummyContent, "Menu").mode(SliderMode.LEFT).tabPosition(SliderTabPosition.MIDDLE).autoCollapseSlider(true).animationDuration(500)
+        // final SliderPanel leftSlider = new SliderPanelBuilder(leftDummyContent,
+        // "Menu").mode(SliderMode.LEFT).tabPosition(SliderTabPosition.MIDDLE).autoCollapseSlider(true).animationDuration(500)
         // .flowInContent(true).style(SliderPanelStyles.COLOR_WHITE).build();
 
         final VerticalLayout layout = new VerticalLayout();
@@ -141,20 +153,27 @@ public class SlcmUI extends UI {
         layout.setSizeFull();
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
+        final CssLayout menuArea = new CssLayout();
+        menuArea.setPrimaryStyleName("valo-menu");
+
         final HorizontalLayout contentLayout = new HorizontalLayout();
         contentLayout.setSpacing(false);
         contentLayout.setSizeFull();
 
         final VerticalLayout container = new VerticalLayout();
         container.setSizeFull();
-        container.setMargin(true);
+        // container.setMargin(true);
+        container.addStyleName("v-scrollable");
         container.setSpacing(true);
+        container.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
         // contentLayout.addComponent(leftSlider);
+        contentLayout.addComponent(menuArea);
         contentLayout.addComponent(container);
         contentLayout.setExpandRatio(container, 1);
 
         layout.addComponent(contentLayout);
+        layout.setExpandRatio(contentLayout, 1);
 
         setContent(layout);
 
@@ -162,11 +181,146 @@ public class SlcmUI extends UI {
 
         navigator = new Navigator(UI.getCurrent(), viewDisplay);
         navigator.addView("", new LoginView());
+
         navigator.addView(HitHandlingView.ViewName, new HitHandlingView(guiAdapter));
         navigator.addView(ListSearchView.ViewName, new ListSearchView(guiAdapter));
 
+        menuItems.put(HitHandlingView.ViewName, "TX Handling");
+        menuItems.put(ListSearchView.ViewName, "Search in Watchlists");
+
+        // add valueLists
+        for (final String lname : guiAdapter.getConfig().getValueLists().keySet()) {
+
+            final ValueListHandler lh = guiAdapter.getConfig().getValueLists().get(lname);
+
+            final ValueListView lv = new ValueListView(guiAdapter, lh);
+            navigator.addView(lv.getViewname(), lv);
+
+            menuItems.put(lv.getViewname(), "view " + lh.getListName());
+
+        }
+
+        // addReferenceLists
+        for (final String lname : guiAdapter.getConfig().getReferenceLists().keySet()) {
+
+            final ReferenceListHandler lh = guiAdapter.getConfig().getReferenceLists().get(lname);
+
+            final ReferenceListView lv = new ReferenceListView(guiAdapter, lh);
+            navigator.addView(lv.getViewname(), lv);
+
+            menuItems.put(lv.getViewname(), "view " + lh.getListName());
+        }
+
+        OptiTxListView lv = new OptiTxListView(guiAdapter, guiAdapter.getConfig().getTxHitOptimizationListHandler());
+        navigator.addView(lv.getViewname(), lv);
+
+        menuItems.put(lv.getViewname(), "view " + guiAdapter.getConfig().getTxHitOptimizationListHandler().getListName());
+
+        lv = new OptiTxListView(guiAdapter, guiAdapter.getConfig().getTxNoHitOptimizationListHandler());
+        navigator.addView(lv.getViewname(), lv);
+
+        menuItems.put(lv.getViewname(), "view " + guiAdapter.getConfig().getTxNoHitOptimizationListHandler().getListName());
+
+        navigator.addViewChangeListener(new ViewChangeListener() {
+
+            @Override
+            public boolean beforeViewChange(final ViewChangeEvent event) {
+                return true;
+            }
+
+            @Override
+            public void afterViewChange(final ViewChangeEvent event) {
+                for (final Iterator<Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                    it.next().removeStyleName("selected");
+                }
+                for (final Entry<String, String> item : menuItems.entrySet()) {
+                    if (event.getViewName().equals(item.getKey())) {
+                        for (final Iterator<Component> it = menuItemsLayout.iterator(); it.hasNext();) {
+                            final Component c = it.next();
+                            if ((c.getCaption() != null) && c.getCaption().startsWith(item.getValue())) {
+                                c.addStyleName("selected");
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                menu.removeStyleName("valo-menu-visible");
+            }
+        });
+
+        menuArea.addComponent(buildMenu());
+
         setErrorHandler(layout);
 
+    }
+
+    private Component buildMenu() {
+
+        final CssLayout menu = new CssLayout();
+        menu.addStyleName("valo-menu-part");
+
+        final HorizontalLayout top = new HorizontalLayout();
+        top.setWidth("100%");
+        top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+        top.addStyleName("valo-menu-title");
+        menu.addComponent(top);
+
+        final Label title = new Label("<h3>CM <strong>Sanction Analyzer</strong></h3>", ContentMode.HTML);
+        title.setSizeUndefined();
+        top.addComponent(title);
+        top.setExpandRatio(title, 1);
+
+        final MenuBar settings = new MenuBar();
+        settings.addStyleName("user-menu");
+
+        final MenuItem settingsItem = settings.addItem("Jim" + " " + "Fandango", new ThemeResource("img/profile-pic-300px.jpg"), null);
+        settingsItem.addItem("Edit Profile", null);
+        settingsItem.addItem("Preferences", null);
+        settingsItem.addSeparator();
+        settingsItem.addItem("Sign Out", null);
+        menu.addComponent(settings);
+
+        menuItemsLayout.setPrimaryStyleName("valo-menuitems");
+        menu.addComponent(menuItemsLayout);
+
+        Label label = null;
+
+        int i = 0;
+        for (final Entry<String, String> item : menuItems.entrySet()) {
+
+            if (i == 0) {
+
+                label = new Label("Transactions", ContentMode.HTML);
+                label.setPrimaryStyleName("valo-menu-subtitle");
+                label.addStyleName("h4");
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+            }
+            if (i == 2) {
+                label = new Label("Listhandling", ContentMode.HTML);
+                label.setValue("Listhandling" + " <span class=\"valo-menu-badge\">" + 4 + "</span>");
+                label.setPrimaryStyleName("valo-menu-subtitle");
+                label.addStyleName("h4");
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+
+            }
+            final Button b = new Button(item.getValue(), new ClickListener() {
+                @Override
+                public void buttonClick(final ClickEvent event) {
+                    navigator.navigateTo(item.getKey());
+                }
+            });
+            b.setHtmlContentAllowed(true);
+            b.setPrimaryStyleName("valo-menu-item");
+            // b.setIcon(testIcon.get());
+            menuItemsLayout.addComponent(b);
+
+            i++;
+        }
+
+        return menu;
     }
 
     private void setErrorHandler(final Layout layout) {

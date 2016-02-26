@@ -35,7 +35,7 @@ import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.queue.QueueEventListener;
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 import at.jps.sanction.model.worker.Worker;
 import at.jps.sanction.model.worker.in.InputWorker;

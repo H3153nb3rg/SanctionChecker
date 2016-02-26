@@ -22,13 +22,13 @@ import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 import at.jps.sanction.model.WatchListInformant;
 import at.jps.sanction.model.WordHitInfo;
-import at.jps.sanction.model.sl.entities.WL_Entity;
-import at.jps.sanction.model.sl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Name;
 
 public class SanctionTableModelHandler implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -1980383744603760444L;
 
@@ -195,7 +195,7 @@ public class SanctionTableModelHandler implements Serializable {
                 if (rowFieldlist == null) {
                     rowFieldlist = new HashMap<Integer, String>(analysisResult.getHitList().size());
                     int i = analysisResult.getHitList().size() - 1;
-                    for (HitResult hitResult : analysisResult.getHitList()) {
+                    for (final HitResult hitResult : analysisResult.getHitList()) {
 
                         rowFieldlist.put(new Integer(i), hitResult.getHitField());
                         i--;
@@ -345,7 +345,7 @@ public class SanctionTableModelHandler implements Serializable {
                 if (rowFieldlist == null) {
                     rowFieldlist = new HashMap<Integer, String>(analysisResult.getHitTokensList().size());
                     int i = 0;
-                    for (WordHitInfo wordHitInfo : analysisResult.getHitTokensList()) {
+                    for (final WordHitInfo wordHitInfo : analysisResult.getHitTokensList()) {
 
                         rowFieldlist.put(new Integer(i), wordHitInfo.getFieldName());
                         i++;
@@ -460,7 +460,7 @@ public class SanctionTableModelHandler implements Serializable {
                 boolean check = false;
 
                 if (isSepaUglyDuckling) {
-                    for (String field : fields2Check) {
+                    for (final String field : fields2Check) {
                         if (fieldName.contains(field)) {
                             check = true;
                             break;
@@ -478,7 +478,7 @@ public class SanctionTableModelHandler implements Serializable {
                 String longName = null;
 
                 if (isSepaUglyDuckling) {
-                    for (String field : fieldNames.keySet()) {
+                    for (final String field : fieldNames.keySet()) {
                         if (fieldNameShort.contains(field)) {
                             longName = fieldNames.get(field);
                             break;
@@ -502,7 +502,7 @@ public class SanctionTableModelHandler implements Serializable {
                 String value = txt;
 
                 if (isSepaUglyDuckling) {
-                    for (String field : fields2BIC) {
+                    for (final String field : fields2BIC) {
                         if (fieldName.contains(field)) {
                             value = check4BIC(txt);
                             break;
@@ -654,7 +654,7 @@ public class SanctionTableModelHandler implements Serializable {
 
     public static TableModel getEntityNameTableModel(final WL_Entity entity) {
 
-        TableModel tableModel = new TableModel() {
+        final TableModel tableModel = new TableModel() {
 
             @Override
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -675,7 +675,7 @@ public class SanctionTableModelHandler implements Serializable {
             public Object getValueAt(int rowIndex, int columnIndex) {
                 String colName = "";
 
-                WL_Name name = entity.getNames().get(rowIndex);
+                final WL_Name name = entity.getNames().get(rowIndex);
                 switch (columnIndex) {
                     case 0:
                         colName = name.getFirstName() != null ? name.getFirstName() : " ";
@@ -753,9 +753,9 @@ public class SanctionTableModelHandler implements Serializable {
 
         final WatchListInformant watchlistInformatLocal = watchlistInformat;
 
-        final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getReleations().keySet());
+        final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getRelations().keySet());
 
-        TableModel tableModel = new TableModel() {
+        final TableModel tableModel = new TableModel() {
 
             @Override
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -778,11 +778,11 @@ public class SanctionTableModelHandler implements Serializable {
 
                 // WL_Name name = focusedEntity.getReleations().keySet()..getNames().get(rowIndex);
 
-                WL_Entity enity = watchlistInformatLocal.getSanctionListEntityDetails(listname, refIdList.get(rowIndex));
+                final WL_Entity enity = watchlistInformatLocal.getSanctionListEntityDetails(listname, refIdList.get(rowIndex));
 
                 switch (columnIndex) {
                     case 0:
-                        colName = focusedEntity.getReleations().get(refIdList.get(rowIndex));
+                        colName = focusedEntity.getRelations().get(refIdList.get(rowIndex));
                         break;
                     case 1:
                         colName = enity != null ? (enity.getNames().get(0).getWholeName()) : "unknown";
@@ -801,7 +801,7 @@ public class SanctionTableModelHandler implements Serializable {
             @Override
             public int getRowCount() {
 
-                return focusedEntity.getReleations().size();
+                return focusedEntity.getRelations().size();
             }
 
             @Override

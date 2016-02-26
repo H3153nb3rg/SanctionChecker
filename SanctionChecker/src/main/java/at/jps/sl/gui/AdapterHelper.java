@@ -3,6 +3,7 @@ package at.jps.sl.gui;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.table.TableModel;
 
@@ -15,12 +16,16 @@ import at.jps.sanction.domain.payment.swift.SwiftMessage;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
+import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.WatchListInformant;
+import at.jps.sanction.model.listhandler.NoWordHitListHandler;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.sl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sl.gui.core.SearchResultRecord;
 import at.jps.sl.gui.model.sanction.SanctionTableModelHandler;
+import at.jps.sl.gui.model.watchlist.SearchTableModelHandler;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.sl.gui.util.RingBufferQueue;
 import at.jps.sl.gui.util.RingBufferQueueImpl;
@@ -74,10 +79,10 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // !!)
     private String                   streamName;
 
     // public void initializeFields2BIC() {
@@ -224,6 +229,45 @@ public class AdapterHelper implements WatchListInformant {
     public TableModel getEntityDetailsNamesTableModel(final WL_Entity entity) {
 
         final TableModel tm = SanctionTableModelHandler.getEntityNameTableModel(entity);
+
+        return tm;
+
+    }
+
+    public TableModel getValueListTableModel(final ValueListHandler valListhandler) {
+
+        final TableModel tm = SearchTableModelHandler.generateValueListTableModel(valListhandler);
+
+        return tm;
+
+    }
+
+    public TableModel getReferenceListTableModel(final ReferenceListHandler refListhandler) {
+
+        final TableModel tm = SearchTableModelHandler.generateReferenceListTableModel(refListhandler);
+
+        return tm;
+    }
+
+    public TableModel getWatchListTableModel(final List<SearchResultRecord> resultSet) {
+
+        final TableModel tm = SearchTableModelHandler.generateWatchListTableModel(resultSet);
+
+        return tm;
+
+    }
+
+    public TableModel getNoWordHitListTableModel(NoWordHitListHandler valListhandler) {
+
+        final TableModel tm = SearchTableModelHandler.generateNoHitListTableModel(valListhandler);
+
+        return tm;
+
+    }
+
+    public TableModel getOptimizationListTableModel(List<OptimizationRecord> resultSet) {
+
+        final TableModel tm = SearchTableModelHandler.generateOptiListTableModel(resultSet);
 
         return tm;
 

@@ -1,4 +1,4 @@
-package at.jps.sanction.model.sl.entities;
+package at.jps.sanction.model.wl.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,9 +15,10 @@ public class WL_Entity implements Serializable {
      */
     private static final long       serialVersionUID = 350588830084232520L;
 
-    private List<String>            legalBasises;                          // to add date to
-                                                                           // LB !!!!
+    private List<String>            legalBasises;                                                                                                        // to add date to
+                                                                                                                                                         // LB !!!!
 
+    private String                  listName;
     private String                  comment;
     private String                  issueDate;
     private String                  type;
@@ -35,13 +36,14 @@ public class WL_Entity implements Serializable {
     private List<WL_Name>           names;
     private List<WL_Passport>       passports;
     private List<WL_Address>        addresses;
+    private WL_Attribute            attributes;
 
-    private String                  entryType;                                                                                                                                                                                                                                                                                                   // PEP
+    private String                  entryType;                                                                                                                                                                                                                                                                                                                                                                                          // PEP
 
     // /
     // Sanctiontype
 
-    private HashMap<String, String> releations;
+    private HashMap<String, String> relations;
 
     public String getComment() {
         return comment;
@@ -127,7 +129,7 @@ public class WL_Entity implements Serializable {
     }
 
     public void setWL_Id(final String id) {
-        this.wl_id = id;
+        wl_id = id;
     }
 
     @Deprecated
@@ -164,17 +166,33 @@ public class WL_Entity implements Serializable {
         this.type = type;
     }
 
-    public HashMap<String, String> getReleations() {
+    public HashMap<String, String> getRelations() {
 
-        if (releations == null) {
-            releations = new HashMap<String, String>();
+        if (relations == null) {
+            relations = new HashMap<String, String>();
         }
 
-        return releations;
+        return relations;
     }
 
     public void addReleation(final String wl_id, final String type) {
-        getReleations().put(wl_id, type);
+        getRelations().put(wl_id, type);
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
+    public WL_Attribute getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(WL_Attribute attributes) {
+        this.attributes = attributes;
     }
 
 }

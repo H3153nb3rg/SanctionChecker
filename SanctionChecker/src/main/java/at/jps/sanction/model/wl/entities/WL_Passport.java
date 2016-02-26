@@ -1,4 +1,4 @@
-package at.jps.sanction.model.sl.entities;
+package at.jps.sanction.model.wl.entities;
 
 import java.io.Serializable;
 
