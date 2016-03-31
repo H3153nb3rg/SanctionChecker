@@ -11,10 +11,14 @@ package at.jps.sanction.model.io.file;
 import java.io.File;
 
 import at.jps.sanction.core.StreamManager;
+import at.jps.sanction.model.Message;
+import at.jps.sanction.model.queue.Queue;
 
 public interface FileParser {
 
     boolean parse(File file);
+
+    void setQueue(Queue<Message> queue);
 
     void setStreamManager(StreamManager manager);
 

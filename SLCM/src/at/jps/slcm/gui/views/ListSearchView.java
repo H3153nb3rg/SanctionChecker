@@ -1,5 +1,8 @@
 package at.jps.slcm.gui.views;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import javax.swing.table.TableModel;
 
 import com.vaadin.addon.contextmenu.ContextMenu;
@@ -12,8 +15,10 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.StreamResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
@@ -26,8 +31,11 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sl.gui.AdapterHelper;
@@ -88,6 +96,10 @@ public class ListSearchView extends VerticalLayout implements View {
         combo_watchlist.setNullSelectionAllowed(true);
 
         textField_searchToken = new TextField();
+
+        textField_searchToken.setIcon(FontAwesome.QUESTION);
+        textField_searchToken.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
         final Button buttonSearch = new Button("start Search");
         buttonSearch.setIcon(FontAwesome.SEARCH);
         buttonSearch.setClickShortcut(KeyCode.ENTER);
@@ -164,7 +176,11 @@ public class ListSearchView extends VerticalLayout implements View {
             }
         });
 
-        searchResultsTab.addTab(UIHelper.wrapWithVertical(tableSearchResult)).setCaption("Search Results");
+        final Component tsr = UIHelper.wrapWithVertical(tableSearchResult);
+        tsr.setCaption("Search Results");
+        tsr.setIcon(FontAwesome.INFO);
+
+        searchResultsTab.addTab(tsr);
         searchResultsTab.setSizeFull();
 
         layout.addComponent(searchResultsTab);
@@ -221,6 +237,8 @@ public class ListSearchView extends VerticalLayout implements View {
 
     public Component buildMenuBar() {
 
+        // TEST ONLY
+
         final VerticalLayout layout = new VerticalLayout();
 
         final MenuBar barmenu = new MenuBar();
@@ -228,7 +246,12 @@ public class ListSearchView extends VerticalLayout implements View {
 
         // Define a common menu command for all the menu items
         final MenuBar.Command mycommand = new MenuBar.Command() {
-            MenuItem previous = null;
+
+            /**
+             *
+             */
+            private static final long serialVersionUID = -2449165909845224538L;
+            MenuItem                  previous         = null;
 
             @Override
             public void menuSelected(MenuItem selectedItem) {
@@ -266,6 +289,46 @@ public class ListSearchView extends VerticalLayout implements View {
         return layout;
     }
 
+    private void showHierarchyChart() {
+        final Window window = new Window("Hierarchy");
+        window.setWidth(400.0f, Unit.PIXELS);
+        window.setHeight(400.0f, Unit.PIXELS);
+
+        final String content = "<html>\r\n" + "  <head>\r\n" + "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n"
+                + "    <script type=\"text/javascript\">\r\n" + "      google.charts.load('current', {packages:[\"orgchart\"]});\r\n" + "      google.charts.setOnLoadCallback(drawChart);\r\n" + "\r\n"
+                + "      function drawChart() {\r\n" + "        var data = new google.visualization.DataTable();\r\n" + "        data.addColumn('string', 'Name');\r\n"
+                + "        data.addColumn('string', 'Manager');\r\n" + "        data.addColumn('string', 'ToolTip');\r\n" + "\r\n"
+                + "        // For each orgchart box, provide the name, manager, and tooltip to show.\r\n" + "        data.addRows([\r\n"
+                + "          [{v:'Mike', f:'Mike<div style=\"color:red; font-style:italic\">President</div>'},\r\n" + "           '', 'The President'],\r\n"
+                + "          [{v:'Jim', f:'Jim<div style=\"color:red; font-style:italic\">Vice President</div>'},\r\n" + "           'Mike', 'VP'],\r\n" + "          ['Alice', 'Mike', ''],\r\n"
+                + "          ['Bob', 'Jim', 'Bob Sponge'],\r\n" + "          ['Carol', 'Bob', '']\r\n" + "        ]);\r\n" + "\r\n" + "        // Create the chart.\r\n"
+                + "        var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));\r\n"
+                + "        // Draw the chart, setting the allowHtml option to true for the tooltips.\r\n" + "        chart.draw(data, {allowHtml:true});\r\n" + "      }\r\n" + "   </script>\r\n"
+                + "    </head>\r\n" + "  <body>\r\n" + "    <div id=\"chart_div\"></div>\r\n" + "  </body>\r\n" + "</html>";
+
+        final StreamResource stream = new StreamResource(new StreamResource.StreamSource() {
+
+            /**
+             *
+             */
+            private static final long serialVersionUID = 6872585029763260959L;
+
+            @Override
+            public InputStream getStream() {
+                return new ByteArrayInputStream(content.getBytes());
+            }
+        }, "");
+        stream.setMIMEType("text/html");
+
+        final BrowserFrame sample = new BrowserFrame("vaadin.com", stream);
+        sample.setSizeFull();
+
+        // content.addComponent(sample);
+        window.setContent(sample);
+
+        UI.getCurrent().addWindow(window);
+    }
+
     private void addRelationPopup() {
 
         // add contextmenu
@@ -301,6 +364,18 @@ public class ListSearchView extends VerticalLayout implements View {
                             textField_searchToken.setValue(selectedToken);
                             Notification.show("search it...");
                             startSearch(selectedWatchList, selectedToken);
+                        }
+                    });
+
+                    tableWordHitsContextMenu.addItem("show hierarchy", new Command() {
+                        /**
+                         *
+                         */
+                        private static final long serialVersionUID = -7313734853304935323L;
+
+                        @Override
+                        public void menuSelected(final com.vaadin.addon.contextmenu.MenuItem selectedItem) {
+                            showHierarchyChart();
                         }
                     });
                 }

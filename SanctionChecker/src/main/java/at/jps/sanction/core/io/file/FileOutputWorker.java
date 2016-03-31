@@ -19,10 +19,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.jps.sanction.core.StreamManager;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
-import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.out.OutputWorker;
 
 public class FileOutputWorker extends OutputWorker {
@@ -39,29 +37,26 @@ public class FileOutputWorker extends OutputWorker {
         super();
     }
 
-    FileOutputWorker(final StreamManager manager, final Queue<AnalysisResult> queue) {
-        super(manager, queue);
-        initialize();
-    }
-
     String getUniqueFilename() {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-hhmmss.SSS");
 
-        final String name = getQueue().getName() + "-" + sdf.format(new Date()) + ".txt";
+        final String name = getInQueue().getName() + "-" + sdf.format(new Date()) + ".txt";
 
         return name;
 
     }
 
+    @Override
     public void initialize() {
     }
 
+    @Override
     public void close() {
         if (writer != null) {
             try {
                 writer.close();
             }
-            catch (IOException e) {
+            catch (final IOException e) {
                 logger.error("Error closing:" + filename);
                 logger.debug("Exception: ", e);
             }
@@ -112,7 +107,7 @@ public class FileOutputWorker extends OutputWorker {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 
@@ -120,7 +115,7 @@ public class FileOutputWorker extends OutputWorker {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 

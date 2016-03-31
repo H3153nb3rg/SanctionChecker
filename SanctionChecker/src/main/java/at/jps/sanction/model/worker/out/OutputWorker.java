@@ -11,7 +11,6 @@ package at.jps.sanction.model.worker.out;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.jps.sanction.core.StreamManager;
 import at.jps.sanction.core.io.file.FileOutputWorker;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.Status;
@@ -22,15 +21,21 @@ abstract public class OutputWorker extends Worker {
 
     static final Logger           logger             = LoggerFactory.getLogger(FileOutputWorker.class);
 
-    private Queue<AnalysisResult> queue;
+    private Queue<AnalysisResult> inQueue;
+    private Queue<AnalysisResult> outQueue;
     private long                  sleepMillisBetween = 0;
 
     public OutputWorker() {
         super();
     }
 
-    public OutputWorker(final StreamManager manager, final Queue<AnalysisResult> outputQueue) {
-        super(manager);
+    @Override
+    public void initialize() {
+
+        super.initialize();
+
+        assert getInQueue() != null : "InQueue not specified - see configuration";
+        // assert getOutQueue() != null : "OutQueue not specified - see configuration";
 
     }
 
@@ -39,7 +44,7 @@ abstract public class OutputWorker extends Worker {
         // check for new message and AddToQueue
         try {
 
-            message = queue.getNextMessage(true);
+            message = getInQueue().getNextMessage(true);
 
             if (message != null) {
                 handleMessage(message);
@@ -54,8 +59,8 @@ abstract public class OutputWorker extends Worker {
 
     }
 
-    public Queue<AnalysisResult> getQueue() {
-        return queue;
+    public Queue<AnalysisResult> getInQueue() {
+        return inQueue;
     }
 
     public long getSleepTimer() {
@@ -82,8 +87,8 @@ abstract public class OutputWorker extends Worker {
         }
     }
 
-    public void setQueue(final Queue<AnalysisResult> queue) {
-        this.queue = queue;
+    public void setInQueue(final Queue<AnalysisResult> queue) {
+        inQueue = queue;
     }
 
     abstract public void handleMessage(AnalysisResult message);
@@ -92,8 +97,16 @@ abstract public class OutputWorker extends Worker {
         return sleepMillisBetween;
     }
 
-    public void setSleepMillisBetween(long sleepMillisBetween) {
+    public void setSleepMillisBetween(final long sleepMillisBetween) {
         this.sleepMillisBetween = sleepMillisBetween;
+    }
+
+    public Queue<AnalysisResult> getOutQueue() {
+        return outQueue;
+    }
+
+    public void setOutQueue(final Queue<AnalysisResult> outQueue) {
+        this.outQueue = outQueue;
     }
 
 }

@@ -76,7 +76,7 @@ public class SWListHandler extends BaseFileHandler implements ValueListHandler {
 
                         logger.debug("Stopword :" + line);
 
-                        String token = line.toUpperCase();
+                        final String token = line.toUpperCase();
                         if (!getValues().contains(token)) {
                             getValues().add(token);
                         }

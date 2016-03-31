@@ -124,6 +124,8 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
                             entity.getNames().add(name);
 
                             entity.addLegalBasis(tokenizer.nextToken());
+                            entity.setComment(entity.getLegalBasises().get(0));  // dummy
+
                             addWLEntry(entity);
                         }
                     }

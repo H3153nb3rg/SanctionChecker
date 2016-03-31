@@ -15,7 +15,7 @@ public class BaseFileHandler {
         return histPath;
     }
 
-    public void setHistPath(String histPath) {
+    public void setHistPath(final String histPath) {
         this.histPath = histPath;
     }
 
@@ -23,7 +23,7 @@ public class BaseFileHandler {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 
@@ -31,7 +31,7 @@ public class BaseFileHandler {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 
@@ -39,7 +39,7 @@ public class BaseFileHandler {
         return listName;
     }
 
-    public void setListName(String listName) {
+    public void setListName(final String listName) {
         this.listName = listName;
     }
 

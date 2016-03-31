@@ -4,136 +4,268 @@
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-    <!--                          -->
+   <!--                          -->
    <!-- Stream Definition SEPA  -->
    <!--                          -->
    
-	<bean id="StreamConfigSEPA" class="at.jps.sanction.domain.payment.StreamConfig" scope="singleton" lazy-init="true">
+   <!--  default field config    -->
+    <bean id="defaultFieldConfig-SEPA" class="at.jps.sanction.model.FieldCheckConfig" >
+   		<property name="fieldName" value="default" />
+   		<property name="fuzzy" value="true" />     
+   		<property name="tokenLen" value="2" />
+   		<property name="handleAsIBAN" value="false" />
+   		<property name="handleAsBIC" value="false" />
+   		
+   		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
+   		
+   		<property name="watchlists">
+   		    <list>
+   		        <value>OFAC</value>
+   		        <value>EUList</value>
+   		        <value>INDSAN</value>
+   		        <value>FacPep</value>
+   		        <value>FacSan</value>
+   		    </list>    
+   		</property>
+		   		
+    </bean>    
+   
+	<bean id="StreamConfig-SEPA" class="at.jps.sanction.domain.payment.StreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
 	
-			<!-- fields & fuzziness -->
+	<!-- fields & fuzziness    -->
+		<!-- mapping to watchlists -->
+		<!-- BICCode check etc     -->
+		<property name="fieldsToCheck">
+		    <list>		        
+		        <!-- global setting for all fields not explicitly mentioned -->
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SEPA" >
+		       		<property name="fieldName" value="default" />		       		
+		        </bean>    
+		        		        
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SEPA" > 
+		            <!-- BIC fields -->
+		       		<property name="fieldName" value="/BIC" />
+		       		<property name="handleAsBIC" value="true" />
+		        </bean>    
+		        
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SEPA" > 
+		            <!-- standard fields -->
+		       		<property name="fieldName" value="/Nm,/Ctry,/IBAN,/BIC,/AdrLine" />		       		
+		        </bean>    
+		        		        		        
+		    </list>
+		</property>
+		
 		
 		<property name="minTokenLen" value="2"/>
 		<property name="minRelVal" value="79"/>
 		<property name="minAbsVal" value="60"/>		
-		<property name="fuzzyVal" value="20"/>		
-		
+		<property name="fuzzyVal" value="20"/>
+				
+		<!-- 
 		<property name="checkFields" value="/Nm,/Ctry,/IBAN,/BIC,/AdrLine"/>		
 		<property name="BICFields" value="/BIC"/>		
 		<property name="fuzzyFields" value="/Nm,/AdrLine"/>		
-		
+		 -->
+		 
+		<!-- Queues that will be used by GUI application -->
+		<!-- ALL KEYS HAVE TO BE FILLED !! -->
+		<property name="queues">
+		    <map>
+		        <entry key="inQueue" value-ref="InputQueue-SEPA"/>
+		        
+		        <entry key="hitQueue" value-ref="HitQueue-SEPA"/>
+		        <entry key="noHitQueue" value-ref="NoHitQueue-SEPA"/>
+		        
+		        <!--  for 4AP not used by now -->
+		        <entry key="postProcessHitQueue" value-ref="PostHitQueue-SEPA"/>
+		        <entry key="postProcessNoHitQueue" value-ref="PostNoHitQueue-SEPA"/>
+		        
+		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-SEPA"/>
+		        <entry key="finalHitQueue" value-ref="FinalHitQueue-SEPA"/>
+		        
+		        <entry key="backlogQueue" value-ref="BacklogQueue-SEPA"/>
+		        
+		    </map>
+		</property>
+		 
+		 
 	</bean>
 
    
-   <bean id="StreamManagerSEPA" class="at.jps.sanction.domain.payment.PaymentStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+   <bean id="StreamManager-SEPA" class="at.jps.sanction.domain.payment.PaymentStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
 
 		<property name="streamName" value="SEPA"/>
 		
 		<property name="streamConfig">
-			<ref bean="StreamConfigSEPA"/>
+			<ref bean="StreamConfig-SEPA"/>
 		</property>
+   	
    
-		<property name="purgeQueuesOnStartup" value="true"/>
-   
-		<!-- workers counters -->
-		
-		<property name="nrWorkersInput" value="1"/>
-		<property name="nrWorkersOutputHit" value="0"/>
-		<property name="nrWorkersOutputNoHit" value="0"/>
-		<property name="nrWorkersError" value="1"/>
-		<property name="nrWorkersChecker" value="4"/>
-		<property name="nrWorkersPostHit" value="1"/>
-		<property name="nrWorkersPostNoHit" value="1"/>
+		<!-- workers -->
+		<!-- can almost be individually defined-->
+		<property name="workers" >
+			<list>
+				<!-- bring msgs from filesystem into system -->
+				<ref bean="InputProcessor-SEPA"/>    
 				
-		<!-- used queues -->
+				<!-- hit analysis / in parallel = 4 times defined -->
+				<ref bean="MessageAnalyser-SEPA"/>
+				<ref bean="MessageAnalyser-SEPA"/>
+				<ref bean="MessageAnalyser-SEPA"/>
+				<ref bean="MessageAnalyser-SEPA"/>
 				
-		<property name="inputQueue" >
-			<ref bean="InputQueueFile"/>
-		</property>
-		
-		<property name="defectQueue" >
-			<ref bean="DefectQueueFile"/>
-		</property>
-		
-		<property name="hitQueue" >
-			<ref bean="HitQueueFile"/>
-		</property>
-		
-		<property name="noHitQueue" >
-			<ref bean="NoHitQueueFile"/>
-		</property>
-		
-		<property name="postProcessHitQueue" >
-			<ref bean="PostHitQueueFile"/>
-		</property>
-		
-		<property name="postProcessNoHitQueue" >
-			<ref bean="PostNoHitQueueFile"/>
-		</property>
+				<!-- analyse results -->
+				<ref bean="PostProcessorHit-SEPA"/>
+				<ref bean="PostProcessorNoHit-SEPA"/>
 
-		<property name="txNoHitOptimizationListHandler" >   
-   			<ref bean="OptiNoHitList"/>
+				<!-- document result -->
+				<ref bean="OutputProcessorHit-SEPA"/>
+				<ref bean="OutputProcessorNoHit-SEPA"/>
+				
+				<!-- collect unparsable msgs -->
+				<ref bean="ErrorProcessor-SEPA"/>
+				
+			</list>			
 		</property>
-		
-		<property name="txHitOptimizationListHandler" >   
-   			<ref bean="OptiHitList"/>
-		</property>
-						
-		<property name="noWordHitListHandler" >   
-   			<ref bean="NoWordHitList"/>
-		</property>
-		
+					
 	</bean>
 
    <!-- workers -->
    
-	<bean id="InputProcessor" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-		<property name="path" value="C:\temp\SanctionTest\in\sepa"/>
+	<bean id="InputProcessor-SEPA" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<property name="path" value="${Input.Folder}\sepa"/>
 		<property name="pattern" value="*.xml"/>
 		<property name="sleepMillisBetween" value="10000"/>
 		
 		<property name="fileParser" >
-			<ref bean="FileParser"/>
+			<ref bean="FileParser-SEPA"/>
 		</property>
-	</bean>
-	
-	<bean id="FileParser" class="at.jps.sanction.domain.payment.sepa.SepaFileParser" scope="prototype">
-	    
-	    <property name="streamManager" >		    
-		    	<ref bean="StreamManagerSEPA"/>    		    
-		</property>
-	    
-	</bean>
-	
-	<bean id="OutputProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-				
-		<property name="path" value="C:\temp\SanctionTest\out\sepa"/>
-		<property name="sleepMillisBetween" value="0"/>
 		
+		<!-- Queue to put parsed msg to -->
+		<property name="inputQueue" >
+			<ref bean="InputQueue-SEPA"/>
+		</property>	
+
+		<!-- Queue to put defect msg to -->
+		<property name="defectQueue" >
+			<ref bean="DefectQueue-SEPA"/>
+		</property>	
 	</bean>
 	
-	<bean id="ErrorProcessor" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
-		<property name="path" value="C:\temp\SanctionTest\out\sepa"/>
-		<property name="sleepMillisBetween" value="0"/>
-		</bean>
-	
-	<bean id="PostProcessorHit" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<bean id="FileParser-SEPA" class="at.jps.sanction.domain.payment.sepa.SepaFileParser" scope="prototype">
+	    <!-- parses SEPA messages for later analysis -->
 	</bean>
-	
-	<bean id="PostProcessorNoHit" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
-	</bean>
-				
-	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-	</bean -->
-	
-	<bean id="MessageAnalyser" class="at.jps.sanction.domain.payment.sepa.SepaAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+
+		<!-- AnalyserProcessor               -->
+	<!-- Task: analyse msgs / group hits -->	
+	<bean id="MessageAnalyser-SEPA" class="at.jps.sanction.domain.payment.sepa.SepaAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
 		<property name="sleepMillisBetween" value="100"/>
+		
+		<!-- SEPA msg types supported == property file for fieldparsing support required -->
+		
 		<property name="messageTypes">
 		    <list>
 		        <value>pacs.008</value>
 		        <value>pacs.003</value>
 		    </list>
 		</property>
+		
+		<!-- Queue read msg from -->
+		<property name="inputQueue" >
+			<ref bean="InputQueue-SEPA"/>
+		</property>	
+
+		<!-- Queue write msgs with hits -->
+		<property name="hitQueue" >
+			<ref bean="HitQueue-SEPA"/>
+		</property>	
+		
+		<!-- Queue write msgs without hits -->
+		<property name="noHitQueue" >
+			<ref bean="NoHitQueue-SEPA"/>
+		</property>	
+
+		<!-- Queue write defect msgs without hits -->
+		<property name="defectQueue" >
+			<ref bean="DefectQueue-SEPA"/>
+		</property>	
+				
+		
 	</bean>
+	
+	<!-- Human Processors  (GUI)    -->
+	
+
+	<!-- PostProcessors             -->
+	<!-- Task: analyse user results 
+	and bring msg out of the system -->
+	
+
+	<bean id="PostProcessorHit-SEPA" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	<!-- Queue read processed msgs -->
+		<property name="inQueue" >
+			<ref bean="FinalHitQueue-SEPA"/>
+		</property>	
+
+		<!-- Queue write msgs -->
+		<property name="outQueue" >
+			<ref bean="OutHitQueue-SEPA"/>
+		</property>	
+	
+	</bean>
+	
+	<bean id="PostProcessorNoHit-SEPA" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	    <!-- Queue read processed msgs -->
+		<property name="inQueue" >
+			<ref bean="FinalNoHitQueue-SEPA"/>
+		</property>	
+
+		<!-- Queue write msgs -->
+		<property name="outQueue" >
+			<ref bean="OutNoHitQueue-SEPA"/>
+		</property>	
+	</bean>
+			
+		
+	<bean id="OutputProcessorHit-SEPA" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<property name="path" value="${Output.Folder}\sepa"/>
+		<property name="sleepMillisBetween" value="0"/>
+	
+		<property name="inQueue" >
+			<ref bean="OutHitQueue-SEPA"/>
+		</property>	
+	
+	</bean>
+
+	<bean id="OutputProcessorNoHit-SEPA" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<property name="path" value="${Output.Folder}\sepa"/>
+		<property name="sleepMillisBetween" value="0"/>
+	
+		<property name="inQueue" >
+			<ref bean="OutNoHitQueue-SEPA"/>
+		</property>	
+	
+	</bean>
+	
+	<bean id="ErrorProcessor-SEPA" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">		
+		<property name="path" value="${Output.Folder}\sepa"/>
+		<property name="sleepMillisBetween" value="0"/>
+		
+		<!-- Queue read defect msgs -->
+		<property name="inQueue" >
+			<ref bean="DefectQueue-SEPA"/>
+		</property>	
+		
+	</bean>
+	
+		
+	
+				
+	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	</bean -->
+	
 
 </beans>	

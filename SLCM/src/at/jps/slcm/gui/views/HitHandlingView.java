@@ -3,14 +3,12 @@ package at.jps.slcm.gui.views;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.vaadin.cssinject.CSSInject;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.addon.contextmenu.ContextMenu;
 import com.vaadin.addon.contextmenu.ContextMenu.ContextMenuOpenListener;
 import com.vaadin.addon.contextmenu.Menu.Command;
 import com.vaadin.addon.contextmenu.MenuItem;
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
@@ -18,15 +16,15 @@ import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.server.Page.Styles;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.CellReference;
 import com.vaadin.ui.Grid.CellStyleGenerator;
 import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.Grid.GridContextClickEvent;
 import com.vaadin.ui.Grid.SingleSelectionModel;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -64,6 +62,12 @@ public class HitHandlingView extends VerticalLayout implements View {
     private final Grid                  tableResults          = new Grid();
     private final Grid                  tableWordHits         = new Grid();
 
+    private Button                      buttonNext;
+    private Button                      buttonPrev;
+    private Button                      buttonHit;
+    private Button                      buttonNoHit;
+    private Button                      buttonPostpone;
+
     // casemanagement
     private TextField                   textField_AnalysisTime;
     private TextArea                    textPane_Comment;
@@ -89,13 +93,14 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         configureComponents();
 
-        buildLayout();
+        buildPage();
     }
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        Notification.show("Work on!");
+        // Notification.show("Work on!");
 
+        doNextMessage(true);
     }
 
     private void configureComponents() {
@@ -103,14 +108,15 @@ public class HitHandlingView extends VerticalLayout implements View {
         sanctionListDetails = new SanctionListDetails(guiAdapter);
 
         // loadColors
-        final CSSInject css = new CSSInject(UI.getCurrent());
+        final Styles styles = Page.getCurrent().getStyles();
         String csss = "";
         for (final String name : guiAdapter.getFieldColors().keySet()) {
-            // csss += "$v-grid-cell." + name + " { background-color: " + guiAdapter.getFieldColorsAsHex().get(name) + ";} ";
-            csss += "." + name + " { background-color: " + guiAdapter.getFieldColorsAsHex().get(name) + ";} ";
+            // csss += ".v-grid-cell." + name + " { background-color: " + guiAdapter.getFieldColorsAsHex().get(name) + ";} ";
+            csss = "td.v-grid-cell.cell-content-" + name + " { background-color:" + guiAdapter.getFieldColorsAsHex().get(name) + "; }"; // .vapp .v-grid-cell-content-
+            styles.add(csss);
         }
 
-        css.setStyles(csss);
+        // css.setStyles(csss);
 
         /*
          * Synchronous event handling. Receive user interaction events on the server-side. This allows you to synchronously handle those events. Vaadin automatically sends only the needed changes to
@@ -144,7 +150,7 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         tableResults.getColumn("wlid").setHeaderCaption("WL ID");
         tableResults.getColumn("field").setHeaderCaption("Field");
-        tableResults.getColumn("value").setHeaderCaption("Content");
+        tableResults.getColumn("value").setHeaderCaption("Hitratio");
         tableResults.getColumn("descr").setHeaderCaption("Description");
 
         tableResults.removeColumn("id");
@@ -163,18 +169,29 @@ public class HitHandlingView extends VerticalLayout implements View {
         tableTXWithHits.setCellStyleGenerator(new CellStyleGenerator() {
 
             /**
-             *
-             */
+            *
+            */
             private static final long serialVersionUID = -7294175510804288222L;
 
             @Override
-            public String getStyle(final CellReference cell) {
+            public String getStyle(final Grid.CellReference cell) {
                 String stylename = null;
-                if ((Long) cell.getItemId() > 0) {
-                    @SuppressWarnings("unchecked")
-                    final BeanItem<DisplayMessage> beanItem = (BeanItem<DisplayMessage>) cell.getItem();
-                    stylename = beanItem.getBean().getHit();
+
+                @SuppressWarnings("unchecked")
+                final BeanItem<DisplayMessage> beanItem = (BeanItem<DisplayMessage>) cell.getItem();
+
+                if (beanItem != null) {
+                    stylename = "cell-content-" + beanItem.getBean().getHit();
+                    if (stylename.equals(" ")) {
+                        stylename = null;
+                    }
                 }
+
+                // if ((Long) cell.getItemId() > 0) {
+                // @SuppressWarnings("unchecked")
+                // final BeanItem<DisplayMessage> beanItem = (BeanItem<DisplayMessage>) cell.getItem();
+                // stylename = beanItem.getBean().getHit();
+                // }
                 // String stylename = (cell.getItemId())).getHit();
                 return stylename;
             }
@@ -206,7 +223,7 @@ public class HitHandlingView extends VerticalLayout implements View {
             @Override
             public void onContextMenuOpen(final ContextMenuOpenEvent event) {
 
-                final GridContextClickEvent gridE = (GridContextClickEvent) event.getContextClickEvent();
+                event.getContextClickEvent();
 
                 // Object itemId = tableNameDetails.getContainerDataSource().addItem();
 
@@ -227,17 +244,17 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                     tableWordHitsContextMenu.removeItems();
 
-                    tableWordHitsContextMenu.addItem("Called from section " + gridE.getSection().toString() + " on row " + gridE.getRowIndex(), new Command() {
-                        /**
-                         *
-                         */
-                        private static final long serialVersionUID = -118297987496622159L;
-
-                        @Override
-                        public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("did something");
-                        }
-                    });
+                    // tableWordHitsContextMenu.addItem("Called from section " + gridE.getSection().toString() + " on row " + gridE.getRowIndex(), new Command() {
+                    // /**
+                    // *
+                    // */
+                    // private static final long serialVersionUID = -118297987496622159L;
+                    //
+                    // @Override
+                    // public void menuSelected(final MenuItem selectedItem) {
+                    // Notification.show("did something");
+                    // }
+                    // });
 
                     tableWordHitsContextMenu.addItem("add '" + wordHit.getListentry() + "' to Stopwords", new Command() {
                         /**
@@ -247,9 +264,10 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to Stopwords");
+                            Notification.show("added to Stopwords (NYI)");
                         }
                     });
+
                     tableWordHitsContextMenu.addItem("add '" + wordHit.getListentry() + "' to phrase only", new Command() {
                         /**
                          *
@@ -258,9 +276,10 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to phrase only");
+                            Notification.show("added to phrase only (NYI)");
                         }
                     }).setVisible(true);
+
                     tableWordHitsContextMenu.addItem("add '" + wordHit.getListentry() + "' to Index Exclusion", new Command() {
                         /**
                          *
@@ -269,9 +288,10 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to Index Exclusion");
+                            Notification.show("added to Index Exclusion (NYI)");
                         }
                     });
+
                     final boolean tokensAreGleich = wordHit.getListentry().equals(wordHit.getContent());
                     if (!tokensAreGleich) {
 
@@ -283,15 +303,13 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                             @Override
                             public void menuSelected(final MenuItem selectedItem) {
-                                Notification.show("added to no hit");
-
+                                Notification.show("added to no hit  (NYI)");
                             }
                         });
                     }
                 }
             }
         });
-
     }
 
     // void refreshMessageView() {
@@ -382,11 +400,11 @@ public class HitHandlingView extends VerticalLayout implements View {
 
             tableResults.setContainerDataSource(new BeanItemContainer<>(DisplayResult.class, displayResultService.displayAllFields()));
 
-            final BeanContainer<Long, DisplayMessage> bc = new BeanContainer<Long, DisplayMessage>(DisplayMessage.class);
-            bc.setBeanIdProperty("id");
-            bc.addAll(displayMessageService.displayAllFields());
+            // final BeanContainer<Long, DisplayMessage> bc = new BeanContainer<Long, DisplayMessage>(DisplayMessage.class);
+            // bc.setBeanIdProperty("id");
+            // bc.addAll(displayMessageService.displayAllFields());
 
-            tableTXWithHits.setContainerDataSource(bc);
+            tableTXWithHits.setContainerDataSource(new BeanItemContainer<>(DisplayMessage.class, displayMessageService.displayAllFields()));
 
             tableWordHits.setContainerDataSource(new BeanItemContainer<>(DisplayWordHit.class, displayWordHitService.displayAllFields()));
 
@@ -394,7 +412,9 @@ public class HitHandlingView extends VerticalLayout implements View {
             // displayNameDetailService.setModel(tableModel2);
 
             updateMessageDetails();
+
         }
+        updateButtonStatus();
     }
 
     private void updateMessageDetails() {
@@ -410,8 +430,16 @@ public class HitHandlingView extends VerticalLayout implements View {
 
     }
 
+    private void updateButtonStatus() {
+        buttonPostpone.setEnabled(guiAdapter.getCurrentMessage() != null);
+        buttonHit.setEnabled(guiAdapter.getCurrentMessage() != null);
+        buttonNoHit.setEnabled(guiAdapter.getCurrentMessage() != null);
+        buttonPrev.setEnabled(guiAdapter.getCurrentMessage() != null);
+        buttonNext.setEnabled(guiAdapter.getCurrentMessage() != null);
+    }
+
     private void updateSanctionDetails(final int rowId) {
-        // TODO: gather SactionInfos
+        // TODO: gather SanctionInfos
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
 
@@ -430,7 +458,7 @@ public class HitHandlingView extends VerticalLayout implements View {
         }
     }
 
-    private void buildLayout() {
+    private void buildPage() {
 
         // // Add the loginForm instance below to your UI
         // DefaultVerticalLoginForm loginForm = new DefaultVerticalLoginForm();
@@ -443,8 +471,8 @@ public class HitHandlingView extends VerticalLayout implements View {
         // }
         // });
 
-        final Button button2 = new Button("postpone");
-        button2.addClickListener(new Button.ClickListener() {
+        buttonPostpone = new Button("postpone");
+        buttonPostpone.addClickListener(new Button.ClickListener() {
             /**
              *
              */
@@ -478,8 +506,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
             }
         });
-        final Button button3 = new Button("No Hit");
-        button3.addClickListener(new Button.ClickListener() {
+        buttonNoHit = new Button("No Hit");
+        buttonNoHit.addClickListener(new Button.ClickListener() {
             /**
              *
              */
@@ -516,8 +544,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
             }
         });
-        final Button button4 = new Button("Hit");
-        button4.addClickListener(new Button.ClickListener() {
+        buttonHit = new Button("Hit");
+        buttonHit.addClickListener(new Button.ClickListener() {
             /**
              *
              */
@@ -556,8 +584,8 @@ public class HitHandlingView extends VerticalLayout implements View {
             }
         });
 
-        final Button button5 = new Button("Previous");
-        button5.addClickListener(new Button.ClickListener() {
+        buttonPrev = new Button("Previous");
+        buttonPrev.addClickListener(new Button.ClickListener() {
             /**
              *
              */
@@ -570,8 +598,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
             }
         });
-        final Button button6 = new Button("Next");
-        button6.addClickListener(new Button.ClickListener() {
+        buttonNext = new Button("Next");
+        buttonNext.addClickListener(new Button.ClickListener() {
             /**
              *
              */
@@ -598,7 +626,7 @@ public class HitHandlingView extends VerticalLayout implements View {
                 final DisplayResult displayResult = (DisplayResult) tableResults.getSelectedRow();
                 if (displayResult != null) {
                     // TODO: debug only
-                    Notification.show("selected: " + displayResult.getField());
+                    // Notification.show("selected: " + displayResult.getField());
                     // messageList.scrollTo(hitList.getSelectedRow());
 
                     final String field = ((DisplayResult) tableResults.getSelectedRow()).getField();
@@ -625,7 +653,7 @@ public class HitHandlingView extends VerticalLayout implements View {
             }
         });
 
-        final HorizontalLayout actions = new HorizontalLayout(button2, button3, button4, button5, button6);
+        final HorizontalLayout actions = new HorizontalLayout(buttonPostpone, buttonHit, buttonHit, buttonPrev, buttonNext);
         actions.setWidth("80%");
         actions.setMargin(true);
         // actions.setSizeFull();
@@ -680,7 +708,12 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         final TabSheet tabsheetTX = new TabSheet();
         tabsheetTX.addStyleName("framed");
-        tabsheetTX.addTab(UIHelper.wrapWithVertical(listEntryAndDetails)).setCaption("Transaction");
+
+        final Component lead = UIHelper.wrapWithVertical(listEntryAndDetails);
+        lead.setIcon(FontAwesome.FILE_TEXT);
+        lead.setCaption("Transaction");
+
+        tabsheetTX.addTab(lead);
         tabsheetTX.setSizeFull();
 
         // right side
@@ -701,54 +734,38 @@ public class HitHandlingView extends VerticalLayout implements View {
         // hitsAndDetails.setExpandRatio(listDetails, 1);
         hitsAndDetails.setSizeFull();
 
-        tabsheetHits.addTab(UIHelper.wrapWithVertical(hitsAndDetails)).setCaption("List Hits");
-        tabsheetHits.addTab(UIHelper.wrapWithVertical(tableWordHits)).setCaption("Word Hits");
+        final Component had = UIHelper.wrapWithVertical(hitsAndDetails);
+        had.setCaption("List Hits");
+        had.setIcon(FontAwesome.TH_LIST);
+        tabsheetHits.addTab(had);
+
+        final Component twh = UIHelper.wrapWithVertical(tableWordHits);
+        twh.setCaption("Word Hits");
+        twh.setIcon(FontAwesome.TH);
+        tabsheetHits.addTab(twh);
         tabsheetHits.setSizeFull();
 
         final VerticalLayout vll = new VerticalLayout(tabsheetTX);
         final VerticalLayout vlr = new VerticalLayout(tabsheetHits);
-        // vll.setMargin(true);
+
         vll.setSizeFull();
-        // vlr.setMargin(true);
         vlr.setSizeFull();
 
         final HorizontalSplitPanel grids = new HorizontalSplitPanel();
-        grids.setFirstComponent(vll);
-        grids.setSecondComponent(vlr);
+        grids.setFirstComponent(UIHelper.wrapWithMargin(vll));
+        grids.setSecondComponent(UIHelper.wrapWithMargin(vlr));
         grids.setSplitPosition(50, Unit.PERCENTAGE);
 
-        // HorizontalLayout grids = new HorizontalLayout(tabsheetTX, tabsheetHits);
-        // grids.setWidth("100%");
-        // tabsheetTX.setWidth("95%");
-        // grids.setExpandRatio(tabsheetTX, 1);
-        // // messageList.setSelectionMode(SelectionMode.NONE);
-        // grids.setExpandRatio(tabsheetHits, 1);
         tableResults.setColumnReorderingAllowed(true);
         grids.setSizeFull();
-
-        // grids.setMargin(true);
-
-        // final VerticalLayout page = new VerticalLayout(grids, actions);
-        // page.setExpandRatio(grids, 9);
-        // page.setExpandRatio(actions, 1);
-        // page.setSizeFull();
 
         addComponent(grids);
         addComponent(actions);
 
         setExpandRatio(grids, 9);
         setExpandRatio(actions, 1);
+        // setMargin(new MarginInfo(true));
         setSizeFull();
-        // page.setMargin(true);
-
-        // left.setExpandRatio(messageList, 1);
-
-        // HorizontalLayout mainLayout = new HorizontalLayout(left, hitList);
-        // mainLayout.setSizeFull();
-        // mainLayout.setExpandRatio(left, 1);
-
-        // Split and allow resizing
-        // setContent(page);
 
     }
 

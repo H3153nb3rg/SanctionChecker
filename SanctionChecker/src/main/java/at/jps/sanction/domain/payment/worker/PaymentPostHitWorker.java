@@ -18,7 +18,7 @@ public abstract class PaymentPostHitWorker extends PaymentPostNoHitWorker {
     }
 
     @Override
-    protected void filterList(OptimizationListHandler optiListHandler, ArrayList<OptimizationRecord> orList) {
+    protected void filterList(final OptimizationListHandler optiListHandler, final ArrayList<OptimizationRecord> orList) {
         optiListHandler.removeList(orList);
     }
 

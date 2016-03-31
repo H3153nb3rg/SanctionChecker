@@ -74,7 +74,7 @@ public class PaymentHitResult extends HitResult implements Comparable<HitResult>
         return hitRemark;
     }
 
-    public void setHitRemark(String hitRemark) {
+    public void setHitRemark(final String hitRemark) {
         this.hitRemark = hitRemark;
     }
 
@@ -82,15 +82,15 @@ public class PaymentHitResult extends HitResult implements Comparable<HitResult>
         return hitOptimized;
     }
 
-    public void setHitOptimized(String hitComment) {
-        this.hitOptimized = hitComment;
+    public void setHitOptimized(final String hitComment) {
+        hitOptimized = hitComment;
     }
 
     public int getHitListPriority() {
         return hitListPriority;
     }
 
-    public void setHitListPriority(int hitListPriority) {
+    public void setHitListPriority(final int hitListPriority) {
         this.hitListPriority = hitListPriority;
     }
 

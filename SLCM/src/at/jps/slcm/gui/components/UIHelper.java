@@ -8,7 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 
 public class UIHelper {
 
-    public static Component wrapWithPanel(Component component, final String caption, Resource icon) {
+    public static Component wrapWithPanel(final Component component, final String caption, final Resource icon) {
 
         final Panel panel = new Panel(caption);
         if (icon != null) {
@@ -20,7 +20,7 @@ public class UIHelper {
         return panel;
     }
 
-    public static Component wrapWithVertical(Component component) {
+    public static Component wrapWithVertical(final Component component) {
 
         final VerticalLayout vlayout = new VerticalLayout();
         vlayout.setMargin(true);
@@ -30,7 +30,17 @@ public class UIHelper {
         return vlayout;
     }
 
-    public static Component wrapWithVerticalBottomMargin(Component component) {
+    public static Component wrapWithMargin(final Component component) {
+
+        final VerticalLayout vlayout = new VerticalLayout();
+        vlayout.setMargin(new MarginInfo(true));
+        vlayout.setSizeFull();
+        vlayout.addComponent(component);
+
+        return vlayout;
+    }
+
+    public static Component wrapWithVerticalBottomMargin(final Component component) {
 
         final VerticalLayout vlayout = new VerticalLayout();
         vlayout.setMargin(new MarginInfo(false, false, true, false));
@@ -40,7 +50,7 @@ public class UIHelper {
         return vlayout;
     }
 
-    public static Component wrapWithVerticalTopMargin(Component component) {
+    public static Component wrapWithVerticalTopMargin(final Component component) {
 
         final VerticalLayout vlayout = new VerticalLayout();
         vlayout.setMargin(new MarginInfo(true, false, false, false));

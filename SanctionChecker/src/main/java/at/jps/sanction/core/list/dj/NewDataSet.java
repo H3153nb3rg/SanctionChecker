@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -61,7 +61,7 @@ public class NewDataSet {
      * not a <CODE>set</CODE> method for the nameDetailsOrDescriptionsOrDateDetails property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getNameDetailsOrDescriptionsOrDateDetails().add(newItem);
      * </pre>
@@ -73,7 +73,7 @@ public class NewDataSet {
         if (nameDetailsOrDescriptionsOrDateDetails == null) {
             nameDetailsOrDescriptionsOrDateDetails = new ArrayList<Object>();
         }
-        return this.nameDetailsOrDescriptionsOrDateDetails;
+        return nameDetailsOrDescriptionsOrDateDetails;
     }
 
 }

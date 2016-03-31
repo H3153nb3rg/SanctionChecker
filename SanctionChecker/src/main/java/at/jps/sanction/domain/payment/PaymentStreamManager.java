@@ -10,17 +10,17 @@ public class PaymentStreamManager extends StreamManager {
 
     @Override
     public ValueListHandler getIndexAusschlussList() {
-        return getValueListHandlers().get(IAListHandler.LISTNAME);  // TODO: This should be moved to propertyfile
+        return getValueListHandlers().get(IAListHandler.LISTNAME);
     }
 
     @Override
     public ValueListHandler getNotSingleWordHitList() {
-        return getValueListHandlers().get(NSWHListHandler.LISTNAME);  // TODO: This should be moved to propertyfile
+        return getValueListHandlers().get(NSWHListHandler.LISTNAME);
     }
 
     @Override
     public ValueListHandler getStopwordList() {
-        return getValueListHandlers().get(SWListHandler.LISTNAME);  // TODO: This should be moved to propertyfile
+        return getValueListHandlers().get(SWListHandler.LISTNAME);
     }
 
     public boolean isFieldIBAN(final String fieldname) {

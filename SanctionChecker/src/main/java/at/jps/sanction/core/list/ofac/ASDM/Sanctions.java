@@ -400,33 +400,33 @@ public class Sanctions {
     }
 
     @XmlElement(name = "DateOfIssue", required = true)
-    protected DateSchemaType               dateOfIssue;
+    protected DateSchemaType                 dateOfIssue;
     @XmlElement(name = "ReferenceValueSets", required = true)
-    protected ReferenceValueSetsSchemaType referenceValueSets;
+    protected ReferenceValueSetsSchemaType   referenceValueSets;
     @XmlElement(name = "Locations", required = true)
-    protected Sanctions.Locations          locations;
+    protected Sanctions.Locations            locations;
     @XmlElement(name = "IDRegDocuments", required = true)
-    protected Sanctions.IDRegDocuments     idRegDocuments;
+    protected Sanctions.IDRegDocuments       idRegDocuments;
 
     @XmlElement(name = "DistinctParties", required = true)
-    protected Sanctions.DistinctParties distinctParties;
+    protected Sanctions.DistinctParties      distinctParties;
 
     @XmlElement(name = "ProfileRelationships", required = true)
     protected Sanctions.ProfileRelationships profileRelationships;
 
     @XmlElement(name = "SanctionsEntries", required = true)
-    protected Sanctions.SanctionsEntries sanctionsEntries;
+    protected Sanctions.SanctionsEntries     sanctionsEntries;
 
     @XmlElement(name = "SanctionsEntryLinks", required = true)
-    protected Sanctions.SanctionsEntryLinks sanctionsEntryLinks;
+    protected Sanctions.SanctionsEntryLinks  sanctionsEntryLinks;
 
     @XmlAttribute(name = "Version", required = true)
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger version;
+    protected BigInteger                     version;
 
     @XmlAttribute(name = "DeltaBaseVersion")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger deltaBaseVersion;
+    protected BigInteger                     deltaBaseVersion;
 
     /**
      * Gets the value of the dateOfIssue property.

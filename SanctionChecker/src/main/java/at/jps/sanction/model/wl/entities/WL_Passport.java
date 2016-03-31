@@ -51,7 +51,7 @@ public class WL_Passport extends BaseModel implements Serializable {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 

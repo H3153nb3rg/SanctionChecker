@@ -88,7 +88,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return pfa;
     }
 
-    private void addSourceDescription(WL_Entity entity, List<SourceDescription> sourceDescriptions) {
+    private void addSourceDescription(final WL_Entity entity, final List<SourceDescription> sourceDescriptions) {
         for (final SourceDescription sourceDescription : sourceDescriptions) {
             for (final Source source : sourceDescription.getSource()) {
                 if (source.getName().startsWith("http")) {
@@ -101,7 +101,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private void addSanctionReferenzes(PFA pfa, WL_Entity entity, List<SanctionsReferences> sanctionreferences) {
+    private void addSanctionReferenzes(final PFA pfa, final WL_Entity entity, final List<SanctionsReferences> sanctionreferences) {
         for (final SanctionsReferences sanctionReference : sanctionreferences) {
 
             for (final SanctionsReferences.Reference reference : sanctionReference.getReference()) {
@@ -117,7 +117,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private String addDescriptions(PFA pfa, WL_Entity entity, List<Descriptions> descriptions) {  // DOR: at the moment onnly for descr1 filtering!!
+    private String addDescriptions(final PFA pfa, final WL_Entity entity, final List<Descriptions> descriptions) {  // DOR: at the moment onnly for descr1 filtering!!
 
         String id = "";
 
@@ -138,7 +138,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return id;
     }
 
-    private void addName(WL_Entity entity, List<NameDetails> nameDatails) {
+    private void addName(final WL_Entity entity, final List<NameDetails> nameDatails) {
         for (final NameDetails nameDetails : nameDatails) {
             for (final NameDetails.Name pfaname : nameDetails.getName()) {
 
@@ -169,7 +169,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    private void addAddress(WL_Entity entity, List<PFA.Records.Person.Address> addresses) {
+    private void addAddress(final WL_Entity entity, final List<PFA.Records.Person.Address> addresses) {
         for (final PFA.Records.Person.Address pfaAddress : addresses) {
             final WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
@@ -180,7 +180,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private void addCompanyAddress(WL_Entity entity, List<PFA.Records.Entity.CompanyDetails> companyDetails) {
+    private void addCompanyAddress(final WL_Entity entity, final List<PFA.Records.Entity.CompanyDetails> companyDetails) {
         for (final PFA.Records.Entity.CompanyDetails cd : companyDetails) {
             final WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
@@ -191,7 +191,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private void addIDs(WL_Entity entity, List<IDNumberTypes> numbers) {
+    private void addIDs(final WL_Entity entity, final List<IDNumberTypes> numbers) {
         for (final IDNumberTypes ids : numbers) {
             for (final IDNumberTypes.ID id : ids.getID()) {
                 for (final IDNumberTypes.ID.IDValue value : id.getIDValue()) {
@@ -207,7 +207,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private String getDescription1(PFA pfa, final String descriptionId1) {
+    private String getDescription1(final PFA pfa, final String descriptionId1) {
         String value = "";
         for (final PFA.Description1List list1 : pfa.getDescription1List()) {
             for (final Description1List.Description1Name name1 : list1.getDescription1Name()) {
@@ -221,7 +221,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    private String getDescription2(PFA pfa, final String descriptionId1, final String descriptionId2) {
+    private String getDescription2(final PFA pfa, final String descriptionId1, final String descriptionId2) {
         String value = "";
         for (final PFA.Description2List list2 : pfa.getDescription2List()) {
             for (final Description2List.Description2Name name2 : list2.getDescription2Name()) {
@@ -234,7 +234,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    private String getDescription3(PFA pfa, final String descriptionId3) {
+    private String getDescription3(final PFA pfa, final String descriptionId3) {
         String value = "";
         for (final PFA.Description3List list3 : pfa.getDescription3List()) {
             for (final Description3List.Description3Name name3 : list3.getDescription3Name()) {
@@ -247,7 +247,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return value;
     }
 
-    private String getSanctionreference(PFA pfa, final String code) {
+    private String getSanctionreference(final PFA pfa, final String code) {
         String srlName = "";
         for (final PFA.SanctionsReferencesList srl : pfa.getSanctionsReferencesList()) {
             for (final PFA.SanctionsReferencesList.ReferenceName srln : srl.getReferenceName()) {
@@ -260,7 +260,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return srlName;
     }
 
-    private String getAssociationType(PFA pfa, final String code) {
+    private String getAssociationType(final PFA pfa, final String code) {
         String type = "";
 
         for (final PFA.RelationshipList rl : pfa.getRelationshipList()) {
@@ -275,7 +275,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return type;
     }
 
-    void getAssociations(PFA pfa, List<Associate> associates, final String id) {
+    void getAssociations(final PFA pfa, final List<Associate> associates, final String id) {
 
         final WL_Entity entity = getEntityById(id);
 
@@ -290,7 +290,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    void getAssociations(PFA pfa) {
+    void getAssociations(final PFA pfa) {
         for (final PFA.Associations assosiations : pfa.getAssociations()) {
             for (final PFA.Associations.SpecialEntity specialEntity : assosiations.getSpecialEntity()) {
                 getAssociations(pfa, specialEntity.getAssociate(), specialEntity.getId());
@@ -302,7 +302,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    public void buildEntityList(PFA pfa) {
+    public void buildEntityList(final PFA pfa) {
 
         for (final PFA.Records records : pfa.getRecords()) {
 
@@ -316,6 +316,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setType("Individual");
                     entity.setWL_Id(pfaPerson.getId());
                     entity.setIssueDate(pfaPerson.getDate());
+                    entity.setComment(pfaPerson.getProfileNotes());
 
                     final String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
 
@@ -342,6 +343,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     entity.setType("Entity");
                     entity.setWL_Id(pfaEntity.getId());
                     entity.setIssueDate(pfaEntity.getDate());
+                    entity.setComment(pfaEntity.getProfileNotes());
 
                     final String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
 
@@ -435,7 +437,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return loadDescription1;
     }
 
-    public void setLoadDescription1(String loadDescription1) {
+    public void setLoadDescription1(final String loadDescription1) {
         this.loadDescription1 = loadDescription1;
     }
 
@@ -443,7 +445,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return loadDescription2;
     }
 
-    public void setLoadDescription2(String loadDescription2) {
+    public void setLoadDescription2(final String loadDescription2) {
         this.loadDescription2 = loadDescription2;
     }
 

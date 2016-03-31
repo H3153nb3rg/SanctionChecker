@@ -53,10 +53,13 @@ public class FileInputWorker extends InputWorker {
         }
     }
 
+    @Override
     public void initialize() {
-        // NOOP
+        super.initialize();
+
     }
 
+    @Override
     public void close() {
         // rename back if failed !!
     }
@@ -93,6 +96,8 @@ public class FileInputWorker extends InputWorker {
         // if (parser == null) {
         // parser = BaseFactory.createFileParser(getStreamManager());
         // }
+        fileParser.setQueue(getInputQueue());
+
         return fileParser;
     }
 
@@ -129,7 +134,7 @@ public class FileInputWorker extends InputWorker {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 
@@ -137,14 +142,15 @@ public class FileInputWorker extends InputWorker {
         return pattern;
     }
 
-    public void setPattern(String pattern) {
+    public void setPattern(final String pattern) {
         this.pattern = pattern;
     }
 
-    public void setFileParser(FileParser parser) {
-        this.fileParser = parser;
+    public void setFileParser(final FileParser parser) {
+        fileParser = parser;
     }
 
+    @Override
     public void setStreamManager(final StreamManager manager) {
         super.setStreamManager(manager);
         // fileParser.setStreamManager(manager);

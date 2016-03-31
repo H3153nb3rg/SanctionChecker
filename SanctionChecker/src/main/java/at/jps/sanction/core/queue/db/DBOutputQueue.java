@@ -29,7 +29,7 @@ public class DBOutputQueue extends DBQueue<AnalysisResult> {
     }
 
     @Override
-    public boolean addMessage(AnalysisResult message) {
+    public boolean addMessage(final AnalysisResult message) {
 
         message.setAnalysisStatus(getOurRecordId());
 
@@ -39,15 +39,15 @@ public class DBOutputQueue extends DBQueue<AnalysisResult> {
     }
 
     @Override
-    public AnalysisResult getNextMessage(boolean wait) {
+    public AnalysisResult getNextMessage(final boolean wait) {
 
         if (getInternalCache().isEmpty()) {
-            for (AnalysisResult message : DBHelper.getNextAnalysisResults(getOurRecordId(), DB_CACHE_SIZE)) {
+            for (final AnalysisResult message : DBHelper.getNextAnalysisResults(getOurRecordId(), DB_CACHE_SIZE)) {
                 getInternalCache().addMessage(message);
             }
         }
 
-        AnalysisResult message = getInternalCache().getNextMessage(wait);
+        final AnalysisResult message = getInternalCache().getNextMessage(wait);
 
         return message;
     }
@@ -60,7 +60,7 @@ public class DBOutputQueue extends DBQueue<AnalysisResult> {
         return messageStatusFlag;
     }
 
-    public void setMessageStatusFlag(String messageStatusFlag) {
+    public void setMessageStatusFlag(final String messageStatusFlag) {
         this.messageStatusFlag = messageStatusFlag;
 
         switch (messageStatusFlag) {
@@ -99,7 +99,7 @@ public class DBOutputQueue extends DBQueue<AnalysisResult> {
         return internalCache;
     }
 
-    public void setInternalCache(MemoryOutputQueue internalCache) {
+    public void setInternalCache(final MemoryOutputQueue internalCache) {
         this.internalCache = internalCache;
     }
 

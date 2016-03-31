@@ -118,11 +118,11 @@ public class AnalysisResult extends BaseModel implements Serializable {
     }
 
     public void setException(final Exception exception) {
-        this.exceptionInfo = exception.toString();
+        exceptionInfo = exception.toString();
     }
 
     public void setHitTokensList(final List<WordHitInfo> hitTokensList) {
-        this.hitTokenInfoList = hitTokensList;
+        hitTokenInfoList = hitTokensList;
     }
 
     public void setMessage(final Message message) {
@@ -172,11 +172,11 @@ public class AnalysisResult extends BaseModel implements Serializable {
         return processSteps;
     }
 
-    public void setProcessSteps(List<ProcessStep> processSteps) {
+    public void setProcessSteps(final List<ProcessStep> processSteps) {
         this.processSteps = processSteps;
     }
 
-    public void addProcessStep(ProcessStep processStep) {
+    public void addProcessStep(final ProcessStep processStep) {
         getProcessSteps().add(processStep);
     }
 
@@ -184,7 +184,7 @@ public class AnalysisResult extends BaseModel implements Serializable {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(final String category) {
         this.category = category;
     }
 
@@ -192,7 +192,7 @@ public class AnalysisResult extends BaseModel implements Serializable {
         return analysisStatus;
     }
 
-    public void setAnalysisStatus(MessageStatus analysisStatus) {
+    public void setAnalysisStatus(final MessageStatus analysisStatus) {
         this.analysisStatus = analysisStatus;
         if (getMessage() != null) {
             getMessage().setMessageProcessingStatus(analysisStatus);

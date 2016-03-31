@@ -10,7 +10,7 @@ public class SearchResultRecord {
         return ListName;
     }
 
-    public void setListName(String listName) {
+    public void setListName(final String listName) {
         ListName = listName;
     }
 
@@ -18,7 +18,7 @@ public class SearchResultRecord {
         return ListId;
     }
 
-    public void setListId(String listId) {
+    public void setListId(final String listId) {
         ListId = listId;
     }
 
@@ -26,7 +26,7 @@ public class SearchResultRecord {
         return Token;
     }
 
-    public void setToken(String token) {
+    public void setToken(final String token) {
         Token = token;
     }
 
@@ -34,7 +34,7 @@ public class SearchResultRecord {
         return Comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(final String comment) {
         Comment = comment;
     }
 }

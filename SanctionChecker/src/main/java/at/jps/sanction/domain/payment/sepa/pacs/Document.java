@@ -1235,37 +1235,37 @@ public class Document {
             }
 
             @XmlElement(name = "ChrgBr")
-            protected String chrgBr;
+            protected String                                                      chrgBr;
 
             @XmlElement(name = "PmtId")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId> pmtId;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId>          pmtId;
 
             @XmlElement(name = "PmtTpInf")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf> pmtTpInf;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf>       pmtTpInf;
 
             @XmlElement(name = "IntrBkSttlmAmt", nillable = true)
             protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmAmt> intrBkSttlmAmt;
 
             @XmlElement(name = "Dbtr")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr> dbtr;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr>           dbtr;
 
             @XmlElement(name = "DbtrAcct")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct> dbtrAcct;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct>       dbtrAcct;
 
             @XmlElement(name = "DbtrAgt")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAgt> dbtrAgt;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAgt>        dbtrAgt;
 
             @XmlElement(name = "CdtrAgt")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAgt> cdtrAgt;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAgt>        cdtrAgt;
 
             @XmlElement(name = "Cdtr")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr> cdtr;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr>           cdtr;
 
             @XmlElement(name = "CdtrAcct")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct> cdtrAcct;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct>       cdtrAcct;
 
             @XmlElement(name = "RmtInf")
-            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf> rmtInf;
+            protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf>         rmtInf;
 
             /**
              * Gets the value of the cdtr property.
@@ -1693,7 +1693,7 @@ public class Document {
                 }
 
                 @XmlElement(name = "SttlmMtd")
-                protected String sttlmMtd;
+                protected String                                                  sttlmMtd;
 
                 @XmlElement(name = "ClrSys")
                 protected List<Document.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.ClrSys> clrSys;
@@ -1806,22 +1806,22 @@ public class Document {
             }
 
             @XmlElement(name = "MsgId")
-            protected String msgId;
+            protected String                                                    msgId;
             @XmlElement(name = "CreDtTm")
-            protected String creDtTm;
+            protected String                                                    creDtTm;
             @XmlElement(name = "NbOfTxs")
-            protected String nbOfTxs;
+            protected String                                                    nbOfTxs;
             @XmlElement(name = "IntrBkSttlmDt")
-            protected String intrBkSttlmDt;
+            protected String                                                    intrBkSttlmDt;
 
             @XmlElement(name = "TtlIntrBkSttlmAmt", nillable = true)
             protected List<Document.FIToFICstmrCdtTrf.GrpHdr.TtlIntrBkSttlmAmt> ttlIntrBkSttlmAmt;
 
             @XmlElement(name = "SttlmInf")
-            protected List<Document.FIToFICstmrCdtTrf.GrpHdr.SttlmInf> sttlmInf;
+            protected List<Document.FIToFICstmrCdtTrf.GrpHdr.SttlmInf>          sttlmInf;
 
             @XmlElement(name = "InstgAgt")
-            protected List<Document.FIToFICstmrCdtTrf.GrpHdr.InstgAgt> instgAgt;
+            protected List<Document.FIToFICstmrCdtTrf.GrpHdr.InstgAgt>          instgAgt;
 
             /**
              * Ruft den Wert der creDtTm-Eigenschaft ab.
@@ -1965,7 +1965,7 @@ public class Document {
         }
 
         @XmlElement(name = "GrpHdr")
-        protected List<Document.FIToFICstmrCdtTrf.GrpHdr> grpHdr;
+        protected List<Document.FIToFICstmrCdtTrf.GrpHdr>      grpHdr;
 
         @XmlElement(name = "CdtTrfTxInf")
         protected List<Document.FIToFICstmrCdtTrf.CdtTrfTxInf> cdtTrfTxInf;

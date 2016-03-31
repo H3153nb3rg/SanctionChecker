@@ -424,7 +424,7 @@ public class DistinctPartySchemaType {
                 protected BigInteger                                                            targetTypeID;
 
                 @XmlAttribute(name = "DeltaAction")
-                protected DeltaActionSchemaType deltaAction;
+                protected DeltaActionSchemaType                                                 deltaAction;
 
                 /**
                  * Gets the value of the deltaAction property.
@@ -515,10 +515,10 @@ public class DistinctPartySchemaType {
 
             @XmlAttribute(name = "ExRefTypeID", required = true)
             @XmlSchemaType(name = "nonNegativeInteger")
-            protected BigInteger exRefTypeID;
+            protected BigInteger                                                      exRefTypeID;
 
             @XmlAttribute(name = "DeltaAction")
-            protected DeltaActionSchemaType deltaAction;
+            protected DeltaActionSchemaType                                           deltaAction;
 
             /**
              * Gets the value of the comment property.
@@ -721,10 +721,10 @@ public class DistinctPartySchemaType {
 
         @XmlAttribute(name = "PartySubTypeID", required = true)
         @XmlSchemaType(name = "nonNegativeInteger")
-        protected BigInteger partySubTypeID;
+        protected BigInteger                                                    partySubTypeID;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                                         deltaAction;
 
         /**
          * Gets the value of the comment property.
@@ -898,7 +898,7 @@ public class DistinctPartySchemaType {
     protected String                                fixedRef;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                 deltaAction;
 
     /**
      * Gets the value of the comment property.

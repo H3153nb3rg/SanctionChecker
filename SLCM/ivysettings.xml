@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivysettings>
-    <caches defaultCacheDir="E:/java/.ivy2"/>
+    <caches defaultCacheDir="C:/java/.ivy2"/>
 	<settings defaultResolver="default" />
 	<resolvers>
 		<chain name="default">

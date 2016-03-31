@@ -26,6 +26,7 @@ import at.jps.sanction.model.queue.AbstractQueue;
 
 public abstract class JMSQueue<X> extends AbstractQueue<X> {
 
+    @SuppressWarnings("unused")
     @Autowired
     private ApplicationContext appContext;
 
@@ -46,9 +47,13 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
         super(name, capacity);
     }
 
-    protected void initialize() {
+    @Override
+    public void initialize() {
+        super.initialize();
 
-        internalQueueName = getStreamName() + "/" + getName();
+        assert (JMSServerUrl != null) : "JMSServerUrl not configured";
+
+        internalQueueName = getBasePath() + "/" + getName();
 
         jmsAdapter = new JMSAdapter();
 
@@ -75,9 +80,11 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
 
             return true;
         }
-        catch (JMSException e) {
+        catch (final JMSException e) {
             logger.error(getName() + ": JMS Send Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
 
             return false;
         }
@@ -86,7 +93,7 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public X getNextMessage(boolean wait) {
+    public X getNextMessage(final boolean wait) {
 
         X message = null;
 
@@ -103,15 +110,19 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
             if (jmsMessage != null) {
                 message = (X) jmsMessage.getObject();
 
-                if (logger.isDebugEnabled()) logger.debug(getName() + ": JMS Msg Id" + jmsMessage.getJMSMessageID());
+                if (logger.isDebugEnabled()) {
+                    logger.debug(getName() + ": JMS Msg Id" + jmsMessage.getJMSMessageID());
+                }
 
                 // for notification only !!
                 super.getNextMessage(wait);
             }
         }
-        catch (JMSException e) {
+        catch (final JMSException e) {
             logger.error(getName() + ": JMS receive Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
         }
 
         return message;
@@ -172,7 +183,7 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
         return JMSServerUrl;
     }
 
-    public void setJMSServerUrl(String jMSServerUrl) {
+    public void setJMSServerUrl(final String jMSServerUrl) {
         JMSServerUrl = jMSServerUrl;
     }
 

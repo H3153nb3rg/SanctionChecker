@@ -10,7 +10,7 @@ package at.jps.sanction.model;
 
 public class Status {
 
-    static boolean running = true;
+    static boolean      running  = true;
 
     final static Status instance = new Status();
 

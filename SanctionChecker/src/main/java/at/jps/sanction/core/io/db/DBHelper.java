@@ -23,13 +23,13 @@ public class DBHelper {
         return connection;
     }
 
-    public void setConnection(Connection connection) {
+    public void setConnection(final Connection connection) {
         this.connection = connection;
     }
 
     // WL Readers
 
-    public boolean read_WL_Entity(String wl_id, WL_Entity entity, boolean transitive) {
+    public boolean read_WL_Entity(final String wl_id, final WL_Entity entity, final boolean transitive) {
 
         boolean ok = false;
 
@@ -66,7 +66,7 @@ public class DBHelper {
         return ok;
     }
 
-    public boolean delete_WL_Entity(String wl_id) {
+    public boolean delete_WL_Entity(final String wl_id) {
 
         boolean ok = false;
 
@@ -94,7 +94,7 @@ public class DBHelper {
 
     // WL * writers
 
-    public boolean save_WL_Entity(WL_Entity entity, boolean transitive) {
+    public boolean save_WL_Entity(final WL_Entity entity, final boolean transitive) {
         boolean ok = false;
 
         // for now we delete if existing...
@@ -148,7 +148,7 @@ public class DBHelper {
         return ok;
     }
 
-    public boolean save_LegalBasis(WL_Entity entity, final int id) {
+    public boolean save_LegalBasis(final WL_Entity entity, final int id) {
         boolean ok = false;
 
         PreparedStatement stmt = null;
@@ -182,7 +182,7 @@ public class DBHelper {
         return ok;
     }
 
-    public boolean save_Document(WL_Entity entity, final int id) {
+    public boolean save_Document(final WL_Entity entity, final int id) {
         boolean ok = false;
 
         PreparedStatement stmt = null;
@@ -219,7 +219,7 @@ public class DBHelper {
         return ok;
     }
 
-    public boolean save_Relation(WL_Entity entity, final int id) {
+    public boolean save_Relation(final WL_Entity entity, final int id) {
         boolean ok = false;
 
         PreparedStatement stmt = null;
@@ -254,7 +254,7 @@ public class DBHelper {
         return ok;
     }
 
-    public boolean save_Name(WL_Entity entity, final int id) {
+    public boolean save_Name(final WL_Entity entity, final int id) {
         boolean ok = false;
 
         PreparedStatement stmt = null;

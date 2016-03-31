@@ -11,6 +11,7 @@ import at.jps.sanction.core.listhandler.valuelist.IAListHandler;
 import at.jps.sanction.core.listhandler.valuelist.NSWHListHandler;
 import at.jps.sanction.core.listhandler.valuelist.SWListHandler;
 import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.payment.PaymentListConfigHolder;
 import at.jps.sanction.domain.payment.sepa.SepaMessage;
 import at.jps.sanction.domain.payment.swift.SwiftMessage;
 import at.jps.sanction.model.AnalysisResult;
@@ -32,9 +33,6 @@ import at.jps.sl.gui.util.RingBufferQueueImpl;
 import at.jps.sl.gui.util.TokenUpdater;
 
 public class AdapterHelper implements WatchListInformant {
-
-    static final String              PROP_FILENAME = "checker.properties";
-    public static final String       PROP_GUI_MAIN = "GUI.Stream.Name";
 
     private GUIConfigHolder          config;
 
@@ -79,45 +77,17 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // !!)
+    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // maps
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // side
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // !!)
     private String                   streamName;
-
-    // public void initializeFields2BIC() {
-    // final String allFields = getProperties().getProperty(getStreamName() + ".BICFilds");
-    //
-    // if (allFields != null) {
-    // fields2BIC = new ArrayList<String>();
-    //
-    // final StringTokenizer tokenizer = new StringTokenizer(allFields, ",");
-    //
-    // while (tokenizer.hasMoreTokens()) {
-    // fields2BIC.add(tokenizer.nextToken());
-    // }
-    // }
-    // }
-    //
-    // public void initializeFields2Check() {
-    // final String allFields = properties.getProperty(getStreamName() + ".checkFields");
-    //
-    // if (allFields != null) {
-    // fields2Check = new ArrayList<String>();
-    //
-    // final StringTokenizer tokenizer = new StringTokenizer(allFields, ",");
-    //
-    // while (tokenizer.hasMoreTokens()) {
-    // fields2Check.add(tokenizer.nextToken());
-    // }
-    // }
-    // }
 
     public RingBufferQueue getNoHitBuffer() {
         if (noHitBuffer == null) {
             noHitBuffer = new RingBufferQueueImpl();
 
-            noHitBuffer.setQueue(config.getNoHitQueue());
+            noHitBuffer.setQueue(config.getQueue(GUIConfigHolder.QUEUE_NAME_NOHITS));
         }
         return noHitBuffer;
     }
@@ -126,34 +96,34 @@ public class AdapterHelper implements WatchListInformant {
         if (hitBuffer == null) {
             hitBuffer = new RingBufferQueueImpl();
 
-            hitBuffer.setQueue(config.getHitQueue());
+            hitBuffer.setQueue(config.getQueue(GUIConfigHolder.QUEUE_NAME_HITS));
         }
         return hitBuffer;
     }
 
     public void addToFinalHitQueue(final AnalysisResult analysisResult) {
 
-        config.getFinalHitQueue().addMessage(analysisResult);
+        config.getQueue(GUIConfigHolder.QUEUE_NAME_FINALHIT).addMessage(analysisResult);
     }
 
     public void addToFinalNoHitQueue(final AnalysisResult analysisResult) {
 
-        config.getFinalNoHitQueue().addMessage(analysisResult);
+        config.getQueue(GUIConfigHolder.QUEUE_NAME_FINALNOHIT).addMessage(analysisResult);
     }
 
     public void addToPostProcessHitQueue(final AnalysisResult analysisResult) {
 
-        config.getPostProcessHitQueue().addMessage(analysisResult);
+        config.getQueue(GUIConfigHolder.QUEUE_NAME_POSTHIT).addMessage(analysisResult);
     }
 
     public void addToPostProcessNoHitQueue(final AnalysisResult analysisResult) {
 
-        config.getPostProcessNoHitQueue().addMessage(analysisResult);
+        config.getQueue(GUIConfigHolder.QUEUE_NAME_POSTNOHIT).addMessage(analysisResult);
     }
 
     public void addToBacklogQueue(final AnalysisResult analysisResult) {
 
-        config.getBacklogQueue().addMessage(analysisResult);
+        config.getQueue(GUIConfigHolder.QUEUE_NAME_BACKLOG).addMessage(analysisResult);
     }
 
     public TableModel getAnalysisResultTableModel(final AnalysisResult analysisResult) {
@@ -257,7 +227,7 @@ public class AdapterHelper implements WatchListInformant {
 
     }
 
-    public TableModel getNoWordHitListTableModel(NoWordHitListHandler valListhandler) {
+    public TableModel getNoWordHitListTableModel(final NoWordHitListHandler valListhandler) {
 
         final TableModel tm = SearchTableModelHandler.generateNoHitListTableModel(valListhandler);
 
@@ -265,7 +235,7 @@ public class AdapterHelper implements WatchListInformant {
 
     }
 
-    public TableModel getOptimizationListTableModel(List<OptimizationRecord> resultSet) {
+    public TableModel getOptimizationListTableModel(final List<OptimizationRecord> resultSet) {
 
         final TableModel tm = SearchTableModelHandler.generateOptiListTableModel(resultSet);
 
@@ -277,7 +247,7 @@ public class AdapterHelper implements WatchListInformant {
         return streamName;
     }
 
-    public void initialize(GUIConfigHolder config) {
+    public void initialize(final GUIConfigHolder config) {
 
         this.config = config;
 
@@ -289,7 +259,7 @@ public class AdapterHelper implements WatchListInformant {
         return currentMessage;
     }
 
-    public void setCurrentMessage(AnalysisResult analysisResult) {
+    public void setCurrentMessage(final AnalysisResult analysisResult) {
         currentMessage = analysisResult;
     }
 
@@ -301,7 +271,7 @@ public class AdapterHelper implements WatchListInformant {
         return focussedHitResult;
     }
 
-    public void setFocussedHitResult(HitResult hitResult) {
+    public void setFocussedHitResult(final HitResult hitResult) {
         focussedHitResult = hitResult;
     }
 
@@ -322,11 +292,11 @@ public class AdapterHelper implements WatchListInformant {
     }
 
     public ArrayList<String> getFields2Check() {
-        return config.getStreamConfig().getFields2Check();
+        return config.getStreamConfig(config.getActiveStream()).getFields2Check();
     }
 
     public ArrayList<String> getFields2BIC() {
-        return config.getStreamConfig().getFields2BIC();
+        return config.getStreamConfig(config.getActiveStream()).getFields2BIC();
     }
 
     public HashMap<String, String> getFieldColorsAsHex() {
@@ -354,7 +324,7 @@ public class AdapterHelper implements WatchListInformant {
 
     public void addNoHit(final String fieldToken, final String listToken) {
         // TODO: just for demo purpose
-        TokenUpdater.addNoHitInfo(fieldToken, listToken, config.getNoWordHitListHandler().getFilename());
+        TokenUpdater.addNoHitInfo(fieldToken, listToken, ((PaymentListConfigHolder) config.getStreamConfig(config.getActiveStream())).getNoWordHitListHandler().getFilename());  // TODO: UGLY!!
     }
 
     @Override
@@ -364,14 +334,7 @@ public class AdapterHelper implements WatchListInformant {
         final SanctionListHandler sanctionListHandler = getWatchListByName(listname);
 
         if (sanctionListHandler != null) {
-            // for (WL_Entity listEntity : sanctionListHandler.getEntityList()) {
-            // if (listEntity.getWL_Id().equals(id)) {
-            // entity = listEntity;
-            // break;
-            // }
-            // }
             entity = sanctionListHandler.getEntityById(id);
-
         }
         return entity;
     }
@@ -405,7 +368,7 @@ public class AdapterHelper implements WatchListInformant {
         return config;
     }
 
-    public void setConfig(GUIConfigHolder config) {
+    public void setConfig(final GUIConfigHolder config) {
         this.config = config;
     }
 

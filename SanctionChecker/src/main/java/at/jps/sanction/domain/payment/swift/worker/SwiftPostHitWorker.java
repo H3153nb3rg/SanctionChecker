@@ -13,7 +13,7 @@ public class SwiftPostHitWorker extends PaymentPostHitWorker {
     static final Logger logger = LoggerFactory.getLogger(SwiftPostNoHitWorker.class);
 
     @Override
-    public MessageContent getMessageContent(Message message) {
+    public MessageContent getMessageContent(final Message message) {
         return SwiftAnalyzer.getFieldsToCheckInternal(message);
     }
 }

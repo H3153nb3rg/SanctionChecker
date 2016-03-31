@@ -1,12 +1,9 @@
 /**
  * Copyright 2013 Marc Wrobel (marc.wrobel@gmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * 		http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +18,6 @@ import java.util.Set;
 
 /**
  * The currencies having an ISO 4217 code.
- *
  * <p>
  * Please be advised that this list is current as of 2013/05/26. Up-to-date list can be found for free on the <a href="http://www.iso.org/iso/home/standards/currency_codes.htm">
  * International Organization for Standardization website</a>.
@@ -33,13 +29,27 @@ import java.util.Set;
  */
 public enum IsoCurrency {
 
-    ADB_UNIT_OF_ACCOUNT("XUA", 965, null),
+    ADB_UNIT_OF_ACCOUNT(
+            "XUA",
+            965,
+            null),
     AFGHANI("AFN", 971, 2, IsoCountry.AFGHANISTAN),
     ALGERIAN_DINAR("DZD", 12, 2, IsoCountry.ALGERIA),
     ARGENTINE_PESO("ARS", 32, 2, IsoCountry.ARGENTINA),
     ARMENIAN_DRAM("AMD", 51, 2, IsoCountry.ARMENIA),
     ARUBAN_FLORIN("AWG", 533, 2, IsoCountry.ARUBA),
-    AUSTRALIAN_DOLLAR("AUD", 36, 2, IsoCountry.HEARD_ISLAND_AND_MCDONALD_ISLANDS, IsoCountry.TUVALU, IsoCountry.KIRIBATI, IsoCountry.AUSTRALIA, IsoCountry.NORFOLK_ISLAND, IsoCountry.NAURU, IsoCountry.CHRISTMAS_ISLAND, IsoCountry.COCOS_ISLANDS),
+    AUSTRALIAN_DOLLAR(
+            "AUD",
+            36,
+            2,
+            IsoCountry.HEARD_ISLAND_AND_MCDONALD_ISLANDS,
+            IsoCountry.TUVALU,
+            IsoCountry.KIRIBATI,
+            IsoCountry.AUSTRALIA,
+            IsoCountry.NORFOLK_ISLAND,
+            IsoCountry.NAURU,
+            IsoCountry.CHRISTMAS_ISLAND,
+            IsoCountry.COCOS_ISLANDS),
     AZERBAIJANIAN_MANAT("AZN", 944, 2, IsoCountry.AZERBAIJAN),
     BAHAMIAN_DOLLAR("BSD", 44, 2, IsoCountry.BAHAMAS),
     BAHRAINI_DINAR("BHD", 48, 3, IsoCountry.BAHRAIN),
@@ -58,7 +68,18 @@ public enum IsoCurrency {
     CANADIAN_DOLLAR("CAD", 124, 2, IsoCountry.CANADA),
     CAPE_VERDE_ESCUDO("CVE", 132, 2, IsoCountry.CAPE_VERDE),
     CAYMAN_ISLANDS_DOLLAR("KYD", 136, 2, IsoCountry.CAYMAN_ISLANDS),
-    CFA_FRANC_BCEAO("XOF", 952, 0, IsoCountry.MALI, IsoCountry.NIGER, IsoCountry.BENIN, IsoCountry.TOGO, IsoCountry.BURKINA_FASO, IsoCountry.SENEGAL, IsoCountry.COTE_D_IVOIRE, IsoCountry.GUINEA_BISSAU),
+    CFA_FRANC_BCEAO(
+            "XOF",
+            952,
+            0,
+            IsoCountry.MALI,
+            IsoCountry.NIGER,
+            IsoCountry.BENIN,
+            IsoCountry.TOGO,
+            IsoCountry.BURKINA_FASO,
+            IsoCountry.SENEGAL,
+            IsoCountry.COTE_D_IVOIRE,
+            IsoCountry.GUINEA_BISSAU),
     CFA_FRANC_BEAC("XAF", 950, 0, IsoCountry.CHAD, IsoCountry.GABON, IsoCountry.EQUATORIAL_GUINEA, IsoCountry.CAMEROON, IsoCountry.CENTRAL_AFRICAN_REPUBLIC, IsoCountry.CONGO),
     CFP_FRANC("XPF", 953, 0, IsoCountry.FRENCH_POLYNESIA, IsoCountry.WALLIS_AND_FUTUNA, IsoCountry.NEW_CALEDONIA),
     CHILEAN_PESO("CLP", 152, 0, IsoCountry.CHILE),
@@ -78,7 +99,18 @@ public enum IsoCurrency {
     DOBRA("STD", 678, 2, IsoCountry.SAO_TOME_AND_PRINCIPE),
     DOMINICAN_PESO("DOP", 214, 2, IsoCountry.DOMINICAN_REPUBLIC),
     DONG("VND", 704, 0, IsoCountry.VIET_NAM),
-    EAST_CARIBBEAN_DOLLAR("XCD", 951, 2, IsoCountry.DOMINICA, IsoCountry.SAINT_VINCENT_AND_THE_GRENADINES, IsoCountry.MONTSERRAT, IsoCountry.ANTIGUA_AND_BARBUDA, IsoCountry.SAINT_LUCIA, IsoCountry.ANGUILLA, IsoCountry.SAINT_KITTS_AND_NEVIS, IsoCountry.GRENADA),
+    EAST_CARIBBEAN_DOLLAR(
+            "XCD",
+            951,
+            2,
+            IsoCountry.DOMINICA,
+            IsoCountry.SAINT_VINCENT_AND_THE_GRENADINES,
+            IsoCountry.MONTSERRAT,
+            IsoCountry.ANTIGUA_AND_BARBUDA,
+            IsoCountry.SAINT_LUCIA,
+            IsoCountry.ANGUILLA,
+            IsoCountry.SAINT_KITTS_AND_NEVIS,
+            IsoCountry.GRENADA),
     EGYPTIAN_POUND("EGP", 818, 2, IsoCountry.EGYPT),
     EL_SALVADOR_COLON("SVC", 222, 2, IsoCountry.EL_SALVADOR),
     EMU_6("XBB", 956, null),
@@ -86,7 +118,42 @@ public enum IsoCurrency {
     EUA_17("XBD", 958, null),
     EUA_9("XBC", 957, null),
     EURCO("XBA", 955, null),
-    EURO("EUR", 978, 2, IsoCountry.PORTUGAL, IsoCountry.REUNION, IsoCountry.LUXEMBOURG, IsoCountry.ITALY, IsoCountry.SLOVAKIA, IsoCountry.SAINT_MARTIN, IsoCountry.ANDORRA, IsoCountry.MAYOTTE, IsoCountry.SAINT_BARTHELEMY, IsoCountry.ALAND_ISLANDS, IsoCountry.GUADELOUPE, IsoCountry.FRENCH_GUIANA, IsoCountry.SAINT_PIERRE_AND_MIQUELON, IsoCountry.GERMANY, IsoCountry.BELGIUM, IsoCountry.SPAIN, IsoCountry.SAN_MARINO, IsoCountry.FINLAND, IsoCountry.MALTA, IsoCountry.VATICAN_CITY_STATE, IsoCountry.MONACO, IsoCountry.GREECE, IsoCountry.MARTINIQUE, IsoCountry.FRENCH_SOUTHERN_TERRITORIES, IsoCountry.ESTONIA, IsoCountry.IRELAND, IsoCountry.NETHERLANDS, IsoCountry.MONTENEGRO, IsoCountry.SLOVENIA, IsoCountry.FRANCE, IsoCountry.AUSTRIA, IsoCountry.CYPRUS),
+    EURO(
+            "EUR",
+            978,
+            2,
+            IsoCountry.PORTUGAL,
+            IsoCountry.REUNION,
+            IsoCountry.LUXEMBOURG,
+            IsoCountry.ITALY,
+            IsoCountry.SLOVAKIA,
+            IsoCountry.SAINT_MARTIN,
+            IsoCountry.ANDORRA,
+            IsoCountry.MAYOTTE,
+            IsoCountry.SAINT_BARTHELEMY,
+            IsoCountry.ALAND_ISLANDS,
+            IsoCountry.GUADELOUPE,
+            IsoCountry.FRENCH_GUIANA,
+            IsoCountry.SAINT_PIERRE_AND_MIQUELON,
+            IsoCountry.GERMANY,
+            IsoCountry.BELGIUM,
+            IsoCountry.SPAIN,
+            IsoCountry.SAN_MARINO,
+            IsoCountry.FINLAND,
+            IsoCountry.MALTA,
+            IsoCountry.VATICAN_CITY_STATE,
+            IsoCountry.MONACO,
+            IsoCountry.GREECE,
+            IsoCountry.MARTINIQUE,
+            IsoCountry.FRENCH_SOUTHERN_TERRITORIES,
+            IsoCountry.ESTONIA,
+            IsoCountry.IRELAND,
+            IsoCountry.NETHERLANDS,
+            IsoCountry.MONTENEGRO,
+            IsoCountry.SLOVENIA,
+            IsoCountry.FRANCE,
+            IsoCountry.AUSTRIA,
+            IsoCountry.CYPRUS),
     FALKLAND_ISLANDS_POUND("FKP", 238, 2, IsoCountry.FALKLAND_ISLANDS),
     FIJI_DOLLAR("FJD", 242, 2, IsoCountry.FIJI),
     FORINT("HUF", 348, 2, IsoCountry.HUNGARY),
@@ -202,7 +269,29 @@ public enum IsoCurrency {
     UNIDAD_DE_VALOR_REAL("COU", 970, 2, IsoCountry.COLOMBIA),
     UNIDADES_DE_FOMENTO("CLF", 990, 0, IsoCountry.CHILE),
     URUGUAY_PESO_EN_UNIDADES_INDEXADAS("UYI", 940, 0, IsoCountry.URUGUAY),
-    US_DOLLAR("USD", 840, 2, IsoCountry.BRITISH_VIRGIN_ISLANDS, IsoCountry.TIMOR_LESTE, IsoCountry.NORTHERN_MARIANA_ISLANDS, IsoCountry.MICRONESIA, IsoCountry.PALAU, IsoCountry.GUAM, IsoCountry.HAITI, IsoCountry.ECUADOR, IsoCountry.UNITED_STATES_MINOR_OUTLYING_ISLANDS, IsoCountry.BRITISH_INDIAN_OCEAN_TERRITORY, IsoCountry.US_VIRGIN_ISLANDS, IsoCountry.BONAIRE, IsoCountry.EL_SALVADOR, IsoCountry.UNITED_STATES, IsoCountry.PANAMA, IsoCountry.MARSHALL_ISLANDS, IsoCountry.PUERTO_RICO, IsoCountry.AMERICAN_SAMOA, IsoCountry.TURKS_AND_CAICOS_ISLANDS),
+    US_DOLLAR(
+            "USD",
+            840,
+            2,
+            IsoCountry.BRITISH_VIRGIN_ISLANDS,
+            IsoCountry.TIMOR_LESTE,
+            IsoCountry.NORTHERN_MARIANA_ISLANDS,
+            IsoCountry.MICRONESIA,
+            IsoCountry.PALAU,
+            IsoCountry.GUAM,
+            IsoCountry.HAITI,
+            IsoCountry.ECUADOR,
+            IsoCountry.UNITED_STATES_MINOR_OUTLYING_ISLANDS,
+            IsoCountry.BRITISH_INDIAN_OCEAN_TERRITORY,
+            IsoCountry.US_VIRGIN_ISLANDS,
+            IsoCountry.BONAIRE,
+            IsoCountry.EL_SALVADOR,
+            IsoCountry.UNITED_STATES,
+            IsoCountry.PANAMA,
+            IsoCountry.MARSHALL_ISLANDS,
+            IsoCountry.PUERTO_RICO,
+            IsoCountry.AMERICAN_SAMOA,
+            IsoCountry.TURKS_AND_CAICOS_ISLANDS),
     US_DOLLAR_NEXT_DAY("USN", 997, 2, IsoCountry.UNITED_STATES),
     US_DOLLAR_SAME_DAY("USS", 998, 2, IsoCountry.UNITED_STATES),
     UZBEKISTAN_SUM("UZS", 860, 2, IsoCountry.UZBEKISTAN),
@@ -217,15 +306,15 @@ public enum IsoCurrency {
     ZIMBABWE_DOLLAR("ZWL", 932, 2, IsoCountry.ZIMBABWE),
     ZLOTY("PLN", 985, 2, IsoCountry.POLAND);
 
-    private static final int MIN_NUMERIC_CODE = 1;
-    private static final int MAX_NUMERIC_CODE = 999;
+    private static final int      MIN_NUMERIC_CODE = 1;
+    private static final int      MAX_NUMERIC_CODE = 999;
 
-    private final String alphabeticCode;
-    private final Integer numericCode;
-    private final Integer minorUnit;
+    private final String          alphabeticCode;
+    private final Integer         numericCode;
+    private final Integer         minorUnit;
     private final Set<IsoCountry> countries;
 
-    private IsoCurrency(String alphabeticCode, Integer numericCode, Integer minorUnit, IsoCountry... countries) {
+    private IsoCurrency(final String alphabeticCode, final Integer numericCode, final Integer minorUnit, final IsoCountry... countries) {
         this.alphabeticCode = alphabeticCode;
         this.numericCode = numericCode;
         this.minorUnit = minorUnit;
@@ -233,7 +322,9 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Returns this currency ISO 4217 alphabetical code.</p>
+     * <p>
+     * Returns this currency ISO 4217 alphabetical code.
+     * </p>
      *
      * @return a non null and 3 characters length string
      */
@@ -242,7 +333,9 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Returns this currency ISO 4217 numeric code.</p>
+     * <p>
+     * Returns this currency ISO 4217 numeric code.
+     * </p>
      *
      * @return an Integer or null if this country is {@link #UIC_FRANC} or {@link #NO_UNIVERSAL_CURRENCY}
      */
@@ -251,7 +344,9 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Returns this currency minor unit, if applicable.</p>
+     * <p>
+     * Returns this currency minor unit, if applicable.
+     * </p>
      *
      * @return an Integer or null if this not applicable
      */
@@ -260,7 +355,9 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Returns the countries that are using this currency.</p>
+     * <p>
+     * Returns the countries that are using this currency.
+     * </p>
      *
      * @return a non null but may be empty set of countries
      */
@@ -269,17 +366,21 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Translate the given ISO 4217 alphabetical code to an IsoCurrency.</p>
+     * <p>
+     * Translate the given ISO 4217 alphabetical code to an IsoCurrency.
+     * </p>
+     * <p>
+     * This method is not case sensitive not spaces sensitive.
+     * </p>
      *
-     * <p>This method is not case sensitive not spaces sensitive.</p>
-     *
-     * @param code A non null String.
+     * @param code
+     *            A non null String.
      * @return the currency having the given ISO 4217 alphabetical code, or null if it does not exist
      */
-    public static IsoCurrency fromAlphabeticCode(String code) {
-        String cleanedCode = (code == null ? null : code.toUpperCase());
+    public static IsoCurrency fromAlphabeticCode(final String code) {
+        final String cleanedCode = (code == null ? null : code.toUpperCase());
 
-        for (IsoCurrency currency : values()) {
+        for (final IsoCurrency currency : values()) {
             if (currency.getAlphabeticCode().equals(cleanedCode)) {
                 return currency;
             }
@@ -289,23 +390,27 @@ public enum IsoCurrency {
     }
 
     /**
-     * <p>Translate the given ISO 4217 numeric code to an IsoCurrency.</p>
+     * <p>
+     * Translate the given ISO 4217 numeric code to an IsoCurrency.
+     * </p>
+     * <p>
+     * This method allows null. In this case {@link #NO_UNIVERSAL_CURRENCY} is always returned (and not {@link #UIC_FRANC}).
+     * </p>
      *
-     * <p>This method allows null. In this case {@link #NO_UNIVERSAL_CURRENCY} is always returned (and not {@link #UIC_FRANC}).</p>
-     *
-     * @param code An Integer, null or not.
+     * @param code
+     *            An Integer, null or not.
      * @return the currency having the given ISO 4217 numerical code ({@link #NO_UNIVERSAL_CURRENCY} if the given code is null), or null if it does not exist
      */
-    public static IsoCurrency fromNumericCode(Integer code) {
+    public static IsoCurrency fromNumericCode(final Integer code) {
         if (code == null) {
             return NO_UNIVERSAL_CURRENCY;
         }
 
-        if (code < MIN_NUMERIC_CODE || code > MAX_NUMERIC_CODE) {
+        if ((code < MIN_NUMERIC_CODE) || (code > MAX_NUMERIC_CODE)) {
             return null;
         }
 
-        for (IsoCurrency currency : values()) {
+        for (final IsoCurrency currency : values()) {
             if (code.equals(currency.getNumericCode())) {
                 return currency;
             }

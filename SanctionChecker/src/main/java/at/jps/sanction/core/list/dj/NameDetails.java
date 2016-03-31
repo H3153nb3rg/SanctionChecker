@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlValue;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -94,7 +94,7 @@ public class NameDetails {
      * not a <CODE>set</CODE> method for the name property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getName().add(newItem);
      * </pre>
@@ -105,7 +105,7 @@ public class NameDetails {
         if (name == null) {
             name = new ArrayList<NameDetails.Name>();
         }
-        return this.name;
+        return name;
     }
 
     /**
@@ -113,7 +113,7 @@ public class NameDetails {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -175,7 +175,7 @@ public class NameDetails {
          * is not a <CODE>set</CODE> method for the nameValue property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getNameValue().add(newItem);
          * </pre>
@@ -186,12 +186,12 @@ public class NameDetails {
             if (nameValue == null) {
                 nameValue = new ArrayList<NameDetails.Name.NameValue>();
             }
-            return this.nameValue;
+            return nameValue;
         }
 
         /**
          * Gets the value of the nameType property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getNameType() {
@@ -200,12 +200,12 @@ public class NameDetails {
 
         /**
          * Sets the value of the nameType property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setNameType(String value) {
-            this.nameType = value;
+        public void setNameType(final String value) {
+            nameType = value;
         }
 
         /**
@@ -213,7 +213,7 @@ public class NameDetails {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -273,7 +273,7 @@ public class NameDetails {
 
             /**
              * Gets the value of the titleHonorific property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getTitleHonorific() {
@@ -282,17 +282,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the titleHonorific property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setTitleHonorific(String value) {
-                this.titleHonorific = value;
+            public void setTitleHonorific(final String value) {
+                titleHonorific = value;
             }
 
             /**
              * Gets the value of the maidenName property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getMaidenName() {
@@ -301,17 +301,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the maidenName property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setMaidenName(String value) {
-                this.maidenName = value;
+            public void setMaidenName(final String value) {
+                maidenName = value;
             }
 
             /**
              * Gets the value of the firstName property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getFirstName() {
@@ -320,17 +320,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the firstName property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setFirstName(String value) {
-                this.firstName = value;
+            public void setFirstName(final String value) {
+                firstName = value;
             }
 
             /**
              * Gets the value of the middleName property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getMiddleName() {
@@ -339,17 +339,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the middleName property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setMiddleName(String value) {
-                this.middleName = value;
+            public void setMiddleName(final String value) {
+                middleName = value;
             }
 
             /**
              * Gets the value of the surname property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getSurname() {
@@ -358,17 +358,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the surname property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setSurname(String value) {
-                this.surname = value;
+            public void setSurname(final String value) {
+                surname = value;
             }
 
             /**
              * Gets the value of the suffix property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getSuffix() {
@@ -377,17 +377,17 @@ public class NameDetails {
 
             /**
              * Sets the value of the suffix property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setSuffix(String value) {
-                this.suffix = value;
+            public void setSuffix(final String value) {
+                suffix = value;
             }
 
             /**
              * Gets the value of the entityName property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getEntityName() {
@@ -396,12 +396,12 @@ public class NameDetails {
 
             /**
              * Sets the value of the entityName property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setEntityName(String value) {
-                this.entityName = value;
+            public void setEntityName(final String value) {
+                entityName = value;
             }
 
             /**
@@ -411,7 +411,7 @@ public class NameDetails {
              * there is not a <CODE>set</CODE> method for the singleStringName property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getSingleStringName().add(newItem);
              * </pre>
@@ -422,7 +422,7 @@ public class NameDetails {
                 if (singleStringName == null) {
                     singleStringName = new ArrayList<NameDetails.Name.NameValue.SingleStringName>();
                 }
-                return this.singleStringName;
+                return singleStringName;
             }
 
             /**
@@ -432,7 +432,7 @@ public class NameDetails {
              * there is not a <CODE>set</CODE> method for the originalScriptName property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getOriginalScriptName().add(newItem);
              * </pre>
@@ -443,7 +443,7 @@ public class NameDetails {
                 if (originalScriptName == null) {
                     originalScriptName = new ArrayList<NameDetails.Name.NameValue.OriginalScriptName>();
                 }
-                return this.originalScriptName;
+                return originalScriptName;
             }
 
             /**
@@ -451,7 +451,7 @@ public class NameDetails {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;simpleContent>
@@ -470,7 +470,7 @@ public class NameDetails {
 
                 /**
                  * Gets the value of the value property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getValue() {
@@ -479,11 +479,11 @@ public class NameDetails {
 
                 /**
                  * Sets the value of the value property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setValue(String value) {
+                public void setValue(final String value) {
                     this.value = value;
                 }
 
@@ -494,7 +494,7 @@ public class NameDetails {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;simpleContent>
@@ -513,7 +513,7 @@ public class NameDetails {
 
                 /**
                  * Gets the value of the value property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getValue() {
@@ -522,11 +522,11 @@ public class NameDetails {
 
                 /**
                  * Sets the value of the value property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setValue(String value) {
+                public void setValue(final String value) {
                     this.value = value;
                 }
 

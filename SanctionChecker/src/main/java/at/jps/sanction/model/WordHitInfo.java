@@ -13,7 +13,7 @@ import javax.persistence.InheritanceType;
 public class WordHitInfo extends BaseModel implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -1924136493123423017L;
 
@@ -42,7 +42,7 @@ public class WordHitInfo extends BaseModel implements Serializable {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(final String token) {
         this.token = token;
     }
 
@@ -50,7 +50,7 @@ public class WordHitInfo extends BaseModel implements Serializable {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(final int value) {
         this.value = value;
     }
 
@@ -58,7 +58,7 @@ public class WordHitInfo extends BaseModel implements Serializable {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
+    public void setFieldName(final String fieldName) {
         this.fieldName = fieldName;
     }
 
@@ -66,12 +66,12 @@ public class WordHitInfo extends BaseModel implements Serializable {
         return fieldText;
     }
 
-    public void setFieldText(String fieldText) {
+    public void setFieldText(final String fieldText) {
         this.fieldText = fieldText;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         boolean eq = false;
 

@@ -18,7 +18,7 @@ abstract public class Worker implements Runnable {
     }
 
     public void initialize() {
-
+        // NOOP
     }
 
     public void close() {

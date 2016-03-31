@@ -33,31 +33,31 @@ public class JMXClient {
 
     public void connect() {
         try {
-            JMXServiceURL url = new JMXServiceURL(getJMXServerUrl()); // "service:jmx:rmi:///jndi/rmi://" + HOST + ":" + PORT + "/jmxrmi");
+            final JMXServiceURL url = new JMXServiceURL(getJMXServerUrl()); // "service:jmx:rmi:///jndi/rmi://" + HOST + ":" + PORT + "/jmxrmi");
 
             // for passing credentials for password
             /*
              * Map<String, String[]> env = new HashMap<>(); String[] credentials = {"myrole", "MYP@SSWORD"}; env.put(JMXConnector.CREDENTIALS, credentials); JMXConnector jmxConnector =
              * JMXConnectorFactory.connect(url, env);
              */
-            JMXConnector jmxConnector = JMXConnectorFactory.connect(url);
-            MBeanServerConnection mbeanServerConnection = jmxConnector.getMBeanServerConnection();
+            final JMXConnector jmxConnector = JMXConnectorFactory.connect(url);
+            final MBeanServerConnection mbeanServerConnection = jmxConnector.getMBeanServerConnection();
 
-            ObjectName mbeanName = new ObjectName(getObjectName()); // "Embargo:name=Queues");
+            final ObjectName mbeanName = new ObjectName(getObjectName()); // "Embargo:name=Queues");
 
             // Get MBean proxy instance that will be used to make calls to registered MBean
-            mbeanQueueStatusProxy = (QueueStatus) MBeanServerInvocationHandler.newProxyInstance(mbeanServerConnection, mbeanName, QueueStatus.class, true);
+            mbeanQueueStatusProxy = MBeanServerInvocationHandler.newProxyInstance(mbeanServerConnection, mbeanName, QueueStatus.class, true);
         }
-        catch (Exception x) {
+        catch (final Exception x) {
             logger.error("JMX Client Error:" + x.toString());
             logger.debug("Exception", x);
         }
     }
 
     public HashMap<String, Long> getQueueSizes() {
-        HashMap<String, Long> queueSizes = new HashMap<String, Long>();
+        final HashMap<String, Long> queueSizes = new HashMap<String, Long>();
 
-        for (String queueName : mbeanQueueStatusProxy.getQueueNames()) {
+        for (final String queueName : mbeanQueueStatusProxy.getQueueNames()) {
             queueSizes.put(queueName, new Long(mbeanQueueStatusProxy.getQueueSize(queueName)));
         }
 
@@ -68,7 +68,7 @@ public class JMXClient {
         return JMXServerUrl;
     }
 
-    public void setJMXServerUrl(String jMXServerUrl) {
+    public void setJMXServerUrl(final String jMXServerUrl) {
         JMXServerUrl = jMXServerUrl;
     }
 
@@ -76,7 +76,7 @@ public class JMXClient {
         return objectName;
     }
 
-    public void setObjectName(String objectName) {
+    public void setObjectName(final String objectName) {
         this.objectName = objectName;
     }
 

@@ -20,9 +20,9 @@ public class DBInputQueue extends DBQueue<Message> {
     }
 
     @Override
-    public Message getNextMessage(boolean wait) {
+    public Message getNextMessage(final boolean wait) {
 
-        Message message = DBHelper.getNextMessage();
+        final Message message = DBHelper.getNextMessage();
 
         // if read from here we go from new to check
         message.setMessageProcessingStatus(MessageStatus.CHECK);

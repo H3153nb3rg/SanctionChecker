@@ -13,6 +13,7 @@ import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.listhandler.OptimizationListHandler;
+import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.PostNoHitWorker;
 
 public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
@@ -22,26 +23,26 @@ public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
     public abstract MessageContent getMessageContent(Message message);
 
     @Override
-    public void handleMessage(AnalysisResult message) {
+    public void handleMessage(final AnalysisResult message) {
 
-        OptimizationListHandler optiListHandler = getOptimizationListHandler();
+        final OptimizationListHandler optiListHandler = getOptimizationListHandler();
 
         // TODO: this is NOT good - we have to parse again.....
 
-        ArrayList<OptimizationRecord> orList = new ArrayList<OptimizationRecord>();
+        final ArrayList<OptimizationRecord> orList = new ArrayList<OptimizationRecord>();
 
         // we add records as we go on
-        for (HitResult slhr : message.getHitList()) {
+        for (final HitResult slhr : message.getHitList()) {
 
             String msgFieldContent = null;
 
-            MessageContent messageContent = getMessageContent(message.getMessage());
+            final MessageContent messageContent = getMessageContent(message.getMessage());
 
             msgFieldContent = messageContent.getFieldsAndValues().get(((PaymentHitResult) slhr).getHitField());
 
             if (msgFieldContent != null) {
 
-                OptimizationRecord or = new OptimizationRecord(((PaymentHitResult) slhr).getHitField(), msgFieldContent, ((PaymentHitResult) slhr).getHitListName(),
+                final OptimizationRecord or = new OptimizationRecord(((PaymentHitResult) slhr).getHitField(), msgFieldContent, ((PaymentHitResult) slhr).getHitListName(),
                         ((PaymentHitResult) slhr).getHitId(), OptimizationRecord.OPTI_STATUS_NEW);
                 if (!orList.contains(or)) {
                     orList.add(or);
@@ -62,13 +63,19 @@ public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
 
         optiListHandler.writeList(optiListHandler.getValues(), false);
 
+        // add for further Processing
+        final Queue<AnalysisResult> outputQueue = getOutQueue();
+        if (outputQueue != null) {
+            outputQueue.addMessage(message);
+        }
+
     }
 
     protected OptimizationListHandler getOptimizationListHandler() {
         return getStreamManager().getTxNoHitOptimizationListHandler();
     }
 
-    protected void filterList(OptimizationListHandler optiListHandler, ArrayList<OptimizationRecord> orList) {
+    protected void filterList(final OptimizationListHandler optiListHandler, final ArrayList<OptimizationRecord> orList) {
         optiListHandler.appendList(orList, false);
     }
 

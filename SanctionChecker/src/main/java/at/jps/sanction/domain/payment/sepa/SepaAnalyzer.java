@@ -22,8 +22,8 @@ public class SepaAnalyzer extends PaymentAnalyzer {
 
     static final Logger         logger = LoggerFactory.getLogger(SepaAnalyzer.class);
 
-    static private List<String> messageTypes;                                                                                                                                                                                                          // nix
-                                                                                                                                                                                                                                                       // good
+    static private List<String> messageTypes;                                                                                                                                                                                                                                                  // nix
+                                                                                                                                                                                                                                                                                               // good
 
     public SepaAnalyzer() {
         super();
@@ -36,7 +36,7 @@ public class SepaAnalyzer extends PaymentAnalyzer {
             messageContent = new MessageContent();
 
             final String msgText = message.getRawContent();
-            HashMap<String, String> fieldsAndValues = SepaMessageParser.parseMessage(msgText, messageTypes);
+            final HashMap<String, String> fieldsAndValues = SepaMessageParser.parseMessage(msgText, messageTypes);
             messageContent.setFieldsAndValues(fieldsAndValues);
 
             // add business XT ID to Message
@@ -49,6 +49,7 @@ public class SepaAnalyzer extends PaymentAnalyzer {
         return messageContent;
     }
 
+    @Override
     public MessageContent getFieldsToCheck(final Message message) {
 
         return getFieldsToCheckInternal(message);
@@ -58,8 +59,8 @@ public class SepaAnalyzer extends PaymentAnalyzer {
         return messageTypes;
     }
 
-    public void setMessageTypes(List<String> messageTypes) {
-        this.messageTypes = messageTypes;
+    public void setMessageTypes(final List<String> messageTypes) {
+        SepaAnalyzer.messageTypes = messageTypes;
     }
 
 }

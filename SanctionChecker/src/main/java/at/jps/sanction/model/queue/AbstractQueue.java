@@ -21,12 +21,19 @@ public abstract class AbstractQueue<X> implements Queue<X> {
     protected long                capacity;
     protected String              name;
     protected String              basePath;
-    protected String              streamName;
 
-    ArrayList<QueueEventListener> queueEventListeners;                                                                                                      // = new ArrayList<>();
+    private boolean               purgeQueuesOnStartup;
+
+    ArrayList<QueueEventListener> queueEventListeners;
 
     public AbstractQueue() {
 
+    }
+
+    public void initialize() {
+        assert (getName() != null) : "Name not configured";
+        assert (getBasePath() != null) : "BasePath not configured";
+        // assert (getStreamName() != null) : "StreamName not configured";
     }
 
     public AbstractQueue(final String name, final int capacity) {
@@ -75,17 +82,8 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         this.name = name;
     }
 
-    // protected QueueEventListener getQueueEventListeners()
-    // {
-    // if (queueEventListeners == null)
-    // {
-    // queueEventListeners = new ArrayList<>();
-    // }
-    // return queueEventListeners;
-    // }
-
     @Override
-    public void addListener(QueueEventListener listener) {
+    public void addListener(final QueueEventListener listener) {
 
         if (queueEventListeners == null) {
             queueEventListeners = new ArrayList<>();
@@ -93,9 +91,9 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         queueEventListeners.add(listener);
     }
 
-    private void notifyListeners(final X message, boolean added) {
+    private void notifyListeners(final X message, final boolean added) {
 
-        for (QueueEventListener listener : queueEventListeners) {
+        for (final QueueEventListener listener : queueEventListeners) {
             if (added) {
                 listener.messageAdded();
             }
@@ -124,12 +122,12 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         setCapacity(getConfigQueueSize(properties, streamName, queueName));
     }
 
-    public String getStreamName() {
-        return streamName;
+    public boolean isPurgeQueuesOnStartup() {
+        return purgeQueuesOnStartup;
     }
 
-    public void setStreamName(String streamName) {
-        this.streamName = streamName;
+    public void setPurgeQueuesOnStartup(final boolean purgeQueuesOnStartup) {
+        this.purgeQueuesOnStartup = purgeQueuesOnStartup;
     }
 
 }

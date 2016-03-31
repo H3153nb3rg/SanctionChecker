@@ -333,10 +333,10 @@ public class FeatureSchemaType {
 
         @XmlAttribute(name = "ReliabilityID", required = true)
         @XmlSchemaType(name = "nonNegativeInteger")
-        protected BigInteger reliabilityID;
+        protected BigInteger                                             reliabilityID;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                                  deltaAction;
 
         /**
          * Gets the value of the comment property.
@@ -600,10 +600,10 @@ public class FeatureSchemaType {
 
     @XmlAttribute(name = "FeatureTypeID", required = true)
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger featureTypeID;
+    protected BigInteger                                featureTypeID;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                     deltaAction;
 
     /**
      * Gets the value of the deltaAction property.

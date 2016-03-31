@@ -58,7 +58,7 @@ public class SwiftFileParser extends FileParserImpl {
                 try {
                     input.close();
                 }
-                catch (IOException e) {
+                catch (final IOException e) {
                     logger.debug("Exception: ", e);
                 }
             }

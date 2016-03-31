@@ -372,7 +372,7 @@ public class DocumentedNameSchemaType {
         protected String                                                    trailingChars;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                                     deltaAction;
 
         /**
          * Gets the value of the deltaAction property.
@@ -468,10 +468,10 @@ public class DocumentedNameSchemaType {
 
     @XmlAttribute(name = "DocNameStatusID", required = true)
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger docNameStatusID;
+    protected BigInteger                                           docNameStatusID;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                                deltaAction;
 
     /**
      * Gets the value of the comment property.

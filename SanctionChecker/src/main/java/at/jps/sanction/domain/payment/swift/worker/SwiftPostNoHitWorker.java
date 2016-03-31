@@ -17,11 +17,12 @@ public class SwiftPostNoHitWorker extends PaymentPostNoHitWorker {
     static final Logger logger = LoggerFactory.getLogger(SwiftPostNoHitWorker.class);
 
     @Override
-    public MessageContent getMessageContent(Message message) {
+    public MessageContent getMessageContent(final Message message) {
         return SwiftAnalyzer.getFieldsToCheckInternal(message);
     }
 
-    protected void filterList(OptimizationListHandler optiListHandler, ArrayList<OptimizationRecord> orList) {
+    @Override
+    protected void filterList(final OptimizationListHandler optiListHandler, final ArrayList<OptimizationRecord> orList) {
         optiListHandler.appendList(orList, false);
     }
 

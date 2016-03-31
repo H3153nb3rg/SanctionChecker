@@ -33,7 +33,7 @@ public abstract class MemoryQueue<X> extends AbstractQueue<X> {
     @Override
     public boolean addMessage(final X message) {
 
-        boolean added = getQueue().add(message);
+        final boolean added = getQueue().add(message);
 
         super.addMessage(message);
 
@@ -61,7 +61,7 @@ public abstract class MemoryQueue<X> extends AbstractQueue<X> {
 
     protected BlockingQueue<X> getQueue() {
         if (this.messageQueue == null) {
-            this.messageQueue = new ArrayBlockingQueue<X>((int) this.capacity);
+            this.messageQueue = new ArrayBlockingQueue<X>((int) capacity);
         }
         return this.messageQueue;
     }

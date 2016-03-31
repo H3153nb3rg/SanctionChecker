@@ -17,11 +17,12 @@ public class SepaPostNoHitWorker extends PaymentPostNoHitWorker {
     static final Logger logger = LoggerFactory.getLogger(SepaPostNoHitWorker.class);
 
     @Override
-    public MessageContent getMessageContent(Message message) {
+    public MessageContent getMessageContent(final Message message) {
         return SepaAnalyzer.getFieldsToCheckInternal(message);
     }
 
-    protected void filterList(OptimizationListHandler optiListHandler, ArrayList<OptimizationRecord> orList) {
+    @Override
+    protected void filterList(final OptimizationListHandler optiListHandler, final ArrayList<OptimizationRecord> orList) {
         optiListHandler.appendList(orList, false);
     }
 

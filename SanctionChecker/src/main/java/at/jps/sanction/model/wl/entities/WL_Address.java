@@ -22,7 +22,7 @@ public class WL_Address extends BaseModel implements Serializable {
         return place;
     }
 
-    public void setPlace(String place) {
+    public void setPlace(final String place) {
         this.place = place;
     }
 
@@ -30,7 +30,7 @@ public class WL_Address extends BaseModel implements Serializable {
         return line;
     }
 
-    public void setLine(String line) {
+    public void setLine(final String line) {
         this.line = line;
     }
 
@@ -38,7 +38,7 @@ public class WL_Address extends BaseModel implements Serializable {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 

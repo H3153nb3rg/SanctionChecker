@@ -21,7 +21,7 @@ public class WL_Relation implements Serializable {
         return wlid_from;
     }
 
-    public void setWlid_from(String wlid_from) {
+    public void setWlid_from(final String wlid_from) {
         this.wlid_from = wlid_from;
     }
 
@@ -29,7 +29,7 @@ public class WL_Relation implements Serializable {
         return wlid_to;
     }
 
-    public void setWlid_to(String wlid_to) {
+    public void setWlid_to(final String wlid_to) {
         this.wlid_to = wlid_to;
     }
 
@@ -37,7 +37,7 @@ public class WL_Relation implements Serializable {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -45,7 +45,7 @@ public class WL_Relation implements Serializable {
         return expired;
     }
 
-    public void setExpired(String expired) {
+    public void setExpired(final String expired) {
         this.expired = expired;
     }
 

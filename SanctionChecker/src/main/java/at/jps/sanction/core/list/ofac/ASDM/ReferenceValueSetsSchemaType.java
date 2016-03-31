@@ -6983,121 +6983,121 @@ public class ReferenceValueSetsSchemaType {
     }
 
     @XmlElement(name = "AliasTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.AliasTypeValues aliasTypeValues;
+    protected ReferenceValueSetsSchemaType.AliasTypeValues               aliasTypeValues;
 
     @XmlElement(name = "AreaCodeValues", required = true)
-    protected ReferenceValueSetsSchemaType.AreaCodeValues areaCodeValues;
+    protected ReferenceValueSetsSchemaType.AreaCodeValues                areaCodeValues;
 
     @XmlElement(name = "AreaCodeTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.AreaCodeTypeValues areaCodeTypeValues;
+    protected ReferenceValueSetsSchemaType.AreaCodeTypeValues            areaCodeTypeValues;
 
     @XmlElement(name = "CalendarTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.CalendarTypeValues calendarTypeValues;
+    protected ReferenceValueSetsSchemaType.CalendarTypeValues            calendarTypeValues;
 
     @XmlElement(name = "CountryValues", required = true)
-    protected ReferenceValueSetsSchemaType.CountryValues countryValues;
+    protected ReferenceValueSetsSchemaType.CountryValues                 countryValues;
 
     @XmlElement(name = "CountryRelevanceValues", required = true)
-    protected ReferenceValueSetsSchemaType.CountryRelevanceValues countryRelevanceValues;
+    protected ReferenceValueSetsSchemaType.CountryRelevanceValues        countryRelevanceValues;
 
     @XmlElement(name = "DecisionMakingBodyValues", required = true)
-    protected ReferenceValueSetsSchemaType.DecisionMakingBodyValues decisionMakingBodyValues;
+    protected ReferenceValueSetsSchemaType.DecisionMakingBodyValues      decisionMakingBodyValues;
 
     @XmlElement(name = "DetailReferenceValues", required = true)
-    protected ReferenceValueSetsSchemaType.DetailReferenceValues detailReferenceValues;
+    protected ReferenceValueSetsSchemaType.DetailReferenceValues         detailReferenceValues;
 
     @XmlElement(name = "DetailTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.DetailTypeValues detailTypeValues;
+    protected ReferenceValueSetsSchemaType.DetailTypeValues              detailTypeValues;
 
     @XmlElement(name = "DocNameStatusValues", required = true)
-    protected ReferenceValueSetsSchemaType.DocNameStatusValues docNameStatusValues;
+    protected ReferenceValueSetsSchemaType.DocNameStatusValues           docNameStatusValues;
 
     @XmlElement(name = "EntryEventTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.EntryEventTypeValues entryEventTypeValues;
+    protected ReferenceValueSetsSchemaType.EntryEventTypeValues          entryEventTypeValues;
 
     @XmlElement(name = "EntryLinkTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.EntryLinkTypeValues entryLinkTypeValues;
+    protected ReferenceValueSetsSchemaType.EntryLinkTypeValues           entryLinkTypeValues;
 
     @XmlElement(name = "ExRefTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.ExRefTypeValues exRefTypeValues;
+    protected ReferenceValueSetsSchemaType.ExRefTypeValues               exRefTypeValues;
 
     @XmlElement(name = "FeatureTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.FeatureTypeValues featureTypeValues;
+    protected ReferenceValueSetsSchemaType.FeatureTypeValues             featureTypeValues;
 
     @XmlElement(name = "FeatureTypeGroupValues", required = true)
-    protected ReferenceValueSetsSchemaType.FeatureTypeGroupValues featureTypeGroupValues;
+    protected ReferenceValueSetsSchemaType.FeatureTypeGroupValues        featureTypeGroupValues;
 
     @XmlElement(name = "IDRegDocDateTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.IDRegDocDateTypeValues idRegDocDateTypeValues;
+    protected ReferenceValueSetsSchemaType.IDRegDocDateTypeValues        idRegDocDateTypeValues;
 
     @XmlElement(name = "IDRegDocTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.IDRegDocTypeValues idRegDocTypeValues;
+    protected ReferenceValueSetsSchemaType.IDRegDocTypeValues            idRegDocTypeValues;
 
     @XmlElement(name = "IdentityFeatureLinkTypeValues", required = true)
     protected ReferenceValueSetsSchemaType.IdentityFeatureLinkTypeValues identityFeatureLinkTypeValues;
 
     @XmlElement(name = "LegalBasisValues", required = true)
-    protected ReferenceValueSetsSchemaType.LegalBasisValues legalBasisValues;
+    protected ReferenceValueSetsSchemaType.LegalBasisValues              legalBasisValues;
 
     @XmlElement(name = "LegalBasisTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.LegalBasisTypeValues legalBasisTypeValues;
+    protected ReferenceValueSetsSchemaType.LegalBasisTypeValues          legalBasisTypeValues;
 
     @XmlElement(name = "ListValues", required = true)
-    protected ReferenceValueSetsSchemaType.ListValues listValues;
+    protected ReferenceValueSetsSchemaType.ListValues                    listValues;
 
     @XmlElement(name = "LocPartTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.LocPartTypeValues locPartTypeValues;
+    protected ReferenceValueSetsSchemaType.LocPartTypeValues             locPartTypeValues;
 
     @XmlElement(name = "LocPartValueStatusValues", required = true)
-    protected ReferenceValueSetsSchemaType.LocPartValueStatusValues locPartValueStatusValues;
+    protected ReferenceValueSetsSchemaType.LocPartValueStatusValues      locPartValueStatusValues;
 
     @XmlElement(name = "LocPartValueTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.LocPartValueTypeValues locPartValueTypeValues;
+    protected ReferenceValueSetsSchemaType.LocPartValueTypeValues        locPartValueTypeValues;
 
     @XmlElement(name = "NamePartTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.NamePartTypeValues namePartTypeValues;
+    protected ReferenceValueSetsSchemaType.NamePartTypeValues            namePartTypeValues;
 
     @XmlElement(name = "OrganisationValues", required = true)
-    protected ReferenceValueSetsSchemaType.OrganisationValues organisationValues;
+    protected ReferenceValueSetsSchemaType.OrganisationValues            organisationValues;
 
     @XmlElement(name = "PartySubTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.PartySubTypeValues partySubTypeValues;
+    protected ReferenceValueSetsSchemaType.PartySubTypeValues            partySubTypeValues;
 
     @XmlElement(name = "PartyTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.PartyTypeValues partyTypeValues;
+    protected ReferenceValueSetsSchemaType.PartyTypeValues               partyTypeValues;
 
     @XmlElement(name = "RelationQualityValues", required = true)
-    protected ReferenceValueSetsSchemaType.RelationQualityValues relationQualityValues;
+    protected ReferenceValueSetsSchemaType.RelationQualityValues         relationQualityValues;
 
     @XmlElement(name = "RelationTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.RelationTypeValues relationTypeValues;
+    protected ReferenceValueSetsSchemaType.RelationTypeValues            relationTypeValues;
 
     @XmlElement(name = "ReliabilityValues", required = true)
-    protected ReferenceValueSetsSchemaType.ReliabilityValues reliabilityValues;
+    protected ReferenceValueSetsSchemaType.ReliabilityValues             reliabilityValues;
 
     @XmlElement(name = "SanctionsProgramValues", required = true)
-    protected ReferenceValueSetsSchemaType.SanctionsProgramValues sanctionsProgramValues;
+    protected ReferenceValueSetsSchemaType.SanctionsProgramValues        sanctionsProgramValues;
 
     @XmlElement(name = "SanctionsTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.SanctionsTypeValues sanctionsTypeValues;
+    protected ReferenceValueSetsSchemaType.SanctionsTypeValues           sanctionsTypeValues;
 
     @XmlElement(name = "ScriptValues", required = true)
-    protected ReferenceValueSetsSchemaType.ScriptValues scriptValues;
+    protected ReferenceValueSetsSchemaType.ScriptValues                  scriptValues;
 
     @XmlElement(name = "ScriptStatusValues", required = true)
-    protected ReferenceValueSetsSchemaType.ScriptStatusValues scriptStatusValues;
+    protected ReferenceValueSetsSchemaType.ScriptStatusValues            scriptStatusValues;
 
     @XmlElement(name = "SubsidiaryBodyValues", required = true)
-    protected ReferenceValueSetsSchemaType.SubsidiaryBodyValues subsidiaryBodyValues;
+    protected ReferenceValueSetsSchemaType.SubsidiaryBodyValues          subsidiaryBodyValues;
 
     @XmlElement(name = "SupInfoTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.SupInfoTypeValues supInfoTypeValues;
+    protected ReferenceValueSetsSchemaType.SupInfoTypeValues             supInfoTypeValues;
 
     @XmlElement(name = "TargetTypeValues", required = true)
-    protected ReferenceValueSetsSchemaType.TargetTypeValues targetTypeValues;
+    protected ReferenceValueSetsSchemaType.TargetTypeValues              targetTypeValues;
 
     @XmlElement(name = "ValidityValues", required = true)
-    protected ReferenceValueSetsSchemaType.ValidityValues validityValues;
+    protected ReferenceValueSetsSchemaType.ValidityValues                validityValues;
 
     /**
      * Gets the value of the aliasTypeValues property.

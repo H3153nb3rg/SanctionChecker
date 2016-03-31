@@ -93,7 +93,7 @@ public final class Bic {
             cleanedBic += PRIMARY_OFFICE_BRANCH_CODE;
         }
 
-        this.normalizedBic = cleanedBic;
+        normalizedBic = cleanedBic;
     }
 
     /**
@@ -103,15 +103,15 @@ public final class Bic {
      *            A String.
      * @return {@code true} if the given string is valid BIC, otherwise {@code false}
      */
-    public static boolean isValid(String bic) {
-        return bic != null && isWellFormatted(bic) && hasKnownCountryCode(bic);
+    public static boolean isValid(final String bic) {
+        return (bic != null) && isWellFormatted(bic) && hasKnownCountryCode(bic);
     }
 
-    private static boolean isWellFormatted(String s) {
+    private static boolean isWellFormatted(final String s) {
         return BIC_PATTERN.matcher(s).matches();
     }
 
-    private static boolean hasKnownCountryCode(String s) {
+    private static boolean hasKnownCountryCode(final String s) {
         return IsoCountry.fromCode(s.substring(COUNTRY_CODE_INDEX, COUNTRY_CODE_INDEX + COUNTRY_CODE_LENGTH)) != null;
     }
 
@@ -161,7 +161,7 @@ public final class Bic {
      * @see #isLiveBic
      */
     public boolean isTestBic() {
-        return normalizedBic.charAt(LOCATION_CODE_INDEX + LOCATION_CODE_LENGTH - 1) == TEST_BIC_INDICATOR;
+        return normalizedBic.charAt((LOCATION_CODE_INDEX + LOCATION_CODE_LENGTH) - 1) == TEST_BIC_INDICATOR;
     }
 
     /**
@@ -187,8 +187,8 @@ public final class Bic {
             return this;
         }
 
-        StringBuilder testBicBuilder = new StringBuilder(normalizedBic);
-        testBicBuilder.setCharAt(LOCATION_CODE_INDEX + LOCATION_CODE_LENGTH - 1, TEST_BIC_INDICATOR);
+        final StringBuilder testBicBuilder = new StringBuilder(normalizedBic);
+        testBicBuilder.setCharAt((LOCATION_CODE_INDEX + LOCATION_CODE_LENGTH) - 1, TEST_BIC_INDICATOR);
         return new Bic(testBicBuilder.toString());
     }
 
@@ -204,12 +204,12 @@ public final class Bic {
      * @see Object#toString()
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if ((o == null) || (getClass() != o.getClass())) {
             return false;
         }
 

@@ -23,15 +23,15 @@ public class WL_Attribute implements Serializable {
         return attributes;
     }
 
-    public void setAttributes(HashMap<String, String> attributes) {
+    public void setAttributes(final HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
 
-    public void addAttribute(String key, String value) {
+    public void addAttribute(final String key, final String value) {
         getAttributes().put(key, value);
     }
 
-    public String getAttribute(String key) {
+    public String getAttribute(final String key) {
         return getAttributes().get(key);
     }
 }

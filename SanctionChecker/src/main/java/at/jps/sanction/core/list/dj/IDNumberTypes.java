@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlValue;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -70,7 +70,7 @@ public class IDNumberTypes {
      * not a <CODE>set</CODE> method for the id property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getID().add(newItem);
      * </pre>
@@ -81,7 +81,7 @@ public class IDNumberTypes {
         if (id == null) {
             id = new ArrayList<IDNumberTypes.ID>();
         }
-        return this.id;
+        return id;
     }
 
     /**
@@ -89,7 +89,7 @@ public class IDNumberTypes {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -127,7 +127,7 @@ public class IDNumberTypes {
          * is not a <CODE>set</CODE> method for the idValue property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getIDValue().add(newItem);
          * </pre>
@@ -138,12 +138,12 @@ public class IDNumberTypes {
             if (idValue == null) {
                 idValue = new ArrayList<IDNumberTypes.ID.IDValue>();
             }
-            return this.idValue;
+            return idValue;
         }
 
         /**
          * Gets the value of the idType property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getIDType() {
@@ -152,12 +152,12 @@ public class IDNumberTypes {
 
         /**
          * Sets the value of the idType property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setIDType(String value) {
-            this.idType = value;
+        public void setIDType(final String value) {
+            idType = value;
         }
 
         /**
@@ -165,7 +165,7 @@ public class IDNumberTypes {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;simpleContent>
@@ -187,7 +187,7 @@ public class IDNumberTypes {
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getValue() {
@@ -196,17 +196,17 @@ public class IDNumberTypes {
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setValue(String value) {
+            public void setValue(final String value) {
                 this.value = value;
             }
 
             /**
              * Gets the value of the iDnotes property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getIDnotes() {
@@ -215,12 +215,12 @@ public class IDNumberTypes {
 
             /**
              * Sets the value of the iDnotes property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setIDnotes(String value) {
-                this.iDnotes = value;
+            public void setIDnotes(final String value) {
+                iDnotes = value;
             }
 
         }

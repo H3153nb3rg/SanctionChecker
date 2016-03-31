@@ -56,7 +56,7 @@ public class SepaMessageParser {
             xpath = xPathfactory.newXPath();
 
         }
-        catch (ParserConfigurationException e) {
+        catch (final ParserConfigurationException e) {
             logger.error("Error initializing XPATH Parser", e);
         }
     }
@@ -114,7 +114,9 @@ public class SepaMessageParser {
             for (final String msgType : supportedTypes) {
                 if (message.contains(msgType)) {
 
-                    if (logger.isDebugEnabled()) logger.debug("parsing using SEPA Msgtype: " + msgType);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("parsing using SEPA Msgtype: " + msgType);
+                    }
 
                     fieldsToGet = getFieldsForType(msgType);
 
@@ -125,13 +127,13 @@ public class SepaMessageParser {
             try {
                 if (fieldsToGet != null) {
 
-                    org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(message)));
+                    final org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(message)));
 
-                    for (String field : fieldsToGet) {
+                    for (final String field : fieldsToGet) {
                         // final XPathExpression expr = xpath.compile("/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/TxId");
-                        XPathExpression expr = xpath.compile(field);
+                        final XPathExpression expr = xpath.compile(field);
 
-                        String content = (String) expr.evaluate(doc, XPathConstants.STRING);
+                        final String content = (String) expr.evaluate(doc, XPathConstants.STRING);
                         if ((content != null) && (content.trim().length() > 0)) {
 
                             fields.put(field, content);

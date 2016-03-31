@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -69,7 +69,7 @@ public class CountryDetails {
      * not a <CODE>set</CODE> method for the country property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getCountry().add(newItem);
      * </pre>
@@ -80,7 +80,7 @@ public class CountryDetails {
         if (country == null) {
             country = new ArrayList<CountryDetails.Country>();
         }
-        return this.country;
+        return country;
     }
 
     /**
@@ -88,7 +88,7 @@ public class CountryDetails {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -126,7 +126,7 @@ public class CountryDetails {
          * is not a <CODE>set</CODE> method for the countryValue property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getCountryValue().add(newItem);
          * </pre>
@@ -137,12 +137,12 @@ public class CountryDetails {
             if (countryValue == null) {
                 countryValue = new ArrayList<CountryDetails.Country.CountryValue>();
             }
-            return this.countryValue;
+            return countryValue;
         }
 
         /**
          * Gets the value of the countryType property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getCountryType() {
@@ -151,12 +151,12 @@ public class CountryDetails {
 
         /**
          * Sets the value of the countryType property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setCountryType(String value) {
-            this.countryType = value;
+        public void setCountryType(final String value) {
+            countryType = value;
         }
 
         /**
@@ -164,7 +164,7 @@ public class CountryDetails {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -184,7 +184,7 @@ public class CountryDetails {
 
             /**
              * Gets the value of the code property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getCode() {
@@ -193,12 +193,12 @@ public class CountryDetails {
 
             /**
              * Sets the value of the code property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setCode(String value) {
-                this.code = value;
+            public void setCode(final String value) {
+                code = value;
             }
 
         }

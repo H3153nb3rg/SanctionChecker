@@ -7,23 +7,23 @@ import java.net.URL;
 
 public class URLHelper {
 
-    public static void openWebpage(URI uri) {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+    public static void openWebpage(final URI uri) {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if ((desktop != null) && desktop.isSupported(Desktop.Action.BROWSE)) {
             try {
                 desktop.browse(uri);
             }
-            catch (Exception e) {
+            catch (final Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void openWebpage(URL url) {
+    public static void openWebpage(final URL url) {
         try {
             openWebpage(url.toURI());
         }
-        catch (URISyntaxException e) {
+        catch (final URISyntaxException e) {
             e.printStackTrace();
         }
     }

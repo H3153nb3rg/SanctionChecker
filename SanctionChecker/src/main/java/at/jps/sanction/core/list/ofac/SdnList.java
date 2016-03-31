@@ -2072,30 +2072,30 @@ public class SdnList {
 
         }
 
-        protected String uid;
-        protected String firstName;
-        protected String lastName;
-        protected String title;
-        protected String sdnType;
-        protected String remarks;
+        protected String                                  uid;
+        protected String                                  firstName;
+        protected String                                  lastName;
+        protected String                                  title;
+        protected String                                  sdnType;
+        protected String                                  remarks;
 
-        protected List<SdnList.SdnEntry.ProgramList> programList;
+        protected List<SdnList.SdnEntry.ProgramList>      programList;
 
-        protected List<SdnList.SdnEntry.IdList> idList;
+        protected List<SdnList.SdnEntry.IdList>           idList;
 
-        protected List<SdnList.SdnEntry.VesselInfo> vesselInfo;
+        protected List<SdnList.SdnEntry.VesselInfo>       vesselInfo;
 
-        protected List<SdnList.SdnEntry.AkaList> akaList;
+        protected List<SdnList.SdnEntry.AkaList>          akaList;
 
-        protected List<SdnList.SdnEntry.DateOfBirthList> dateOfBirthList;
+        protected List<SdnList.SdnEntry.DateOfBirthList>  dateOfBirthList;
 
         protected List<SdnList.SdnEntry.PlaceOfBirthList> placeOfBirthList;
 
-        protected List<SdnList.SdnEntry.AddressList> addressList;
+        protected List<SdnList.SdnEntry.AddressList>      addressList;
 
-        protected List<SdnList.SdnEntry.NationalityList> nationalityList;
+        protected List<SdnList.SdnEntry.NationalityList>  nationalityList;
 
-        protected List<SdnList.SdnEntry.CitizenshipList> citizenshipList;
+        protected List<SdnList.SdnEntry.CitizenshipList>  citizenshipList;
 
         /**
          * Gets the value of the addressList property.

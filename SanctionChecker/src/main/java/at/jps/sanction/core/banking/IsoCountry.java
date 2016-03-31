@@ -1,12 +1,9 @@
 /**
  * Copyright 2013 Marc Wrobel (marc.wrobel@gmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * 		http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +14,6 @@ package at.jps.sanction.core.banking;
 
 /**
  * The countries having an ISO 3166-1-alpha-2 code.
- *
  * <p>
  * Please be advised that this list is current as of 2013/05/26. Up-to-date list can be found for free on the <a href="http://www.iso.org/iso/home/standards/country_codes.htm">
  * International Organization for Standardization website</a>.
@@ -281,12 +277,14 @@ public enum IsoCountry {
 
     private final String code;
 
-    private IsoCountry(String code) {
+    private IsoCountry(final String code) {
         this.code = code;
     }
 
     /**
-     * <p>Returns this country ISO 3166-1-alpha-2 code.</p>
+     * <p>
+     * Returns this country ISO 3166-1-alpha-2 code.
+     * </p>
      *
      * @return a non null and 2 characters length string
      */
@@ -295,21 +293,25 @@ public enum IsoCountry {
     }
 
     /**
-     * <p>Translate the given ISO 3166-1-alpha-2 code to an IsoCountry.</p>
+     * <p>
+     * Translate the given ISO 3166-1-alpha-2 code to an IsoCountry.
+     * </p>
+     * <p>
+     * This method is not case sensitive.
+     * </p>
      *
-     * <p>This method is not case sensitive.</p>
-     *
-     * @param code A non-null String.
+     * @param code
+     *            A non-null String.
      * @return the country having the given ISO 3166-1-alpha-2 code, or null if it does not exist
      */
-    public static IsoCountry fromCode(String code) {
-        String cleanedCode = (code == null ? null : code.toUpperCase());
+    public static IsoCountry fromCode(final String code) {
+        final String cleanedCode = (code == null ? null : code.toUpperCase());
 
-        if (cleanedCode == null || cleanedCode.length() != 2) {
+        if ((cleanedCode == null) || (cleanedCode.length() != 2)) {
             return null;
         }
 
-        for (IsoCountry country : values()) {
+        for (final IsoCountry country : values()) {
             if (country.getCode().equals(cleanedCode)) {
                 return country;
             }

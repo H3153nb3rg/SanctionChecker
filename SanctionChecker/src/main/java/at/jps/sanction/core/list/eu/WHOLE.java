@@ -1529,19 +1529,19 @@ public class WHOLE {
         protected String                      type;
 
         @XmlAttribute(name = "legal_basis")
-        protected String legalBasis;
+        protected String                      legalBasis;
 
         @XmlAttribute(name = "reg_date")
-        protected String regDate;
+        protected String                      regDate;
 
         @XmlAttribute(name = "pdf_link")
-        protected String pdfLink;
+        protected String                      pdfLink;
 
         @XmlAttribute(name = "programme")
-        protected String programme;
+        protected String                      programme;
 
         @XmlAttribute(name = "remark")
-        protected String remark;
+        protected String                      remark;
 
         /**
          * Gets the value of the address property.
@@ -1787,7 +1787,7 @@ public class WHOLE {
     protected List<WHOLE.ENTITY> entity;
 
     @XmlAttribute(name = "Date")
-    protected String date;
+    protected String             date;
 
     /**
      * Ruft den Wert der date-Eigenschaft ab.

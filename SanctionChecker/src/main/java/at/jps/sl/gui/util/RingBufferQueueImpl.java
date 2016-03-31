@@ -10,7 +10,7 @@ public class RingBufferQueueImpl implements RingBufferQueue {
     private int                             cursor = -1;
     private final ArrayList<AnalysisResult> buffer = new ArrayList<AnalysisResult>();
 
-    private Queue<AnalysisResult> queue;
+    private Queue<AnalysisResult>           queue;
 
     private AnalysisResult getMessage(final int index) {
         // System.out.println("Cursor: " + index);

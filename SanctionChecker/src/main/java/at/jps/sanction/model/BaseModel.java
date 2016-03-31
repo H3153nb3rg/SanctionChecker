@@ -36,7 +36,7 @@ public abstract class BaseModel extends Model {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -44,7 +44,7 @@ public abstract class BaseModel extends Model {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(final Long version) {
         this.version = version;
     }
 
@@ -52,7 +52,7 @@ public abstract class BaseModel extends Model {
         return whenCreated;
     }
 
-    public void setWhenCreated(Timestamp whenCreated) {
+    public void setWhenCreated(final Timestamp whenCreated) {
         this.whenCreated = whenCreated;
     }
 
@@ -60,7 +60,7 @@ public abstract class BaseModel extends Model {
         return whenUpdated;
     }
 
-    public void setWhenUpdated(Timestamp whenUpdated) {
+    public void setWhenUpdated(final Timestamp whenUpdated) {
         this.whenUpdated = whenUpdated;
     }
 

@@ -7,4 +7,3 @@ public interface QueueStatusMXBean {
     public long getQueueSize(final String queueName);
 
 }
-

@@ -65,10 +65,10 @@ public class NonWordHitOptimizationListhandler implements NoWordHitListHandler {
                     line = input.readLine();
                     if (line != null) {
 
-                        StringTokenizer tokenizer = new StringTokenizer(line, ";");
+                        final StringTokenizer tokenizer = new StringTokenizer(line, ";");
 
-                        String key = tokenizer.nextToken();
-                        String value = tokenizer.nextToken();
+                        final String key = tokenizer.nextToken();
+                        final String value = tokenizer.nextToken();
 
                         getValues().put(key, value);
 
@@ -92,24 +92,24 @@ public class NonWordHitOptimizationListhandler implements NoWordHitListHandler {
     }
 
     @Override
-    public void writeList(MultiValuedMap<String, String> noHitValues, boolean append) {
+    public void writeList(final MultiValuedMap<String, String> noHitValues, final boolean append) {
         writeList(filename, noHitValues, append);
     }
 
-    public void writeList(final String filename, MultiValuedMap<String, String> noHitValues, boolean append) {
+    public void writeList(final String filename, final MultiValuedMap<String, String> noHitValues, final boolean append) {
 
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
+            final PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
 
-            for (String key : noHitValues.keySet()) {
-                for (String value : noHitValues.get(key)) {
+            for (final String key : noHitValues.keySet()) {
+                for (final String value : noHitValues.get(key)) {
                     out.println(key + ";" + value);
                 }
             }
 
             out.close();
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             // exception handling left as an exercise for the reader
         }
 
@@ -120,7 +120,7 @@ public class NonWordHitOptimizationListhandler implements NoWordHitListHandler {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 

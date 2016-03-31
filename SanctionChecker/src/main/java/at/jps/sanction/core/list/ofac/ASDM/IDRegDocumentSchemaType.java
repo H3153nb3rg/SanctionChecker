@@ -505,22 +505,22 @@ public class IDRegDocumentSchemaType {
 
     @XmlAttribute(name = "IdentityID", required = true)
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger identityID;
+    protected BigInteger                                            identityID;
 
     @XmlAttribute(name = "IssuedBy-CountryID")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger issuedByCountryID;
+    protected BigInteger                                            issuedByCountryID;
 
     @XmlAttribute(name = "IssuedIn-LocationID")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger issuedInLocationID;
+    protected BigInteger                                            issuedInLocationID;
 
     @XmlAttribute(name = "ValidityID")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger validityID;
+    protected BigInteger                                            validityID;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                                 deltaAction;
 
     /**
      * Gets the value of the comment property.

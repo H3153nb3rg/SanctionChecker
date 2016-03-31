@@ -34,7 +34,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
         if (messageContent == null) {
             messageContent = new MessageContent();
 
-            HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
+            final HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
             messageContent.setFieldsAndValues(fieldsAndValues);
 
             final String msgText = message.getRawContent();
@@ -55,14 +55,12 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
                     }
                 }
             }
-
             message.setMessageContent(messageContent);
-
         }
-
         return messageContent;
     }
 
+    @Override
     public MessageContent getFieldsToCheck(final Message message) {
 
         return getFieldsToCheckInternal(message);
@@ -90,13 +88,13 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
 
         HitRate hitrate = null;
 
-        if (msgFieldName.lastIndexOf('F') == msgFieldName.length() - 1) {
+        if (msgFieldName.lastIndexOf('F') == (msgFieldName.length() - 1)) {
             hitrate = checkCountry4NCCTOptionF(msgFieldText);
         }
 
         if (msgFieldName.contentEquals("AMD") || msgFieldName.contentEquals("ALD")) {
-            int pos = 1;
-            String countryISO = msgFieldText.substring(pos, pos + 2);  // TODO: do a IBAN Check on 1. TOKEN ( not on raw fieldcontent) !!
+            final int pos = 1;
+            final String countryISO = msgFieldText.substring(pos, pos + 2);  // TODO: do a IBAN Check on 1. TOKEN ( not on raw fieldcontent) !!
             return checkISO4NCCT(countryISO);
 
         }
@@ -110,7 +108,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
     protected HitRate checkCountry4NCCTOptionF(final String msgFieldText) {
         int pos = -1;
 
-        for (String fToken : OptionFTokens) {
+        for (final String fToken : OptionFTokens) {
             pos = msgFieldText.indexOf(fToken);
             if (pos > -1) {
                 pos += fToken.length();
@@ -118,7 +116,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
             }
         }
 
-        String countryISO = msgFieldText.substring(pos, pos + 2);
+        final String countryISO = msgFieldText.substring(pos, pos + 2);
         return checkISO4NCCT(countryISO);
     }
 

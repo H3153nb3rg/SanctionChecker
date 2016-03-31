@@ -27,7 +27,15 @@ public class LoginView extends LoginForm implements View {
     /**
      *
      */
-    private static final long serialVersionUID = 7239205107469113417L;
+    private static final long  serialVersionUID = 7239205107469113417L;
+
+    public final static String USERNAME         = "USERNAME";
+
+    private String             nextViewName;
+
+    public void setPostLoginViewName(final String viewNameToGoTo) {
+        nextViewName = viewNameToGoTo;
+    }
 
     // @Override
     @Override
@@ -164,8 +172,15 @@ public class LoginView extends LoginForm implements View {
     protected void login(final String userName, final String password) {
         System.err.println("Logged in with user name " + userName + " and password of length " + password.length());
 
-        // getUI().getNavigator().navigateTo(HitHandlingView.ViewName);
-        getUI().getNavigator().navigateTo(ListSearchView.ViewName);
+        getUI().getSession().setAttribute(USERNAME, userName);
+
+        if (nextViewName != null) {
+            getUI().getNavigator().navigateTo(nextViewName);
+        }
+        else {
+            // nix good but....
+            getUI().getNavigator().navigateTo(ListSearchView.ViewName);
+        }
     }
 
     // public LoginView() {
@@ -185,7 +200,7 @@ public class LoginView extends LoginForm implements View {
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        Notification.show("Login", "Login to play with this magnificent fundimental great application", Type.ASSISTIVE_NOTIFICATION);
+        Notification.show("Login", "Login to play with this magnificent fundamental great application", Type.ASSISTIVE_NOTIFICATION);
     }
 
     // private Button loginButton() {

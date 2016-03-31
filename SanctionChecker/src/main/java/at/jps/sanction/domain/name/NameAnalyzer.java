@@ -53,10 +53,12 @@ public class NameAnalyzer extends AnalyzerWorker {
         isHit = (analyzeresult.getHitList().size() > 0);
 
         if (isHit) {
-            getStreamManager().addToHitList(analyzeresult);
+            // getStreamManager().addToHitList(analyzeresult);
+            getHitQueue().addMessage(analyzeresult);
         }
         else {
-            getStreamManager().addToNoHitList(analyzeresult);
+            // getStreamManager().addToNoHitList(analyzeresult);
+            getNoHitQueue().addMessage(analyzeresult);
         }
 
     }
@@ -81,7 +83,7 @@ public class NameAnalyzer extends AnalyzerWorker {
                     for (final String token : textTokens) {
 
                         for (final String keyToken : nameTokens) {
-                            float hitValue = TokenTool.compareCheck(keyToken, token, listhandler.isFuzzySearch(), getStreamManager().getMinTokenLen(), getStreamManager().getFuzzyValue());
+                            final float hitValue = TokenTool.compareCheck(keyToken, token, listhandler.isFuzzySearch(), getStreamManager().getMinTokenLen(), getStreamManager().getFuzzyValue());
 
                             if (hitValue == 100) {
                                 totalHitRateAbsolute += hitValue;

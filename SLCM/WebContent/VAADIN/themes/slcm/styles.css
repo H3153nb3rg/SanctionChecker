@@ -999,7 +999,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "7.6.2";
+	content: "7.6.4";
 }
 
 .v-widget {
@@ -2309,6 +2309,34 @@ div.v-layout.v-horizontal.v-widget {
 
 .valo-test .v-slider-base:before, .valo-test .v-slider-base:after {
 	border: none !important;
+}
+
+.v-menubar-color1 {
+	color: #ecf2f8;
+	font-weight: 500;
+	
+	cursor: default;
+	border-radius: 1px;
+	border: 1px solid #11579d;
+	background: #197de1;
+	
+	
+	padding: 0;
+	text-align: left;
+}
+
+.v-menubar-color1:after {
+	border: inherit;
+	top: -1px;
+	right: -1px;
+	bottom: -1px;
+	left: -1px;
+}
+
+.v-menubar-color1:focus:after {
+	border: inherit;
+	-webkit-box-shadow: 0 0 0 2px orange;
+	box-shadow: 0 0 0 2px orange;
 }
 
 .slcm.v-app, .slcm.v-app-loading {

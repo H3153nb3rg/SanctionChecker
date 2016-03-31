@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 public class MessageContent extends BaseModel implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long             serialVersionUID = -4252872705897803406L;
 
@@ -39,7 +39,7 @@ public class MessageContent extends BaseModel implements Serializable {
         return fieldsAndValues;
     }
 
-    public void setFieldsAndValues(HashMap<String, String> fieldsAndValues) {
+    public void setFieldsAndValues(final HashMap<String, String> fieldsAndValues) {
         this.fieldsAndValues = fieldsAndValues;
     }
 
@@ -52,7 +52,7 @@ public class MessageContent extends BaseModel implements Serializable {
         return fieldsAndValueTokens;
     }
 
-    public void setFieldsAndValueTokens(HashMap<String, List<String>> fieldsAndValueTokens) {
+    public void setFieldsAndValueTokens(final HashMap<String, List<String>> fieldsAndValueTokens) {
         this.fieldsAndValueTokens = fieldsAndValueTokens;
     }
 
@@ -60,7 +60,7 @@ public class MessageContent extends BaseModel implements Serializable {
         return getFieldsAndValueTokens().get(fieldName);
     }
 
-    public void setTokenizedField(final String fieldName, List<String> tokens) {
+    public void setTokenizedField(final String fieldName, final List<String> tokens) {
         getFieldsAndValueTokens().put(fieldName, tokens);
     }
 

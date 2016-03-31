@@ -17,7 +17,7 @@ import at.jps.sanction.core.banking.IsoCountry;
 public final class IbanFormatException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -4542110778247511035L;
     private final String      inputString;
@@ -30,28 +30,28 @@ public final class IbanFormatException extends RuntimeException {
      * @param message
      *            a string
      */
-    private IbanFormatException(String input, String message) {
+    private IbanFormatException(final String input, final String message) {
         super(message);
-        this.inputString = input;
+        inputString = input;
     }
 
-    static IbanFormatException forNotProperlyFormattedInput(String input) {
+    static IbanFormatException forNotProperlyFormattedInput(final String input) {
         return new IbanFormatException(input, String.format("'%s' format is not appropriate for an IBAN", input));
     }
 
-    static IbanFormatException forIncorrectCheckDigits(String input) {
+    static IbanFormatException forIncorrectCheckDigits(final String input) {
         return new IbanFormatException(input, String.format("'%s' check digits are incorrect", input));
     }
 
-    static IbanFormatException forUnknownCountry(String input) {
+    static IbanFormatException forUnknownCountry(final String input) {
         return new IbanFormatException(input, String.format("'%s' country code is not an ISO 3166-1-alpha-2 code", input));
     }
 
-    static IbanFormatException forNotSupportedCountry(String input, IsoCountry country) {
+    static IbanFormatException forNotSupportedCountry(final String input, final IsoCountry country) {
         return new IbanFormatException(input, String.format("'%s' country does not support IBAN", country));
     }
 
-    static IbanFormatException forInvalidBbanStructure(String input, BbanStructure bbanStructure) {
+    static IbanFormatException forInvalidBbanStructure(final String input, final BbanStructure bbanStructure) {
         return new IbanFormatException(input, String.format("'%s' BBAN structure is not valid against BBAN structure used in %s", input, bbanStructure.getCountry()));
     }
 

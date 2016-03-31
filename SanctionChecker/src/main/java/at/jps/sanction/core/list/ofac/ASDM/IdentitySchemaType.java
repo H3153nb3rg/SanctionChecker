@@ -461,7 +461,7 @@ public class IdentitySchemaType {
             protected List<IdentitySchemaType.NamePartGroups.MasterNamePartGroup.NamePartGroup> namePartGroup;
 
             @XmlAttribute(name = "DeltaAction")
-            protected DeltaActionSchemaType deltaAction;
+            protected DeltaActionSchemaType                                                     deltaAction;
 
             /**
              * Gets the value of the deltaAction property.
@@ -509,7 +509,7 @@ public class IdentitySchemaType {
         protected List<IdentitySchemaType.NamePartGroups.MasterNamePartGroup> masterNamePartGroup;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                                       deltaAction;
 
         /**
          * Gets the value of the deltaAction property.
@@ -570,10 +570,10 @@ public class IdentitySchemaType {
     protected boolean                           primary;
 
     @XmlAttribute(name = "False", required = true)
-    protected boolean _false;
+    protected boolean                           _false;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType             deltaAction;
 
     /**
      * Gets the value of the alias property.

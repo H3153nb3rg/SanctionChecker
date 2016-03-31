@@ -582,7 +582,7 @@ public class SanctionsEntrySchemaType {
         protected BigInteger                                   supInfoTypeID;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                        deltaAction;
 
         /**
          * Gets the value of the deltaAction property.
@@ -702,16 +702,16 @@ public class SanctionsEntrySchemaType {
 
     @XmlAttribute(name = "ListID")
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger listID;
+    protected BigInteger                                      listID;
 
     @XmlAttribute(name = "EntryProfileRef")
-    protected String entryProfileRef;
+    protected String                                          entryProfileRef;
 
     @XmlAttribute(name = "EntryDeltaFlag")
-    protected EntryDeltaFlagSchemaType entryDeltaFlag;
+    protected EntryDeltaFlagSchemaType                        entryDeltaFlag;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                           deltaAction;
 
     /**
      * Gets the value of the comment property.

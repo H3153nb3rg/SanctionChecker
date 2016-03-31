@@ -15,8 +15,12 @@ public class WL_Entity implements Serializable {
      */
     private static final long       serialVersionUID = 350588830084232520L;
 
-    private List<String>            legalBasises;                                                                                                        // to add date to
-                                                                                                                                                         // LB !!!!
+    private List<String>            legalBasises;                                                                                                                                                            // to
+                                                                                                                                                                                                             // add
+                                                                                                                                                                                                             // date
+                                                                                                                                                                                                             // to
+                                                                                                                                                                                                             // LB
+                                                                                                                                                                                                             // !!!!
 
     private String                  listName;
     private String                  comment;
@@ -38,8 +42,8 @@ public class WL_Entity implements Serializable {
     private List<WL_Address>        addresses;
     private WL_Attribute            attributes;
 
-    private String                  entryType;                                                                                                                                                                                                                                                                                                                                                                                          // PEP
-
+    private String                  entryType;
+    // PEP
     // /
     // Sanctiontype
 
@@ -183,7 +187,7 @@ public class WL_Entity implements Serializable {
         return listName;
     }
 
-    public void setListName(String listName) {
+    public void setListName(final String listName) {
         this.listName = listName;
     }
 
@@ -191,7 +195,7 @@ public class WL_Entity implements Serializable {
         return attributes;
     }
 
-    public void setAttributes(WL_Attribute attributes) {
+    public void setAttributes(final WL_Attribute attributes) {
         this.attributes = attributes;
     }
 

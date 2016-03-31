@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -58,7 +58,7 @@ public class SourceDescription {
      * not a <CODE>set</CODE> method for the source property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getSource().add(newItem);
      * </pre>
@@ -69,7 +69,7 @@ public class SourceDescription {
         if (source == null) {
             source = new ArrayList<SourceDescription.Source>();
         }
-        return this.source;
+        return source;
     }
 
     /**
@@ -77,7 +77,7 @@ public class SourceDescription {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -97,7 +97,7 @@ public class SourceDescription {
 
         /**
          * Gets the value of the name property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getName() {
@@ -106,12 +106,12 @@ public class SourceDescription {
 
         /**
          * Sets the value of the name property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setName(String value) {
-            this.name = value;
+        public void setName(final String value) {
+            name = value;
         }
 
     }

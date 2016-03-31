@@ -1,0 +1,72 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- Queue Definitions -->
+	<!-- for one stream -->
+	<bean id="GloablFileQueueConfigSWIFT" abstract="true" init-method="initialize" destroy-method="close">
+		<property name="basePath" value="${Queue.Folder}\\swift"/>
+		<property name="capacity" value="1234"	   	 />		
+		
+		<!-- property name="purgeQueuesOnStartup" value="true"/ -->
+	</bean>
+	
+	<bean id="InputQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileInputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="InputQueue"/>		
+	</bean>
+	
+	<bean id="DefectQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="DefectQueue"/>		
+	</bean>
+	
+	<bean id="HitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="HitQueue"/>		
+	</bean>
+	
+	<bean id="NoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="NoHitQueue"/>		
+	</bean>
+	
+	<bean id="PostHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostHitQueue"/>		
+	</bean>
+	
+	<bean id="PostNoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostNoHitQueue"/>		
+	</bean>
+	
+	<bean id="FinalNoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalNoHitQueue"/>		
+	</bean>
+	
+	<bean id="FinalHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalHitQueue"/>		
+	</bean>
+	
+	<bean id="OutNoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="OutNoHitQueue"/>		
+	</bean>
+	
+	<bean id="OutHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="OutHitQueue"/>		
+	</bean>
+	
+	<bean id="BacklogQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="BacklogQueue"/>		
+	</bean>
+		
+	
+	<!-- JMX Adapters for monitoring -->
+    <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
+		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
+	</bean>
+	
+    <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Queues"/>		
+	</bean>
+	
+</beans>

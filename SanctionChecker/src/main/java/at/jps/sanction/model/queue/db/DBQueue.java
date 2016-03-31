@@ -23,8 +23,9 @@ public abstract class DBQueue<X extends BaseModel> extends AbstractQueue<X> {
         super();
     }
 
-    protected void initialize() {
-
+    @Override
+    public void initialize() {
+        super.initialize();
     }
 
     @Override
@@ -41,9 +42,11 @@ public abstract class DBQueue<X extends BaseModel> extends AbstractQueue<X> {
 
             return true;
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             logger.error(getName() + ": DB Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
 
             return false;
         }
@@ -51,7 +54,7 @@ public abstract class DBQueue<X extends BaseModel> extends AbstractQueue<X> {
     }
 
     @Override
-    public X getNextMessage(boolean wait) {
+    public X getNextMessage(final boolean wait) {
 
         return null;
     }

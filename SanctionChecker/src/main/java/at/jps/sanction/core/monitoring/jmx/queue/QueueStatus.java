@@ -6,7 +6,7 @@ import at.jps.sanction.model.queue.jmx.QueueStatusMXBean;
 
 public class QueueStatus implements QueueStatusMXBean {
 
-    private StreamManager streamManager;
+    private final StreamManager streamManager;
 
     public QueueStatus(final StreamManager streamManager) {
         this.streamManager = streamManager;
@@ -15,7 +15,7 @@ public class QueueStatus implements QueueStatusMXBean {
     @Override
     public String[] getQueueNames() {
 
-        String names[] = new String[streamManager.getQueueDictionary().size()];
+        final String names[] = new String[streamManager.getQueueDictionary().size()];
 
         streamManager.getQueueDictionary().keySet().toArray(names);
 
@@ -23,9 +23,9 @@ public class QueueStatus implements QueueStatusMXBean {
     }
 
     @Override
-    public long getQueueSize(String queueName) {
+    public long getQueueSize(final String queueName) {
 
-        Queue<?> queue = streamManager.getQueueDictionary().get(queueName);
+        final Queue<?> queue = streamManager.getQueueDictionary().get(queueName);
 
         return (queue != null ? queue.size() : 0);
     }

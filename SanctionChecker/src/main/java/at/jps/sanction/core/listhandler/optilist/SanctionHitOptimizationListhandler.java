@@ -71,8 +71,8 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
                     line = input.readLine();
                     if (line != null) {
 
-                        OptimizationRecord optiRecord = new OptimizationRecord();
-                        StringTokenizer tokenizer = new StringTokenizer(line, ";");
+                        final OptimizationRecord optiRecord = new OptimizationRecord();
+                        final StringTokenizer tokenizer = new StringTokenizer(line, ";");
 
                         optiRecord.setFieldName(tokenizer.nextToken());
                         optiRecord.setToken(tokenizer.nextToken());
@@ -106,13 +106,13 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
     /**
      * forceUpdate = false : if record is already in masterlist status is raised ( if possible) forceUpdate = true : if record is already in masterlist status from new one is taken
      */
-    public void appendList(List<OptimizationRecord> optiRecords, boolean forceUpdate) {
+    public void appendList(final List<OptimizationRecord> optiRecords, final boolean forceUpdate) {
 
-        List<OptimizationRecord> freshNew = new ArrayList<OptimizationRecord>();
+        final List<OptimizationRecord> freshNew = new ArrayList<OptimizationRecord>();
 
-        for (OptimizationRecord newOptiRecord : optiRecords) {
+        for (final OptimizationRecord newOptiRecord : optiRecords) {
             boolean found = false;
-            for (OptimizationRecord oldOptiRecord : getValues()) {
+            for (final OptimizationRecord oldOptiRecord : getValues()) {
                 if (newOptiRecord.getWatchListName().equals(oldOptiRecord.getWatchListName()) && newOptiRecord.getWatchListId().equals(oldOptiRecord.getWatchListId())
                         && newOptiRecord.getFieldName().equals(oldOptiRecord.getFieldName()) && newOptiRecord.getToken().equals(oldOptiRecord.getToken())) {
                     found = true;
@@ -125,7 +125,7 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
                         // increase safely level if necessary
 
                         int i = 0;
-                        for (String code : OptimizationRecord.statusCode) {
+                        for (final String code : OptimizationRecord.statusCode) {
                             if (code.equals(oldOptiRecord.getStatus())) {
                                 // found = true;
                                 break;
@@ -134,7 +134,7 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
                                 i++;
                             }
                         }
-                        if (i < OptimizationRecord.statusCode.length - 1) {
+                        if (i < (OptimizationRecord.statusCode.length - 1)) {
                             i++;
                             oldOptiRecord.setStatus(OptimizationRecord.statusCode[i]);
                         }
@@ -153,12 +153,13 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
 
     }
 
-    public void removeList(List<OptimizationRecord> optiRecords) {
+    @Override
+    public void removeList(final List<OptimizationRecord> optiRecords) {
 
-        List<OptimizationRecord> toBeRemoved = new ArrayList<OptimizationRecord>();
+        final List<OptimizationRecord> toBeRemoved = new ArrayList<OptimizationRecord>();
 
-        for (OptimizationRecord newOptiRecord : optiRecords) {
-            for (OptimizationRecord oldOptiRecord : getValues()) {
+        for (final OptimizationRecord newOptiRecord : optiRecords) {
+            for (final OptimizationRecord oldOptiRecord : getValues()) {
                 if (newOptiRecord.getWatchListName().equals(oldOptiRecord.getWatchListName()) && newOptiRecord.getWatchListId().equals(oldOptiRecord.getWatchListId())
                         && newOptiRecord.getFieldName().equals(oldOptiRecord.getFieldName()) && newOptiRecord.getToken().equals(oldOptiRecord.getToken())) {
 
@@ -174,22 +175,22 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
     }
 
     @Override
-    public void writeList(List<OptimizationRecord> optiRecords, boolean append) {
+    public void writeList(final List<OptimizationRecord> optiRecords, final boolean append) {
         writeList(filename, optiRecords, append);
     }
 
-    public void writeList(final String filename, List<OptimizationRecord> optiRecords, boolean append) {
+    public void writeList(final String filename, final List<OptimizationRecord> optiRecords, final boolean append) {
 
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, append)));
+            final PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, append)));
 
-            for (OptimizationRecord optiRecord : optiRecords) {
+            for (final OptimizationRecord optiRecord : optiRecords) {
                 out.println(optiRecord.toString());
             }
 
             out.close();
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             // exception handling left as an exercise for the reader
         }
 
@@ -200,7 +201,7 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
         return autoDiscardHitsOnConfirmStatus;
     }
 
-    public void setAutoDiscardHitsOnConfirmStatus(boolean autoDiscardHitsOnConfirmStatus) {
+    public void setAutoDiscardHitsOnConfirmStatus(final boolean autoDiscardHitsOnConfirmStatus) {
         this.autoDiscardHitsOnConfirmStatus = autoDiscardHitsOnConfirmStatus;
     }
 
@@ -208,7 +209,7 @@ public abstract class SanctionHitOptimizationListhandler implements Optimization
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 

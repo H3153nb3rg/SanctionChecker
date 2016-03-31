@@ -19,12 +19,13 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 public class DetailsDialog extends JDialog {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -2034472533894307267L;
     private final JPanel      contentPanel     = new JPanel();
@@ -33,21 +34,21 @@ public class DetailsDialog extends JDialog {
      * Launch the application.
      */
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
-        JComponent[] components = { new JTextField(15), new JTextField(10), new JTextField(8), new JSpinner(new SpinnerNumberModel(1, 0, 10, 1)),
+        final JComponent[] components = { new JTextField(15), new JTextField(10), new JTextField(8), new JSpinner(new SpinnerNumberModel(1, 0, 10, 1)),
                 new JSpinner(new SpinnerNumberModel(9.95, 0d, 100d, .01)), new JSpinner(new SpinnerNumberModel(9.95, 0d, 1000d, .01)), new JSpinner(new SpinnerNumberModel(9.95, 0d, 100d, .01)),
                 new JSpinner(new SpinnerNumberModel(9.95, 0d, 1000d, .01)), new JSpinner(new SpinnerNumberModel(9.95, 0d, 100d, .01)), new JSpinner(new SpinnerNumberModel(9.95, 0d, 1000d, .01)) };
 
-        String[] labels = { "Product Name:", "Product Unit Name:", "Purchase Date:", "Quantity:", "Price Per Unit:", "Total Price:", "Discount:", "Total:", "VAT:", "Grand Total:" };
+        final String[] labels = { "Product Name:", "Product Unit Name:", "Purchase Date:", "Quantity:", "Price Per Unit:", "Total Price:", "Discount:", "Total:", "VAT:", "Grand Total:" };
 
         try {
-            JComponent labelsAndFields = getTwoColumnLayout(labels, components);
-            DetailsDialog dialog = new DetailsDialog("Cool or not", labelsAndFields);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            final JComponent labelsAndFields = getTwoColumnLayout(labels, components);
+            final DetailsDialog dialog = new DetailsDialog("Cool or not", labelsAndFields);
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             e.printStackTrace();
         }
     }
@@ -64,33 +65,33 @@ public class DetailsDialog extends JDialog {
      *            Add mnemonic by next available letter in label text.
      * @return JComponent A JPanel with two columns of the components provided.
      */
-    public static JComponent getTwoColumnLayout(JLabel[] labels, JComponent[] fields, boolean addMnemonics) {
+    public static JComponent getTwoColumnLayout(final JLabel[] labels, final JComponent[] fields, final boolean addMnemonics) {
         if (labels.length != fields.length) {
-            String s = labels.length + " labels supplied for " + fields.length + " fields!";
+            final String s = labels.length + " labels supplied for " + fields.length + " fields!";
             throw new IllegalArgumentException(s);
         }
-        JComponent panel = new JPanel();
-        GroupLayout layout = new GroupLayout(panel);
+        final JComponent panel = new JPanel();
+        final GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
         // Turn on automatically adding gaps between components
         layout.setAutoCreateGaps(true);
         // Create a sequential group for the horizontal axis.
-        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        GroupLayout.Group yLabelGroup = layout.createParallelGroup(GroupLayout.Alignment.TRAILING);
+        final GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
+        final GroupLayout.Group yLabelGroup = layout.createParallelGroup(GroupLayout.Alignment.TRAILING);
         hGroup.addGroup(yLabelGroup);
-        GroupLayout.Group yFieldGroup = layout.createParallelGroup();
+        final GroupLayout.Group yFieldGroup = layout.createParallelGroup();
         hGroup.addGroup(yFieldGroup);
         layout.setHorizontalGroup(hGroup);
         // Create a sequential group for the vertical axis.
-        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
+        final GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         layout.setVerticalGroup(vGroup);
 
-        int p = GroupLayout.PREFERRED_SIZE;
+        final int p = GroupLayout.PREFERRED_SIZE;
         // add the components to the groups
-        for (JLabel label : labels) {
+        for (final JLabel label : labels) {
             yLabelGroup.addComponent(label);
         }
-        for (Component field : fields) {
+        for (final Component field : fields) {
             yFieldGroup.addComponent(field, p, p, p);
         }
         for (int ii = 0; ii < labels.length; ii++) {
@@ -104,14 +105,14 @@ public class DetailsDialog extends JDialog {
         return panel;
     }
 
-    private final static void addMnemonics(JLabel[] labels, JComponent[] fields) {
-        Map<Character, Object> m = new HashMap<Character, Object>();
+    private final static void addMnemonics(final JLabel[] labels, final JComponent[] fields) {
+        final Map<Character, Object> m = new HashMap<Character, Object>();
         for (int ii = 0; ii < labels.length; ii++) {
             labels[ii].setLabelFor(fields[ii]);
-            String lwr = labels[ii].getText().toLowerCase();
+            final String lwr = labels[ii].getText().toLowerCase();
             for (int jj = 0; jj < lwr.length(); jj++) {
-                char ch = lwr.charAt(jj);
-                if (m.get(ch) == null && Character.isLetterOrDigit(ch)) {
+                final char ch = lwr.charAt(jj);
+                if ((m.get(ch) == null) && Character.isLetterOrDigit(ch)) {
                     m.put(ch, ch);
                     labels[ii].setDisplayedMnemonic(ch);
                     break;
@@ -129,8 +130,8 @@ public class DetailsDialog extends JDialog {
      *            The corresponding fields.
      * @return JComponent A JPanel with two columns of the components provided.
      */
-    public static JComponent getTwoColumnLayout(String[] labelStrings, JComponent[] fields) {
-        JLabel[] labels = new JLabel[labelStrings.length];
+    public static JComponent getTwoColumnLayout(final String[] labelStrings, final JComponent[] fields) {
+        final JLabel[] labels = new JLabel[labelStrings.length];
         for (int ii = 0; ii < labels.length; ii++) {
             labels[ii] = new JLabel(labelStrings[ii]);
         }
@@ -146,7 +147,7 @@ public class DetailsDialog extends JDialog {
      *            The last column contains fields.
      * @return JComponent A JPanel with two columns of the components provided.
      */
-    public static JComponent getTwoColumnLayout(JLabel[] labels, JComponent[] fields) {
+    public static JComponent getTwoColumnLayout(final JLabel[] labels, final JComponent[] fields) {
         return getTwoColumnLayout(labels, fields, true);
     }
 
@@ -154,7 +155,7 @@ public class DetailsDialog extends JDialog {
      * Create the dialog.
      */
 
-    public DetailsDialog(final String caption, JComponent labelsAndFields) {
+    public DetailsDialog(final String caption, final JComponent labelsAndFields) {
         setBounds(100, 100, 450, 500);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setLayout(new BorderLayout());
@@ -162,22 +163,23 @@ public class DetailsDialog extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
 
         // add dynamic part
-        JComponent coreForm = new JPanel(new BorderLayout(5, 5));
+        final JComponent coreForm = new JPanel(new BorderLayout(5, 5));
         coreForm.add(new JLabel(caption, SwingConstants.CENTER), BorderLayout.NORTH);
         coreForm.add(labelsAndFields, BorderLayout.CENTER);
 
         contentPanel.add(coreForm, BorderLayout.CENTER);
 
         {
-            JPanel buttonPane = new JPanel();
+            final JPanel buttonPane = new JPanel();
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                JButton okButton = new JButton("OK");
+                final JButton okButton = new JButton("OK");
                 okButton.setActionCommand("OK");
 
                 okButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                    @Override
+                    public void actionPerformed(final ActionEvent e) {
 
                         dispatchEvent(new WindowEvent(DetailsDialog.this, WindowEvent.WINDOW_CLOSING));
                     }
@@ -187,9 +189,10 @@ public class DetailsDialog extends JDialog {
                 getRootPane().setDefaultButton(okButton);
             }
             {
-                JButton cancelButton = new JButton("Cancel");
+                final JButton cancelButton = new JButton("Cancel");
                 cancelButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                    @Override
+                    public void actionPerformed(final ActionEvent e) {
 
                         dispatchEvent(new WindowEvent(DetailsDialog.this, WindowEvent.WINDOW_CLOSING));
                     }

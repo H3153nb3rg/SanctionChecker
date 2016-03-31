@@ -21,7 +21,7 @@ public class DBHelper {
         try {
             model.save();
         }
-        catch (Throwable t) {
+        catch (final Throwable t) {
 
             logger.error("DB save failed - " + model.getClass());
             logger.debug("DB save failed - ", t);
@@ -35,7 +35,7 @@ public class DBHelper {
         try {
             message = Ebean.find(Message.class).where().eq("messageProcessingStatus", MessageStatus.NEW).order().asc("inTime").setMaxRows(1).findList().get(0);
         }
-        catch (Exception x) {
+        catch (final Exception x) {
             logger.error("DB fetch Message failed ");
             logger.debug("DB fetch Message - ", x);
         }
@@ -43,13 +43,13 @@ public class DBHelper {
 
     }
 
-    public static List<AnalysisResult> getNextAnalysisResults(MessageStatus status, final int maxRecords) {
+    public static List<AnalysisResult> getNextAnalysisResults(final MessageStatus status, final int maxRecords) {
 
         List<AnalysisResult> messages = null;
         try {
             messages = Ebean.find(AnalysisResult.class).where().eq("messageProcessingStatus", status).order().asc("analysisStartTime").setMaxRows(maxRecords).findList();
         }
-        catch (Exception x) {
+        catch (final Exception x) {
             logger.error("DB fetch Message failed ");
             logger.debug("DB fetch Message - ", x);
         }
@@ -57,7 +57,7 @@ public class DBHelper {
 
     }
 
-    public static <T extends BaseModel> T getNext(Class<T> klass) {
+    public static <T extends BaseModel> T getNext(final Class<T> klass) {
 
         return Ebean.find(klass).findList().get(0);
 

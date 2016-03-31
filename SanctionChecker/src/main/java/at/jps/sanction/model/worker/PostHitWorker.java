@@ -7,7 +7,7 @@ import at.jps.sanction.model.worker.out.OutputWorker;
 public class PostHitWorker extends OutputWorker {
 
     @Override
-    public void handleMessage(AnalysisResult message) {
+    public void handleMessage(final AnalysisResult message) {
         message.setAnalysisStatus(MessageStatus.BUSY_POSTPROCESS);
     }
 

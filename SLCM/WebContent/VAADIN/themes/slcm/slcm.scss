@@ -39,6 +39,10 @@ $v-font-size: 14px;
 
 $v-app-loading-text: "Sanction List Case Management";
 
+.v-menubar-color1 {
+    @include valo-menubar-style($background-color: $v-selection-color, $unit-size: null);
+  }
+
 @mixin slcm {
   @include valo;
   @include flat;

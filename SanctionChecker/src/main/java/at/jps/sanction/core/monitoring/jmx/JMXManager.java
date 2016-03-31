@@ -32,7 +32,7 @@ public class JMXManager {
 
             // ..
 
-            for (ObjectName jmxObjectName : jmxObjectNames) {
+            for (final ObjectName jmxObjectName : jmxObjectNames) {
                 jmxServer.registerMBean(new QueueStatus(streamManager), jmxObjectName);
             }
 
@@ -42,7 +42,7 @@ public class JMXManager {
             // adaptor.start();
 
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             logger.error("JMX Error registration: " + e.toString());
             logger.debug("Exception: ", e);
         }
@@ -52,11 +52,11 @@ public class JMXManager {
     public static void deregisterBeans(final StreamManager streamManager) {
         try {
 
-            for (ObjectName jmxObjectName : jmxObjectNames) {
+            for (final ObjectName jmxObjectName : jmxObjectNames) {
                 jmxServer.unregisterMBean(jmxObjectName);
             }
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             logger.error("JMX Error deregistration: " + e.toString());
             logger.debug("Exception: ", e);
         }

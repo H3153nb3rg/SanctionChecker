@@ -207,7 +207,7 @@ public class ApplicationWindow {
     /**
      * Create the application.
      */
-    public ApplicationWindow(GUIConfigHolder config) {
+    public ApplicationWindow(final GUIConfigHolder config) {
 
         guiAdapter = new AdapterHelper();
         guiAdapter.initialize(config);
@@ -662,7 +662,7 @@ public class ApplicationWindow {
 
         tabbedPane_Results.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            public void stateChanged(final ChangeEvent e) {
 
                 resultsViewActive = tabbedPane_Results.getSelectedIndex() < 1;
 
@@ -698,28 +698,28 @@ public class ApplicationWindow {
 
         mntmAddToStopwords.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doAddTokenToStopword();
             }
         });
 
         mntmAddToNon.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doAddTokenToNSWH();
             }
         });
 
         mntmAddToIA.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doAddTokenToIA();
             }
         });
 
         mntmAddToNoHit.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doAddTokenToNoHit();
             }
         });
@@ -895,7 +895,7 @@ public class ApplicationWindow {
         final JMenuItem mntmClose = new JMenuItem("Close...");
         mntmClose.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doClose();
             }
         });
@@ -907,7 +907,7 @@ public class ApplicationWindow {
         final JMenuItem mntmSearch = new JMenuItem("Search...");
         mntmSearch.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 doSearch();
             }
         });
@@ -919,7 +919,7 @@ public class ApplicationWindow {
         final JMenuItem mntmAbout = new JMenuItem("About...");
         mntmAbout.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 doAbout();
             }
         });
@@ -949,7 +949,7 @@ public class ApplicationWindow {
                                 mi.addActionListener(new ActionListener() {
 
                                     @Override
-                                    public void actionPerformed(ActionEvent e) {
+                                    public void actionPerformed(final ActionEvent e) {
                                         try {
                                             URLHelper.openWebpage(new URL(mi.getText()));
                                         }
@@ -1204,7 +1204,7 @@ public class ApplicationWindow {
 
     public static String newline = System.getProperty("line.separator");
 
-    void updateSanctionDetails(int rowId) {
+    void updateSanctionDetails(final int rowId) {
         // TODO: gather SactionInfos
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
@@ -1335,23 +1335,23 @@ public class ApplicationWindow {
         });
     }
 
-    private void addWordHitPopup(Component component, final JPopupMenu popupWordHits) {
+    private void addWordHitPopup(final Component component, final JPopupMenu popupWordHits) {
         component.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(final MouseEvent e) {
                 if (e.isPopupTrigger()) {
                     showMenu(e);
                 }
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(final MouseEvent e) {
                 if (e.isPopupTrigger()) {
                     showMenu(e);
                 }
             }
 
-            private void showMenu(MouseEvent e) {
+            private void showMenu(final MouseEvent e) {
 
                 final int row = tableWordHits.rowAtPoint(new Point(e.getX(), e.getY()));  // SwingUtilities.convertPoint(tableWordHits,
 

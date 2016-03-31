@@ -10,7 +10,7 @@ import at.jps.sanction.model.WordHitInfo;
 public class PaymentHitInfo extends WordHitInfo {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -9095912729534026407L;
     private String            sanctionListName;
@@ -31,7 +31,7 @@ public class PaymentHitInfo extends WordHitInfo {
         return sanctionListName;
     }
 
-    public void setSanctionListName(String sanctionListName) {
+    public void setSanctionListName(final String sanctionListName) {
         this.sanctionListName = sanctionListName;
     }
 
@@ -39,7 +39,7 @@ public class PaymentHitInfo extends WordHitInfo {
         return sanctionListId;
     }
 
-    public void setSanctionListId(String sanctionListId) {
+    public void setSanctionListId(final String sanctionListId) {
         this.sanctionListId = sanctionListId;
     }
 
@@ -53,7 +53,7 @@ public class PaymentHitInfo extends WordHitInfo {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         boolean eq = false;
 

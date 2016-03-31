@@ -1,7 +1,9 @@
 package at.jps.slcm.gui.components;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.TabSheet;
@@ -36,7 +38,7 @@ public class SanctionListDetails extends VerticalLayout {
 
     private final AdapterHelper             guiAdapter;
 
-    public SanctionListDetails(AdapterHelper guiAdapter) {
+    public SanctionListDetails(final AdapterHelper guiAdapter) {
         super();
         this.guiAdapter = guiAdapter;
 
@@ -113,9 +115,23 @@ public class SanctionListDetails extends VerticalLayout {
 
         final TabSheet sLDetails = new TabSheet();
         sLDetails.addStyleName("framed");
-        sLDetails.addTab(UIHelper.wrapWithVertical(listDetails)).setCaption("General");
-        sLDetails.addTab(UIHelper.wrapWithVertical(tableEntityNameDetails)).setCaption("NameDetails");
-        sLDetails.addTab(UIHelper.wrapWithVertical(tableEntityRelations)).setCaption("Relations");
+
+        final Component ld = UIHelper.wrapWithVertical(listDetails);
+        ld.setCaption("General");
+        ld.setIcon(FontAwesome.TAG);
+
+        final Component tend = UIHelper.wrapWithVertical(tableEntityNameDetails);
+        tend.setCaption("NameDetails");
+        tend.setIcon(FontAwesome.USER);
+
+        final Component ter = UIHelper.wrapWithVertical(tableEntityRelations);
+        ter.setCaption("Relations");
+        ter.setIcon(FontAwesome.LINK);
+
+        sLDetails.addTab(ld);
+        sLDetails.addTab(tend);
+        sLDetails.addTab(ter);
+
         sLDetails.setSizeFull();
 
         addComponent(sLDetails);

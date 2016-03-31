@@ -420,7 +420,7 @@ public class LocationSchemaType {
             protected BigInteger                                              locPartValueStatusID;
 
             @XmlAttribute(name = "DeltaAction")
-            protected DeltaActionSchemaType deltaAction;
+            protected DeltaActionSchemaType                                   deltaAction;
 
             /**
              * Gets the value of the comment property.
@@ -540,7 +540,7 @@ public class LocationSchemaType {
         protected BigInteger                                              locPartTypeID;
 
         @XmlAttribute(name = "DeltaAction")
-        protected DeltaActionSchemaType deltaAction;
+        protected DeltaActionSchemaType                                   deltaAction;
 
         /**
          * Gets the value of the deltaAction property.
@@ -615,14 +615,14 @@ public class LocationSchemaType {
     protected List<FeatureVersionReference>             featureVersionReference;
 
     @XmlElement(name = "IDRegDocumentReference")
-    protected List<IDRegDocumentReference> idRegDocumentReference;
+    protected List<IDRegDocumentReference>              idRegDocumentReference;
 
     @XmlAttribute(name = "ID", required = true)
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger id;
+    protected BigInteger                                id;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType                     deltaAction;
 
     /**
      * Gets the value of the comment property.

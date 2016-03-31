@@ -36,7 +36,7 @@ public class QueueStatusWindow {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         String configFilename = "SanctionChecker.xml";
         boolean initialized = false;
@@ -47,7 +47,7 @@ public class QueueStatusWindow {
                 context = new FileSystemXmlApplicationContext(configFilename);
                 initialized = true;
             }
-            catch (Exception x) {
+            catch (final Exception x) {
                 x.printStackTrace();
                 System.out.println(x.toString());
             }
@@ -57,12 +57,13 @@ public class QueueStatusWindow {
         }
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
-                    QueueStatusWindow window = new QueueStatusWindow();
+                    final QueueStatusWindow window = new QueueStatusWindow();
                     window.frmQueueStatus.setVisible(true);
                 }
-                catch (Exception e) {
+                catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -81,9 +82,9 @@ public class QueueStatusWindow {
     List<JLabel>     labels = null;
     List<JTextField> fields = null;
 
-    private void refreshFields(HashMap<String, Long> queues) {
+    private void refreshFields(final HashMap<String, Long> queues) {
         int i = 0;
-        for (String queueName : queues.keySet()) {
+        for (final String queueName : queues.keySet()) {
             labels.get(i).setText(queueName);
             fields.get(i).setText(queues.get(queueName).toString());
             i++;
@@ -96,8 +97,8 @@ public class QueueStatusWindow {
         fields = new ArrayList<JTextField>();
 
         for (int i = 0; i < nr; i++) {
-            JLabel lblNewLabel = new JLabel("New label");
-            GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+            final JLabel lblNewLabel = new JLabel("New label");
+            final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
             gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
             gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
             gbc_lblNewLabel.gridx = 0;
@@ -108,7 +109,7 @@ public class QueueStatusWindow {
 
             textField = new JTextField();
             textField.setEditable(false);
-            GridBagConstraints gbc_textField = new GridBagConstraints();
+            final GridBagConstraints gbc_textField = new GridBagConstraints();
             gbc_textField.fill = GridBagConstraints.HORIZONTAL;
             gbc_textField.insets = new Insets(0, 0, 5, 0);
             gbc_textField.gridx = 1;
@@ -140,7 +141,7 @@ public class QueueStatusWindow {
     }
 
     private void refreshView() {
-        HashMap<String, Long> queues = getQueueSizes();
+        final HashMap<String, Long> queues = getQueueSizes();
 
         if (queues.size() > 0) {
             if (labels == null) {
@@ -164,7 +165,7 @@ public class QueueStatusWindow {
 
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         frmQueueStatus.getContentPane().add(panel, BorderLayout.CENTER);
-        GridBagLayout gbl_panel = new GridBagLayout();
+        final GridBagLayout gbl_panel = new GridBagLayout();
 
         gbl_panel.columnWidths = new int[] { 0, 0, 0 };
         gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0 };
@@ -172,9 +173,10 @@ public class QueueStatusWindow {
         gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
         panel.setLayout(gbl_panel);
 
-        int delay = 10000; // milliseconds
-        ActionListener taskPerformer = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        final int delay = 10000; // milliseconds
+        final ActionListener taskPerformer = new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent evt) {
 
                 refreshView();
 

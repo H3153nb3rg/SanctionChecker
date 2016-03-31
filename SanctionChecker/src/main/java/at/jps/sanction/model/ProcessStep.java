@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 public class ProcessStep extends BaseModel implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long  serialVersionUID = -7291348147778669956L;
 
@@ -31,7 +31,7 @@ public class ProcessStep extends BaseModel implements Serializable {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(final long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -39,7 +39,7 @@ public class ProcessStep extends BaseModel implements Serializable {
         return actor;
     }
 
-    public void setActor(String actor) {
+    public void setActor(final String actor) {
         this.actor = actor;
     }
 
@@ -47,7 +47,7 @@ public class ProcessStep extends BaseModel implements Serializable {
         return remark;
     }
 
-    public void setRemark(String remark) {
+    public void setRemark(final String remark) {
         this.remark = remark;
     }
 
@@ -61,13 +61,14 @@ public class ProcessStep extends BaseModel implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
-        sb.append("User: ").append(getActor()).append("descr: ").append(getRemark()).append("time: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timestamp)));  // TODO:
-                                                                                                                                                                                        // Timestamp
-                                                                                                                                                                                        // formatting is
-                                                                                                                                                                                        // shitty
-                                                                                                                                                                                        // implemented!!
+        sb.append("User: ").append(getActor()).append(" | ").append("descr: ").append(getRemark()).append(" | ").append("time: ")
+                .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timestamp)));  // TODO:
+        // Timestamp
+        // formatting is
+        // shitty
+        // implemented!!
         return sb.toString();
 
     }

@@ -13,10 +13,13 @@ import java.io.File;
 import at.jps.sanction.core.StreamManager;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.io.file.FileParser;
+import at.jps.sanction.model.queue.Queue;
 
 public abstract class FileParserImpl implements FileParser {
 
-    StreamManager manager;
+    StreamManager  manager;
+
+    Queue<Message> queue;
 
     public StreamManager getStreamManager() {
         return manager;
@@ -25,18 +28,26 @@ public abstract class FileParserImpl implements FileParser {
     @Override
     abstract public boolean parse(File file);
 
-    // default is to add found Message to queueing system
     public void prepareMessage(final Message message) {
 
         message.setInTime(System.currentTimeMillis());
 
-        getStreamManager().addToInputList(message);
+        getQueue().addMessage(message);
     }
 
     @Override
     public void setStreamManager(final StreamManager manager) {
         this.manager = manager;
 
+    }
+
+    public Queue<Message> getQueue() {
+        return queue;
+    }
+
+    @Override
+    public void setQueue(final Queue<Message> queue) {
+        this.queue = queue;
     }
 
 }

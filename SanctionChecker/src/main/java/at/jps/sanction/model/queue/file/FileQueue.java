@@ -79,7 +79,17 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
         try {
             this.messageQueue = new BigQueueImpl(getBasePath(), getName());
 
-            logger.info("Queue created (BigQueueImpl, " + getBasePath() + "/" + getName() + ")");
+            if (logger.isInfoEnabled()) {
+                logger.info("Queue created (BigQueueImpl, " + getBasePath() + "/" + getName() + ")");
+            }
+
+            if (isPurgeQueuesOnStartup()) {
+                if (logger.isInfoEnabled()) {
+                    logger.info("CLEANUP Queue !!");
+                }
+                clear();
+            }
+
         }
         catch (final IOException e) {
             logger.error("Queue creation failed (BigQueueImpl," + getBasePath() + "/" + getName() + ") :" + e.toString());
@@ -101,7 +111,7 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
             // } else {
             // message = getQueue().remove();
             if (!isEmpty()) {
-                byte[] object = getQueue().dequeue();
+                final byte[] object = getQueue().dequeue();
                 if (object != null) {
                     message = SerializationUtils.deserialize(object);
                 }
@@ -137,7 +147,7 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
 
     @Override
     public void setBasePath(final String base) {
-        this.basePath = base;
+        basePath = base;
     }
 
     @Override
@@ -155,7 +165,8 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
         return getQueue().size();
     }
 
+    @Override
     public void initialize() {
-
+        super.initialize();
     }
 }

@@ -85,11 +85,11 @@ public class Message extends BaseModel implements Serializable {
     }
 
     public void setRawContent(final String content) {
-        this.rawContent = content;
+        rawContent = content;
     }
 
     public void setId(final String id) {
-        this.uuid = id;
+        uuid = id;
     }
 
     public void setInTime(final long inTime) {
@@ -110,13 +110,13 @@ public class Message extends BaseModel implements Serializable {
         return msg.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         // if (!AgentLoader.loadAgentFromClasspath("avaje-ebeanorm-agent", "debug=1;packages=at.jps.sanction.core.model.**")) {
         // System.out.println("avaje-ebeanorm-agent not found in classpath - not dynamically loaded");
         // }
 
-        ServerConfig config = new ServerConfig();
+        final ServerConfig config = new ServerConfig();
         config.setName("embargo");
 
         // load configuration from ebean.properties
@@ -128,10 +128,11 @@ public class Message extends BaseModel implements Serializable {
         // EbeanServer server = Ebean.getServer("embargo");
 
         server.execute(new TxRunnable() {
+            @Override
             public void run() {
 
                 for (int i = 0; i < 10; i++) {
-                    Message msg = new Message();
+                    final Message msg = new Message();
                     msg.setInTime(System.currentTimeMillis());
                     msg.setRawContent("Content" + i);
 
@@ -155,7 +156,7 @@ public class Message extends BaseModel implements Serializable {
         return messageContent;
     }
 
-    public void setMessageContent(MessageContent messageContent) {
+    public void setMessageContent(final MessageContent messageContent) {
         this.messageContent = messageContent;
     }
 
@@ -163,7 +164,7 @@ public class Message extends BaseModel implements Serializable {
         return messageProcessingStatus;
     }
 
-    public void setMessageProcessingStatus(MessageStatus messageProcessingStatus) {
+    public void setMessageProcessingStatus(final MessageStatus messageProcessingStatus) {
         this.messageProcessingStatus = messageProcessingStatus;
     }
 }

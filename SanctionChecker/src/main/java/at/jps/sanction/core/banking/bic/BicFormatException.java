@@ -15,7 +15,7 @@ package at.jps.sanction.core.banking.bic;
 public final class BicFormatException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2195335097419109495L;
     private final String      inputString;
@@ -28,16 +28,16 @@ public final class BicFormatException extends RuntimeException {
      * @param message
      *            a string
      */
-    private BicFormatException(String input, String message) {
+    private BicFormatException(final String input, final String message) {
         super(message);
-        this.inputString = input;
+        inputString = input;
     }
 
-    static BicFormatException forNotProperlyFormattedInput(String input) {
+    static BicFormatException forNotProperlyFormattedInput(final String input) {
         return new BicFormatException(input, String.format("'%s' format is not appropriate for a BIC", input));
     }
 
-    static BicFormatException forUnknownCountryCode(String input) {
+    static BicFormatException forUnknownCountryCode(final String input) {
         return new BicFormatException(input, String.format("'%s' country code is unknown", input));
     }
 

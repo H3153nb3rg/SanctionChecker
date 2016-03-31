@@ -14,7 +14,7 @@ package at.jps.sanction.core.banking.creditor;
 public class CreditorIdentifierFormatException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -5537677525654793405L;
     private final String      inputString;
@@ -27,29 +27,29 @@ public class CreditorIdentifierFormatException extends RuntimeException {
      * @param message
      *            a string
      */
-    public CreditorIdentifierFormatException(String input, String message) {
+    public CreditorIdentifierFormatException(final String input, final String message) {
         super(message);
-        this.inputString = input;
+        inputString = input;
     }
 
     /**
      * Creates a {@code CreditorIdentifierFormatException} telling the given Creditor Identifier is not properly formatted.
      */
-    public static CreditorIdentifierFormatException forNotProperlyFormattedInput(String input) {
+    public static CreditorIdentifierFormatException forNotProperlyFormattedInput(final String input) {
         return new CreditorIdentifierFormatException(input, String.format("'%s' format is not appropriate for a CreditorId", input));
     }
 
     /**
      * Creates a {@code CreditorIdentifierFormatException} telling the given Creditor Identifier check digits are incorrect.
      */
-    static CreditorIdentifierFormatException forIncorrectCheckDigits(String input) {
+    static CreditorIdentifierFormatException forIncorrectCheckDigits(final String input) {
         return new CreditorIdentifierFormatException(input, String.format("'%s' check digits are incorrect", input));
     }
 
     /**
      * Creates a {@code CreditorIdentifierFormatException} telling the given Creditor Identifier refers an unknown country.
      */
-    static CreditorIdentifierFormatException forUnknownCountry(String input) {
+    static CreditorIdentifierFormatException forUnknownCountry(final String input) {
         return new CreditorIdentifierFormatException(input, String.format("'%s' country code is not an ISO 3166-1-alpha-2 code", input));
     }
 

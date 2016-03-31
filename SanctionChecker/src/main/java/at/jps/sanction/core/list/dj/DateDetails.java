@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -72,7 +72,7 @@ public class DateDetails {
      * not a <CODE>set</CODE> method for the date property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDate().add(newItem);
      * </pre>
@@ -83,7 +83,7 @@ public class DateDetails {
         if (date == null) {
             date = new ArrayList<DateDetails.Date>();
         }
-        return this.date;
+        return date;
     }
 
     /**
@@ -91,7 +91,7 @@ public class DateDetails {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -132,7 +132,7 @@ public class DateDetails {
          * is not a <CODE>set</CODE> method for the dateValue property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getDateValue().add(newItem);
          * </pre>
@@ -143,12 +143,12 @@ public class DateDetails {
             if (dateValue == null) {
                 dateValue = new ArrayList<DateDetails.Date.DateValue>();
             }
-            return this.dateValue;
+            return dateValue;
         }
 
         /**
          * Gets the value of the dateType property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getDateType() {
@@ -157,12 +157,12 @@ public class DateDetails {
 
         /**
          * Sets the value of the dateType property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setDateType(String value) {
-            this.dateType = value;
+        public void setDateType(final String value) {
+            dateType = value;
         }
 
         /**
@@ -170,7 +170,7 @@ public class DateDetails {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -199,7 +199,7 @@ public class DateDetails {
 
             /**
              * Gets the value of the month property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getMonth() {
@@ -208,17 +208,17 @@ public class DateDetails {
 
             /**
              * Sets the value of the month property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setMonth(String value) {
-                this.month = value;
+            public void setMonth(final String value) {
+                month = value;
             }
 
             /**
              * Gets the value of the year property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getYear() {
@@ -227,17 +227,17 @@ public class DateDetails {
 
             /**
              * Sets the value of the year property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setYear(String value) {
-                this.year = value;
+            public void setYear(final String value) {
+                year = value;
             }
 
             /**
              * Gets the value of the day property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDay() {
@@ -246,17 +246,17 @@ public class DateDetails {
 
             /**
              * Sets the value of the day property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDay(String value) {
-                this.day = value;
+            public void setDay(final String value) {
+                day = value;
             }
 
             /**
              * Gets the value of the dnotes property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDnotes() {
@@ -265,12 +265,12 @@ public class DateDetails {
 
             /**
              * Sets the value of the dnotes property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDnotes(String value) {
-                this.dnotes = value;
+            public void setDnotes(final String value) {
+                dnotes = value;
             }
 
         }

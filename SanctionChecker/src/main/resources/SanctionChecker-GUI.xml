@@ -6,54 +6,18 @@
 
 <!-- GUI specific config -->
 	
+	
     <bean id="GUIConfig" class="at.jps.sl.gui.util.GUIConfigHolder" parent="ListConfig" scope="singleton" lazy-init="true">    
 
-		<property name="name" value="Sepa Transactions"/>   
+		<property name="name" value="Transactions"/>   
 	
-		<property name="txNoHitOptimizationListHandler" >   
-   			<ref bean="OptiNoHitList"/>
-		</property>
-		
-		<property name="txHitOptimizationListHandler" >   
-   			<ref bean="OptiHitList"/>
-		</property>
-						
-		<property name="noWordHitListHandler" >   
-   			<ref bean="NoWordHitList"/>
-		</property>
 
-		<property name="streamConfig">
-			<ref bean="StreamConfigSwift"/>
-		</property>
-
-		<!-- Queues that will be used by GUI application -->
-		
-		<property name="hitQueue" >
-			<ref bean="HitQueueFile"/>
-		</property>
-		
-		<property name="noHitQueue" >
-			<ref bean="NoHitQueueFile"/>
-		</property>
-		
-		<property name="postProcessHitQueue" >
-			<ref bean="PostHitQueueFile"/>
-		</property>
-		
-		<property name="postProcessNoHitQueue" >
-			<ref  bean="PostNoHitQueueFile"/>
-		</property>
-		
-		<property name="finalNoHitQueue" >
-			<ref bean="FinalNoHitQueueFile"/>
-		</property>
-		
-		<property name="finalHitQueue" >
-			<ref bean="FinalHitQueueFile"/>
-		</property>
-		
-		<property name="backlogQueue" >
-			<ref bean="BacklogQueueFile"/>
+		<!-- Streamconfigurations to work on / switch to -->
+		<property name="streamConfigs">
+		    <map>
+		        <entry key="Swift" value-ref="StreamConfig-SWIFT"/>
+		        <entry key="Sepa" value-ref="StreamConfig-SEPA"/>			
+			</map>
 		</property>
 		
 		<!-- field colors -->

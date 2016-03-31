@@ -214,11 +214,11 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return fourEyesPrinciple;
     }
 
-    public void setFourEyesPrinciple(boolean foureyesprincipleEnabled) {
+    public void setFourEyesPrinciple(final boolean foureyesprincipleEnabled) {
         fourEyesPrinciple = foureyesprincipleEnabled;
     }
 
-    public void setDelimiters(String delimiters) {
+    public void setDelimiters(final String delimiters) {
 
         this.delimiters = "";
         final StringTokenizer tokenizer = new StringTokenizer(delimiters, ",");
@@ -228,7 +228,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         }
     }
 
-    public void setDeadCharacters(String deadCharacters) {
+    public void setDeadCharacters(final String deadCharacters) {
 
         this.deadCharacters = "";
         final StringTokenizer tokenizer = new StringTokenizer(deadCharacters, ",");
@@ -242,7 +242,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -250,7 +250,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return useSysProxy;
     }
 
-    public void setUseSysProxy(boolean useSysProxy) {
+    public void setUseSysProxy(final boolean useSysProxy) {
         this.useSysProxy = useSysProxy;
     }
 
@@ -258,7 +258,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return loadWeak;
     }
 
-    public void setLoadWeak(boolean loadWeak) {
+    public void setLoadWeak(final boolean loadWeak) {
         this.loadWeak = loadWeak;
     }
 
@@ -266,7 +266,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return loadNonPrimary;
     }
 
-    public void setLoadNonPrimary(boolean loadNonPrimary) {
+    public void setLoadNonPrimary(final boolean loadNonPrimary) {
         this.loadNonPrimary = loadNonPrimary;
     }
 
@@ -274,7 +274,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return listType;
     }
 
-    public void setListType(String listType) {
+    public void setListType(final String listType) {
         this.listType = listType;
     }
 
@@ -282,11 +282,11 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(final int orderId) {
         this.orderId = orderId;
     }
 
-    public void setFuzzySearch(boolean fuzzySearch) {
+    public void setFuzzySearch(final boolean fuzzySearch) {
         this.fuzzySearch = fuzzySearch;
     }
 
@@ -299,7 +299,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return entityListSortedById;
     }
 
-    protected void setEntityListSortedById(HashMap<String, WL_Entity> entityListSortedById) {
+    protected void setEntityListSortedById(final HashMap<String, WL_Entity> entityListSortedById) {
         this.entityListSortedById = entityListSortedById;
     }
 
@@ -326,7 +326,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return entityList;
     }
 
-    public void setEntityList(List<WL_Entity> entityList) {
+    public void setEntityList(final List<WL_Entity> entityList) {
         this.entityList = entityList;
     }
 
@@ -334,7 +334,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return httpPwd;
     }
 
-    public void setHttpPwd(String httpPwd) {
+    public void setHttpPwd(final String httpPwd) {
         this.httpPwd = httpPwd;
     }
 
@@ -342,11 +342,11 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         return httpUser;
     }
 
-    public void setHttpUser(String httpUser) {
+    public void setHttpUser(final String httpUser) {
         this.httpUser = httpUser;
     }
 
-    public void saveToDB(Connection connection) {
+    public void saveToDB(final Connection connection) {
         final DBHelper dbh = new DBHelper();
         dbh.setConnection(connection);
 

@@ -25,7 +25,7 @@ public class WL_Name extends BaseModel implements Serializable {
     private boolean                aka;
     private boolean                waka;
 
-    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                // Helper
+    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                                          // Helper
 
     public void addToWholeName(final String wholeName) {
         if (wholeName != null) {
@@ -102,7 +102,7 @@ public class WL_Name extends BaseModel implements Serializable {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
 
         boolean equal = false;
 
@@ -135,7 +135,7 @@ public class WL_Name extends BaseModel implements Serializable {
         return middleName;
     }
 
-    public void setMiddleName(String middleName) {
+    public void setMiddleName(final String middleName) {
         this.middleName = middleName;
     }
 }

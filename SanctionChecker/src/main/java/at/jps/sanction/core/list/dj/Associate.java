@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -45,7 +45,7 @@ public class Associate {
 
     /**
      * Gets the value of the id property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getId() {
@@ -54,17 +54,17 @@ public class Associate {
 
     /**
      * Sets the value of the id property.
-     * 
+     *
      * @param value
      *            allowed object is {@link String }
      */
-    public void setId(String value) {
-        this.id = value;
+    public void setId(final String value) {
+        id = value;
     }
 
     /**
      * Gets the value of the code property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getCode() {
@@ -73,17 +73,17 @@ public class Associate {
 
     /**
      * Sets the value of the code property.
-     * 
+     *
      * @param value
      *            allowed object is {@link String }
      */
-    public void setCode(String value) {
-        this.code = value;
+    public void setCode(final String value) {
+        code = value;
     }
 
     /**
      * Gets the value of the ex property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getEx() {
@@ -92,12 +92,12 @@ public class Associate {
 
     /**
      * Sets the value of the ex property.
-     * 
+     *
      * @param value
      *            allowed object is {@link String }
      */
-    public void setEx(String value) {
-        this.ex = value;
+    public void setEx(final String value) {
+        ex = value;
     }
 
 }

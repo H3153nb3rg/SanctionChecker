@@ -63,7 +63,7 @@ public class SearchTableModelHandler {
 
     }
 
-    public static ReferenceListTableModel generateReferenceListTableModel(ReferenceListHandler refListhandler) {
+    public static ReferenceListTableModel generateReferenceListTableModel(final ReferenceListHandler refListhandler) {
 
         final ReferenceListTableModel tm = new ReferenceListTableModel() {
 
@@ -153,7 +153,7 @@ public class SearchTableModelHandler {
             }
 
             @Override
-            public void setReferenceList(ReferenceListHandler refListhandler) {
+            public void setReferenceList(final ReferenceListHandler refListhandler) {
 
                 this.refListhandler = refListhandler;
 
@@ -172,7 +172,7 @@ public class SearchTableModelHandler {
         return tm;
     }
 
-    public static ValueListTableModel generateValueListTableModel(ValueListHandler valListhandler) {
+    public static ValueListTableModel generateValueListTableModel(final ValueListHandler valListhandler) {
 
         final ValueListTableModel tm = new ValueListTableModel() {
 
@@ -254,7 +254,7 @@ public class SearchTableModelHandler {
             }
 
             @Override
-            public void setValueList(ValueListHandler valListhandler) {
+            public void setValueList(final ValueListHandler valListhandler) {
 
                 this.valListhandler = valListhandler;
 
@@ -270,7 +270,7 @@ public class SearchTableModelHandler {
         return tm;
     }
 
-    public static WatchListTableModel generateWatchListTableModel(List<SearchResultRecord> resultSet) {
+    public static WatchListTableModel generateWatchListTableModel(final List<SearchResultRecord> resultSet) {
 
         final WatchListTableModel tm = new WatchListTableModel() {
 
@@ -368,7 +368,7 @@ public class SearchTableModelHandler {
             }
 
             @Override
-            public void setOptiList(List<SearchResultRecord> resultSet) {
+            public void setOptiList(final List<SearchResultRecord> resultSet) {
 
                 this.resultSet = resultSet;
 
@@ -381,7 +381,7 @@ public class SearchTableModelHandler {
         return tm;
     }
 
-    public static NoHitListTableModel generateNoHitListTableModel(NoWordHitListHandler valListhandler) {
+    public static NoHitListTableModel generateNoHitListTableModel(final NoWordHitListHandler valListhandler) {
 
         final NoHitListTableModel tm = new NoHitListTableModel() {
 
@@ -474,7 +474,7 @@ public class SearchTableModelHandler {
             }
 
             @Override
-            public void setNoHitList(MultiValuedMap<String, String> mvm) {
+            public void setNoHitList(final MultiValuedMap<String, String> mvm) {
 
                 entries = new TreeMap<String, String>();
 
@@ -496,7 +496,7 @@ public class SearchTableModelHandler {
         return tm;
     }
 
-    public static OptiListTableModel generateOptiListTableModel(List<OptimizationRecord> resultSet) {
+    public static OptiListTableModel generateOptiListTableModel(final List<OptimizationRecord> resultSet) {
 
         final OptiListTableModel tm = new OptiListTableModel() {
 
@@ -600,7 +600,7 @@ public class SearchTableModelHandler {
             }
 
             @Override
-            public void setOptiList(List<OptimizationRecord> resultSet) {
+            public void setOptiList(final List<OptimizationRecord> resultSet) {
 
                 this.resultSet = resultSet;
 
@@ -613,7 +613,7 @@ public class SearchTableModelHandler {
         return tm;
     }
 
-    private static SearchResultRecord buildSearchResultRecord(String listname, WL_Entity entity, WL_Name name) {
+    private static SearchResultRecord buildSearchResultRecord(final String listname, final WL_Entity entity, final WL_Name name) {
         final SearchResultRecord sr = new SearchResultRecord();
         sr.setComment(entity.getComment());
         sr.setListName(listname);

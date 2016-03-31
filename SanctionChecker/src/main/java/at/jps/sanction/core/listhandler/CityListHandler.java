@@ -23,7 +23,7 @@ public class CityListHandler {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
 
@@ -31,7 +31,7 @@ public class CityListHandler {
             return country;
         }
 
-        public void setCountry(String country) {
+        public void setCountry(final String country) {
             this.country = country;
         }
 
@@ -39,7 +39,7 @@ public class CityListHandler {
             return population;
         }
 
-        public void setPopulation(int population) {
+        public void setPopulation(final int population) {
             this.population = population;
         }
     }
@@ -131,7 +131,7 @@ public class CityListHandler {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 
@@ -143,11 +143,11 @@ public class CityListHandler {
         return cityList;
     }
 
-    public void setCityList(ArrayList<CityInfo> cityList) {
+    public void setCityList(final ArrayList<CityInfo> cityList) {
         this.cityList = cityList;
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         final CityListHandler clh = new CityListHandler();
 

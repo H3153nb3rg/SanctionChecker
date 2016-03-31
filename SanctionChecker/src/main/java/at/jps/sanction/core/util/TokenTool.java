@@ -123,7 +123,7 @@ public class TokenTool {
             if (fuzzy) {
 
                 minWordLen = Math.min(text1.length(), text2.length());
-                int threshold = (int) (minWordLen * fuzzyValue) + 1;
+                final int threshold = (int) (minWordLen * fuzzyValue) + 1;
 
                 deltaValue = StringUtils.getLevenshteinDistance(text1, text2, threshold);
 

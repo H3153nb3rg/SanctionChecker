@@ -271,13 +271,13 @@ public class DurationSchemaType {
     protected DurationSchemaType.Months months;
 
     @XmlElement(name = "Days", required = true)
-    protected DurationSchemaType.Days days;
+    protected DurationSchemaType.Days   days;
 
     @XmlAttribute(name = "Approximate", required = true)
-    protected boolean approximate;
+    protected boolean                   approximate;
 
     @XmlAttribute(name = "DeltaAction")
-    protected DeltaActionSchemaType deltaAction;
+    protected DeltaActionSchemaType     deltaAction;
 
     /**
      * Gets the value of the days property.

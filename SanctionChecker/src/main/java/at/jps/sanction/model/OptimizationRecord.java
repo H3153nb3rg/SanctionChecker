@@ -31,7 +31,7 @@ public class OptimizationRecord {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
+    public void setFieldName(final String fieldName) {
         this.fieldName = fieldName;
     }
 
@@ -39,7 +39,7 @@ public class OptimizationRecord {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(final String token) {
         this.token = token;
     }
 
@@ -47,7 +47,7 @@ public class OptimizationRecord {
         return watchListName;
     }
 
-    public void setWatchListName(String watchListName) {
+    public void setWatchListName(final String watchListName) {
         this.watchListName = watchListName;
     }
 
@@ -55,7 +55,7 @@ public class OptimizationRecord {
         return watchListId;
     }
 
-    public void setWatchListId(String watchListId) {
+    public void setWatchListId(final String watchListId) {
         this.watchListId = watchListId;
     }
 
@@ -63,21 +63,21 @@ public class OptimizationRecord {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
 
-        StringBuilder txt = new StringBuilder(128);
+        final StringBuilder txt = new StringBuilder(128);
         txt.append(getFieldName()).append(";").append(getToken()).append(";").append(getWatchListName()).append(";").append(getWatchListId()).append(";").append(getStatus());
 
         return txt.toString();
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
 
         return getFieldName().equals(((OptimizationRecord) other).getFieldName()) && getToken().equals(((OptimizationRecord) other).getToken())
                 && getWatchListId().equals(((OptimizationRecord) other).getWatchListId()) && getWatchListName().equals(((OptimizationRecord) other).getWatchListName())

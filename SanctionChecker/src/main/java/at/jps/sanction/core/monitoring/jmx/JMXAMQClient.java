@@ -30,23 +30,23 @@ public class JMXAMQClient {
             try {
                 // url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi");
                 url = new JMXServiceURL(getJMXServerUrl());
-                JMXConnector jmxc = JMXConnectorFactory.connect(url);
-                MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
+                final JMXConnector jmxc = JMXConnectorFactory.connect(url);
+                final MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
 
-                ObjectName activeMQ = new ObjectName(getObjectName()); // "org.apache.activemq:BrokerName=localhost,Type=Broker");
-                BrokerViewMBean mbean = (BrokerViewMBean) MBeanServerInvocationHandler.newProxyInstance(mbsc, activeMQ, BrokerViewMBean.class, true);
+                final ObjectName activeMQ = new ObjectName(getObjectName()); // "org.apache.activemq:BrokerName=localhost,Type=Broker");
+                final BrokerViewMBean mbean = MBeanServerInvocationHandler.newProxyInstance(mbsc, activeMQ, BrokerViewMBean.class, true);
 
                 queueViewBeanCache = new HashMap<String, QueueViewMBean>();
 
-                for (ObjectName name : mbean.getQueues()) {
-                    QueueViewMBean queueMbean = (QueueViewMBean) MBeanServerInvocationHandler.newProxyInstance(mbsc, name, QueueViewMBean.class, true);
+                for (final ObjectName name : mbean.getQueues()) {
+                    final QueueViewMBean queueMbean = MBeanServerInvocationHandler.newProxyInstance(mbsc, name, QueueViewMBean.class, true);
 
                     queueViewBeanCache.put(queueMbean.getName(), queueMbean);
 
                 }
 
             }
-            catch (Exception x) {
+            catch (final Exception x) {
                 logger.error("JMX Active MQ Client Error:" + x.toString());
                 logger.debug("Exception", x);
             }
@@ -66,12 +66,12 @@ public class JMXAMQClient {
     // }
 
     public void purge(final String queuename) {
-        QueueViewMBean queueMbean = queueViewBeanCache.get(queuename);
+        final QueueViewMBean queueMbean = queueViewBeanCache.get(queuename);
         if (queueMbean != null) {
             try {
                 queueMbean.purge();
             }
-            catch (Exception x) {
+            catch (final Exception x) {
                 logger.error("JMX Active MQ Client Purge Error:" + x.toString());
                 logger.debug("Exception", x);
             }
@@ -81,7 +81,7 @@ public class JMXAMQClient {
     public Long getQueueSize(final String queuename) {
         long size = 0;
         if (queueViewBeanCache != null) {
-            QueueViewMBean queueMbean = queueViewBeanCache.get(queuename);
+            final QueueViewMBean queueMbean = queueViewBeanCache.get(queuename);
 
             if (queueMbean != null) {
                 size = queueMbean.getEnqueueCount();
@@ -91,16 +91,18 @@ public class JMXAMQClient {
     }
 
     protected void printAllSizes() {
-        StringBuilder sb = new StringBuilder();
-        if (queueViewBeanCache != null) for (String name : queueViewBeanCache.keySet()) {
-            sb.append(name).append(" ").append(getQueueSize(name)).append("\r\n");
+        final StringBuilder sb = new StringBuilder();
+        if (queueViewBeanCache != null) {
+            for (final String name : queueViewBeanCache.keySet()) {
+                sb.append(name).append(" ").append(getQueueSize(name)).append("\r\n");
+            }
         }
         System.out.println(sb.toString());
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
-        JMXAMQClient jmxc = new JMXAMQClient();
+        final JMXAMQClient jmxc = new JMXAMQClient();
 
         jmxc.connect();
         jmxc.printAllSizes();
@@ -111,7 +113,7 @@ public class JMXAMQClient {
         return JMXServerUrl;
     }
 
-    public void setJMXServerUrl(String jMXServerUrl) {
+    public void setJMXServerUrl(final String jMXServerUrl) {
         JMXServerUrl = jMXServerUrl;
     }
 
@@ -119,7 +121,7 @@ public class JMXAMQClient {
         return objectName;
     }
 
-    public void setObjectName(String objectName) {
+    public void setObjectName(final String objectName) {
         this.objectName = objectName;
     }
 

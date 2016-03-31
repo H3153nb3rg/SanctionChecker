@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.list.ofac.SdnList;
+import at.jps.sanction.core.list.ofac.ASDM.Comment;
 import at.jps.sanction.core.list.ofac.ASDM.DistinctPartySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.DistinctPartySchemaType.Profile;
 import at.jps.sanction.core.list.ofac.ASDM.DocumentedNameSchemaType;
@@ -161,7 +162,7 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
     public static void main(final String[] args) {
 
-        OFAC_ASDM_ListHandler ofac_handler = new OFAC_ASDM_ListHandler();
+        final OFAC_ASDM_ListHandler ofac_handler = new OFAC_ASDM_ListHandler();
 
         final Sanctions sanctions = ofac_handler.readList("E:/Workspace/SanctionList/SLHandler/src/lists/ofac-sdn_advanced.xml");
         System.out.println("size: " + sanctions.getSanctionsEntries().getSanctionsEntry().size());
@@ -256,9 +257,9 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private String getRelationshipType(final Sanctions sanctions, BigInteger typid) {
+    private String getRelationshipType(final Sanctions sanctions, final BigInteger typid) {
         String typeText = "";
-        for (ReferenceValueSetsSchemaType.RelationTypeValues.RelationType rt : sanctions.getReferenceValueSets().getRelationTypeValues().getRelationType()) {
+        for (final ReferenceValueSetsSchemaType.RelationTypeValues.RelationType rt : sanctions.getReferenceValueSets().getRelationTypeValues().getRelationType()) {
             if (rt.getID().equals(typid)) {
                 typeText = rt.getValue();
                 break;
@@ -267,9 +268,9 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
         return typeText;
     }
 
-    private void addRelations(final Sanctions sanctions, WL_Entity entity) {
+    private void addRelations(final Sanctions sanctions, final WL_Entity entity) {
 
-        for (ProfileRelationshipSchemaType prt : sanctions.getProfileRelationships().getProfileRelationship()) {
+        for (final ProfileRelationshipSchemaType prt : sanctions.getProfileRelationships().getProfileRelationship()) {
 
             if (prt.getFromProfileID().toString().equals(entity.getWL_Id())) {
 
@@ -289,6 +290,12 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
                 entity.setWL_Id(prof.getID().toString());
                 entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
+
+                String cmt = "";
+                for (final Comment comment : prof.getComment()) {
+                    cmt += comment.getValue();
+                }
+                entity.setComment(cmt);
 
                 addWLEntry(entity);
 

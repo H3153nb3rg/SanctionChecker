@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlValue;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -64,7 +64,7 @@ public class SanctionsReferences {
      * not a <CODE>set</CODE> method for the reference property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getReference().add(newItem);
      * </pre>
@@ -75,7 +75,7 @@ public class SanctionsReferences {
         if (reference == null) {
             reference = new ArrayList<SanctionsReferences.Reference>();
         }
-        return this.reference;
+        return reference;
     }
 
     /**
@@ -83,7 +83,7 @@ public class SanctionsReferences {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;simpleContent>
@@ -120,7 +120,7 @@ public class SanctionsReferences {
 
         /**
          * Gets the value of the value property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getValue() {
@@ -129,17 +129,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the value property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setValue(String value) {
+        public void setValue(final String value) {
             this.value = value;
         }
 
         /**
          * Gets the value of the sinceDay property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getSinceDay() {
@@ -148,17 +148,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the sinceDay property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setSinceDay(String value) {
-            this.sinceDay = value;
+        public void setSinceDay(final String value) {
+            sinceDay = value;
         }
 
         /**
          * Gets the value of the sinceMonth property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getSinceMonth() {
@@ -167,17 +167,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the sinceMonth property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setSinceMonth(String value) {
-            this.sinceMonth = value;
+        public void setSinceMonth(final String value) {
+            sinceMonth = value;
         }
 
         /**
          * Gets the value of the sinceYear property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getSinceYear() {
@@ -186,17 +186,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the sinceYear property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setSinceYear(String value) {
-            this.sinceYear = value;
+        public void setSinceYear(final String value) {
+            sinceYear = value;
         }
 
         /**
          * Gets the value of the toYear property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getToYear() {
@@ -205,17 +205,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the toYear property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setToYear(String value) {
-            this.toYear = value;
+        public void setToYear(final String value) {
+            toYear = value;
         }
 
         /**
          * Gets the value of the toMonth property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getToMonth() {
@@ -224,17 +224,17 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the toMonth property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setToMonth(String value) {
-            this.toMonth = value;
+        public void setToMonth(final String value) {
+            toMonth = value;
         }
 
         /**
          * Gets the value of the toDay property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getToDay() {
@@ -243,12 +243,12 @@ public class SanctionsReferences {
 
         /**
          * Sets the value of the toDay property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setToDay(String value) {
-            this.toDay = value;
+        public void setToDay(final String value) {
+            toDay = value;
         }
 
     }

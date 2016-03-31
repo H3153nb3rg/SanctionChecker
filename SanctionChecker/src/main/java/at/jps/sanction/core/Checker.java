@@ -25,25 +25,19 @@ import at.jps.sanction.core.notifications.NotificationManager;
 import at.jps.sanction.core.notifications.ShutdownStatus;
 import at.jps.sanction.model.PropertyKeys;
 import at.jps.sanction.model.Status;
-import at.jps.sanction.model.listhandler.NoWordHitListHandler;
-import at.jps.sanction.model.listhandler.OptimizationListHandler;
 
 public class Checker {
 
-    static final Logger             logger        = LoggerFactory.getLogger(Checker.class);
+    static final Logger         logger        = LoggerFactory.getLogger(Checker.class);
 
-    static final String             PROP_FILENAME = "checker.properties";
+    static final String         PROP_FILENAME = "checker.properties";
 
-    private Properties              properties;
+    private Properties          properties;
 
-    private List<String>            streams;
-    private List<StreamManager>     streamManagers;
+    private List<String>        streams;
+    private List<StreamManager> streamManagers;
 
-    private ListConfigHolder        listConfig;
-
-    private OptimizationListHandler txNoHitOptimizationListHandler;
-    private OptimizationListHandler txHitOptimizationListHandler;
-    private NoWordHitListHandler    noHitListHandler;
+    private ListConfigHolder    listConfig;
 
     public boolean initialize(final String filename) {
 
@@ -82,21 +76,13 @@ public class Checker {
         logger.info("Load Lists...");
 
         final String lists = properties.getProperty(PropertyKeys.PROP_LIST_DEFS, "");
-        final StringTokenizer tokenizer = new StringTokenizer(lists, ",;");
+        new StringTokenizer(lists, ",;");
 
         final String lists2 = properties.getProperty(PropertyKeys.PROP_REFLIST_DEFS, "");
-        final StringTokenizer tokenizer2 = new StringTokenizer(lists2, ",;");
+        new StringTokenizer(lists2, ",;");
 
         final String lists3 = properties.getProperty(PropertyKeys.PROP_VALLIST_DEFS, "");
-        final StringTokenizer tokenizer3 = new StringTokenizer(lists3, ",;");
-
-        // optilist -
-        txNoHitOptimizationListHandler = BaseFactory.getTXNoHitOptimizationListloader(properties);
-        // optilist -
-        txHitOptimizationListHandler = BaseFactory.getTXHitOptimizationListloader(properties);
-
-        // nohitlist
-        noHitListHandler = BaseFactory.getNoHitListloader(properties);
+        new StringTokenizer(lists3, ",;");
 
     }
 
@@ -125,7 +111,7 @@ public class Checker {
         // initialize
         for (final StreamManager sm : streamManagers) {
             logger.info(" intialize StreamMananger: " + sm.getStreamName());
-            sm.setPurgeQueuesOnStartup(cleanup);
+            // sm.setPurgeQueuesOnStartup(cleanup);
             sm.initialize();
         }
 
@@ -135,9 +121,6 @@ public class Checker {
             // logger.info(" attach ListHandlers StreamMananger: " + sm.getStreamName());
             sm.setListConfig(listConfig);
 
-            sm.setTxNoHitOptimizationListHandler(txNoHitOptimizationListHandler);
-            sm.setTxHitOptimizationListHandler(txHitOptimizationListHandler);
-            sm.setNoWordHitListHandler(noHitListHandler);
         }
     }
 
@@ -210,6 +193,9 @@ public class Checker {
      */
     public void initialize() {
 
+        assert (getListConfig() != null) : "ListConfig not configured";
+        assert (getStreamManagers() != null) && (!getStreamManagers().isEmpty()) : "StreamManagers not configured";
+
         addSignalHandlers();
         addListHandlersToManagers();
         startupManagers();
@@ -240,7 +226,7 @@ public class Checker {
                 context = new FileSystemXmlApplicationContext(configFilename);
                 initialized = true;
             }
-            catch (Exception x) {
+            catch (final Exception x) {
                 x.printStackTrace();
                 System.out.println(x.toString());
             }
@@ -249,10 +235,9 @@ public class Checker {
             context = new ClassPathXmlApplicationContext("SanctionChecker.xml");
         }
 
-        // important to do this here !!
-        final EntityManagementConfig emmCfg = (EntityManagementConfig) context.getBean("EntityManagement");
+        context.getBean("EntityManagement");
 
-        final Checker checker = (Checker) context.getBean("SanctionChecker");
+        context.getBean("SanctionChecker");
 
         // NO SPRING
         // propertyfile is first parameter
@@ -270,23 +255,11 @@ public class Checker {
         // logger.info("==== SHUT DOWN initiated =====");
     }
 
-    public OptimizationListHandler getTxNoHitOptimizationListHandler() {
-        return txNoHitOptimizationListHandler;
-    }
-
-    public OptimizationListHandler getTxHitOptimizationListHandler() {
-        return txHitOptimizationListHandler;
-    }
-
-    public NoWordHitListHandler getNoHitListHandler() {
-        return noHitListHandler;
-    }
-
     public List<StreamManager> getStreamManagers() {
         return streamManagers;
     }
 
-    public void setStreamManagers(List<StreamManager> streamManagers) {
+    public void setStreamManagers(final List<StreamManager> streamManagers) {
         this.streamManagers = streamManagers;
     }
 
@@ -294,7 +267,7 @@ public class Checker {
         return listConfig;
     }
 
-    public void setListConfig(ListConfigHolder listConfig) {
+    public void setListConfig(final ListConfigHolder listConfig) {
         this.listConfig = listConfig;
     }
 

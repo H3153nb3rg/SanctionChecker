@@ -39,14 +39,15 @@ public class CheckerWindow {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
-                    CheckerWindow window = new CheckerWindow();
+                    final CheckerWindow window = new CheckerWindow();
                     window.frmChecker.setVisible(true);
                 }
-                catch (Exception e) {
+                catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -88,18 +89,18 @@ public class CheckerWindow {
         frmChecker.setBounds(left, top, width, height);
         frmChecker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         frmChecker.getContentPane().add(panel, BorderLayout.SOUTH);
-        GridBagLayout gbl_panel = new GridBagLayout();
+        final GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[] { 0, 0, 0 };
         gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         gbl_panel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
         gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
         panel.setLayout(gbl_panel);
 
-        JLabel lblNewLabel_3 = new JLabel("max work");
-        GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+        final JLabel lblNewLabel_3 = new JLabel("max work");
+        final GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
         gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
         gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
         gbc_lblNewLabel_3.gridx = 0;
@@ -109,7 +110,7 @@ public class CheckerWindow {
         textField_max = new JTextField();
         textField_max.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textField_max.setEditable(false);
-        GridBagConstraints gbc_textField_max = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_max = new GridBagConstraints();
         gbc_textField_max.insets = new Insets(0, 0, 5, 0);
         gbc_textField_max.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField_max.gridx = 1;
@@ -117,8 +118,8 @@ public class CheckerWindow {
         panel.add(textField_max, gbc_textField_max);
         textField_max.setColumns(10);
 
-        JLabel lblNewLabel = new JLabel("inputqueue");
-        GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+        final JLabel lblNewLabel = new JLabel("inputqueue");
+        final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
         gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
         gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
         gbc_lblNewLabel.gridx = 0;
@@ -128,7 +129,7 @@ public class CheckerWindow {
         textField_Input = new JTextField();
         textField_Input.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textField_Input.setEditable(false);
-        GridBagConstraints gbc_textField_Input = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_Input = new GridBagConstraints();
         gbc_textField_Input.insets = new Insets(0, 0, 5, 0);
         gbc_textField_Input.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField_Input.gridx = 1;
@@ -136,8 +137,8 @@ public class CheckerWindow {
         panel.add(textField_Input, gbc_textField_Input);
         textField_Input.setColumns(10);
 
-        JLabel lblNewLabel_1 = new JLabel("hit queue");
-        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+        final JLabel lblNewLabel_1 = new JLabel("hit queue");
+        final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
         gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
         gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
         gbc_lblNewLabel_1.gridx = 0;
@@ -147,7 +148,7 @@ public class CheckerWindow {
         textField_Hit = new JTextField();
         textField_Hit.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textField_Hit.setEditable(false);
-        GridBagConstraints gbc_textField_Hit = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_Hit = new GridBagConstraints();
         gbc_textField_Hit.insets = new Insets(0, 0, 5, 0);
         gbc_textField_Hit.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField_Hit.gridx = 1;
@@ -155,8 +156,8 @@ public class CheckerWindow {
         panel.add(textField_Hit, gbc_textField_Hit);
         textField_Hit.setColumns(10);
 
-        JLabel lblNewLabel_2 = new JLabel("nohit queue");
-        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+        final JLabel lblNewLabel_2 = new JLabel("nohit queue");
+        final GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
         gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
         gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
         gbc_lblNewLabel_2.gridx = 0;
@@ -166,7 +167,7 @@ public class CheckerWindow {
         textField_noHit = new JTextField();
         textField_noHit.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textField_noHit.setEditable(false);
-        GridBagConstraints gbc_textField_noHit = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_noHit = new GridBagConstraints();
         gbc_textField_noHit.insets = new Insets(0, 0, 5, 0);
         gbc_textField_noHit.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField_noHit.gridx = 1;
@@ -174,8 +175,8 @@ public class CheckerWindow {
         panel.add(textField_noHit, gbc_textField_noHit);
         textField_noHit.setColumns(10);
 
-        JLabel lblHitratio = new JLabel("hitRatio");
-        GridBagConstraints gbc_lblHitratio = new GridBagConstraints();
+        final JLabel lblHitratio = new JLabel("hitRatio");
+        final GridBagConstraints gbc_lblHitratio = new GridBagConstraints();
         gbc_lblHitratio.anchor = GridBagConstraints.EAST;
         gbc_lblHitratio.insets = new Insets(0, 0, 5, 5);
         gbc_lblHitratio.gridx = 0;
@@ -185,7 +186,7 @@ public class CheckerWindow {
         textField_hitRatio = new JTextField();
         textField_hitRatio.setFont(new Font("Tahoma", Font.BOLD, 18));
         textField_hitRatio.setEditable(false);
-        GridBagConstraints gbc_textField_hitRatio = new GridBagConstraints();
+        final GridBagConstraints gbc_textField_hitRatio = new GridBagConstraints();
         gbc_textField_hitRatio.insets = new Insets(0, 0, 5, 0);
         gbc_textField_hitRatio.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField_hitRatio.gridx = 1;
@@ -193,30 +194,30 @@ public class CheckerWindow {
         panel.add(textField_hitRatio, gbc_textField_hitRatio);
         textField_hitRatio.setColumns(10);
 
-        JPanel panel_1 = new JPanel();
+        final JPanel panel_1 = new JPanel();
         panel_1.setBorder(new EmptyBorder(10, 10, 10, 10));
         frmChecker.getContentPane().add(panel_1, BorderLayout.CENTER);
         panel_1.setLayout(new BorderLayout(0, 0));
 
-        JPanel panel_graph1 = new JPanel();
+        final JPanel panel_graph1 = new JPanel();
         panel_graph1.setBackground(new Color(255, 255, 240));
         panel_1.add(panel_graph1);
         panel_graph1.setBorder(new LineBorder(new Color(0, 0, 0)));
         panel_graph1.setLayout(new GridLayout(2, 1, 5, 5));
 
-        Chart2D chart1 = new Chart2D();
+        final Chart2D chart1 = new Chart2D();
         chart1.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel_graph1.add(chart1);
         chart1.setBackground(new Color(255, 255, 240));
         chart1.setUseAntialiasing(true);
 
-        Chart2D chart2 = new Chart2D();
+        final Chart2D chart2 = new Chart2D();
         chart2.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel_graph1.add(chart2);
         chart2.setUseAntialiasing(true);
         chart2.setBackground(new Color(255, 255, 240));
 
-        JPanel panel_graph2 = new JPanel();
+        final JPanel panel_graph2 = new JPanel();
         panel_graph2.setBorder(new LineBorder(new Color(0, 0, 0)));
 
         // frmChecker.getContentPane().add(panel_graph2, BorderLayout.CENTER);
@@ -253,24 +254,25 @@ public class CheckerWindow {
         chart2.addTrace(nohitTrace);
         chart2.addTrace(errorTrace);
 
-        Checker checker = new Checker() {
+        final Checker checker = new Checker() {
 
-            private long m_starttime = System.currentTimeMillis();
+            private final long m_starttime  = System.currentTimeMillis();
 
-            int hitCounter = 0;
-            int nohitCounter = 0;
+            int                hitCounter   = 0;
+            int                nohitCounter = 0;
 
-            void addTracePoint(int counter, ITrace2D trace) {
-                trace.addPoint(((double) System.currentTimeMillis() - this.m_starttime), counter);
+            void addTracePoint(final int counter, final ITrace2D trace) {
+                trace.addPoint(((double) System.currentTimeMillis() - m_starttime), counter);
             }
 
+            @Override
             protected void startupManagers() {
 
-                StreamManager sm = getStreamManagers().get(0);  // TODO: HACK !!!
+                final StreamManager sm = getStreamManagers().get(0);  // TODO: HACK !!!
 
-                sm.addInputQueueListener(new QueueEventListener() {
+                sm.addQueueListener("InputQueue", new QueueEventListener() {
 
-                    int counter = 0;
+                    int counter    = 0;
                     int maxCounter = 0;
 
                     @Override
@@ -294,7 +296,7 @@ public class CheckerWindow {
                     }
                 });
 
-                sm.addHitQueueListener(new QueueEventListener() {
+                sm.addQueueListener("HitQueue", new QueueEventListener() {
 
                     @Override
                     public void messageRemoved() {
@@ -311,7 +313,7 @@ public class CheckerWindow {
                     }
                 });
 
-                sm.addNoHitQueueListener(new QueueEventListener() {
+                sm.addQueueListener("NoHitQueue", new QueueEventListener() {
 
                     @Override
                     public void messageRemoved() {
@@ -326,12 +328,12 @@ public class CheckerWindow {
                         addTracePoint(nohitCounter, nohitTrace);
                         textField_noHit.setText(String.format("%d", nohitCounter));
 
-                        textField_hitRatio.setText(String.format("%d%%", (int) (hitCounter / ((nohitCounter + hitCounter) / 100))));
+                        textField_hitRatio.setText(String.format("%d%%", hitCounter / ((nohitCounter + hitCounter) / 100)));
 
                     }
                 });
 
-                sm.addDefectQueueListener(new QueueEventListener() {
+                sm.addQueueListener("DefectQueue", new QueueEventListener() {
 
                     int counter = 0;
 

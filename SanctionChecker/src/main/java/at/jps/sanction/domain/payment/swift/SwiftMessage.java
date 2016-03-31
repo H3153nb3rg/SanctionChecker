@@ -34,7 +34,7 @@ public class SwiftMessage extends Message {
         return businessId;
     }
 
-    public void setBusinessId(String businessId) {
+    public void setBusinessId(final String businessId) {
         this.businessId = businessId;
     }
 

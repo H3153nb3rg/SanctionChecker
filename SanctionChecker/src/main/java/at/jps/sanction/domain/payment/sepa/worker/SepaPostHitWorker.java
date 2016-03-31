@@ -13,7 +13,7 @@ public class SepaPostHitWorker extends PaymentPostHitWorker {
     static final Logger logger = LoggerFactory.getLogger(SepaPostNoHitWorker.class);
 
     @Override
-    public MessageContent getMessageContent(Message message) {
+    public MessageContent getMessageContent(final Message message) {
         return SepaAnalyzer.getFieldsToCheckInternal(message);
     }
 }

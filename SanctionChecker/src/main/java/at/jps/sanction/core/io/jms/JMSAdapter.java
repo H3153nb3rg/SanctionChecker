@@ -31,7 +31,7 @@ public class JMSAdapter {
 
     public void initialize() {
 
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connectionURL);
+        final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connectionURL);
 
         try {
             session = new ThreadLocal<Session>();
@@ -59,7 +59,9 @@ public class JMSAdapter {
         }
         catch (final Exception e) {
             logger.error(getQueueName() + ": JMS Setup Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
         }
     }
 
@@ -74,7 +76,9 @@ public class JMSAdapter {
             }
             catch (final Exception e) {
                 logger.error(getQueueName() + ": JMS Session Error" + e.toString());
-                if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception: ", e);
+                }
             }
         }
         return session.get();
@@ -83,9 +87,9 @@ public class JMSAdapter {
     protected Queue getQueue() {
 
         try {
-            if (this.messageQueue == null) {
+            if (messageQueue == null) {
 
-                this.messageQueue = getSession().createQueue(getQueueName());
+                messageQueue = getSession().createQueue(getQueueName());
                 // lookup the queue object
                 // messageQueue = (Queue) ctx.lookup(getQueueName());
 
@@ -93,10 +97,12 @@ public class JMSAdapter {
         }
         catch (final Exception e) {
             logger.error(getQueueName() + ": JMS Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
         }
 
-        return this.messageQueue;
+        return messageQueue;
     }
 
     public MessageProducer getProducer() {
@@ -107,7 +113,9 @@ public class JMSAdapter {
                 }
                 catch (final Exception e) {
                     logger.error(getQueueName() + ": JMS Producer Error" + e.toString());
-                    if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Exception: ", e);
+                    }
                 }
             }
         }
@@ -123,7 +131,9 @@ public class JMSAdapter {
                 }
                 catch (final Exception e) {
                     logger.error(getQueueName() + ": JMS Consumer Error" + e.toString());
-                    if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Exception: ", e);
+                    }
                 }
             }
         }
@@ -136,18 +146,22 @@ public class JMSAdapter {
             try {
                 getProducer().close();
             }
-            catch (JMSException e) {
+            catch (final JMSException e) {
                 logger.error(getQueueName() + ": JMS close Error" + e.toString());
-                if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception: ", e);
+                }
             }
         }
         if (consumer != null) {
             try {
                 getConsumer().close();
             }
-            catch (JMSException e) {
+            catch (final JMSException e) {
                 logger.error(getQueueName() + ": JMS close Error" + e.toString());
-                if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception: ", e);
+                }
             }
         }
         try {
@@ -163,14 +177,16 @@ public class JMSAdapter {
             logger.debug("Exception: ", e);
         }
 
-        if (logger.isDebugEnabled()) logger.debug("Closing queue (" + getQueueName() + ")");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Closing queue (" + getQueueName() + ")");
+        }
     }
 
     public String getQueueName() {
         return queueName;
     }
 
-    public void setQueueName(String queueName) {
+    public void setQueueName(final String queueName) {
         this.queueName = queueName;
     }
 
@@ -178,7 +194,7 @@ public class JMSAdapter {
         return connectionURL;
     }
 
-    public void setConnectionURL(String connectionURL) {
+    public void setConnectionURL(final String connectionURL) {
         this.connectionURL = connectionURL;
     }
 
@@ -189,9 +205,11 @@ public class JMSAdapter {
             jmsMessage = getSession().createObjectMessage();
             jmsMessage.setJMSDestination(getQueue());
         }
-        catch (JMSException e) {
+        catch (final JMSException e) {
             logger.error(getQueueName() + ": JMS Send Error" + e.toString());
-            if (logger.isDebugEnabled()) logger.debug("Exception: ", e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Exception: ", e);
+            }
         }
         return jmsMessage;
     }

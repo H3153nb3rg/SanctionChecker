@@ -18,17 +18,31 @@ import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageStatus;
 import at.jps.sanction.model.listhandler.NoWordHitListHandler;
+import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.in.InputWorker;
 
 public class AnalyzerWorker extends InputWorker {
 
-    static final Logger logger = LoggerFactory.getLogger(AnalyzerWorker.class);
+    static final Logger           logger = LoggerFactory.getLogger(AnalyzerWorker.class);
+
+    private Queue<AnalysisResult> hitQueue;
+    private Queue<AnalysisResult> noHitQueue;
 
     public AnalyzerWorker() {
     }
 
     public AnalyzerWorker(final StreamManager manager) {
         super(manager);
+    }
+
+    @Override
+    public void initialize() {
+
+        super.initialize();
+
+        assert getHitQueue() != null : "HitQueue not specified - see configuration";
+        assert getNoHitQueue() != null : "NoHitQueue not specified - see configuration";
+
     }
 
     public void processMessage(final Message message) {
@@ -38,7 +52,9 @@ public class AnalyzerWorker extends InputWorker {
 
     @Override
     public Message getNewMessage() {
-        final Message message = getStreamManager().getInputQueue().getNextMessage(true);
+        // final Message message = getStreamManager().getInputQueue().getNextMessage(true);
+
+        final Message message = getInputQueue().getNextMessage(true);
 
         return message;
     }
@@ -68,7 +84,10 @@ public class AnalyzerWorker extends InputWorker {
             if (message != null) {
                 final AnalysisResult analysisResult = new AnalysisResult(message);
                 analysisResult.setException(e);
-                getStreamManager().addToErrorList(analysisResult);
+                // getStreamManager().addToErrorList(analysisResult);
+
+                getDefectQueue().addMessage(analysisResult);
+
             }
         }
     }
@@ -76,13 +95,13 @@ public class AnalyzerWorker extends InputWorker {
     public boolean checkIfDeclaredAsNoHit(final String msgFieldToken, final String listEntryToken) {
         boolean doNotCheck = false;
 
-        NoWordHitListHandler nhl = getStreamManager().getNoWordHitListHandler();
+        final NoWordHitListHandler nhl = getStreamManager().getNoWordHitListHandler();
 
         if (nhl != null) {
-            Collection<String> listEntries = nhl.getValues().get(msgFieldToken); // getCollection(msgFieldToken);
+            final Collection<String> listEntries = nhl.getValues().get(msgFieldToken); // getCollection(msgFieldToken);
 
             if (listEntries != null) {
-                for (String token : listEntries) {
+                for (final String token : listEntries) {
                     if (token.equals(listEntryToken)) {
                         doNotCheck = true;
                         break;
@@ -92,6 +111,22 @@ public class AnalyzerWorker extends InputWorker {
         }
 
         return doNotCheck;
+    }
+
+    public Queue<AnalysisResult> getHitQueue() {
+        return hitQueue;
+    }
+
+    public void setHitQueue(final Queue<AnalysisResult> hitQueue) {
+        this.hitQueue = hitQueue;
+    }
+
+    public Queue<AnalysisResult> getNoHitQueue() {
+        return noHitQueue;
+    }
+
+    public void setNoHitQueue(final Queue<AnalysisResult> noHitQueue) {
+        this.noHitQueue = noHitQueue;
     }
 
 }

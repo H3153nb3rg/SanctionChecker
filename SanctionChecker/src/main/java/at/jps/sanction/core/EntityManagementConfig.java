@@ -16,7 +16,7 @@ public class EntityManagementConfig {
         return enhancementCP;
     }
 
-    public void setEnhancementCP(String enhancementCP) {
+    public void setEnhancementCP(final String enhancementCP) {
         this.enhancementCP = enhancementCP;
     }
 

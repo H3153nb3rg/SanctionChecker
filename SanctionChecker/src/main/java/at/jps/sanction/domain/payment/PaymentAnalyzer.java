@@ -49,7 +49,9 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
         boolean isHit = false;
         final long starttime = System.currentTimeMillis();
-        if (logger.isInfoEnabled()) logger.info("start check message: " + message.getUUID());
+        if (logger.isInfoEnabled()) {
+            logger.info("start check message: " + message.getUUID());
+        }
         final AnalysisResult analyzeresult = new AnalysisResult(message);
 
         firstIteration = true;
@@ -57,12 +59,16 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         // go through all lists
         // do a generic check
         for (final SanctionListHandler listhandler : getStreamManager().getSanctionListHandlers().values()) {
-            if (logger.isInfoEnabled()) logger.info("start check against list: " + listhandler.getListName());
+            if (logger.isInfoEnabled()) {
+                logger.info("start check against list: " + listhandler.getListName());
+            }
 
             genericListCheck(listhandler, analyzeresult);
             firstIteration = false;
 
-            if (logger.isInfoEnabled()) logger.info("finished check against list: " + listhandler.getListName());
+            if (logger.isInfoEnabled()) {
+                logger.info("finished check against list: " + listhandler.getListName());
+            }
         }
 
         isHit = (analyzeresult.getHitList().size() > 0);
@@ -74,25 +80,33 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         analyzeresult.setAnalysisStopTime(stoptime);
 
         if (isHit) {
-            if (logger.isInfoEnabled()) logger.info(" message has hits: " + message.getUUID());
+            if (logger.isInfoEnabled()) {
+                logger.info(" message has hits: " + message.getUUID());
+            }
 
-            ProcessStep processStep = new ProcessStep();
+            final ProcessStep processStep = new ProcessStep();
             processStep.setRemark("Check");
             analyzeresult.addProcessStep(processStep);
 
-            getStreamManager().addToHitList(analyzeresult);
+            // getStreamManager().addToHitList(analyzeresult);
+            getHitQueue().addMessage(analyzeresult);
         }
         else {
-            if (logger.isInfoEnabled()) logger.info(" message has NO hits: " + message.getUUID());
-            getStreamManager().addToNoHitList(analyzeresult);
+            if (logger.isInfoEnabled()) {
+                logger.info(" message has NO hits: " + message.getUUID());
+            }
+            // getStreamManager().addToNoHitList(analyzeresult);
+            getNoHitQueue().addMessage(analyzeresult);
         }
 
-        if (logger.isInfoEnabled()) logger.info("stop checking message: " + message.getUUID() + " (Time needed :  " + difftime + " ms)");
+        if (logger.isInfoEnabled()) {
+            logger.info("stop checking message: " + message.getUUID() + " (Time needed :  " + difftime + " ms)");
+        }
     }
 
     private HitRate checkISO9362(final String msgFieldText) {
 
-        String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
+        final String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
 
         return checkISO4NCCT(countryISO);
     }
@@ -100,8 +114,8 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
     protected HitRate checkISO4NCCT(final String mightBecountry) {
         HitRate hitRate = null;
 
-        String countryISO = mightBecountry;
-        String countryLong = getStreamManager().getReferenceListHandlers().get(NCCTListHandler.getInstance().getListName()).getValues().getProperty(countryISO);
+        final String countryISO = mightBecountry;
+        final String countryLong = getStreamManager().getReferenceListHandlers().get(NCCTListHandler.getInstance().getListName()).getValues().getProperty(countryISO);
 
         if (countryLong != null) {
             hitRate = new HitRate();
@@ -123,7 +137,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         if (Iban.isValid(msgFieldText)) {
             // just check for ISO by now
 
-            String countryISO = msgFieldText.substring(0, 2);
+            final String countryISO = msgFieldText.substring(0, 2);
 
             hitRate = checkISO4NCCT(countryISO);
         }
@@ -154,14 +168,14 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         analyzeresult.addHitResult(hr);
     }
 
-    protected boolean isFieldToCheck(final String msgFieldName, final String EntityType, final String listname) {
-        boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, listname));
+    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname) {
+        final boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, listname, entityType));
 
         return checkit;
     }
 
     protected boolean isFieldToCheckFuzzy(final String msgFieldName, final SanctionListHandler listhandler) {
-        boolean fuzzy = listhandler.isFuzzySearch() && getStreamManager().isField2Fuzzy(msgFieldName);
+        final boolean fuzzy = listhandler.isFuzzySearch() && getStreamManager().isField2Fuzzy(msgFieldName);
 
         return fuzzy;
     }
@@ -170,7 +184,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
         if ((listhandler.getEntityList() != null) && !listhandler.getEntityList().isEmpty()) {
 
-            MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
+            final MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
 
             // TODO: add MessageContent to Message
 
@@ -216,7 +230,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                 if (firstIteration) {// Country check on BIC - ONLY ONCE!!
                                     // String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
                                     // String countryLong = getStreamManager().getReferenceListHandlers().get(NCCTListHandler.getInstance().getListName()).getValues().getProperty(countryISO);
-                                    HitRate hitRate = checkISO9362(msgFieldText);
+                                    final HitRate hitRate = checkISO9362(msgFieldText);
                                     if (hitRate != null) {
                                         // we found an ISO in NCCT
 
@@ -228,7 +242,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                             // userxit for each field 1.time
                             if (firstIteration) {
-                                HitRate hitRate = checkFieldSpecific(msgFieldName, msgFieldText);
+                                final HitRate hitRate = checkFieldSpecific(msgFieldName, msgFieldText);
 
                                 // this is only half baked so far !!!!!
 
@@ -252,7 +266,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             for (final String nameToken : nameTokens) {
 
                                 // check if this combination is not on the NoList list declared as not to check
-                                boolean isDeclaredAsNoHit = checkIfDeclaredAsNoHit(msgFieldToken, nameToken);
+                                final boolean isDeclaredAsNoHit = checkIfDeclaredAsNoHit(msgFieldToken, nameToken);
 
                                 if (isDeclaredAsNoHit) {
                                     if (logger.isDebugEnabled()) {
@@ -264,25 +278,26 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                     // >>>>> THE COMPARISION <<<<<
 
-                                    float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler), getStreamManager().getMinTokenLen(),
+                                    final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler), getStreamManager().getMinTokenLen(),
                                             getStreamManager().getFuzzyValue());
 
                                     // single fuzzy limit !!
                                     if (hitValue > getStreamManager().getMinRelVal()) {
                                         totalHitRateRelative += hitValue;
 
-                                        PaymentHitInfo swhi = new PaymentHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
+                                        final PaymentHitInfo swhi = new PaymentHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
 
                                         // single word hit list if not already in
                                         if (!analyzeresult.getHitTokensList().contains(swhi)) {
                                             analyzeresult.getHitTokensList().add(swhi);
                                         }
                                     }
-                                    if (hitValue == 100)      // no fuzzy hit
+                                    if (hitValue == 100) {
                                         totalHitRateAbsolute += hitValue;
-                                    // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
-                                    // totalHitRateAbsolute += hitValue;
-                                    // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
+                                        // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
+                                        // totalHitRateAbsolute += hitValue;
+                                        // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
+                                    }
                                 }
                             }
                         }
@@ -372,7 +387,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                     // check optimizer if we have to cleanup some mess ;-)
                                     if (getStreamManager().getTxNoHitOptimizationListHandler() != null) {
-                                        for (OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
+                                        for (final OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
                                             if (optimizationRecord.getWatchListName().equals(listhandler.getListName()) && optimizationRecord.getWatchListId().equals(entity.getWL_Id())
                                                     && optimizationRecord.getFieldName().equals(msgFieldName) && optimizationRecord.getToken().equals(msgFieldText))
                                             // TODO: make this more
@@ -432,11 +447,11 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
         // cleanup single hits -- this should be optimized !!
 
-        for (Iterator<WordHitInfo> iteratorWordHits = analyzeresult.getHitTokensList().listIterator(); iteratorWordHits.hasNext();) {
-            WordHitInfo wordHit = iteratorWordHits.next();
+        for (final Iterator<WordHitInfo> iteratorWordHits = analyzeresult.getHitTokensList().listIterator(); iteratorWordHits.hasNext();) {
+            final WordHitInfo wordHit = iteratorWordHits.next();
 
             boolean found = false;
-            for (HitResult hitResult : analyzeresult.getHitList()) {
+            for (final HitResult hitResult : analyzeresult.getHitList()) {
                 if ((((PaymentHitResult) hitResult).getHitId() == ((PaymentHitInfo) wordHit).getSanctionListId())
                         && (((PaymentHitResult) hitResult).getHitField() == ((PaymentHitInfo) wordHit).getFieldName()))  // only remove if Id AND FieldID is identical ( LISTNAME should be
                                                                                                                          // equal as well)....

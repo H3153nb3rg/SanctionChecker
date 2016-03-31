@@ -3,20 +3,21 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-    <!-- GLOBAL CONFIG -->
+    <!-- GLOBAL CONFIG 1x-->
     <import resource="SanctionChecker-GLOBAL.xml" />
        
-    <!-- STREAM CONFIG -->
-    <!--  import resource="SanctionChecker-Stream-SEPA.xml" / -->
+    <!-- STREAM CONFIG 1-n -->
+    <import resource="SanctionChecker-Stream-SEPA.xml" />
     <import resource="SanctionChecker-Stream-SWIFT.xml" />
    		
-    <!-- QUEUE CONFIG -->
-    <import resource="SanctionChecker-Queues-File.xml" />
+    <!-- QUEUE CONFIG 1-n -->
+    <import resource="SanctionChecker-Queues-SWIFT-File.xml" />
+    <import resource="SanctionChecker-Queues-SEPA-File.xml" />
 		   
-    <!-- WATCHLIST CONFIG -->
+    <!-- WATCHLIST CONFIG 1x -->
     <import resource="SanctionChecker-WatchLists.xml" />
 	
-    <!-- GUI CONFIG -->
+    <!-- GUI CONFIG 1x -->
     <import resource="SanctionChecker-GUI.xml" />
     	
     

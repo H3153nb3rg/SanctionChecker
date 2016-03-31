@@ -1,12 +1,9 @@
 /**
  * Copyright 2013 Marc Wrobel (marc.wrobel@gmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- * 		http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +21,9 @@ import at.jps.sanction.core.banking.swift.SwiftPattern;
 
 /**
  * Provides BBAN (also known as basic bank account number) structure for each ISO 13616-compliant national IBAN formats.
- *
- * <p>It is based on the document <i>IBAN REGISTRY Release 45</i> issued by SWIFT on May 2013.</p>
+ * <p>
+ * It is based on the document <i>IBAN REGISTRY Release 45</i> issued by SWIFT on May 2013.
+ * </p>
  *
  * @author Marc Wrobel
  * @see <a href="http://www.swift.com/dsp/resources/documents/IBAN_Registry.pdf">http://www.swift.com/dsp/resources/documents/IBAN_Registry.pdf</a>
@@ -33,7 +31,9 @@ import at.jps.sanction.core.banking.swift.SwiftPattern;
  */
 public enum BbanStructure {
 
-    ALBANIA(IsoCountry.ALBANIA, "8!n16!c"),
+    ALBANIA(
+            IsoCountry.ALBANIA,
+            "8!n16!c"),
     ANDORRA(IsoCountry.ANDORRA, "4!n4!n12!c"),
     AUSTRIA(IsoCountry.AUSTRIA, "5!n11!n"),
     AZERBAIJAN(IsoCountry.AZERBAIJAN, "4!a20!c"),
@@ -53,7 +53,9 @@ public enum BbanStructure {
     ESTONIA(IsoCountry.ESTONIA, "2!n2!n11!n1!n"),
     FINLAND(IsoCountry.FINLAND, "6!n7!n1!n"),
     ALAND_ISLANDS(IsoCountry.ALAND_ISLANDS, "6!n7!n1!n"),
-    FRANCE(IsoCountry.FRANCE, "5!n5!n11!c2!n",
+    FRANCE(
+            IsoCountry.FRANCE,
+            "5!n5!n11!c2!n",
             IsoCountry.FRENCH_GUIANA,
             IsoCountry.GUADELOUPE,
             IsoCountry.MARTINIQUE,
@@ -64,8 +66,7 @@ public enum BbanStructure {
             IsoCountry.SAINT_BARTHELEMY,
             IsoCountry.SAINT_MARTIN,
             IsoCountry.SAINT_PIERRE_AND_MIQUELON,
-            IsoCountry.WALLIS_AND_FUTUNA
-    ),
+            IsoCountry.WALLIS_AND_FUTUNA),
     GEORGIA(IsoCountry.GEORGIA, "2!a16!n"),
     GERMANY(IsoCountry.GERMANY, "8!n10!n"),
     GIBRALTAR(IsoCountry.GIBRALTAR, "4!a15!c"),
@@ -114,17 +115,18 @@ public enum BbanStructure {
     QATAR(IsoCountry.QATAR, "4!a21!c"),
     BRITISH_VIRGIN_ISLANDS(IsoCountry.BRITISH_VIRGIN_ISLANDS, "4!a16!n");
 
-    private final IsoCountry country;
-    private final SwiftPattern bbanPattern;
+    private final IsoCountry      country;
+    private final SwiftPattern    bbanPattern;
     private final Set<IsoCountry> subdivisions;
 
-    private BbanStructure(IsoCountry country, String bbanSwiftExpression, IsoCountry... subdivisions) {
+    private BbanStructure(final IsoCountry country, final String bbanSwiftExpression, final IsoCountry... subdivisions) {
         this.country = country;
-        this.bbanPattern = SwiftPattern.compile(bbanSwiftExpression);
+        bbanPattern = SwiftPattern.compile(bbanSwiftExpression);
 
         if (subdivisions.length == 0) {
             this.subdivisions = EnumSet.noneOf(IsoCountry.class);
-        } else {
+        }
+        else {
             this.subdivisions = EnumSet.copyOf(Arrays.asList(subdivisions));
         }
     }
@@ -132,20 +134,22 @@ public enum BbanStructure {
     /**
      * Returns the appropriate BbanStructure given the country, or null if IBAN are not in use in this country.
      *
-     * @param country A Country.
+     * @param country
+     *            A Country.
      * @return the given country BBAN definition, or null if IBAN are not in use in this country or if the argument is {@code null}.
      */
-    public static BbanStructure forCountry(IsoCountry country) {
+    public static BbanStructure forCountry(final IsoCountry country) {
         if (country == null) {
             return null;
         }
 
-        for (BbanStructure structure : values()) {
+        for (final BbanStructure structure : values()) {
             if (structure.country.equals(country)) {
                 return structure;
 
-            } else {
-                for (IsoCountry subdivision : structure.subdivisions) {
+            }
+            else {
+                for (final IsoCountry subdivision : structure.subdivisions) {
                     if (subdivision.equals(country)) {
                         return structure;
                     }
@@ -159,11 +163,13 @@ public enum BbanStructure {
     /**
      * Test whether or not the given BBAN is valid.
      *
-     * @param bban A non null string.
+     * @param bban
+     *            A non null string.
      * @return {@code true} if the given BBAN is valid against this BBAN structure, {@code false} otherwise.
-     * @throws IllegalArgumentException if the given BBAN is null
+     * @throws IllegalArgumentException
+     *             if the given BBAN is null
      */
-    public boolean isBbanValid(String bban) {
+    public boolean isBbanValid(final String bban) {
         if (bban == null) {
             throw new IllegalArgumentException("the bban argument cannot be null");
         }

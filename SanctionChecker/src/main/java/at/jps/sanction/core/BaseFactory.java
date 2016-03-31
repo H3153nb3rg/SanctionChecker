@@ -319,9 +319,8 @@ public class BaseFactory {
 
         final StreamManager instance = (StreamManager) createClassInstance(manager);
 
-        instance.setStreamName(streamName);
-
-        instance.setProperties(properties);
+        // instance.setStreamName(streamName);
+        // instance.setProperties(properties);
 
         return instance;
     }

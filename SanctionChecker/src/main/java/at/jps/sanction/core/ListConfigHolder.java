@@ -29,7 +29,7 @@ public class ListConfigHolder implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext ac) throws BeansException {
+    public void setApplicationContext(final ApplicationContext ac) throws BeansException {
         context = ac;
     }
 
@@ -58,34 +58,38 @@ public class ListConfigHolder implements ApplicationContextAware {
     }
 
     public void setReferenceLists(final List<ReferenceListHandler> referenceListHandlers) {
-        this.referenceLists = new HashMap<String, ReferenceListHandler>();
+        referenceLists = new HashMap<String, ReferenceListHandler>();
 
-        for (ReferenceListHandler rlh : referenceListHandlers) {
-            this.referenceLists.put(rlh.getListName(), rlh);
+        for (final ReferenceListHandler rlh : referenceListHandlers) {
+            referenceLists.put(rlh.getListName(), rlh);
         }
     }
 
     public void setWatchLists(final List<SanctionListHandler> sanctionListHandlers) {
-        this.watchLists = new HashMap<String, SanctionListHandler>();
+        watchLists = new HashMap<String, SanctionListHandler>();
 
-        for (SanctionListHandler slh : sanctionListHandlers) {
-            this.watchLists.put(slh.getListName(), slh);
+        for (final SanctionListHandler slh : sanctionListHandlers) {
+            watchLists.put(slh.getListName(), slh);
         }
     }
 
     public void setValueLists(final List<ValueListHandler> valueListHandlers) {
-        this.valueLists = new HashMap<String, ValueListHandler>();
+        valueLists = new HashMap<String, ValueListHandler>();
 
-        for (ValueListHandler vlh : valueListHandlers) {
-            this.valueLists.put(vlh.getListName(), vlh);
+        for (final ValueListHandler vlh : valueListHandlers) {
+            valueLists.put(vlh.getListName(), vlh);
         }
     }
 
     public void initialize() {
 
+        assert (getValueLists() != null) && (!getValueLists().isEmpty()) : "ValueLists not configured";
+        assert (getWatchLists() != null) && (!getWatchLists().isEmpty()) : "WatchLists not configured";
+        assert (getReferenceLists() != null) && (!getReferenceLists().isEmpty()) : "ReferenceLists not configured";
+
         final CountDownLatch reflatch = new CountDownLatch(getValueLists().size() + getWatchLists().size() + getReferenceLists().size());
 
-        for (String listname : getValueLists().keySet()) {
+        for (final String listname : getValueLists().keySet()) {
             final ValueListHandler lh = getValueLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 
@@ -101,7 +105,7 @@ public class ListConfigHolder implements ApplicationContextAware {
             }).start();
         }
 
-        for (String listname : getReferenceLists().keySet()) {
+        for (final String listname : getReferenceLists().keySet()) {
             final ReferenceListHandler lh = getReferenceLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 
@@ -117,7 +121,7 @@ public class ListConfigHolder implements ApplicationContextAware {
             }).start();
         }
 
-        for (String listname : getWatchLists().keySet()) {
+        for (final String listname : getWatchLists().keySet()) {
             final SanctionListHandler lh = getWatchLists().get(listname);
             logger.info("Handle List... " + lh.getListName());
 

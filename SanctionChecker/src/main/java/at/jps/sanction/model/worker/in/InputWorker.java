@@ -12,18 +12,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.StreamManager;
+import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.Status;
+import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.Worker;
 
 abstract public class InputWorker extends Worker {
 
-    static final Logger logger             = LoggerFactory.getLogger(InputWorker.class);
+    static final Logger           logger             = LoggerFactory.getLogger(InputWorker.class);
 
-    long                sleepMillisBetween = 0;
+    long                          sleepMillisBetween = 0;
+
+    private Queue<Message>        inputQueue;
+    private Queue<AnalysisResult> defectQueue;
 
     public InputWorker() {
         super();
+    }
+
+    @Override
+    public void initialize() {
+
+        super.initialize();
+
+        assert getInputQueue() != null : "Inputqueue not specified - see configuration";
+        assert getDefectQueue() != null : "Defectqueue not specified - see configuration";
+
+        // getStreamManager().registerQueue(getInputQueue());
+        // getStreamManager().registerQueue(getDefectQueue());
+
     }
 
     public InputWorker(final StreamManager manager) {
@@ -55,7 +73,7 @@ abstract public class InputWorker extends Worker {
 
     public void handleMessage(final Message message) {
         if (message != null) {
-            getStreamManager().addToInputList(message);
+            getInputQueue().addMessage(message);
         }
     }
 
@@ -84,5 +102,21 @@ abstract public class InputWorker extends Worker {
 
     public void setSleepMillisBetween(final int millis) {
         sleepMillisBetween = millis;
+    }
+
+    public Queue<Message> getInputQueue() {
+        return inputQueue;
+    }
+
+    public void setInputQueue(final Queue<Message> inputQueue) {
+        this.inputQueue = inputQueue;
+    }
+
+    public Queue<AnalysisResult> getDefectQueue() {
+        return defectQueue;
+    }
+
+    public void setDefectQueue(final Queue<AnalysisResult> defectQueue) {
+        this.defectQueue = defectQueue;
     }
 }

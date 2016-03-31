@@ -7,7 +7,7 @@
    
    <bean id="GlobalListConfig" abstract="true"  lazy-init="true">
 
-		<property name="histPath" value="C:\\temp\\SanctionTest\\listhist"/>		
+		<property name="histPath" value="${WatchlistsHist.Folder}"/>		
 		<property name="useSysProxy" value="true"	   	 />		
 		
 		<property name="delimiters" value=";,., ,(,),$,.,'"/>
@@ -23,7 +23,7 @@
 		<property name="listName" value="OFAC"/>
 		<property name="description" value="Specially Designated Nationals List (SDN) from the Office of Foreign Assets Control"/>
 		<property name="orderNr" value="3"/>
-		<property name="filename" value="C:\Users\johannes\Sanctionlists\ofac-sdn_advanced.xml"/>
+		<property name="filename" value="${Watchlists.Folder}\ofac-sdn_advanced.xml"/>
 		<!-- property name="url" value="http://www.treasury.gov/ofac/downloads/sanctions/1.0/sdn_advanced.xml"/ -->
 		
 		<property name="listType" value="SL"/>
@@ -34,7 +34,7 @@
 		<property name="listName" value="EUList"/>
 		<property name="description" value="Consolidated list of persons, groups and entities subject to EU financial sanctions"/>
 		<property name="orderNr" value="2"/>
-		<property name="filename" value="C:\Users\johannes\Sanctionlists\global.xml"/>
+		<property name="filename" value="${Watchlists.Folder}\global.xml"/>
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
 		<property name="listType" value="SL"/>
@@ -59,7 +59,7 @@
 		
 		<!-- property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/ -->
 		
-		<property name="filename" value="C:\Users\johannes\Sanctionlists\PFA2_201601222200_I.xml"/>
+		<property name="filename" value="${Watchlists.Folder}PFA2_201601222200_I.xml"/>
 		<!-- property name="filename" value="C:\Users\johannes\Sanctionlists\PFA2_201601312200_F.xml"/ -->
 		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
@@ -76,7 +76,7 @@
 		<property name="orderNr" value="2"/>
 		
 		<!-- property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/ST_xml_1039_001_201601280002_f.xml"/ -->
-		<property name="filename" value="C:\Users\johannes\Sanctionlists\PFA2_201601222200_I.xml"/>
+		<property name="filename" value="${Watchlists.Folder}\PFA2_201601222200_I.xml"/>
 		<!-- property name="filename" value="C:\Users\johannes\Sanctionlists\PFA2_201601312200_F.xml"/-->
 		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->

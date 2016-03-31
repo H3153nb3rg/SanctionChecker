@@ -456,7 +456,7 @@ public class SanctionTableModelHandler implements Serializable {
                 return fieldRowlist;
             }
 
-            private boolean isFieldCheck(final String fieldName, boolean isSepaUglyDuckling) {
+            private boolean isFieldCheck(final String fieldName, final boolean isSepaUglyDuckling) {
                 boolean check = false;
 
                 if (isSepaUglyDuckling) {
@@ -473,7 +473,7 @@ public class SanctionTableModelHandler implements Serializable {
                 return check;
             }
 
-            private String getFieldName(final String fieldNameShort, boolean isSepaUglyDuckling) {
+            private String getFieldName(final String fieldNameShort, final boolean isSepaUglyDuckling) {
 
                 String longName = null;
 
@@ -497,7 +497,7 @@ public class SanctionTableModelHandler implements Serializable {
 
             }
 
-            private String getBicFieldExtended(final String fieldName, final String txt, boolean isSepaUglyDuckling) {
+            private String getBicFieldExtended(final String fieldName, final String txt, final boolean isSepaUglyDuckling) {
 
                 String value = txt;
 
@@ -641,7 +641,7 @@ public class SanctionTableModelHandler implements Serializable {
             }
 
             @Override
-            public void setFieldnameList(HashMap<String, String> fieldNames) {
+            public void setFieldnameList(final HashMap<String, String> fieldNames) {
                 this.fieldNames = fieldNames;
             }
         };
@@ -657,22 +657,22 @@ public class SanctionTableModelHandler implements Serializable {
         final TableModel tableModel = new TableModel() {
 
             @Override
-            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 
             }
 
             @Override
-            public void removeTableModelListener(TableModelListener l) {
+            public void removeTableModelListener(final TableModelListener l) {
 
             }
 
             @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(final int rowIndex, final int columnIndex) {
                 return false;
             }
 
             @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
+            public Object getValueAt(final int rowIndex, final int columnIndex) {
                 String colName = "";
 
                 final WL_Name name = entity.getNames().get(rowIndex);
@@ -704,7 +704,7 @@ public class SanctionTableModelHandler implements Serializable {
             }
 
             @Override
-            public String getColumnName(int columnIndex) {
+            public String getColumnName(final int columnIndex) {
                 String value = "";
                 switch (columnIndex) {
                     case 0:
@@ -735,13 +735,13 @@ public class SanctionTableModelHandler implements Serializable {
             }
 
             @Override
-            public Class<?> getColumnClass(int columnIndex) {
+            public Class<?> getColumnClass(final int columnIndex) {
 
                 return String.class;
             }
 
             @Override
-            public void addTableModelListener(TableModelListener l) {
+            public void addTableModelListener(final TableModelListener l) {
 
             }
         };
@@ -758,22 +758,22 @@ public class SanctionTableModelHandler implements Serializable {
         final TableModel tableModel = new TableModel() {
 
             @Override
-            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 
             }
 
             @Override
-            public void removeTableModelListener(TableModelListener l) {
+            public void removeTableModelListener(final TableModelListener l) {
 
             }
 
             @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(final int rowIndex, final int columnIndex) {
                 return false;
             }
 
             @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
+            public Object getValueAt(final int rowIndex, final int columnIndex) {
                 String colName = "";
 
                 // WL_Name name = focusedEntity.getReleations().keySet()..getNames().get(rowIndex);
@@ -805,7 +805,7 @@ public class SanctionTableModelHandler implements Serializable {
             }
 
             @Override
-            public String getColumnName(int columnIndex) {
+            public String getColumnName(final int columnIndex) {
                 String value = "";
                 switch (columnIndex) {
                     case 0:
@@ -833,13 +833,13 @@ public class SanctionTableModelHandler implements Serializable {
             }
 
             @Override
-            public Class<?> getColumnClass(int columnIndex) {
+            public Class<?> getColumnClass(final int columnIndex) {
 
                 return String.class;
             }
 
             @Override
-            public void addTableModelListener(TableModelListener l) {
+            public void addTableModelListener(final TableModelListener l) {
 
             }
         };

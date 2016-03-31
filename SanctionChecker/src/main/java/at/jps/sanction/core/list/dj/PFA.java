@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlValue;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -492,7 +492,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the countryList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getCountryList().add(newItem);
      * </pre>
@@ -503,7 +503,7 @@ public class PFA {
         if (countryList == null) {
             countryList = new ArrayList<PFA.CountryList>();
         }
-        return this.countryList;
+        return countryList;
     }
 
     /**
@@ -513,7 +513,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the occupationList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getOccupationList().add(newItem);
      * </pre>
@@ -524,7 +524,7 @@ public class PFA {
         if (occupationList == null) {
             occupationList = new ArrayList<PFA.OccupationList>();
         }
-        return this.occupationList;
+        return occupationList;
     }
 
     /**
@@ -534,7 +534,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the relationshipList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getRelationshipList().add(newItem);
      * </pre>
@@ -545,7 +545,7 @@ public class PFA {
         if (relationshipList == null) {
             relationshipList = new ArrayList<PFA.RelationshipList>();
         }
-        return this.relationshipList;
+        return relationshipList;
     }
 
     /**
@@ -555,7 +555,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the sanctionsReferencesList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getSanctionsReferencesList().add(newItem);
      * </pre>
@@ -566,7 +566,7 @@ public class PFA {
         if (sanctionsReferencesList == null) {
             sanctionsReferencesList = new ArrayList<PFA.SanctionsReferencesList>();
         }
-        return this.sanctionsReferencesList;
+        return sanctionsReferencesList;
     }
 
     /**
@@ -576,7 +576,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the description1List property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDescription1List().add(newItem);
      * </pre>
@@ -587,7 +587,7 @@ public class PFA {
         if (description1List == null) {
             description1List = new ArrayList<PFA.Description1List>();
         }
-        return this.description1List;
+        return description1List;
     }
 
     /**
@@ -597,7 +597,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the description2List property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDescription2List().add(newItem);
      * </pre>
@@ -608,7 +608,7 @@ public class PFA {
         if (description2List == null) {
             description2List = new ArrayList<PFA.Description2List>();
         }
-        return this.description2List;
+        return description2List;
     }
 
     /**
@@ -618,7 +618,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the description3List property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDescription3List().add(newItem);
      * </pre>
@@ -629,7 +629,7 @@ public class PFA {
         if (description3List == null) {
             description3List = new ArrayList<PFA.Description3List>();
         }
-        return this.description3List;
+        return description3List;
     }
 
     /**
@@ -639,7 +639,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the dateTypeList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDateTypeList().add(newItem);
      * </pre>
@@ -650,7 +650,7 @@ public class PFA {
         if (dateTypeList == null) {
             dateTypeList = new ArrayList<PFA.DateTypeList>();
         }
-        return this.dateTypeList;
+        return dateTypeList;
     }
 
     /**
@@ -660,7 +660,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the nameTypeList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getNameTypeList().add(newItem);
      * </pre>
@@ -671,7 +671,7 @@ public class PFA {
         if (nameTypeList == null) {
             nameTypeList = new ArrayList<PFA.NameTypeList>();
         }
-        return this.nameTypeList;
+        return nameTypeList;
     }
 
     /**
@@ -681,7 +681,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the roleTypeList property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getRoleTypeList().add(newItem);
      * </pre>
@@ -692,7 +692,7 @@ public class PFA {
         if (roleTypeList == null) {
             roleTypeList = new ArrayList<PFA.RoleTypeList>();
         }
-        return this.roleTypeList;
+        return roleTypeList;
     }
 
     /**
@@ -702,7 +702,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the records property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getRecords().add(newItem);
      * </pre>
@@ -713,7 +713,7 @@ public class PFA {
         if (records == null) {
             records = new ArrayList<PFA.Records>();
         }
-        return this.records;
+        return records;
     }
 
     /**
@@ -723,7 +723,7 @@ public class PFA {
      * not a <CODE>set</CODE> method for the associations property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getAssociations().add(newItem);
      * </pre>
@@ -734,12 +734,12 @@ public class PFA {
         if (associations == null) {
             associations = new ArrayList<PFA.Associations>();
         }
-        return this.associations;
+        return associations;
     }
 
     /**
      * Gets the value of the date property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getDate() {
@@ -748,17 +748,17 @@ public class PFA {
 
     /**
      * Sets the value of the date property.
-     * 
+     *
      * @param value
      *            allowed object is {@link String }
      */
-    public void setDate(String value) {
-        this.date = value;
+    public void setDate(final String value) {
+        date = value;
     }
 
     /**
      * Gets the value of the type property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getType() {
@@ -767,12 +767,12 @@ public class PFA {
 
     /**
      * Sets the value of the type property.
-     * 
+     *
      * @param value
      *            allowed object is {@link String }
      */
-    public void setType(String value) {
-        this.type = value;
+    public void setType(final String value) {
+        type = value;
     }
 
     /**
@@ -780,7 +780,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -832,7 +832,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the publicFigure property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getPublicFigure().add(newItem);
          * </pre>
@@ -843,7 +843,7 @@ public class PFA {
             if (publicFigure == null) {
                 publicFigure = new ArrayList<PFA.Associations.PublicFigure>();
             }
-            return this.publicFigure;
+            return publicFigure;
         }
 
         /**
@@ -853,7 +853,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the specialEntity property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getSpecialEntity().add(newItem);
          * </pre>
@@ -864,7 +864,7 @@ public class PFA {
             if (specialEntity == null) {
                 specialEntity = new ArrayList<PFA.Associations.SpecialEntity>();
             }
-            return this.specialEntity;
+            return specialEntity;
         }
 
         /**
@@ -872,7 +872,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -902,7 +902,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the associate property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getAssociate().add(newItem);
              * </pre>
@@ -913,12 +913,12 @@ public class PFA {
                 if (associate == null) {
                     associate = new ArrayList<Associate>();
                 }
-                return this.associate;
+                return associate;
             }
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -927,12 +927,12 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
         }
@@ -942,7 +942,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -972,7 +972,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the associate property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getAssociate().add(newItem);
              * </pre>
@@ -983,12 +983,12 @@ public class PFA {
                 if (associate == null) {
                     associate = new ArrayList<Associate>();
                 }
-                return this.associate;
+                return associate;
             }
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -997,12 +997,12 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
         }
@@ -1014,7 +1014,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1052,7 +1052,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the countryName property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getCountryName().add(newItem);
          * </pre>
@@ -1063,7 +1063,7 @@ public class PFA {
             if (countryName == null) {
                 countryName = new ArrayList<PFA.CountryList.CountryName>();
             }
-            return this.countryName;
+            return countryName;
         }
 
         /**
@@ -1071,7 +1071,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1100,7 +1100,7 @@ public class PFA {
 
             /**
              * Gets the value of the code property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getCode() {
@@ -1109,17 +1109,17 @@ public class PFA {
 
             /**
              * Sets the value of the code property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setCode(String value) {
-                this.code = value;
+            public void setCode(final String value) {
+                code = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -1128,17 +1128,17 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
             /**
              * Gets the value of the isTerritory property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getIsTerritory() {
@@ -1147,17 +1147,17 @@ public class PFA {
 
             /**
              * Sets the value of the isTerritory property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setIsTerritory(String value) {
-                this.isTerritory = value;
+            public void setIsTerritory(final String value) {
+                isTerritory = value;
             }
 
             /**
              * Gets the value of the profileURL property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getProfileURL() {
@@ -1166,12 +1166,12 @@ public class PFA {
 
             /**
              * Sets the value of the profileURL property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setProfileURL(String value) {
-                this.profileURL = value;
+            public void setProfileURL(final String value) {
+                profileURL = value;
             }
 
         }
@@ -1183,7 +1183,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1220,7 +1220,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the dateType property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getDateType().add(newItem);
          * </pre>
@@ -1231,7 +1231,7 @@ public class PFA {
             if (dateType == null) {
                 dateType = new ArrayList<PFA.DateTypeList.DateType>();
             }
-            return this.dateType;
+            return dateType;
         }
 
         /**
@@ -1239,7 +1239,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1265,7 +1265,7 @@ public class PFA {
 
             /**
              * Gets the value of the recordType property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getRecordType() {
@@ -1274,17 +1274,17 @@ public class PFA {
 
             /**
              * Sets the value of the recordType property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setRecordType(String value) {
-                this.recordType = value;
+            public void setRecordType(final String value) {
+                recordType = value;
             }
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -1293,17 +1293,17 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -1312,12 +1312,12 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
         }
@@ -1329,7 +1329,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1365,7 +1365,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the description1Name property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getDescription1Name().add(newItem);
          * </pre>
@@ -1376,7 +1376,7 @@ public class PFA {
             if (description1Name == null) {
                 description1Name = new ArrayList<PFA.Description1List.Description1Name>();
             }
-            return this.description1Name;
+            return description1Name;
         }
 
         /**
@@ -1384,7 +1384,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;simpleContent>
@@ -1409,7 +1409,7 @@ public class PFA {
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getValue() {
@@ -1418,17 +1418,17 @@ public class PFA {
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setValue(String value) {
+            public void setValue(final String value) {
                 this.value = value;
             }
 
             /**
              * Gets the value of the description1Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription1Id() {
@@ -1437,17 +1437,17 @@ public class PFA {
 
             /**
              * Sets the value of the description1Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription1Id(String value) {
-                this.description1Id = value;
+            public void setDescription1Id(final String value) {
+                description1Id = value;
             }
 
             /**
              * Gets the value of the recordType property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getRecordType() {
@@ -1456,12 +1456,12 @@ public class PFA {
 
             /**
              * Sets the value of the recordType property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setRecordType(String value) {
-                this.recordType = value;
+            public void setRecordType(final String value) {
+                recordType = value;
             }
 
         }
@@ -1473,7 +1473,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1509,7 +1509,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the description2Name property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getDescription2Name().add(newItem);
          * </pre>
@@ -1520,7 +1520,7 @@ public class PFA {
             if (description2Name == null) {
                 description2Name = new ArrayList<PFA.Description2List.Description2Name>();
             }
-            return this.description2Name;
+            return description2Name;
         }
 
         /**
@@ -1528,7 +1528,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;simpleContent>
@@ -1553,7 +1553,7 @@ public class PFA {
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getValue() {
@@ -1562,17 +1562,17 @@ public class PFA {
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setValue(String value) {
+            public void setValue(final String value) {
                 this.value = value;
             }
 
             /**
              * Gets the value of the description2Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription2Id() {
@@ -1581,17 +1581,17 @@ public class PFA {
 
             /**
              * Sets the value of the description2Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription2Id(String value) {
-                this.description2Id = value;
+            public void setDescription2Id(final String value) {
+                description2Id = value;
             }
 
             /**
              * Gets the value of the description1Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription1Id() {
@@ -1600,12 +1600,12 @@ public class PFA {
 
             /**
              * Sets the value of the description1Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription1Id(String value) {
-                this.description1Id = value;
+            public void setDescription1Id(final String value) {
+                description1Id = value;
             }
 
         }
@@ -1617,7 +1617,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1653,7 +1653,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the description3Name property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getDescription3Name().add(newItem);
          * </pre>
@@ -1664,7 +1664,7 @@ public class PFA {
             if (description3Name == null) {
                 description3Name = new ArrayList<PFA.Description3List.Description3Name>();
             }
-            return this.description3Name;
+            return description3Name;
         }
 
         /**
@@ -1672,7 +1672,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;simpleContent>
@@ -1697,7 +1697,7 @@ public class PFA {
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getValue() {
@@ -1706,17 +1706,17 @@ public class PFA {
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setValue(String value) {
+            public void setValue(final String value) {
                 this.value = value;
             }
 
             /**
              * Gets the value of the description3Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription3Id() {
@@ -1725,17 +1725,17 @@ public class PFA {
 
             /**
              * Sets the value of the description3Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription3Id(String value) {
-                this.description3Id = value;
+            public void setDescription3Id(final String value) {
+                description3Id = value;
             }
 
             /**
              * Gets the value of the description2Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription2Id() {
@@ -1744,12 +1744,12 @@ public class PFA {
 
             /**
              * Sets the value of the description2Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription2Id(String value) {
-                this.description2Id = value;
+            public void setDescription2Id(final String value) {
+                description2Id = value;
             }
 
         }
@@ -1761,7 +1761,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1797,7 +1797,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the nameType property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getNameType().add(newItem);
          * </pre>
@@ -1808,7 +1808,7 @@ public class PFA {
             if (nameType == null) {
                 nameType = new ArrayList<PFA.NameTypeList.NameType>();
             }
-            return this.nameType;
+            return nameType;
         }
 
         /**
@@ -1816,7 +1816,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;simpleContent>
@@ -1841,7 +1841,7 @@ public class PFA {
 
             /**
              * Gets the value of the value property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getValue() {
@@ -1850,17 +1850,17 @@ public class PFA {
 
             /**
              * Sets the value of the value property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setValue(String value) {
+            public void setValue(final String value) {
                 this.value = value;
             }
 
             /**
              * Gets the value of the nameTypeID property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getNameTypeID() {
@@ -1869,17 +1869,17 @@ public class PFA {
 
             /**
              * Sets the value of the nameTypeID property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setNameTypeID(String value) {
-                this.nameTypeID = value;
+            public void setNameTypeID(final String value) {
+                nameTypeID = value;
             }
 
             /**
              * Gets the value of the recordType property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getRecordType() {
@@ -1888,12 +1888,12 @@ public class PFA {
 
             /**
              * Sets the value of the recordType property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setRecordType(String value) {
-                this.recordType = value;
+            public void setRecordType(final String value) {
+                recordType = value;
             }
 
         }
@@ -1905,7 +1905,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -1941,7 +1941,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the occupation property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getOccupation().add(newItem);
          * </pre>
@@ -1952,7 +1952,7 @@ public class PFA {
             if (occupation == null) {
                 occupation = new ArrayList<PFA.OccupationList.Occupation>();
             }
-            return this.occupation;
+            return occupation;
         }
 
         /**
@@ -1960,7 +1960,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1983,7 +1983,7 @@ public class PFA {
 
             /**
              * Gets the value of the code property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getCode() {
@@ -1992,17 +1992,17 @@ public class PFA {
 
             /**
              * Sets the value of the code property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setCode(String value) {
-                this.code = value;
+            public void setCode(final String value) {
+                code = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -2011,12 +2011,12 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
         }
@@ -2028,7 +2028,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -2220,7 +2220,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the person property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getPerson().add(newItem);
          * </pre>
@@ -2231,7 +2231,7 @@ public class PFA {
             if (person == null) {
                 person = new ArrayList<PFA.Records.Person>();
             }
-            return this.person;
+            return person;
         }
 
         /**
@@ -2241,7 +2241,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the entity property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getEntity().add(newItem);
          * </pre>
@@ -2252,7 +2252,7 @@ public class PFA {
             if (entity == null) {
                 entity = new ArrayList<PFA.Records.Entity>();
             }
-            return this.entity;
+            return entity;
         }
 
         /**
@@ -2260,7 +2260,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -2350,7 +2350,7 @@ public class PFA {
 
             /**
              * Gets the value of the activeStatus property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getActiveStatus() {
@@ -2359,17 +2359,17 @@ public class PFA {
 
             /**
              * Sets the value of the activeStatus property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setActiveStatus(String value) {
-                this.activeStatus = value;
+            public void setActiveStatus(final String value) {
+                activeStatus = value;
             }
 
             /**
              * Gets the value of the profileNotes property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getProfileNotes() {
@@ -2378,12 +2378,12 @@ public class PFA {
 
             /**
              * Sets the value of the profileNotes property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setProfileNotes(String value) {
-                this.profileNotes = value;
+            public void setProfileNotes(final String value) {
+                profileNotes = value;
             }
 
             /**
@@ -2393,7 +2393,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the nameDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getNameDetails().add(newItem);
              * </pre>
@@ -2404,7 +2404,7 @@ public class PFA {
                 if (nameDetails == null) {
                     nameDetails = new ArrayList<NameDetails>();
                 }
-                return this.nameDetails;
+                return nameDetails;
             }
 
             /**
@@ -2414,7 +2414,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the descriptions property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getDescriptions().add(newItem);
              * </pre>
@@ -2425,7 +2425,7 @@ public class PFA {
                 if (descriptions == null) {
                     descriptions = new ArrayList<Descriptions>();
                 }
-                return this.descriptions;
+                return descriptions;
             }
 
             /**
@@ -2435,7 +2435,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the dateDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getDateDetails().add(newItem);
              * </pre>
@@ -2446,7 +2446,7 @@ public class PFA {
                 if (dateDetails == null) {
                     dateDetails = new ArrayList<DateDetails>();
                 }
-                return this.dateDetails;
+                return dateDetails;
             }
 
             /**
@@ -2456,7 +2456,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the sanctionsReferences property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getSanctionsReferences().add(newItem);
              * </pre>
@@ -2467,7 +2467,7 @@ public class PFA {
                 if (sanctionsReferences == null) {
                     sanctionsReferences = new ArrayList<SanctionsReferences>();
                 }
-                return this.sanctionsReferences;
+                return sanctionsReferences;
             }
 
             /**
@@ -2477,7 +2477,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the vesselDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getVesselDetails().add(newItem);
              * </pre>
@@ -2488,7 +2488,7 @@ public class PFA {
                 if (vesselDetails == null) {
                     vesselDetails = new ArrayList<PFA.Records.Entity.VesselDetails>();
                 }
-                return this.vesselDetails;
+                return vesselDetails;
             }
 
             /**
@@ -2498,7 +2498,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the companyDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getCompanyDetails().add(newItem);
              * </pre>
@@ -2509,7 +2509,7 @@ public class PFA {
                 if (companyDetails == null) {
                     companyDetails = new ArrayList<PFA.Records.Entity.CompanyDetails>();
                 }
-                return this.companyDetails;
+                return companyDetails;
             }
 
             /**
@@ -2519,7 +2519,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the countryDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getCountryDetails().add(newItem);
              * </pre>
@@ -2530,7 +2530,7 @@ public class PFA {
                 if (countryDetails == null) {
                     countryDetails = new ArrayList<CountryDetails>();
                 }
-                return this.countryDetails;
+                return countryDetails;
             }
 
             /**
@@ -2540,7 +2540,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the idNumberTypes property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getIDNumberTypes().add(newItem);
              * </pre>
@@ -2551,7 +2551,7 @@ public class PFA {
                 if (idNumberTypes == null) {
                     idNumberTypes = new ArrayList<IDNumberTypes>();
                 }
-                return this.idNumberTypes;
+                return idNumberTypes;
             }
 
             /**
@@ -2561,7 +2561,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the sourceDescription property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getSourceDescription().add(newItem);
              * </pre>
@@ -2572,12 +2572,12 @@ public class PFA {
                 if (sourceDescription == null) {
                     sourceDescription = new ArrayList<SourceDescription>();
                 }
-                return this.sourceDescription;
+                return sourceDescription;
             }
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -2586,17 +2586,17 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
             /**
              * Gets the value of the action property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getAction() {
@@ -2605,17 +2605,17 @@ public class PFA {
 
             /**
              * Sets the value of the action property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setAction(String value) {
-                this.action = value;
+            public void setAction(final String value) {
+                action = value;
             }
 
             /**
              * Gets the value of the date property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDate() {
@@ -2624,12 +2624,12 @@ public class PFA {
 
             /**
              * Sets the value of the date property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDate(String value) {
-                this.date = value;
+            public void setDate(final String value) {
+                date = value;
             }
 
             /**
@@ -2637,7 +2637,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -2668,7 +2668,7 @@ public class PFA {
 
                 /**
                  * Gets the value of the addressLine property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressLine() {
@@ -2677,17 +2677,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressLine property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressLine(String value) {
-                    this.addressLine = value;
+                public void setAddressLine(final String value) {
+                    addressLine = value;
                 }
 
                 /**
                  * Gets the value of the addressCity property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressCity() {
@@ -2696,17 +2696,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressCity property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressCity(String value) {
-                    this.addressCity = value;
+                public void setAddressCity(final String value) {
+                    addressCity = value;
                 }
 
                 /**
                  * Gets the value of the addressCountry property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressCountry() {
@@ -2715,17 +2715,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressCountry property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressCountry(String value) {
-                    this.addressCountry = value;
+                public void setAddressCountry(final String value) {
+                    addressCountry = value;
                 }
 
                 /**
                  * Gets the value of the url property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getURL() {
@@ -2734,12 +2734,12 @@ public class PFA {
 
                 /**
                  * Sets the value of the url property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setURL(String value) {
-                    this.url = value;
+                public void setURL(final String value) {
+                    url = value;
                 }
 
             }
@@ -2749,7 +2749,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -2786,7 +2786,7 @@ public class PFA {
 
                 /**
                  * Gets the value of the vesselCallSign property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselCallSign() {
@@ -2795,17 +2795,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselCallSign property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselCallSign(String value) {
-                    this.vesselCallSign = value;
+                public void setVesselCallSign(final String value) {
+                    vesselCallSign = value;
                 }
 
                 /**
                  * Gets the value of the vesselType property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselType() {
@@ -2814,17 +2814,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselType property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselType(String value) {
-                    this.vesselType = value;
+                public void setVesselType(final String value) {
+                    vesselType = value;
                 }
 
                 /**
                  * Gets the value of the vesselTonnage property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselTonnage() {
@@ -2833,17 +2833,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselTonnage property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselTonnage(String value) {
-                    this.vesselTonnage = value;
+                public void setVesselTonnage(final String value) {
+                    vesselTonnage = value;
                 }
 
                 /**
                  * Gets the value of the vesselGRT property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselGRT() {
@@ -2852,17 +2852,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselGRT property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselGRT(String value) {
-                    this.vesselGRT = value;
+                public void setVesselGRT(final String value) {
+                    vesselGRT = value;
                 }
 
                 /**
                  * Gets the value of the vesselOwner property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselOwner() {
@@ -2871,17 +2871,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselOwner property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselOwner(String value) {
-                    this.vesselOwner = value;
+                public void setVesselOwner(final String value) {
+                    vesselOwner = value;
                 }
 
                 /**
                  * Gets the value of the vesselFlag property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getVesselFlag() {
@@ -2890,12 +2890,12 @@ public class PFA {
 
                 /**
                  * Sets the value of the vesselFlag property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setVesselFlag(String value) {
-                    this.vesselFlag = value;
+                public void setVesselFlag(final String value) {
+                    vesselFlag = value;
                 }
 
             }
@@ -2907,7 +2907,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -3065,7 +3065,7 @@ public class PFA {
 
             /**
              * Gets the value of the gender property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getGender() {
@@ -3074,17 +3074,17 @@ public class PFA {
 
             /**
              * Sets the value of the gender property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setGender(String value) {
-                this.gender = value;
+            public void setGender(final String value) {
+                gender = value;
             }
 
             /**
              * Gets the value of the activeStatus property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getActiveStatus() {
@@ -3093,17 +3093,17 @@ public class PFA {
 
             /**
              * Sets the value of the activeStatus property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setActiveStatus(String value) {
-                this.activeStatus = value;
+            public void setActiveStatus(final String value) {
+                activeStatus = value;
             }
 
             /**
              * Gets the value of the deceased property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDeceased() {
@@ -3112,17 +3112,17 @@ public class PFA {
 
             /**
              * Sets the value of the deceased property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDeceased(String value) {
-                this.deceased = value;
+            public void setDeceased(final String value) {
+                deceased = value;
             }
 
             /**
              * Gets the value of the profileNotes property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getProfileNotes() {
@@ -3131,12 +3131,12 @@ public class PFA {
 
             /**
              * Sets the value of the profileNotes property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setProfileNotes(String value) {
-                this.profileNotes = value;
+            public void setProfileNotes(final String value) {
+                profileNotes = value;
             }
 
             /**
@@ -3146,7 +3146,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the nameDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getNameDetails().add(newItem);
              * </pre>
@@ -3157,7 +3157,7 @@ public class PFA {
                 if (nameDetails == null) {
                     nameDetails = new ArrayList<NameDetails>();
                 }
-                return this.nameDetails;
+                return nameDetails;
             }
 
             /**
@@ -3167,7 +3167,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the descriptions property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getDescriptions().add(newItem);
              * </pre>
@@ -3178,7 +3178,7 @@ public class PFA {
                 if (descriptions == null) {
                     descriptions = new ArrayList<Descriptions>();
                 }
-                return this.descriptions;
+                return descriptions;
             }
 
             /**
@@ -3188,7 +3188,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the roleDetail property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getRoleDetail().add(newItem);
              * </pre>
@@ -3199,7 +3199,7 @@ public class PFA {
                 if (roleDetail == null) {
                     roleDetail = new ArrayList<PFA.Records.Person.RoleDetail>();
                 }
-                return this.roleDetail;
+                return roleDetail;
             }
 
             /**
@@ -3209,7 +3209,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the dateDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getDateDetails().add(newItem);
              * </pre>
@@ -3220,7 +3220,7 @@ public class PFA {
                 if (dateDetails == null) {
                     dateDetails = new ArrayList<DateDetails>();
                 }
-                return this.dateDetails;
+                return dateDetails;
             }
 
             /**
@@ -3230,7 +3230,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the birthPlace property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getBirthPlace().add(newItem);
              * </pre>
@@ -3241,7 +3241,7 @@ public class PFA {
                 if (birthPlace == null) {
                     birthPlace = new ArrayList<PFA.Records.Person.BirthPlace>();
                 }
-                return this.birthPlace;
+                return birthPlace;
             }
 
             /**
@@ -3251,7 +3251,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the sanctionsReferences property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getSanctionsReferences().add(newItem);
              * </pre>
@@ -3262,7 +3262,7 @@ public class PFA {
                 if (sanctionsReferences == null) {
                     sanctionsReferences = new ArrayList<SanctionsReferences>();
                 }
-                return this.sanctionsReferences;
+                return sanctionsReferences;
             }
 
             /**
@@ -3272,7 +3272,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the address property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getAddress().add(newItem);
              * </pre>
@@ -3283,7 +3283,7 @@ public class PFA {
                 if (address == null) {
                     address = new ArrayList<PFA.Records.Person.Address>();
                 }
-                return this.address;
+                return address;
             }
 
             /**
@@ -3293,7 +3293,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the countryDetails property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getCountryDetails().add(newItem);
              * </pre>
@@ -3304,7 +3304,7 @@ public class PFA {
                 if (countryDetails == null) {
                     countryDetails = new ArrayList<CountryDetails>();
                 }
-                return this.countryDetails;
+                return countryDetails;
             }
 
             /**
@@ -3314,7 +3314,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the idNumberTypes property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getIDNumberTypes().add(newItem);
              * </pre>
@@ -3325,7 +3325,7 @@ public class PFA {
                 if (idNumberTypes == null) {
                     idNumberTypes = new ArrayList<IDNumberTypes>();
                 }
-                return this.idNumberTypes;
+                return idNumberTypes;
             }
 
             /**
@@ -3335,7 +3335,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the sourceDescription property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getSourceDescription().add(newItem);
              * </pre>
@@ -3346,7 +3346,7 @@ public class PFA {
                 if (sourceDescription == null) {
                     sourceDescription = new ArrayList<SourceDescription>();
                 }
-                return this.sourceDescription;
+                return sourceDescription;
             }
 
             /**
@@ -3356,7 +3356,7 @@ public class PFA {
              * there is not a <CODE>set</CODE> method for the images property.
              * <p>
              * For example, to add a new item, do as follows:
-             * 
+             *
              * <pre>
              * getImages().add(newItem);
              * </pre>
@@ -3367,12 +3367,12 @@ public class PFA {
                 if (images == null) {
                     images = new ArrayList<PFA.Records.Person.Images>();
                 }
-                return this.images;
+                return images;
             }
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -3381,17 +3381,17 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
             /**
              * Gets the value of the action property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getAction() {
@@ -3400,17 +3400,17 @@ public class PFA {
 
             /**
              * Sets the value of the action property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setAction(String value) {
-                this.action = value;
+            public void setAction(final String value) {
+                action = value;
             }
 
             /**
              * Gets the value of the date property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDate() {
@@ -3419,12 +3419,12 @@ public class PFA {
 
             /**
              * Sets the value of the date property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDate(String value) {
-                this.date = value;
+            public void setDate(final String value) {
+                date = value;
             }
 
             /**
@@ -3432,7 +3432,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -3463,7 +3463,7 @@ public class PFA {
 
                 /**
                  * Gets the value of the addressLine property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressLine() {
@@ -3472,17 +3472,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressLine property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressLine(String value) {
-                    this.addressLine = value;
+                public void setAddressLine(final String value) {
+                    addressLine = value;
                 }
 
                 /**
                  * Gets the value of the addressCity property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressCity() {
@@ -3491,17 +3491,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressCity property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressCity(String value) {
-                    this.addressCity = value;
+                public void setAddressCity(final String value) {
+                    addressCity = value;
                 }
 
                 /**
                  * Gets the value of the addressCountry property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getAddressCountry() {
@@ -3510,17 +3510,17 @@ public class PFA {
 
                 /**
                  * Sets the value of the addressCountry property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setAddressCountry(String value) {
-                    this.addressCountry = value;
+                public void setAddressCountry(final String value) {
+                    addressCountry = value;
                 }
 
                 /**
                  * Gets the value of the url property.
-                 * 
+                 *
                  * @return possible object is {@link String }
                  */
                 public String getURL() {
@@ -3529,12 +3529,12 @@ public class PFA {
 
                 /**
                  * Sets the value of the url property.
-                 * 
+                 *
                  * @param value
                  *            allowed object is {@link String }
                  */
-                public void setURL(String value) {
-                    this.url = value;
+                public void setURL(final String value) {
+                    url = value;
                 }
 
             }
@@ -3544,7 +3544,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -3579,7 +3579,7 @@ public class PFA {
                  * why there is not a <CODE>set</CODE> method for the place property.
                  * <p>
                  * For example, to add a new item, do as follows:
-                 * 
+                 *
                  * <pre>
                  * getPlace().add(newItem);
                  * </pre>
@@ -3590,7 +3590,7 @@ public class PFA {
                     if (place == null) {
                         place = new ArrayList<PFA.Records.Person.BirthPlace.Place>();
                     }
-                    return this.place;
+                    return place;
                 }
 
                 /**
@@ -3598,7 +3598,7 @@ public class PFA {
                  * Java class for anonymous complex type.
                  * <p>
                  * The following schema fragment specifies the expected content contained within this class.
-                 * 
+                 *
                  * <pre>
                  * &lt;complexType>
                  *   &lt;complexContent>
@@ -3618,7 +3618,7 @@ public class PFA {
 
                     /**
                      * Gets the value of the name property.
-                     * 
+                     *
                      * @return possible object is {@link String }
                      */
                     public String getName() {
@@ -3627,12 +3627,12 @@ public class PFA {
 
                     /**
                      * Sets the value of the name property.
-                     * 
+                     *
                      * @param value
                      *            allowed object is {@link String }
                      */
-                    public void setName(String value) {
-                        this.name = value;
+                    public void setName(final String value) {
+                        name = value;
                     }
 
                 }
@@ -3644,7 +3644,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -3679,7 +3679,7 @@ public class PFA {
                  * why there is not a <CODE>set</CODE> method for the image property.
                  * <p>
                  * For example, to add a new item, do as follows:
-                 * 
+                 *
                  * <pre>
                  * getImage().add(newItem);
                  * </pre>
@@ -3690,7 +3690,7 @@ public class PFA {
                     if (image == null) {
                         image = new ArrayList<PFA.Records.Person.Images.Image>();
                     }
-                    return this.image;
+                    return image;
                 }
 
                 /**
@@ -3698,7 +3698,7 @@ public class PFA {
                  * Java class for anonymous complex type.
                  * <p>
                  * The following schema fragment specifies the expected content contained within this class.
-                 * 
+                 *
                  * <pre>
                  * &lt;complexType>
                  *   &lt;complexContent>
@@ -3718,7 +3718,7 @@ public class PFA {
 
                     /**
                      * Gets the value of the url property.
-                     * 
+                     *
                      * @return possible object is {@link String }
                      */
                     public String getURL() {
@@ -3727,12 +3727,12 @@ public class PFA {
 
                     /**
                      * Sets the value of the url property.
-                     * 
+                     *
                      * @param value
                      *            allowed object is {@link String }
                      */
-                    public void setURL(String value) {
-                        this.url = value;
+                    public void setURL(final String value) {
+                        url = value;
                     }
 
                 }
@@ -3744,7 +3744,7 @@ public class PFA {
              * Java class for anonymous complex type.
              * <p>
              * The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -3796,7 +3796,7 @@ public class PFA {
                  * why there is not a <CODE>set</CODE> method for the roles property.
                  * <p>
                  * For example, to add a new item, do as follows:
-                 * 
+                 *
                  * <pre>
                  * getRoles().add(newItem);
                  * </pre>
@@ -3807,7 +3807,7 @@ public class PFA {
                     if (roles == null) {
                         roles = new ArrayList<PFA.Records.Person.RoleDetail.Roles>();
                     }
-                    return this.roles;
+                    return roles;
                 }
 
                 /**
@@ -3815,7 +3815,7 @@ public class PFA {
                  * Java class for anonymous complex type.
                  * <p>
                  * The following schema fragment specifies the expected content contained within this class.
-                 * 
+                 *
                  * <pre>
                  * &lt;complexType>
                  *   &lt;complexContent>
@@ -3859,7 +3859,7 @@ public class PFA {
                      * is why there is not a <CODE>set</CODE> method for the occTitle property.
                      * <p>
                      * For example, to add a new item, do as follows:
-                     * 
+                     *
                      * <pre>
                      * getOccTitle().add(newItem);
                      * </pre>
@@ -3870,12 +3870,12 @@ public class PFA {
                         if (occTitle == null) {
                             occTitle = new ArrayList<PFA.Records.Person.RoleDetail.Roles.OccTitle>();
                         }
-                        return this.occTitle;
+                        return occTitle;
                     }
 
                     /**
                      * Gets the value of the roleType property.
-                     * 
+                     *
                      * @return possible object is {@link String }
                      */
                     public String getRoleType() {
@@ -3884,12 +3884,12 @@ public class PFA {
 
                     /**
                      * Sets the value of the roleType property.
-                     * 
+                     *
                      * @param value
                      *            allowed object is {@link String }
                      */
-                    public void setRoleType(String value) {
-                        this.roleType = value;
+                    public void setRoleType(final String value) {
+                        roleType = value;
                     }
 
                     /**
@@ -3897,7 +3897,7 @@ public class PFA {
                      * Java class for anonymous complex type.
                      * <p>
                      * The following schema fragment specifies the expected content contained within this class.
-                     * 
+                     *
                      * <pre>
                      * &lt;complexType>
                      *   &lt;simpleContent>
@@ -3937,7 +3937,7 @@ public class PFA {
 
                         /**
                          * Gets the value of the value property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getValue() {
@@ -3946,17 +3946,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the value property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setValue(String value) {
+                        public void setValue(final String value) {
                             this.value = value;
                         }
 
                         /**
                          * Gets the value of the occCat property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getOccCat() {
@@ -3965,17 +3965,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the occCat property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setOccCat(String value) {
-                            this.occCat = value;
+                        public void setOccCat(final String value) {
+                            occCat = value;
                         }
 
                         /**
                          * Gets the value of the sinceMonth property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getSinceMonth() {
@@ -3984,17 +3984,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the sinceMonth property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setSinceMonth(String value) {
-                            this.sinceMonth = value;
+                        public void setSinceMonth(final String value) {
+                            sinceMonth = value;
                         }
 
                         /**
                          * Gets the value of the sinceYear property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getSinceYear() {
@@ -4003,17 +4003,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the sinceYear property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setSinceYear(String value) {
-                            this.sinceYear = value;
+                        public void setSinceYear(final String value) {
+                            sinceYear = value;
                         }
 
                         /**
                          * Gets the value of the toMonth property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getToMonth() {
@@ -4022,17 +4022,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the toMonth property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setToMonth(String value) {
-                            this.toMonth = value;
+                        public void setToMonth(final String value) {
+                            toMonth = value;
                         }
 
                         /**
                          * Gets the value of the toYear property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getToYear() {
@@ -4041,17 +4041,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the toYear property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setToYear(String value) {
-                            this.toYear = value;
+                        public void setToYear(final String value) {
+                            toYear = value;
                         }
 
                         /**
                          * Gets the value of the sinceDay property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getSinceDay() {
@@ -4060,17 +4060,17 @@ public class PFA {
 
                         /**
                          * Sets the value of the sinceDay property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setSinceDay(String value) {
-                            this.sinceDay = value;
+                        public void setSinceDay(final String value) {
+                            sinceDay = value;
                         }
 
                         /**
                          * Gets the value of the toDay property.
-                         * 
+                         *
                          * @return possible object is {@link String }
                          */
                         public String getToDay() {
@@ -4079,12 +4079,12 @@ public class PFA {
 
                         /**
                          * Sets the value of the toDay property.
-                         * 
+                         *
                          * @param value
                          *            allowed object is {@link String }
                          */
-                        public void setToDay(String value) {
-                            this.toDay = value;
+                        public void setToDay(final String value) {
+                            toDay = value;
                         }
 
                     }
@@ -4102,7 +4102,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -4138,7 +4138,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the relationship property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getRelationship().add(newItem);
          * </pre>
@@ -4149,7 +4149,7 @@ public class PFA {
             if (relationship == null) {
                 relationship = new ArrayList<PFA.RelationshipList.Relationship>();
             }
-            return this.relationship;
+            return relationship;
         }
 
         /**
@@ -4157,7 +4157,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -4180,7 +4180,7 @@ public class PFA {
 
             /**
              * Gets the value of the code property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getCode() {
@@ -4189,17 +4189,17 @@ public class PFA {
 
             /**
              * Sets the value of the code property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setCode(String value) {
-                this.code = value;
+            public void setCode(final String value) {
+                code = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -4208,12 +4208,12 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
         }
@@ -4225,7 +4225,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -4261,7 +4261,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the roleType property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getRoleType().add(newItem);
          * </pre>
@@ -4272,7 +4272,7 @@ public class PFA {
             if (roleType == null) {
                 roleType = new ArrayList<PFA.RoleTypeList.RoleType>();
             }
-            return this.roleType;
+            return roleType;
         }
 
         /**
@@ -4280,7 +4280,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -4303,7 +4303,7 @@ public class PFA {
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getId() {
@@ -4312,17 +4312,17 @@ public class PFA {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setId(String value) {
-                this.id = value;
+            public void setId(final String value) {
+                id = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -4331,12 +4331,12 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
         }
@@ -4348,7 +4348,7 @@ public class PFA {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -4386,7 +4386,7 @@ public class PFA {
          * is not a <CODE>set</CODE> method for the referenceName property.
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getReferenceName().add(newItem);
          * </pre>
@@ -4397,7 +4397,7 @@ public class PFA {
             if (referenceName == null) {
                 referenceName = new ArrayList<PFA.SanctionsReferencesList.ReferenceName>();
             }
-            return this.referenceName;
+            return referenceName;
         }
 
         /**
@@ -4405,7 +4405,7 @@ public class PFA {
          * Java class for anonymous complex type.
          * <p>
          * The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -4434,7 +4434,7 @@ public class PFA {
 
             /**
              * Gets the value of the code property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getCode() {
@@ -4443,17 +4443,17 @@ public class PFA {
 
             /**
              * Sets the value of the code property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setCode(String value) {
-                this.code = value;
+            public void setCode(final String value) {
+                code = value;
             }
 
             /**
              * Gets the value of the name property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getName() {
@@ -4462,17 +4462,17 @@ public class PFA {
 
             /**
              * Sets the value of the name property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setName(String value) {
-                this.name = value;
+            public void setName(final String value) {
+                name = value;
             }
 
             /**
              * Gets the value of the status property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getStatus() {
@@ -4481,17 +4481,17 @@ public class PFA {
 
             /**
              * Sets the value of the status property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setStatus(String value) {
-                this.status = value;
+            public void setStatus(final String value) {
+                status = value;
             }
 
             /**
              * Gets the value of the description2Id property.
-             * 
+             *
              * @return possible object is {@link String }
              */
             public String getDescription2Id() {
@@ -4500,12 +4500,12 @@ public class PFA {
 
             /**
              * Sets the value of the description2Id property.
-             * 
+             *
              * @param value
              *            allowed object is {@link String }
              */
-            public void setDescription2Id(String value) {
-                this.description2Id = value;
+            public void setDescription2Id(final String value) {
+                description2Id = value;
             }
 
         }

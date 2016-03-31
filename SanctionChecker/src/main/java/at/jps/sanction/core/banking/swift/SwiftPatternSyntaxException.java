@@ -15,7 +15,7 @@ package at.jps.sanction.core.banking.swift;
 public class SwiftPatternSyntaxException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -6649967934325640680L;
     private final String      expression;
@@ -26,7 +26,7 @@ public class SwiftPatternSyntaxException extends RuntimeException {
      * @param expression
      *            a string
      */
-    SwiftPatternSyntaxException(String expression) {
+    SwiftPatternSyntaxException(final String expression) {
         super(String.format("the expression syntax is invalid in '%s'", expression));
         this.expression = expression;
     }

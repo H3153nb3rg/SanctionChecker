@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * Java class for anonymous complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -60,7 +60,7 @@ public class Descriptions {
      * not a <CODE>set</CODE> method for the description property.
      * <p>
      * For example, to add a new item, do as follows:
-     * 
+     *
      * <pre>
      * getDescription().add(newItem);
      * </pre>
@@ -71,7 +71,7 @@ public class Descriptions {
         if (description == null) {
             description = new ArrayList<Descriptions.Description>();
         }
-        return this.description;
+        return description;
     }
 
     /**
@@ -79,7 +79,7 @@ public class Descriptions {
      * Java class for anonymous complex type.
      * <p>
      * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -105,7 +105,7 @@ public class Descriptions {
 
         /**
          * Gets the value of the description1 property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getDescription1() {
@@ -114,17 +114,17 @@ public class Descriptions {
 
         /**
          * Sets the value of the description1 property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setDescription1(String value) {
-            this.description1 = value;
+        public void setDescription1(final String value) {
+            description1 = value;
         }
 
         /**
          * Gets the value of the description2 property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getDescription2() {
@@ -133,17 +133,17 @@ public class Descriptions {
 
         /**
          * Sets the value of the description2 property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setDescription2(String value) {
-            this.description2 = value;
+        public void setDescription2(final String value) {
+            description2 = value;
         }
 
         /**
          * Gets the value of the description3 property.
-         * 
+         *
          * @return possible object is {@link String }
          */
         public String getDescription3() {
@@ -152,12 +152,12 @@ public class Descriptions {
 
         /**
          * Sets the value of the description3 property.
-         * 
+         *
          * @param value
          *            allowed object is {@link String }
          */
-        public void setDescription3(String value) {
-            this.description3 = value;
+        public void setDescription3(final String value) {
+            description3 = value;
         }
 
     }

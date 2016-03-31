@@ -33,7 +33,7 @@ public class JMSInputWorker extends InputWorker {
 
     /**
      * read TXT Message from external MQ Queue and store Message to internal input queue as Message
-     * 
+     *
      * @param manager
      */
 
@@ -41,6 +41,7 @@ public class JMSInputWorker extends InputWorker {
         super(manager);
     }
 
+    @Override
     public void initialize() {
 
         jmsAdapter = new JMSAdapter();
@@ -54,17 +55,17 @@ public class JMSInputWorker extends InputWorker {
             jmsAdapter.getConsumer().setMessageListener(new MessageListener() {
 
                 @Override
-                public void onMessage(javax.jms.Message jmsMessage) {
+                public void onMessage(final javax.jms.Message jmsMessage) {
 
-                    TextMessage msg = (TextMessage) jmsMessage;
+                    final TextMessage msg = (TextMessage) jmsMessage;
                     if (msg != null) {
-                        Message message = new Message();
+                        final Message message = new Message();
                         try {
                             message.setRawContent(msg.getText());
 
                             handleMessage(message);
                         }
-                        catch (JMSException x) {
+                        catch (final JMSException x) {
                             logger.error("Error on JMS Async Receiver " + x.toString());
                             logger.debug("Exception: ", x);
                         }
@@ -73,7 +74,7 @@ public class JMSInputWorker extends InputWorker {
                 }
             });
         }
-        catch (JMSException x) {
+        catch (final JMSException x) {
             logger.error("Error on JMS MSG Listener " + x.toString());
             logger.debug("Exception: ", x);
         }

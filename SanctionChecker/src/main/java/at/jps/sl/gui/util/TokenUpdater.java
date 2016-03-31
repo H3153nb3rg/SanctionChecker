@@ -33,11 +33,11 @@ public class TokenUpdater {
 
     private static void appendToFile(final String token, final String filename) {
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
+            final PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
             out.println(token);
             out.close();
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             // exception handling left as an exercise for the reader
         }
     }
