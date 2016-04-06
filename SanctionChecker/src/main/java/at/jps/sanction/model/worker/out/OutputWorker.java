@@ -70,20 +70,19 @@ abstract public class OutputWorker extends Worker {
     @Override
     public void run() {
 
-        try {
-            while (Status.isRunning()) {
+        while (Status.isRunning()) {
+            try {
 
                 if (sleepMillisBetween > 0) {
                     Thread.sleep(sleepMillisBetween);
                 }
 
                 checkForMessage();
-
             }
-        }
-        catch (final Exception e) {
-            logger.error("error while waiting for new message: " + e.toString());
-            logger.debug("Exception: ", e);
+            catch (final Exception e) {
+                logger.error("error while waiting for new message: " + e.toString());
+                logger.debug("Exception: ", e);
+            }
         }
     }
 

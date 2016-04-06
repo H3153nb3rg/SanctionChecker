@@ -81,9 +81,9 @@
 		        <entry key="postProcessHitQueue" value-ref="PostHitQueue-SEPA"/>
 		        <entry key="postProcessNoHitQueue" value-ref="PostNoHitQueue-SEPA"/>
 		        
+				<entry key="finalHitQueue" value-ref="FinalHitQueue-SEPA"/>
 		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-SEPA"/>
-		        <entry key="finalHitQueue" value-ref="FinalHitQueue-SEPA"/>
-		        
+		        		        
 		        <entry key="backlogQueue" value-ref="BacklogQueue-SEPA"/>
 		        
 		    </map>
@@ -205,12 +205,12 @@
 	<bean id="PostProcessorHit-SEPA" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	<!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="FinalHitQueue-SEPA"/>
+			<ref bean="PostHitQueue-SEPA"/>
 		</property>	
 
 		<!-- Queue write msgs -->
 		<property name="outQueue" >
-			<ref bean="OutHitQueue-SEPA"/>
+			<ref bean="FinalHitQueue-SEPA"/>
 		</property>	
 	
 	</bean>
@@ -218,12 +218,12 @@
 	<bean id="PostProcessorNoHit-SEPA" class="at.jps.sanction.domain.payment.sepa.worker.SepaPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	    <!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="FinalNoHitQueue-SEPA"/>
+			<ref bean="PostNoHitQueue-SEPA"/>
 		</property>	
 
 		<!-- Queue write msgs -->
 		<property name="outQueue" >
-			<ref bean="OutNoHitQueue-SEPA"/>
+			<ref bean="FinalNoHitQueue-SEPA"/>
 		</property>	
 	</bean>
 			
@@ -234,7 +234,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="OutHitQueue-SEPA"/>
+			<ref bean="FinalHitQueue-SEPA"/>
 		</property>	
 	
 	</bean>
@@ -245,7 +245,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="OutNoHitQueue-SEPA"/>
+			<ref bean="FinalNoHitQueue-SEPA"/>
 		</property>	
 	
 	</bean>
@@ -262,10 +262,5 @@
 	</bean>
 	
 		
-	
-				
-	<!-- bean id="MessageParser" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
-	</bean -->
-	
 
 </beans>	

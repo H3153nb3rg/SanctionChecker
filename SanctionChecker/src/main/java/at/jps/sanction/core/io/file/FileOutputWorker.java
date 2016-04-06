@@ -72,11 +72,12 @@ public class FileOutputWorker extends OutputWorker {
             getWriter().write(message.getMessage().toString());
 
             if (message.getHitList() != null) {
-                for (final HitResult hit : message.getHitList()) {
 
+                for (final HitResult hit : message.getHitList()) {
+                    getWriter().write("--------------------------------------------------------");
                     getWriter().write(hit.toString());
                     getWriter().newLine();
-                    getWriter().write("----------------------------");
+                    getWriter().write("--------------------------------------------------------");
                     getWriter().newLine();
 
                 }
@@ -87,11 +88,11 @@ public class FileOutputWorker extends OutputWorker {
                     getWriter().write("ERROR: ");
                     getWriter().write(exception);
                     getWriter().newLine();
-                    getWriter().write("----------------------------");
+                    getWriter().write("--------------------------------------------------------");
                     getWriter().newLine();
                 }
             }
-            getWriter().write("============================");
+            getWriter().write("========================================================");
             getWriter().newLine();
 
             getWriter().newLine();
@@ -124,13 +125,8 @@ public class FileOutputWorker extends OutputWorker {
         if (writer == null) {
             try {
 
-                final String filename = (getFilename() != null ? getFilename() : (getPath() + File.separator + getUniqueFilename()));
-
-                // final String filename = getStreamManager().getProperties().getProperty(getStreamManager().getStreamName() + "." + PropertyKeys.PROP_OUTPUT_FOLDER, "C:\\temp") + File.separator
-                // + getUniqueFilename();
-
+                filename = (getFilename() != null ? getFilename() : (getPath() + File.separator + getUniqueFilename()));
                 writer = new BufferedWriter(new FileWriter(filename));
-
             }
             catch (final IOException e) {
                 logger.error(e.toString());

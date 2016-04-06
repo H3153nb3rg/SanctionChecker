@@ -40,6 +40,8 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
         try {
             getQueue().enqueue(SerializationUtils.serialize((Serializable) message));
 
+            flush();  // TODO: this IS ugly ...
+
             super.addMessage(message);
 
             return true;
@@ -142,6 +144,9 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
 
     @Override
     public boolean isEmpty() {
+        if (size() > 0) {
+            System.out.println("Queuesize:" + size());
+        }
         return getQueue().isEmpty();
     }
 
@@ -168,5 +173,10 @@ public abstract class FileQueue<X> extends AbstractQueue<X> {
     @Override
     public void initialize() {
         super.initialize();
+    }
+
+    @Override
+    public void flush() {
+        getQueue().flush();
     }
 }

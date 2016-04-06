@@ -62,6 +62,10 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
 
         jmsAdapter.initialize();
 
+        if (isPurgeQueuesOnStartup()) {
+            clear();
+        }
+
     }
 
     @Override

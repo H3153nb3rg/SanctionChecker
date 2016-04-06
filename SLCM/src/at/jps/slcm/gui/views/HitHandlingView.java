@@ -264,7 +264,7 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to Stopwords (NYI)");
+                            doAddTokenToStopword();
                         }
                     });
 
@@ -276,7 +276,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to phrase only (NYI)");
+                            // Notification.show("added to phrase only (NYI)");
+                            doAddTokenToNSWH();
                         }
                     }).setVisible(true);
 
@@ -288,7 +289,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                         @Override
                         public void menuSelected(final MenuItem selectedItem) {
-                            Notification.show("added to Index Exclusion (NYI)");
+                            // Notification.show("added to Index Exclusion (NYI)");
+                            doAddTokenToIA();
                         }
                     });
 
@@ -303,7 +305,8 @@ public class HitHandlingView extends VerticalLayout implements View {
 
                             @Override
                             public void menuSelected(final MenuItem selectedItem) {
-                                Notification.show("added to no hit  (NYI)");
+                                // Notification.show("added to no hit (NYI)");
+                                doAddTokenToNoHit();
                             }
                         });
                     }
@@ -790,10 +793,10 @@ public class HitHandlingView extends VerticalLayout implements View {
             guiAdapter.addToPostProcessHitQueue(guiAdapter.getCurrentMessage());
             addProcessStep("Autolearned Hit");
         }
-
-        addProcessStep("Confirmed Hit");
-        guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
-
+        else {
+            addProcessStep("Confirmed Hit");
+            guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
+        }
         doNextMessage(true);
 
     }
@@ -805,11 +808,10 @@ public class HitHandlingView extends VerticalLayout implements View {
             guiAdapter.addToPostProcessNoHitQueue(guiAdapter.getCurrentMessage());
             addProcessStep("Autolearned Miss");
         }
-
-        addProcessStep("Confirmed Miss");
-
-        guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
-
+        else {
+            addProcessStep("Confirmed Miss");
+            guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
+        }
         doNextMessage(true);
     }
 

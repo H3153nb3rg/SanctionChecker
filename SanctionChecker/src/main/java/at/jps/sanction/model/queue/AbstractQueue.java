@@ -34,6 +34,10 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         assert (getName() != null) : "Name not configured";
         assert (getBasePath() != null) : "BasePath not configured";
         // assert (getStreamName() != null) : "StreamName not configured";
+
+        // if (isPurgeQueuesOnStartup()) { --> should be done after physical queue is valid
+        // clear();
+        // }
     }
 
     public AbstractQueue(final String name, final int capacity) {
@@ -120,6 +124,7 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         setBasePath(base);
 
         setCapacity(getConfigQueueSize(properties, streamName, queueName));
+
     }
 
     public boolean isPurgeQueuesOnStartup() {
@@ -130,4 +135,8 @@ public abstract class AbstractQueue<X> implements Queue<X> {
         this.purgeQueuesOnStartup = purgeQueuesOnStartup;
     }
 
+    @Override
+    public void flush() {
+        // NOOP
+    }
 }

@@ -72,13 +72,15 @@
 		        
 		        <entry key="hitQueue" value-ref="HitQueue-SWIFT"/>
 		        <entry key="noHitQueue" value-ref="NoHitQueue-SWIFT"/>
-		        
-		        <!--  for 4AP not used by now -->
+
 		        <entry key="postProcessHitQueue" value-ref="PostHitQueue-SWIFT"/>
 		        <entry key="postProcessNoHitQueue" value-ref="PostNoHitQueue-SWIFT"/>
 		        
-		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-SWIFT"/>
+		        
 		        <entry key="finalHitQueue" value-ref="FinalHitQueue-SWIFT"/>
+		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-SWIFT"/>
+		        		        
+		        <!--  4AP not used by now -->
 		        
 		        <entry key="backlogQueue" value-ref="BacklogQueue-SWIFT"/>
 		        
@@ -199,12 +201,12 @@
 	
 		<!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="FinalHitQueue-SWIFT"/>
+			<ref bean="PostHitQueue-SWIFT"/>
 		</property>	
 
 		<!-- Queue write msgs -->
 		<property name="outQueue" >
-			<ref bean="OutHitQueue-SWIFT"/>
+			<ref bean="FinalHitQueue-SWIFT"/>
 		</property>	
 	
 	</bean>
@@ -213,12 +215,12 @@
 	
 		<!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="FinalNoHitQueue-SWIFT"/>
+			<ref bean="PostNoHitQueue-SWIFT"/>
 		</property>	
 
 		<!-- Queue write msgs -->
 		<property name="outQueue" >
-			<ref bean="OutNoHitQueue-SWIFT"/>
+			<ref bean="FinalNoHitQueue-SWIFT"/>
 		</property>	
 		
 	</bean>
@@ -230,7 +232,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="OutHitQueue-SWIFT"/>
+			<ref bean="FinalHitQueue-SWIFT"/>
 		</property>	
 	
 	</bean>
@@ -241,7 +243,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="OutNoHitQueue-SWIFT"/>
+			<ref bean="FinalNoHitQueue-SWIFT"/>
 		</property>	
 	
 	</bean>

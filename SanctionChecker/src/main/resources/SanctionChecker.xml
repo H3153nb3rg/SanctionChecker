@@ -11,9 +11,18 @@
     <import resource="SanctionChecker-Stream-SWIFT.xml" />
    		
     <!-- QUEUE CONFIG 1-n -->
+    
+    <!--  File based queue implementation -->
+    <!--  
     <import resource="SanctionChecker-Queues-SWIFT-File.xml" />
     <import resource="SanctionChecker-Queues-SEPA-File.xml" />
-		   
+    -->
+    
+    <!--  JMS based queue implementation -->      
+    <import resource="SanctionChecker-Queues-SWIFT-JMS.xml" />
+    <import resource="SanctionChecker-Queues-SEPA-JMS.xml" />
+        
+    		   
     <!-- WATCHLIST CONFIG 1x -->
     <import resource="SanctionChecker-WatchLists.xml" />
 	

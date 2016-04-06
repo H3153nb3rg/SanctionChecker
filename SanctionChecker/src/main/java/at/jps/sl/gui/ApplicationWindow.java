@@ -317,8 +317,8 @@ public class ApplicationWindow {
 
         final boolean hasMsg =
 
-        ((hitsViewActive && ((next && guiAdapter.getHitBuffer().hasNextMessage()) || (!next && guiAdapter.getHitBuffer().hasPrevMessage())))
-                || (!hitsViewActive && ((next && guiAdapter.getNoHitBuffer().hasNextMessage()) || (!next && guiAdapter.getNoHitBuffer().hasPrevMessage()))));
+                ((hitsViewActive && ((next && guiAdapter.getHitBuffer().hasNextMessage()) || (!next && guiAdapter.getHitBuffer().hasPrevMessage())))
+                        || (!hitsViewActive && ((next && guiAdapter.getNoHitBuffer().hasNextMessage()) || (!next && guiAdapter.getNoHitBuffer().hasPrevMessage()))));
 
         return hasMsg;
     }
@@ -1388,10 +1388,10 @@ public class ApplicationWindow {
             guiAdapter.addToPostProcessHitQueue(guiAdapter.getCurrentMessage());
             addProcessStep("Autolearned Hit");
         }
-
-        addProcessStep("Confirmed Hit");
-        guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
-
+        else {
+            addProcessStep("Confirmed Hit");
+            guiAdapter.addToFinalHitQueue(guiAdapter.getCurrentMessage());
+        }
         doNextMessage(true);
 
     }
@@ -1403,11 +1403,10 @@ public class ApplicationWindow {
             guiAdapter.addToPostProcessNoHitQueue(guiAdapter.getCurrentMessage());
             addProcessStep("Autolearned Miss");
         }
-
-        addProcessStep("Confirmed Miss");
-
-        guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
-
+        else {
+            addProcessStep("Confirmed Miss");
+            guiAdapter.addToFinalNoHitQueue(guiAdapter.getCurrentMessage());
+        }
         doNextMessage(true);
     }
 

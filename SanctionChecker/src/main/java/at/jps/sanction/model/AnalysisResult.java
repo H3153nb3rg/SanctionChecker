@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -45,6 +46,9 @@ public class AnalysisResult extends BaseModel implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AR_ID", referencedColumnName = "ID", updatable = false)
     private List<ProcessStep> processSteps;
+
+    @Transient
+    private List<HitResult>   removedHitlist;
 
     private String            comment          = "";
     private String            category         = "";
@@ -88,6 +92,17 @@ public class AnalysisResult extends BaseModel implements Serializable {
             hitlist = new ArrayList<HitResult>();
         }
         return hitlist;
+    }
+
+    public List<HitResult> getRemovedHitList() {
+        if (removedHitlist == null) {
+            removedHitlist = new ArrayList<HitResult>();
+        }
+        return removedHitlist;
+    }
+
+    public void addRemovedHit(HitResult hitResult) {
+        getRemovedHitList().add(hitResult);
     }
 
     public List<WordHitInfo> getHitTokensList() {
@@ -143,6 +158,23 @@ public class AnalysisResult extends BaseModel implements Serializable {
                 stringbuilder.append(token.toString()).append(',');
             }
             stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+        }
+
+        if (getHitList() != null) {
+            for (final HitResult hr : getHitList()) {
+                stringbuilder.append(hr.toString());
+                stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+            }
+            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
+        }
+
+        if (getRemovedHitList() != null) {
+            stringbuilder.append("---------- REMOVED !! ---------").append(SystemUtils.LINE_SEPARATOR);
+            for (final HitResult hr : getRemovedHitList()) {
+                stringbuilder.append(hr.toString());
+                stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+            }
+            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
         }
 
         if (!getProcessSteps().isEmpty()) {

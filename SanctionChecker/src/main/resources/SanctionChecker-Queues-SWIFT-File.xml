@@ -4,7 +4,7 @@
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-	<!-- Queue Definitions -->
+	<!-- Memory Mapped File Queue Definitions -->
 	<!-- for one stream -->
 	<bean id="GloablFileQueueConfigSWIFT" abstract="true" init-method="initialize" destroy-method="close">
 		<property name="basePath" value="${Queue.Folder}\\swift"/>
@@ -37,23 +37,23 @@
 		<property name="name" value="PostNoHitQueue"/>		
 	</bean>
 	
+	<bean id="FinalHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalHitQueue"/>		
+	</bean>
+	
 	<bean id="FinalNoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
 		<property name="name" value="FinalNoHitQueue"/>		
 	</bean>
-	
-	<bean id="FinalHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
-		<property name="name" value="FinalHitQueue"/>		
+<!-- 	
+	<bean id="OutHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+		<property name="name" value="OutHitQueue"/>		
 	</bean>
 	
 	<bean id="OutNoHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
 		<property name="name" value="OutNoHitQueue"/>		
 	</bean>
-	
-	<bean id="OutHitQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
-		<property name="name" value="OutHitQueue"/>		
-	</bean>
-	
-	<bean id="BacklogQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
+ -->	
+		<bean id="BacklogQueue-SWIFT" class="at.jps.sanction.core.queue.file.FileOutputQueue" init-method="initialize" destroy-method="close" parent="GloablFileQueueConfigSWIFT" scope="singleton" lazy-init="true">		
 		<property name="name" value="BacklogQueue"/>		
 	</bean>
 		

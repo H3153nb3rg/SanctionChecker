@@ -36,6 +36,7 @@ import at.jps.sanction.core.list.dj.SanctionsReferences;
 import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.core.util.country.CountryCodeConverter;
 import at.jps.sanction.model.wl.entities.WL_Address;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
@@ -169,23 +170,30 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     }
 
-    private void addAddress(final WL_Entity entity, final List<PFA.Records.Person.Address> addresses) {
+    private void addAddress(final PFA pfa, final WL_Entity entity, final List<PFA.Records.Person.Address> addresses) {
         for (final PFA.Records.Person.Address pfaAddress : addresses) {
             final WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
 
-            address.setCountry(pfaAddress.getAddressCountry());
+            final String ISOCtry = CountryCodeConverter.convert(4, 1, getCountryName(pfa, pfaAddress.getAddressCountry()));
+            // System.out.println("ISOCTRY: " + ISOCtry);
+
+            address.setCountry(ISOCtry);
+
             address.setPlace(pfaAddress.getAddressCity());
             address.setLine(pfaAddress.getAddressLine());
         }
     }
 
-    private void addCompanyAddress(final WL_Entity entity, final List<PFA.Records.Entity.CompanyDetails> companyDetails) {
+    private void addCompanyAddress(final PFA pfa, final WL_Entity entity, final List<PFA.Records.Entity.CompanyDetails> companyDetails) {
         for (final PFA.Records.Entity.CompanyDetails cd : companyDetails) {
             final WL_Address address = new WL_Address();
             entity.getAddresses().add(address);
 
-            address.setCountry(cd.getAddressCountry());
+            final String ISOCtry = CountryCodeConverter.convert(4, 1, getCountryName(pfa, cd.getAddressCountry()));
+            // System.out.println("ISOCTRY: " + ISOCtry);
+
+            address.setCountry(ISOCtry);
             address.setPlace(cd.getAddressCity());
             address.setLine(cd.getAddressLine());
         }
@@ -260,6 +268,21 @@ public class DJListHandler extends SanctionListHandlerImpl {
         return srlName;
     }
 
+    private String getCountryName(final PFA pfa, final String countryCode) {
+        String countryName = null;
+
+        for (final PFA.CountryList c : pfa.getCountryList()) {
+            for (final PFA.CountryList.CountryName cn : c.getCountryName()) {
+
+                if (cn.getCode().equals(countryCode)) {
+                    countryName = cn.getName();
+                    break;
+                }
+            }
+        }
+        return countryName;
+    }
+
     private String getAssociationType(final PFA pfa, final String code) {
         String type = "";
 
@@ -327,7 +350,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                         addSourceDescription(entity, pfaPerson.getSourceDescription());
                         addName(entity, pfaPerson.getNameDetails());
-                        addAddress(entity, pfaPerson.getAddress());
+                        addAddress(pfa, entity, pfaPerson.getAddress());
 
                         addIDs(entity, pfaPerson.getIDNumberTypes());
                     }
@@ -351,7 +374,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                         addWLEntry(entity);
 
-                        addCompanyAddress(entity, pfaEntity.getCompanyDetails());
+                        addCompanyAddress(pfa, entity, pfaEntity.getCompanyDetails());
 
                         addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
 

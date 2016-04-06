@@ -18,6 +18,8 @@ public interface Queue<X> {
 
     void close();
 
+    void flush();
+
     String getName();
 
     X getNextMessage(boolean wait);

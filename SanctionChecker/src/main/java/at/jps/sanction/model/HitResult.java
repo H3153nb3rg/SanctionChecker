@@ -33,8 +33,8 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
     private int               relativeHit;
     private int               phraseHit;
 
-    private String            hitType;                                                                   // SL,PEP
-    private String            entityType;                                                          // person / company / vessel / etc...
+    private String            hitType;                                                                                                   // SL,PEP
+    private String            entityType;                                                                                       // person / company / vessel / etc...
 
     @Override
     public int compareTo(final HitResult other) {
@@ -125,7 +125,7 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
 
         final StringBuilder content = new StringBuilder(512);
 
-        content.append("Description:      ").append(getHitDescripton()).append(SystemUtils.LINE_SEPARATOR).append("Field : ").append(getHitField()).append(SystemUtils.LINE_SEPARATOR)
+        content.append("Description    : ").append(getHitDescripton()).append(SystemUtils.LINE_SEPARATOR).append("Field          : ").append(getHitField()).append(SystemUtils.LINE_SEPARATOR)
                 .append("Absolute Value : ").append(getAbsolutHit()).append(SystemUtils.LINE_SEPARATOR).append("Relative Value : ").append(getRelativeHit()).append(SystemUtils.LINE_SEPARATOR)
                 .append("Phrase Value   : ").append(getPhraseHit()).append(SystemUtils.LINE_SEPARATOR).append("HitType        : ").append(getHitType()).append(SystemUtils.LINE_SEPARATOR);
 
