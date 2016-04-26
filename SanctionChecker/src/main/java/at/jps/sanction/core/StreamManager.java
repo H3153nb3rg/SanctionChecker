@@ -94,6 +94,7 @@ public class StreamManager implements Runnable {
 
     // TO BE Overwritten !!!
     public ValueListHandler getIndexAusschlussList() {
+        System.err.println("--- No IA List defined -> coding error");
         return null;
     }
 
@@ -131,6 +132,7 @@ public class StreamManager implements Runnable {
 
     // TO BE Overwritten !!
     public ValueListHandler getStopwordList() {
+        System.err.println("--- No SW List defined -> coding error");
         return null;
     }
 
@@ -158,8 +160,8 @@ public class StreamManager implements Runnable {
 
     }
 
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType) {
-        return streamConfig.isFieldToCheck(fieldName, listName, entityType, false);
+    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType, final String entityCategory) {
+        return streamConfig.isFieldToCheck(fieldName, listName, entityType, entityCategory, false);
     }
 
     public boolean isField2BICTranslate(final String fieldName) {

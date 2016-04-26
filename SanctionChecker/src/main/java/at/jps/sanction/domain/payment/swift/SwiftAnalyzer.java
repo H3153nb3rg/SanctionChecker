@@ -67,9 +67,9 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
     }
 
     @Override
-    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname) {
+    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname, final String entityCategory) {
 
-        boolean checkit = (super.isFieldToCheck(msgFieldName, entityType, listname));
+        boolean checkit = (super.isFieldToCheck(msgFieldName, entityType, listname, entityCategory));
 
         if (checkit) {
             if (entityType.contentEquals("Transport")) {  // Vessels only in field 70 !

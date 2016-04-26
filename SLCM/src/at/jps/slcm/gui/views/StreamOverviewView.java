@@ -21,6 +21,12 @@ public class StreamOverviewView extends VerticalLayout implements View {
 
     AdapterHelper              guiAdapter;
 
+    private String             nextViewName;
+
+    public void setNextViewName(final String viewNameToGoTo) {
+        nextViewName = viewNameToGoTo;
+    }
+
     public StreamOverviewView(final AdapterHelper guiAdapter) {
         super();
 
@@ -48,11 +54,11 @@ public class StreamOverviewView extends VerticalLayout implements View {
         // final Component component = new Label("confirmed!!");// QueueSizeComponent.createGraphicsComponent();
 
         for (final String streamName : guiAdapter.getConfig().getStreamConfigs().keySet()) {
-            addComponent(UIHelper.wrapWithMargin(new StreamDetails(guiAdapter, streamName)));
+            addComponent(UIHelper.wrapWithMargin(new StreamDetails(guiAdapter, streamName, nextViewName)));
         }
 
         // setExpandRatio(component, 1);
-        setSizeFull();
+        // setSizeFull();
 
     }
 

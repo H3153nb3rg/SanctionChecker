@@ -56,7 +56,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.ProcessStep;
@@ -930,14 +930,14 @@ public class ApplicationWindow {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
 
-                if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
+                if (guiAdapter.getFocussedHitResult() instanceof SanctionHitResult) {
                     // try
                     {
                         final JPopupMenu urlMenu = new JPopupMenu();  // should be moved to refresh method and only SHOWN here
 
                         urlMenu.removeAll();
 
-                        final PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
+                        final SanctionHitResult slhr = (SanctionHitResult) guiAdapter.getFocussedHitResult();
 
                         final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
@@ -1157,20 +1157,20 @@ public class ApplicationWindow {
         final int hits = guiAdapter.getCurrentMessage().getHitList().size();
         double count = 0.0;
         for (final HitResult hitresult : guiAdapter.getCurrentMessage().getHitList()) {
-            if (hitresult instanceof PaymentHitResult) {
+            if (hitresult instanceof SanctionHitResult) {
                 // see OptimizationRecords this still is a hack
 
                 // public final static String OPTI_STATUS_NEW = "N";
                 // public final static String OPTI_STATUS_PENDING = "P";
                 // public final static String OPTI_STATUS_CONFIRMED = "C";
 
-                if (((PaymentHitResult) hitresult).getHitOptimized().equals("N")) {
+                if (((SanctionHitResult) hitresult).getHitOptimized().equals("N")) {
                     count += 0.75;
                 }
-                else if (((PaymentHitResult) hitresult).getHitOptimized().equals("P")) {
+                else if (((SanctionHitResult) hitresult).getHitOptimized().equals("P")) {
                     count += 0.50;
                 }
-                else if (((PaymentHitResult) hitresult).getHitOptimized().equals("P")) {
+                else if (((SanctionHitResult) hitresult).getHitOptimized().equals("P")) {
                     count += 0.25;
                 }
                 else {
@@ -1209,9 +1209,9 @@ public class ApplicationWindow {
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
 
-        if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
+        if (guiAdapter.getFocussedHitResult() instanceof SanctionHitResult) {
 
-            final PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
+            final SanctionHitResult slhr = (SanctionHitResult) guiAdapter.getFocussedHitResult();
 
             final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 

@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- JMS based Queue Definitions -->
+		
+	<!-- for one stream -->
+	
+	<bean id="GloablJMSQueueConfigPERS" abstract="true" init-method="initialize" destroy-method="close">
+		<property name="basePath" value="${Queue.Folder}\\person"/>
+		<property name="capacity" value="1234"	   	 />
+		<property name="JMSServerUrl" value="tcp://localhost:61616"	   	 />				
+	</bean>
+	
+	<bean id="InputQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSInputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="InputQueue"/>		
+	</bean>
+	
+	<bean id="DefectQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="DefectQueue"/>		
+	</bean>
+	
+	<bean id="HitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="HitQueue"/>		
+	</bean>
+	
+	<bean id="NoHitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="NoHitQueue"/>		
+	</bean>
+	
+	<bean id="PostHitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostHitQueue"/>		
+	</bean>
+	
+	<bean id="PostNoHitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="PostNoHitQueue"/>		
+	</bean>
+
+	<bean id="FinalHitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalHitQueue"/>		
+	</bean>
+
+	
+	<bean id="FinalNoHitQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="FinalNoHitQueue"/>		
+	</bean>
+	
+
+	<bean id="BacklogQueue-PERS" class="at.jps.sanction.core.queue.jms.JMSOutputQueue" init-method="initialize" destroy-method="close" parent="GloablJMSQueueConfigPERS" scope="singleton" lazy-init="true">		
+		<property name="name" value="BacklogQueue"/>		
+	</bean>
+	
+	
+    <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
+		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
+	</bean>
+	
+    <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Queues"/>		
+	</bean>
+
+</beans>

@@ -72,6 +72,8 @@ public class AnalyzerWorker extends InputWorker {
 
                 processMessage(message);
 
+                message.setMessageProcessingStatus(MessageStatus.FINISHED_ANALYSE);
+
                 logger.info("stop check message: " + message.getUUID());
             }
             else {
@@ -85,6 +87,7 @@ public class AnalyzerWorker extends InputWorker {
                 final AnalysisResult analysisResult = new AnalysisResult(message);
                 analysisResult.setException(e);
                 // getStreamManager().addToErrorList(analysisResult);
+                message.setMessageProcessingStatus(MessageStatus.ERROR);
 
                 getDefectQueue().addMessage(analysisResult);
 

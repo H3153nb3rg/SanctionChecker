@@ -21,6 +21,7 @@ import at.jps.sanction.core.StreamConfig;
 import at.jps.sanction.model.queue.Queue;
 import at.jps.sl.gui.AdapterHelper;
 import at.jps.slcm.gui.models.DisplayReferenceListRecord;
+import at.jps.slcm.gui.util.SessionInfo;
 
 public class StreamDetails extends VerticalLayout {
 
@@ -31,20 +32,18 @@ public class StreamDetails extends VerticalLayout {
 
     private final AdapterHelper guiAdapter;
     private final String        streamName;
-
+    private final String        nextViewName;
     private final Grid          tableList        = new Grid();
 
-    public StreamDetails(final AdapterHelper guiAdapter, final String streamName) {
+    public StreamDetails(final AdapterHelper guiAdapter, final String streamName, final String nextViewName) {
         super();
         this.guiAdapter = guiAdapter;
         this.streamName = streamName;
-
+        this.nextViewName = nextViewName;
         buildPage();
     }
 
     private void buildPage() {
-
-        new VerticalLayout();
 
         tableList.setContainerDataSource(new BeanItemContainer<>(DisplayReferenceListRecord.class));
         tableList.setColumnOrder("key", "value");
@@ -89,7 +88,7 @@ public class StreamDetails extends VerticalLayout {
             public void buttonClick(final ClickEvent event) {
 
                 // The quickest way to confirm
-                ConfirmDialog.show(UI.getCurrent(), "Confirm Selection", new ConfirmDialog.Listener() {
+                ConfirmDialog.show(UI.getCurrent(), "Switch to Stream '" + streamName + "'", new ConfirmDialog.Listener() {
 
                     /**
                      *
@@ -103,6 +102,20 @@ public class StreamDetails extends VerticalLayout {
                             // Confirmed to continue
                             // feedback(dialog.isConfirmed());
                             // layout.addComponent(new Label("confirmed!!"));
+
+                            SessionInfo si = (SessionInfo) getUI().getSession().getAttribute(SessionInfo.SESSION_INFO);
+
+                            if (si == null) {
+                                si = new SessionInfo();
+
+                                getUI().getSession().setAttribute(SessionInfo.SESSION_INFO, si);
+                            }
+                            si.setActiveStream(streamName);
+
+                            // switch to work
+                            if (nextViewName != null) {
+                                getUI().getNavigator().navigateTo(nextViewName);
+                            }
 
                         }
                         else {

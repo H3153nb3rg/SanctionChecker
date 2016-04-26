@@ -9,7 +9,7 @@
 	
     <bean id="GUIConfig" class="at.jps.sl.gui.util.GUIConfigHolder" parent="ListConfig" scope="singleton" lazy-init="true">    
 
-		<property name="name" value="Transactions"/>   
+		<property name="name" value="CaseManager"/>   
 	
 
 		<!-- Streamconfigurations to work on / switch to -->
@@ -17,6 +17,7 @@
 		    <map>
 		        <entry key="Swift" value-ref="StreamConfig-SWIFT"/>
 		        <entry key="Sepa" value-ref="StreamConfig-SEPA"/>			
+				<entry key="Person" value-ref="StreamConfig-PERS"/>			
 			</map>
 		</property>
 		

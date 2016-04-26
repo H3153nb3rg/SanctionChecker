@@ -4,10 +4,15 @@ import java.util.List;
 
 public class FieldCheckConfig {
 
+    public final String  entityTypes[]      = { "Transport", "Individual", "Entity" };
+
+    public final String  entityCategories[] = { "Name", "Address", "Birthday", "Country" };
+
     private String       fieldName;
     private boolean      fuzzy;
     private int          tokenLen;
     private String       entityType;
+    private String       entityCategory;
     private boolean      handleAsIBAN;
     private boolean      handleAsBIC;
     private List<String> watchlists;
@@ -66,6 +71,14 @@ public class FieldCheckConfig {
 
     public void setWatchlists(final List<String> watchlists) {
         this.watchlists = watchlists;
+    }
+
+    public String getEntityCategory() {
+        return entityCategory;
+    }
+
+    public void setEntityCategory(String entityCategory) {
+        this.entityCategory = entityCategory;
     }
 
 }

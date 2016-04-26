@@ -6,7 +6,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
@@ -38,12 +38,12 @@ public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
 
             final MessageContent messageContent = getMessageContent(message.getMessage());
 
-            msgFieldContent = messageContent.getFieldsAndValues().get(((PaymentHitResult) slhr).getHitField());
+            msgFieldContent = messageContent.getFieldsAndValues().get(((SanctionHitResult) slhr).getHitField());
 
             if (msgFieldContent != null) {
 
-                final OptimizationRecord or = new OptimizationRecord(((PaymentHitResult) slhr).getHitField(), msgFieldContent, ((PaymentHitResult) slhr).getHitListName(),
-                        ((PaymentHitResult) slhr).getHitId(), OptimizationRecord.OPTI_STATUS_NEW);
+                final OptimizationRecord or = new OptimizationRecord(((SanctionHitResult) slhr).getHitField(), msgFieldContent, ((SanctionHitResult) slhr).getHitListName(),
+                        ((SanctionHitResult) slhr).getHitId(), OptimizationRecord.OPTI_STATUS_NEW);
                 if (!orList.contains(or)) {
                     orList.add(or);
                 }

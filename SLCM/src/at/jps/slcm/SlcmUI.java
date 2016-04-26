@@ -247,8 +247,8 @@ public class SlcmUI extends UI {
         navigator.addView(ListSearchView.ViewName, new ListSearchView(guiAdapter));
         navigator.addView(StreamOverviewView.ViewName, new StreamOverviewView(guiAdapter));
 
-        menuItems.put(StreamOverviewView.ViewName, "StreamOverview");
-        menuItems.put(HitHandlingView.ViewName, "TX Handling");
+        menuItems.put(StreamOverviewView.ViewName, "Stream Overview");
+        menuItems.put(HitHandlingView.ViewName, "Case Management");
         menuItems.put(ListSearchView.ViewName, "Search in Watchlists");
 
         // add valueLists
@@ -331,8 +331,8 @@ public class SlcmUI extends UI {
         for (final Entry<String, String> item : menuItems.entrySet()) {
 
             if (i == 0) {
-
-                label = new Label("Transactions", ContentMode.HTML);
+                // SessionInfo si = (SessionInfo) getUI().getSession().getAttribute(SessionInfo.SESSION_INFO);
+                label = new Label("Casemanagement", ContentMode.HTML);
                 label.setPrimaryStyleName("valo-menu-subtitle");
                 label.addStyleName("h4");
                 label.setSizeUndefined();

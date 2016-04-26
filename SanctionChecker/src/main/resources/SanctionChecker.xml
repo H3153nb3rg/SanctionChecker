@@ -9,6 +9,7 @@
     <!-- STREAM CONFIG 1-n -->
     <import resource="SanctionChecker-Stream-SEPA.xml" />
     <import resource="SanctionChecker-Stream-SWIFT.xml" />
+    <import resource="SanctionChecker-Stream-PERS.xml" />
    		
     <!-- QUEUE CONFIG 1-n -->
     
@@ -21,6 +22,7 @@
     <!--  JMS based queue implementation -->      
     <import resource="SanctionChecker-Queues-SWIFT-JMS.xml" />
     <import resource="SanctionChecker-Queues-SEPA-JMS.xml" />
+    <import resource="SanctionChecker-Queues-PERS-JMS.xml" />
         
     		   
     <!-- WATCHLIST CONFIG 1x -->

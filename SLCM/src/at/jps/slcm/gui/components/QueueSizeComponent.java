@@ -217,7 +217,7 @@ public class QueueSizeComponent {
         final Highlighter highlighter = new Highlighter().setShow(true).setShowTooltip(true).setTooltipAlwaysVisible(true).setKeepTooltipInsideChart(true);
 
         final Options options = new Options().setCaptureRightClick(true).setSeriesDefaults(seriesDefaults).setHighlighter(highlighter)
-                .setSeriesColors("#333333", "#999999", "#3EA140", "#3EA140", "#3EA140", "#783F16", "#783F16", "#783F16", "#333333").setAnimate(true);
+                .setSeriesColors("#3EA140", "#783F16", "#333333", "#999999", "#3EA140", "#3EA140", "#783F16", "#783F16", "#333333").setAnimate(true);
 
         final DCharts chart = new DCharts();
 

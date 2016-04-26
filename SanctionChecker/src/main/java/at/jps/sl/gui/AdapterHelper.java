@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
 import at.jps.sanction.core.listhandler.valuelist.IAListHandler;
 import at.jps.sanction.core.listhandler.valuelist.NSWHListHandler;
 import at.jps.sanction.core.listhandler.valuelist.SWListHandler;
-import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.domain.payment.PaymentListConfigHolder;
 import at.jps.sanction.domain.payment.sepa.SepaMessage;
 import at.jps.sanction.domain.payment.swift.SwiftMessage;
@@ -177,7 +177,7 @@ public class AdapterHelper implements WatchListInformant {
 
     }
 
-    public TableModel getEntityRelationsTableModel(final PaymentHitResult slhr) {
+    public TableModel getEntityRelationsTableModel(final SanctionHitResult slhr) {
 
         final String listname = slhr.getHitListName();
         final WL_Entity focusedEntity = getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());

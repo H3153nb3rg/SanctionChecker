@@ -18,6 +18,8 @@ import at.jps.sanction.core.banking.iban.Iban;
 import at.jps.sanction.core.listhandler.reflist.NCCTListHandler;
 import at.jps.sanction.core.util.BICHelper;
 import at.jps.sanction.core.util.TokenTool;
+import at.jps.sanction.domain.SanctionHitInfo;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitRate;
 import at.jps.sanction.model.HitResult;
@@ -151,7 +153,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
     }
 
     private void addHitRateResult(final HitRate hitRate, final AnalysisResult analyzeresult, final String msgFieldName) {
-        final PaymentHitResult hr = new PaymentHitResult();
+        final SanctionHitResult hr = new SanctionHitResult();
 
         hr.setHitField(msgFieldName);
         hr.setHitDescripton(hitRate.comment);
@@ -168,8 +170,8 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         analyzeresult.addHitResult(hr);
     }
 
-    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname) {
-        final boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, listname, entityType));
+    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname, final String entityCategory) {
+        final boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, listname, entityType, entityCategory));
 
         return checkit;
     }
@@ -208,7 +210,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                     for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                         // should field be checked ?
-                        if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName())) {
+                        if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName(), "Name")) {
                             // if (logger.isDebugEnabled()) logger.debug("SKIPPING field: " + msgFieldName);
                             continue;
                         }
@@ -285,7 +287,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                     if (hitValue > getStreamManager().getMinRelVal()) {
                                         totalHitRateRelative += hitValue;
 
-                                        final PaymentHitInfo swhi = new PaymentHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
+                                        final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
 
                                         // single word hit list if not already in
                                         if (!analyzeresult.getHitTokensList().contains(swhi)) {
@@ -381,7 +383,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                 if ((totalHitRateAbsolute > (nrOfNotSowords * 100)) || (totalHitRateRelative > (nrOfNotSowords * 100)) || (totalHitRatePhrase > (nrOfNotSowords * 100))) {
 
-                                    final PaymentHitResult hr = new PaymentHitResult();
+                                    final SanctionHitResult hr = new SanctionHitResult();
 
                                     boolean addHit = true;
 
@@ -452,9 +454,9 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
             boolean found = false;
             for (final HitResult hitResult : analyzeresult.getHitList()) {
-                if ((((PaymentHitResult) hitResult).getHitId() == ((PaymentHitInfo) wordHit).getSanctionListId())
-                        && (((PaymentHitResult) hitResult).getHitField() == ((PaymentHitInfo) wordHit).getFieldName()))  // only remove if Id AND FieldID is identical ( LISTNAME should be
-                                                                                                                         // equal as well)....
+                if ((((SanctionHitResult) hitResult).getHitId() == ((SanctionHitInfo) wordHit).getSanctionListId())
+                        && (((SanctionHitResult) hitResult).getHitField() == ((SanctionHitInfo) wordHit).getFieldName()))  // only remove if Id AND FieldID is identical ( LISTNAME should be
+                                                                                                                           // equal as well)....
                 {
                     found = true;
                     break;

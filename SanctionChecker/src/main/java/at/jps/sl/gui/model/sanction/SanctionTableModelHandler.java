@@ -10,8 +10,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import at.jps.sanction.core.util.BICHelper;
-import at.jps.sanction.domain.payment.PaymentHitInfo;
-import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.SanctionHitInfo;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.domain.payment.sepa.SepaAnalyzer;
 import at.jps.sanction.domain.payment.sepa.SepaMessage;
 import at.jps.sanction.domain.payment.swift.SwiftAnalyzer;
@@ -127,16 +127,16 @@ public class SanctionTableModelHandler implements Serializable {
                 switch (columnIndex) {
 
                     case 0:
-                        if (hitResult instanceof PaymentHitResult) {
-                            value = ((PaymentHitResult) hitResult).getHitListName();
+                        if (hitResult instanceof SanctionHitResult) {
+                            value = ((SanctionHitResult) hitResult).getHitListName();
                         }
                         else {
                             value = "No List";
                         }
                         break;
                     case 1:
-                        if (hitResult instanceof PaymentHitResult) {
-                            value = ((PaymentHitResult) hitResult).getHitId();
+                        if (hitResult instanceof SanctionHitResult) {
+                            value = ((SanctionHitResult) hitResult).getHitId();
                         }
                         else {
                             value = "No Id";
@@ -149,8 +149,8 @@ public class SanctionTableModelHandler implements Serializable {
                         value = String.format("%03d", hitResult.getRelativeHit()) + " | " + String.format("%03d", hitResult.getAbsolutHit()) + " | " + String.format("%03d", hitResult.getPhraseHit());
                         break;
                     case 4:
-                        if (hitResult instanceof PaymentHitResult) {
-                            value = ((PaymentHitResult) hitResult).getHitOptimized();
+                        if (hitResult instanceof SanctionHitResult) {
+                            value = ((SanctionHitResult) hitResult).getHitOptimized();
                         }
                         else {
                             value = " ";
@@ -281,16 +281,16 @@ public class SanctionTableModelHandler implements Serializable {
 
                     case 0:
 
-                        if (wordHitInfo instanceof PaymentHitInfo) {
-                            value = ((PaymentHitInfo) wordHitInfo).getSanctionListName();
+                        if (wordHitInfo instanceof SanctionHitInfo) {
+                            value = ((SanctionHitInfo) wordHitInfo).getSanctionListName();
                         }
                         else {
                             value = "No List";
                         }
                         break;
                     case 1:
-                        if (wordHitInfo instanceof PaymentHitInfo) {
-                            value = ((PaymentHitInfo) wordHitInfo).getSanctionListId();
+                        if (wordHitInfo instanceof SanctionHitInfo) {
+                            value = ((SanctionHitInfo) wordHitInfo).getSanctionListId();
                         }
                         else {
                             value = "No Id";

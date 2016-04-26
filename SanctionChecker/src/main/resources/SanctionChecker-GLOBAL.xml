@@ -36,6 +36,7 @@
 			<list>
 				<ref bean="StreamManager-SWIFT" />
 				<ref bean="StreamManager-SEPA"/>
+				<ref bean="StreamManager-PERS"/>
 			</list>
 		</property>
 	</bean>

@@ -101,34 +101,35 @@ public abstract class JMSQueue<X> extends AbstractQueue<X> {
 
         X message = null;
 
-        ObjectMessage jmsMessage;
-        try {
+        if (jmsAdapter.getConsumer() != null) {
+            ObjectMessage jmsMessage;
+            try {
 
-            if (!wait) {
-                jmsMessage = (ObjectMessage) jmsAdapter.getConsumer().receiveNoWait();
-            }
-            else {
-                jmsMessage = (ObjectMessage) jmsAdapter.getConsumer().receive(500);
-            }
-
-            if (jmsMessage != null) {
-                message = (X) jmsMessage.getObject();
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug(getName() + ": JMS Msg Id" + jmsMessage.getJMSMessageID());
+                if (!wait) {
+                    jmsMessage = (ObjectMessage) jmsAdapter.getConsumer().receiveNoWait();
+                }
+                else {
+                    jmsMessage = (ObjectMessage) jmsAdapter.getConsumer().receive(500);
                 }
 
-                // for notification only !!
-                super.getNextMessage(wait);
-            }
-        }
-        catch (final JMSException e) {
-            logger.error(getName() + ": JMS receive Error" + e.toString());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Exception: ", e);
-            }
-        }
+                if (jmsMessage != null) {
+                    message = (X) jmsMessage.getObject();
 
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(getName() + ": JMS Msg Id" + jmsMessage.getJMSMessageID());
+                    }
+
+                    // for notification only !!
+                    super.getNextMessage(wait);
+                }
+            }
+            catch (final JMSException e) {
+                logger.error(getName() + ": JMS receive Error" + e.toString());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception: ", e);
+                }
+            }
+        }
         return message;
     }
 

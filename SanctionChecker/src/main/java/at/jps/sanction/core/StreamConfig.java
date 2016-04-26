@@ -27,8 +27,9 @@ public interface StreamConfig {
 
     public LinkedHashMap<String, Queue<?>> getQueues();
 
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String EntityType, boolean reverseContains);  // fieldname in config (swift) == false <-> config in fieldname
-                                                                                                                                     // (sepa) == true
+    public boolean isFieldToCheck(final String fieldName, final String listName, final String EntityType, final String EntityCategory, boolean reverseContains);  // fieldname in config (swift) ==
+                                                                                                                                                                  // false <-> config in fieldname
+    // (sepa) == true
 
     public boolean isField2BICTranslate(final String fieldName, boolean reverseContains);
 

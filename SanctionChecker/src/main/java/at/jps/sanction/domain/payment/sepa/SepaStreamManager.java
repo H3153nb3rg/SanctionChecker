@@ -5,8 +5,8 @@ import at.jps.sanction.domain.payment.PaymentStreamManager;
 public class SepaStreamManager extends PaymentStreamManager {
 
     @Override
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType) {
-        return getStreamConfig().isFieldToCheck(fieldName, listName, entityType, true);
+    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType, final String entityCategory) {
+        return getStreamConfig().isFieldToCheck(fieldName, listName, entityType, entityCategory, true);
     }
 
     @Override

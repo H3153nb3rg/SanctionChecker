@@ -1,0 +1,272 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+   <!--                          -->
+   <!-- Stream Definition PERS  -->
+   <!--                          -->
+
+
+	<!--  default field config    -->
+    <bean id="defaultFieldConfig-PERS" class="at.jps.sanction.model.FieldCheckConfig" >
+   		<property name="fieldName" value="default" />
+   		<property name="fuzzy" value="true" />     
+   		<property name="tokenLen" value="2" />
+   		<property name="handleAsIBAN" value="false" />
+   		<property name="handleAsBIC" value="false" />
+   		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
+   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
+   		<property name="watchlists">
+   		    <list>
+   		        <value>OFAC</value>
+   		        <value>EUList</value>
+   		        <value>INDSAN</value>
+   		        <value>FacPep</value>
+   		        <value>FacSan</value>
+   		    </list>    
+   		</property>
+		   		
+    </bean>    
+   
+	<bean id="StreamConfig-PERS" class="at.jps.sanction.domain.SanctionStreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
+	
+		<!-- fields & fuzziness    -->
+		<!-- mapping to watchlists -->
+		<!-- BICCode check etc     -->
+		<property name="fieldsToCheck">
+		    <list>		        
+		        <!-- global setting for all fields not explicitly mentioned -->
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" >
+		       		<property name="fieldName" value="default" />		       		
+		        </bean>    
+		        		        
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- standard fields -->
+		       		<property name="fieldName" value="firstName, middleName, lastName, wholeName, street, zipcode, city, country, birthday, birthplace, birthcountry" />		       		
+		        </bean>    
+		        
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- name fields -->
+		       		<property name="fieldName" value="firstName, middleName, lastName, wholeName" />		       		
+		       		<property name="entityCategory" value="Name"/>  <!-- only check names -->
+		        </bean>    
+		        
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- address fields -->
+		       		<property name="fieldName" value="street, zipcode, city, country, birthplace, birthcountry" />	
+		       		<property name="entityCategory" value="Address"/>  <!-- only check address -->	       		
+		        </bean>    
+
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- Birthday -->
+		       		<property name="fieldName" value="birthday" />	
+		       		<property name="entityCategory" value="Birthday"/>  <!-- only check address -->	       		
+		        </bean>    
+		        		        
+		        		        		        		        		        		        
+		    </list>
+		</property>
+		
+		<property name="minTokenLen" value="2"/>
+		<property name="minRelVal" value="79"/>
+		<property name="minAbsVal" value="60"/>		
+		<property name="fuzzyVal" value="20"/>		
+		
+		
+		<!-- Queues that will be used by GUI application -->
+		<!-- ALL KEYS HAVE TO BE FILLED !! -->
+		<property name="queues">
+		    <map>
+		        <entry key="inQueue" value-ref="InputQueue-PERS"/>
+		        
+		        <entry key="hitQueue" value-ref="HitQueue-PERS"/>
+		        <entry key="noHitQueue" value-ref="NoHitQueue-PERS"/>
+
+		        <entry key="postProcessHitQueue" value-ref="PostHitQueue-PERS"/>
+		        <entry key="postProcessNoHitQueue" value-ref="PostNoHitQueue-PERS"/>
+		        
+		        
+		        <entry key="finalHitQueue" value-ref="FinalHitQueue-PERS"/>
+		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-PERS"/>
+		        		        
+		        <!--  4AP not used by now -->
+		        
+		        <entry key="backlogQueue" value-ref="BacklogQueue-PERS"/>
+		        
+		    </map>
+		</property>
+		
+	</bean>
+
+   
+   <bean id="StreamManager-PERS" class="at.jps.sanction.domain.person.PersonStreamManager" init-method="initialize" destroy-method="close" scope="singleton" lazy-init="true">
+
+		<property name="streamName" value="Person"/>
+		
+		<property name="streamConfig">
+			<ref bean="StreamConfig-PERS"/>
+		</property>
+   
+		<!-- workers -->
+		<!-- can almost be individually defined-->
+		<property name="workers" >
+			<list>
+				<!-- bring msgs from filesystem into system -->
+				<ref bean="InputProcessor-PERS"/>    
+				
+				<!-- hit analysis / in parallel = 4 times defined -->
+				<ref bean="MessageAnalyser-PERS"/>
+				<ref bean="MessageAnalyser-PERS"/>
+				<ref bean="MessageAnalyser-PERS"/>
+				<ref bean="MessageAnalyser-PERS"/>
+				
+				<!-- analyse results -->
+				<ref bean="PostProcessorHit-PERS"/>
+				<ref bean="PostProcessorNoHit-PERS"/>
+
+				<!-- document result -->
+				<ref bean="OutputProcessorHit-PERS"/>
+				<ref bean="OutputProcessorNoHit-PERS"/>
+				
+				<!-- collect unparsable msgs -->
+				<ref bean="ErrorProcessor-PERS"/>
+				
+			</list>			
+		</property>
+			
+	</bean>
+
+   <!-- -->
+   <!-- workers -->
+   <!-- defined in order of processing -->
+   
+   <!-- InputProcessor             -->
+   <!-- Task: bring msgs into the system -->
+   
+	<bean id="InputProcessor-PERS" class="at.jps.sanction.core.io.file.FileInputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		 <!-- this implementation reads file based transactions and puts thems into the system -->
+		 
+		 <!-- implementation specific properties.. -->
+		<property name="path" value="${Input.Folder}\person"/>
+		<property name="pattern" value="*.csv"/>
+		<property name="sleepMillisBetween" value="10000"/>
+		
+		<property name="fileParser" >
+			<ref bean="FileParser-PERS"/>
+		</property>
+
+		<!-- Queue to put parsed msg to -->
+		<property name="inputQueue" >
+			<ref bean="InputQueue-PERS"/>
+		</property>	
+
+		<!-- Queue to put defect msg to -->
+		<property name="defectQueue" >
+			<ref bean="DefectQueue-PERS"/>
+		</property>	
+		
+	</bean>
+
+	<bean id="FileParser-PERS" class="at.jps.sanction.domain.person.PersonFileParser" scope="prototype">
+		<!-- parses person messages for later analysis -->
+	</bean>
+
+	
+	<!-- AnalyserProcessor               -->
+	<!-- Task: analyse msgs / group hits -->
+	<bean id="MessageAnalyser-PERS" class="at.jps.sanction.domain.person.PersonAnalyzer" init-method="initialize" destroy-method="close" scope="prototype">
+		<property name="sleepMillisBetween" value="100"/>
+		
+		<!-- Queue read msg from -->
+		<property name="inputQueue" >
+			<ref bean="InputQueue-PERS"/>
+		</property>	
+
+		<!-- Queue write msgs with hits -->
+		<property name="hitQueue" >
+			<ref bean="HitQueue-PERS"/>
+		</property>	
+		
+		<!-- Queue write msgs without hits -->
+		<property name="noHitQueue" >
+			<ref bean="NoHitQueue-PERS"/>
+		</property>	
+
+		<!-- Queue write defect msgs without hits -->
+		<property name="defectQueue" >
+			<ref bean="DefectQueue-PERS"/>
+		</property>	
+				
+	</bean>
+
+	<!-- Human Processors  (GUI)    -->
+	
+
+	<!-- PostProcessors             -->
+	<!-- Task: analyse user results 
+	and bring msg out of the system -->
+	
+	<bean id="PostProcessorHit-PERS" class="at.jps.sanction.domain.person.worker.PersonPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<!-- Queue read processed msgs -->
+		<property name="inQueue" >
+			<ref bean="PostHitQueue-PERS"/>
+		</property>	
+
+		<!-- Queue write msgs -->
+		<property name="outQueue" >
+			<ref bean="FinalHitQueue-PERS"/>
+		</property>	
+	
+	</bean>
+	
+	<bean id="PostProcessorNoHit-PERS" class="at.jps.sanction.domain.person.worker.PersonPostNoHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<!-- Queue read processed msgs -->
+		<property name="inQueue" >
+			<ref bean="PostNoHitQueue-PERS"/>
+		</property>	
+
+		<!-- Queue write msgs -->
+		<property name="outQueue" >
+			<ref bean="FinalNoHitQueue-PERS"/>
+		</property>	
+		
+	</bean>
+	
+	
+	<bean id="OutputProcessorHit-PERS" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<property name="path" value="${Output.Folder}/person"/>
+		<property name="sleepMillisBetween" value="0"/>
+	
+		<property name="inQueue" >
+			<ref bean="FinalHitQueue-PERS"/>
+		</property>	
+	
+	</bean>
+
+	<bean id="OutputProcessorNoHit-PERS" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+	
+		<property name="path" value="${Output.Folder}/person"/>
+		<property name="sleepMillisBetween" value="0"/>
+	
+		<property name="inQueue" >
+			<ref bean="FinalNoHitQueue-PERS"/>
+		</property>	
+	
+	</bean>
+		
+	<bean id="ErrorProcessor-PERS" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
+		<!-- property name="filename" value="C:\\temp\\SanctionTest\\out\\swift\outfile.txt"/ -->		
+		<property name="path" value="${Output.Folder}/person"/>
+		<property name="sleepMillisBetween" value="0"/>
+		
+		<!-- Queue read defect msgs -->
+		<property name="inQueue" >
+			<ref bean="DefectQueue-PERS"/>
+		</property>	
+		
+	</bean>
+	
+				
+	
+</beans>	

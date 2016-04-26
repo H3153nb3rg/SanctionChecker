@@ -36,7 +36,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
-import at.jps.sanction.domain.payment.PaymentHitResult;
+import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sl.gui.AdapterHelper;
@@ -446,9 +446,9 @@ public class HitHandlingView extends VerticalLayout implements View {
 
         guiAdapter.setFocussedHitResult(guiAdapter.getCurrentMessage().getHitList().get((guiAdapter.getCurrentMessage().getHitList().size() - 1) - rowId));
 
-        if (guiAdapter.getFocussedHitResult() instanceof PaymentHitResult) {
+        if (guiAdapter.getFocussedHitResult() instanceof SanctionHitResult) {
 
-            final PaymentHitResult slhr = (PaymentHitResult) guiAdapter.getFocussedHitResult();
+            final SanctionHitResult slhr = (SanctionHitResult) guiAdapter.getFocussedHitResult();
 
             final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
