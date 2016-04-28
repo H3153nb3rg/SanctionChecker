@@ -48,6 +48,7 @@ import at.jps.slcm.gui.models.DisplayWordHit;
 import at.jps.slcm.gui.services.DisplayMessageService;
 import at.jps.slcm.gui.services.DisplayResultService;
 import at.jps.slcm.gui.services.DisplayWordHitService;
+import at.jps.slcm.gui.util.SessionInfo;
 
 public class HitHandlingView extends VerticalLayout implements View {
 
@@ -99,6 +100,13 @@ public class HitHandlingView extends VerticalLayout implements View {
     @Override
     public void enter(final ViewChangeEvent event) {
         // Notification.show("Work on!");
+
+        // check if Stream has changed !!
+        final SessionInfo si = (SessionInfo) getUI().getSession().getAttribute(SessionInfo.SESSION_INFO);
+
+        if (si != null) {
+            guiAdapter.setActiveStreamName(si.getActiveStream());
+        }
 
         doNextMessage(true);
     }

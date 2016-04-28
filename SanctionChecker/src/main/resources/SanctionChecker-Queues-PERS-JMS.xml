@@ -8,7 +8,7 @@
 	<!-- for one stream -->
 	
 	<bean id="GloablJMSQueueConfigPERS" abstract="true" init-method="initialize" destroy-method="close">
-		<property name="basePath" value="${Queue.Folder}\\person"/>
+		<property name="basePath" value="person"/>
 		<property name="capacity" value="1234"	   	 />
 		<property name="JMSServerUrl" value="tcp://localhost:61616"	   	 />				
 	</bean>

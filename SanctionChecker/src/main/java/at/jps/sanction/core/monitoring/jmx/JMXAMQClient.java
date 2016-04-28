@@ -30,6 +30,11 @@ public class JMXAMQClient {
             try {
                 // url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi");
                 url = new JMXServiceURL(getJMXServerUrl());
+
+                if (logger.isInfoEnabled()) {
+                    logger.info("connect to JMX url: " + url);
+                }
+
                 final JMXConnector jmxc = JMXConnectorFactory.connect(url);
                 final MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
 

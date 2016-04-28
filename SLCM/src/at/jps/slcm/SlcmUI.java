@@ -212,7 +212,6 @@ public class SlcmUI extends UI {
                     // update User Info
                     userSettingsItem.setText(getLoggedInUser() != null ? getLoggedInUser() : "John Doe");
                 }
-
                 return ((event.getNewView() instanceof LoginView)) || isUserAuthenticated();
             }
 
@@ -243,9 +242,15 @@ public class SlcmUI extends UI {
     }
 
     private void addViews() {
-        navigator.addView(HitHandlingView.ViewName, new HitHandlingView(guiAdapter));
+
+        final HitHandlingView hhv = new HitHandlingView(guiAdapter);
+        navigator.addView(HitHandlingView.ViewName, hhv);
         navigator.addView(ListSearchView.ViewName, new ListSearchView(guiAdapter));
-        navigator.addView(StreamOverviewView.ViewName, new StreamOverviewView(guiAdapter));
+
+        final StreamOverviewView sov = new StreamOverviewView(guiAdapter);
+        sov.setNextViewName(HitHandlingView.ViewName);
+
+        navigator.addView(StreamOverviewView.ViewName, sov);
 
         menuItems.put(StreamOverviewView.ViewName, "Stream Overview");
         menuItems.put(HitHandlingView.ViewName, "Case Management");
@@ -260,7 +265,6 @@ public class SlcmUI extends UI {
             navigator.addView(lv.getViewname(), lv);
 
             menuItems.put(lv.getViewname(), "View " + lh.getListName());
-
         }
 
         // addReferenceLists

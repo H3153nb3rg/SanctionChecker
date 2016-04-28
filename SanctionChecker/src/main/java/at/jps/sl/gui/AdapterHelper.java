@@ -14,6 +14,7 @@ import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.domain.payment.PaymentListConfigHolder;
 import at.jps.sanction.domain.payment.sepa.SepaMessage;
 import at.jps.sanction.domain.payment.swift.SwiftMessage;
+import at.jps.sanction.domain.person.PersonMessage;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.Message;
@@ -34,13 +35,14 @@ import at.jps.sl.gui.util.TokenUpdater;
 
 public class AdapterHelper implements WatchListInformant {
 
-    private GUIConfigHolder          config;
+    private GUIConfigHolder                  config;
 
-    private RingBufferQueue          hitBuffer;
-    private RingBufferQueue          noHitBuffer;
+    private HashMap<String, RingBufferQueue> hitBuffers;
+    private HashMap<String, RingBufferQueue> noHitBuffers;
 
-    private AnalysisResult           currentMessage;
-    private HashMap<Integer, String> hitTypeRows;
+    private AnalysisResult                   currentMessage;
+
+    private HashMap<Integer, String>         hitTypeRows;
     // maps
     // from
     // rowid
@@ -48,9 +50,9 @@ public class AdapterHelper implements WatchListInformant {
     // to
     // List/Entity
     // Type
-    private HitResult                focussedHitResult;
+    private HitResult                        focussedHitResult;
 
-    private HashMap<Integer, String> hitRowFields;
+    private HashMap<Integer, String>         hitRowFields;
     // maps
     // from
     // rowid
@@ -59,7 +61,7 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> tokenRowFields;
+    private HashMap<Integer, String>         tokenRowFields;
     // maps
     // from
     // rowid
@@ -68,7 +70,7 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // Token
     // side)
-    private HashMap<String, Integer> hitFieldRows;
+    private HashMap<String, Integer>         hitFieldRows;
     // maps
     // from
     // fieldname
@@ -77,27 +79,42 @@ public class AdapterHelper implements WatchListInformant {
     // (
     // TX
     // side)
-    private HashMap<Integer, String> resultRowFields;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // maps
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // result
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // side
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // !!)
-    private String                   streamName;
+    private HashMap<Integer, String>         resultRowFields;
+    // maps
+    // side
 
     public RingBufferQueue getNoHitBuffer() {
+        if (noHitBuffers == null) {
+
+            noHitBuffers = new HashMap<>();
+        }
+
+        RingBufferQueue noHitBuffer = noHitBuffers.get(getActiveStreamName());
+
         if (noHitBuffer == null) {
             noHitBuffer = new RingBufferQueueImpl();
-
             noHitBuffer.setQueue(config.getQueue(GUIConfigHolder.QUEUE_NAME_NOHITS));
+            noHitBuffers.put(getActiveStreamName(), noHitBuffer);
         }
+
         return noHitBuffer;
     }
 
     public RingBufferQueue getHitBuffer() {
+
+        if (hitBuffers == null) {
+
+            hitBuffers = new HashMap<>();
+        }
+
+        RingBufferQueue hitBuffer = hitBuffers.get(getActiveStreamName());
+
         if (hitBuffer == null) {
             hitBuffer = new RingBufferQueueImpl();
-
             hitBuffer.setQueue(config.getQueue(GUIConfigHolder.QUEUE_NAME_HITS));
+            hitBuffers.put(getActiveStreamName(), hitBuffer);
         }
+
         return hitBuffer;
     }
 
@@ -137,7 +154,6 @@ public class AdapterHelper implements WatchListInformant {
         }
 
         return tm;
-
     }
 
     public TableModel getAnalysisWordListTableModel(final AnalysisResult analysisResult) {
@@ -152,7 +168,6 @@ public class AdapterHelper implements WatchListInformant {
         }
 
         return tm;
-
     }
 
     public TableModel getMessageTableModel(final Message message) {
@@ -160,7 +175,7 @@ public class AdapterHelper implements WatchListInformant {
         // TODO: make generic
 
         SanctionTableModelHandler.SanctionTableModel tm = null;
-        if ((message instanceof SwiftMessage) || (message instanceof SepaMessage)) {  // TODO: this should be factory based
+        if ((message instanceof SwiftMessage) || (message instanceof SepaMessage) || (message instanceof PersonMessage)) {  // TODO: this should be factory based
             tm = SanctionTableModelHandler.generateSanctionMessageTableModel(message, getFields2Check(), getFields2BIC(), config.getFieldNames());
 
             // mapping lists
@@ -201,7 +216,6 @@ public class AdapterHelper implements WatchListInformant {
         final TableModel tm = SanctionTableModelHandler.getEntityNameTableModel(entity);
 
         return tm;
-
     }
 
     public TableModel getValueListTableModel(final ValueListHandler valListhandler) {
@@ -224,7 +238,6 @@ public class AdapterHelper implements WatchListInformant {
         final TableModel tm = SearchTableModelHandler.generateWatchListTableModel(resultSet);
 
         return tm;
-
     }
 
     public TableModel getNoWordHitListTableModel(final NoWordHitListHandler valListhandler) {
@@ -232,7 +245,6 @@ public class AdapterHelper implements WatchListInformant {
         final TableModel tm = SearchTableModelHandler.generateNoHitListTableModel(valListhandler);
 
         return tm;
-
     }
 
     public TableModel getOptimizationListTableModel(final List<OptimizationRecord> resultSet) {
@@ -240,11 +252,14 @@ public class AdapterHelper implements WatchListInformant {
         final TableModel tm = SearchTableModelHandler.generateOptiListTableModel(resultSet);
 
         return tm;
-
     }
 
-    public String getStreamName() {
-        return streamName;
+    public String getActiveStreamName() {
+        return config.getActiveStream();
+    }
+
+    public void setActiveStreamName(final String streamName) {
+        config.setActiveStream(streamName);
     }
 
     public void initialize(final GUIConfigHolder config) {
@@ -252,7 +267,6 @@ public class AdapterHelper implements WatchListInformant {
         this.config = config;
 
         // final BicListHandler bicList = (BicListHandler) getReferenceListByName(BicListHandler.LISTNAME);
-
     }
 
     public AnalysisResult getCurrentMessage() {

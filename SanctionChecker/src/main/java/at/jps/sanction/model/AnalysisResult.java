@@ -149,7 +149,7 @@ public class AnalysisResult extends BaseModel implements Serializable {
 
         final StringBuilder stringbuilder = new StringBuilder();
 
-        stringbuilder.append(message.toString()).append(SystemUtils.LINE_SEPARATOR).append("analysistime:").append(getAnalysisStopTime() - getAnalysisStartTime()).append(" ms")
+        stringbuilder.append(message.toString()).append(SystemUtils.LINE_SEPARATOR).append("analysistime: ").append(getAnalysisStopTime() - getAnalysisStartTime()).append(" ms")
                 .append(SystemUtils.LINE_SEPARATOR);
 
         if ((hitTokenInfoList != null) && ((hitTokenInfoList.size()) > 0)) {
@@ -161,6 +161,7 @@ public class AnalysisResult extends BaseModel implements Serializable {
         }
 
         if (getHitList() != null) {
+            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
             for (final HitResult hr : getHitList()) {
                 stringbuilder.append(hr.toString());
                 stringbuilder.append(SystemUtils.LINE_SEPARATOR);
