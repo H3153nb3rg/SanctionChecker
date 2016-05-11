@@ -28,7 +28,7 @@ public class JMXManager {
 
             jmxObjectNames = new ObjectName[1];
 
-            jmxObjectNames[0] = new ObjectName("Embargo:name=Queues");
+            jmxObjectNames[0] = new ObjectName("Embargo:name=" + streamManager.getStreamName() + "-Queues");
 
             // ..
 

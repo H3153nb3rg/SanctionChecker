@@ -58,15 +58,5 @@
 	</bean>
 		
 	
-	<!-- JMX Adapters for monitoring -->
-    <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
-		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
-		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
-	</bean>
-	
-    <bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
-		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
-		<property name="objectName" value="Embargo:name=Queues"/>		
-	</bean>
 	
 </beans>

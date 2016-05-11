@@ -2,9 +2,6 @@ package at.jps.slcm.gui.views;
 
 import javax.swing.table.TableModel;
 
-import org.vaadin.gridutil.renderer.EditDeleteButtonValueRenderer;
-import org.vaadin.gridutil.renderer.EditDeleteButtonValueRenderer.EditDeleteButtonClickListener;
-
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -13,9 +10,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent;
 
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sl.gui.AdapterHelper;
@@ -96,19 +91,19 @@ public class ReferenceListView extends VerticalLayout implements View {
         // }
         // });
 
-        tableList.getColumn("id").setRenderer(new EditDeleteButtonValueRenderer(new EditDeleteButtonClickListener() {
-
-            @Override
-            public void onEdit(final RendererClickEvent event) {
-                Notification.show(event.getItemId().toString() + " want's to get edited", Type.HUMANIZED_MESSAGE);
-            }
-
-            @Override
-            public void onDelete(final com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent event) {
-                Notification.show(event.getItemId().toString() + " want's to get delete", Type.WARNING_MESSAGE);
-            };
-
-        })).setWidth(150);
+        // tableList.getColumn("id").setRenderer(new EditDeleteButtonValueRenderer(new EditDeleteButtonClickListener() {
+        //
+        // @Override
+        // public void onEdit(final RendererClickEvent event) {
+        // Notification.show(event.getItemId().toString() + " want's to get edited", Type.HUMANIZED_MESSAGE);
+        // }
+        //
+        // @Override
+        // public void onDelete(final com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent event) {
+        // Notification.show(event.getItemId().toString() + " want's to get delete", Type.WARNING_MESSAGE);
+        // };
+        //
+        // })).setWidth(150);
 
         final Label h1 = new Label(getViewname());
         h1.addStyleName("h1");

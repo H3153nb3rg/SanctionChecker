@@ -268,5 +268,10 @@
 	</bean>
 	
 				
-	
+	<!-- JMX Stream specific Queue monitoring -->	
+	<bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="singleton" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Person-Queues"/>		
+	</bean>
+		
 </beans>	

@@ -152,7 +152,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         return null;  // this is a plain dummy - override if needed!!
     }
 
-    private void addHitRateResult(final HitRate hitRate, final AnalysisResult analyzeresult, final String msgFieldName) {
+    private void addHitRateResultNCCT(final HitRate hitRate, final AnalysisResult analyzeresult, final String msgFieldName) {
         final SanctionHitResult hr = new SanctionHitResult();
 
         hr.setHitField(msgFieldName);
@@ -210,7 +210,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                     for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                         // should field be checked ?
-                        if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName(), "Name")) {
+                        if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName(), "Name")) { // TODO: only implemented for one Category only!!
                             // if (logger.isDebugEnabled()) logger.debug("SKIPPING field: " + msgFieldName);
                             continue;
                         }
@@ -236,7 +236,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                     if (hitRate != null) {
                                         // we found an ISO in NCCT
 
-                                        addHitRateResult(hitRate, analyzeresult, msgFieldName);
+                                        addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
 
                                     }
                                 }
@@ -250,7 +250,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                 if (hitRate != null) {
                                     // we found an ISO in NCCT
-                                    addHitRateResult(hitRate, analyzeresult, msgFieldName);
+                                    addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
                                 }
                             }
 
@@ -284,7 +284,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                             getStreamManager().getFuzzyValue());
 
                                     // single fuzzy limit !!
-                                    if (hitValue > getStreamManager().getMinRelVal()) {
+                                    if (hitValue > getStreamManager().getMinRelVal()) {// TODO: this should be on list-base
                                         totalHitRateRelative += hitValue;
 
                                         final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
@@ -322,7 +322,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                 if (contains) {
 
                                     totalHitRatePhrase = 100 * minTokens;
-                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal()) {
+                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal()) {  // TODO: this should be on list-base
 
                                         logger.debug("PHRASECHECK: " + msgFieldText + ": " + name.getWholeName() + " --> " + contains);
 
@@ -336,7 +336,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             }
                             // hits for one field
                             // TODO: this is a dummy implementation
-                            if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal()) {
+                            if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal()) { // TODO: this should be on list-base
 
                                 if (logger.isDebugEnabled()) {
                                     final String keys = TokenTool.buildTokenString(nameTokens, " ");
@@ -348,7 +348,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                             }
 
-                            if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal()) {
+                            if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal()) {// TODO: this should be on list-base
 
                                 if (logger.isDebugEnabled()) {
                                     final String keys = TokenTool.buildTokenString(nameTokens, " ");

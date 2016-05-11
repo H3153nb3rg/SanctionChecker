@@ -64,6 +64,9 @@ dependencies {
     compile 'org.slf4j:jcl-over-slf4j:1.7.+'
     compile 'org.apache.logging.log4j:log4j-core:2.+'
     
+    compile 'com.itextpdf:itextpdf:5.5.+'
+  
+    
     testCompile('org.springframework.boot:spring-boot-starter-test') 
      
 }

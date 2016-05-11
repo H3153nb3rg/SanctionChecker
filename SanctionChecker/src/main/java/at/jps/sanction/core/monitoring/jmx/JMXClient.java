@@ -43,8 +43,8 @@ public class JMXClient {
             final JMXConnector jmxConnector = JMXConnectorFactory.connect(url);
             final MBeanServerConnection mbeanServerConnection = jmxConnector.getMBeanServerConnection();
 
-            final ObjectName mbeanName = new ObjectName(getObjectName()); // "Embargo:name=Queues");
-
+            final ObjectName mbeanName = new ObjectName(getObjectName()); // "Embargo:name=<StreamName>-Queues");
+            logger.error("JMX Client Objectname:" + getObjectName());
             // Get MBean proxy instance that will be used to make calls to registered MBean
             mbeanQueueStatusProxy = MBeanServerInvocationHandler.newProxyInstance(mbeanServerConnection, mbeanName, QueueStatus.class, true);
         }

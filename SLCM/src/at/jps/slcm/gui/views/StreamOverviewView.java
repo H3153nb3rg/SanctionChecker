@@ -27,9 +27,10 @@ public class StreamOverviewView extends VerticalLayout implements View {
         nextViewName = viewNameToGoTo;
     }
 
-    public StreamOverviewView(final AdapterHelper guiAdapter) {
+    public StreamOverviewView(final AdapterHelper guiAdapter, final String viewNameToGoTo) {
         super();
 
+        nextViewName = viewNameToGoTo;
         this.guiAdapter = guiAdapter;
 
         buildPage();

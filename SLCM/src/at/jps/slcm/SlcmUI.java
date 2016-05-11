@@ -247,8 +247,7 @@ public class SlcmUI extends UI {
         navigator.addView(HitHandlingView.ViewName, hhv);
         navigator.addView(ListSearchView.ViewName, new ListSearchView(guiAdapter));
 
-        final StreamOverviewView sov = new StreamOverviewView(guiAdapter);
-        sov.setNextViewName(HitHandlingView.ViewName);
+        final StreamOverviewView sov = new StreamOverviewView(guiAdapter, HitHandlingView.ViewName);
 
         navigator.addView(StreamOverviewView.ViewName, sov);
 

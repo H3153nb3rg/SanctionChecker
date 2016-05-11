@@ -2,7 +2,8 @@
 
 
 // Defines the plaintext font size, weight and family. Font size affects general component sizing.
-$v-font-size: 14px;
+$v-font-size: 12px;
+$v-font-color: black;
 //$v-font-weight: 300;
 //$v-font-family: "Open Sans", sans-serif;
 
@@ -10,10 +11,15 @@ $v-font-size: 14px;
 //$v-border: 1px solid (v-shade 0.7);
 //$v-border-radius: 4px;
 
-// Affects the color of some component elements, e.g Button, Panel title, etc
-// $v-background-color: hsl(210, 0%, 98%);
-// Affects the color of content areas, e.g  Panel and Window content, TextField input etc
-//$v-app-background-color: $v-background-color;
+v-unit-size: 30px;
+$v-layout-spacing-horizontal: 15px;
+$v-layout-spacing-vertical: 15px;
+$v-layout-margin-right: 10px;
+$v-layout-margin-left: 10px;
+$v-layout-margin-top: 20px;
+$v-layout-margin-bottom: 10px;
+
+
 
 // Affects the visual appearance of all components
 //$v-gradient: v-linear 8%;
@@ -24,11 +30,6 @@ $v-font-size: 14px;
 //$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
 //$v-friendly-color: #2c9720;
 //$v-error-indicator-color: #ed473b;
-
-// GRID
-//$v-grid-cell-background-color.facsan:rgb(240,15,21);
-//$v-grid-cell.facsan ( color: #ff9933);
-//$v-grid-cell-background-color.indsan:rgb(24,150,21);
 
 
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
@@ -48,4 +49,9 @@ $v-app-loading-text: "Sanction List Case Management";
   @include flat;
 
   // Insert your own theme rules here
+  .v-button {
+      line-height:1;
+      .v-icon {
+          line-height: 6px;
+      }
 }

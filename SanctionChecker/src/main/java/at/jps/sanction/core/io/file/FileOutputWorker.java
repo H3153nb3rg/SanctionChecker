@@ -40,10 +40,14 @@ public class FileOutputWorker extends OutputWorker {
     String getUniqueFilename() {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-hhmmss.SSS");
 
-        final String name = getInQueue().getName() + "-" + sdf.format(new Date()) + ".txt";
+        final String name = getInQueue().getName() + "-" + sdf.format(new Date()) + getExtension();
 
         return name;
 
+    }
+
+    protected String getExtension() {
+        return ".txt";
     }
 
     @Override
@@ -105,6 +109,7 @@ public class FileOutputWorker extends OutputWorker {
     }
 
     public String getFilename() {
+        filename = (filename != null ? filename : (getPath() + File.separator + getUniqueFilename()));
         return filename;
     }
 
@@ -124,9 +129,7 @@ public class FileOutputWorker extends OutputWorker {
 
         if (writer == null) {
             try {
-
-                filename = (getFilename() != null ? getFilename() : (getPath() + File.separator + getUniqueFilename()));
-                writer = new BufferedWriter(new FileWriter(filename));
+                writer = new BufferedWriter(new FileWriter(getFilename()));
             }
             catch (final IOException e) {
                 logger.error(e.toString());

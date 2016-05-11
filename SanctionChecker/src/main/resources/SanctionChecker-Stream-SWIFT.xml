@@ -260,6 +260,12 @@
 		
 	</bean>
 	
-				
+	<!-- JMX Monitoring for Streamspecific queues -->		
+	<bean id="JMXClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXClient"  scope="prototype" lazy-init="true">		
+		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1234/jmxrmi"/>		
+		<property name="objectName" value="Embargo:name=Swift-Queues"/>		
+	</bean>
+	
+		
 	
 </beans>	
