@@ -22,8 +22,8 @@ public class SepaAnalyzer extends PaymentAnalyzer {
 
     static final Logger         logger = LoggerFactory.getLogger(SepaAnalyzer.class);
 
-    static private List<String> messageTypes;                                                                                                                                                                                                                                                  // nix
-                                                                                                                                                                                                                                                                                               // good
+    static private List<String> messageTypes;                                                                                                                                                                                                                                                                                          // nix
+                                                                                                                                                                                                                                                                                                                                       // good
 
     public SepaAnalyzer() {
         super();
@@ -44,7 +44,7 @@ public class SepaAnalyzer extends PaymentAnalyzer {
                 ((SepaMessage) message).setBusinessId(fieldsAndValues.get("/Document/FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/TxId"));
             }
 
-            message.setMessageContent(messageContent);
+            message.setMessageContent(messageContent); // caching
         }
         return messageContent;
     }

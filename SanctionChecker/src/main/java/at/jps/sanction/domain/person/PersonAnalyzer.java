@@ -191,12 +191,12 @@ public class PersonAnalyzer extends AnalyzerWorker {
                                         analyzeresult.getHitTokensList().add(swhi);
                                     }
                                 }
-                                if (hitValue == 100) {
-                                    totalHitRateAbsolute += hitValue;
-                                    // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
-                                    // totalHitRateAbsolute += hitValue;
-                                    // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
-                                }
+                                // if (hitValue == 100) {
+                                // totalHitRateAbsolute += hitValue;
+                                // // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
+                                // // totalHitRateAbsolute += hitValue;
+                                // // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
+                                // }
 
                                 // final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, listhandler.isFuzzySearch(), getStreamManager().getMinTokenLen(),
                                 // getStreamManager().getFuzzyValue());

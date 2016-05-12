@@ -193,7 +193,7 @@ public class StreamManager implements Runnable {
     private void reportQueueStatus() {
 
         if (logger.isInfoEnabled()) {
-            final StringBuilder status = new StringBuilder();
+            // final StringBuilder status = new StringBuilder();
 
             // status.append(System.getProperty("line.separator")).append("\t").append(getStreamName()).append(" : ").append("InQueue: ").append("\t").append(inputQueue.size())
             // .append(System.getProperty("line.separator"));
@@ -207,7 +207,7 @@ public class StreamManager implements Runnable {
             // status.append("\t").append(getStreamName()).append(" : ").append("PostNoHitQueue: ").append("\t").append(postProcessNoHitQueue.size()).append(System.getProperty("line.separator"));
             // }
 
-            logger.info(status.toString());
+            // logger.info(status.toString());
         }
     }
 

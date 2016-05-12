@@ -188,15 +188,13 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
             final MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
 
-            // TODO: add MessageContent to Message
-
             for (final WL_Entity entity : listhandler.getEntityList()) {
 
                 // iterate over all entities / addresses /
-
                 for (final WL_Name name : entity.getNames()) {
 
                     List<String> nameTokens = name.getTokenizedNames();
+
                     if (nameTokens == null) {
                         nameTokens = TokenTool.getTokenList(name.getWholeName(), listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinTokenLen(),
                                 getStreamManager().getIndexAusschlussList().getValues(), true);
@@ -235,9 +233,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                     final HitRate hitRate = checkISO9362(msgFieldText);
                                     if (hitRate != null) {
                                         // we found an ISO in NCCT
-
                                         addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
-
                                     }
                                 }
                             }
@@ -274,7 +270,6 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                     if (logger.isDebugEnabled()) {
                                         logger.debug("DECLARED AS NOT HIT : " + msgFieldText + ": " + nameToken);
                                     }
-
                                 }
                                 else {
 
@@ -319,8 +314,8 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                 // check
                                 // but only if both sides contain more than one token
                                 final boolean contains = TokenTool.checkContains(msgFieldTokens, nameTokens, " ");  // TODO: this is no goood sol in gen
-                                if (contains) {
 
+                                if (contains) {
                                     totalHitRatePhrase = 100 * minTokens;
                                     if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal()) {  // TODO: this should be on list-base
 

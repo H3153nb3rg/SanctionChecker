@@ -55,12 +55,14 @@ public class JMXClient {
     }
 
     public HashMap<String, Long> getQueueSizes() {
-        final HashMap<String, Long> queueSizes = new HashMap<String, Long>();
+        HashMap<String, Long> queueSizes = null;
+        if (mbeanQueueStatusProxy != null) {
+            queueSizes = new HashMap<String, Long>();
 
-        for (final String queueName : mbeanQueueStatusProxy.getQueueNames()) {
-            queueSizes.put(queueName, new Long(mbeanQueueStatusProxy.getQueueSize(queueName)));
+            for (final String queueName : mbeanQueueStatusProxy.getQueueNames()) {
+                queueSizes.put(queueName, new Long(mbeanQueueStatusProxy.getQueueSize(queueName)));
+            }
         }
-
         return queueSizes;
     }
 
