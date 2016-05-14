@@ -17,6 +17,7 @@ public class WL_Address extends BaseModel implements Serializable {
     private String            place;
     private String            line;
     private String            country;
+    private String            countryISO;
 
     public String getPlace() {
         return place;
@@ -44,6 +45,14 @@ public class WL_Address extends BaseModel implements Serializable {
 
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public String getCountryISO() {
+        return countryISO;
+    }
+
+    public void setCountryISO(String countryISO) {
+        this.countryISO = countryISO;
     }
 
 }

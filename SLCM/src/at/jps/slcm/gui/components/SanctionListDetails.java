@@ -145,7 +145,8 @@ public class SanctionListDetails extends VerticalLayout {
         if (entity != null) {
 
             textField_Type.setReadOnly(false);
-            textField_Type.setValue(((entity.getType() != null ? entity.getType() : " ") + (entity.getEntryType() != null ? " | " + entity.getEntryType() : " ")));
+            textField_Type
+                    .setValue(((entity.getEntityType() != null ? entity.getEntityType().getText() : " ") + (entity.getEntryCategory() != null ? " | " + entity.getEntryCategory().getText() : " ")));
             textField_Type.setReadOnly(true);
 
             // for textarea

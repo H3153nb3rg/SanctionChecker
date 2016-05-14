@@ -113,8 +113,9 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
                         final WL_Entity entity = new WL_Entity();
                         while (tokenizer.hasMoreTokens()) {
 
-                            entity.setEntryType("SL");
-                            entity.setType("Individual");
+                            entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
+                            entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
+
                             entity.setWL_Id(tokenizer.nextToken());
 
                             final WL_Name name = new WL_Name();

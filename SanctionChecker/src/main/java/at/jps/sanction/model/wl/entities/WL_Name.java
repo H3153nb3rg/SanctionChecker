@@ -25,7 +25,15 @@ public class WL_Name extends BaseModel implements Serializable {
     private boolean                aka;
     private boolean                waka;
 
-    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                                          // Helper
+    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // Helper
+
+    public WL_Name() {
+        super();
+
+        aka = false;
+        waka = false;
+
+    }
 
     public void addToWholeName(final String wholeName) {
         if (wholeName != null) {

@@ -34,7 +34,9 @@ public interface SanctionListHandler {
 
     public List<String> getStopwordList();
 
-    public String getType();
+    public String getType();      // basically for visual grouping
+
+    public String getListCategory();  // PEP, EMBARGO, .....
 
     public void initialize();
 

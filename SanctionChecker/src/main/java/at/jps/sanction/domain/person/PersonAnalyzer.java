@@ -323,7 +323,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
                                         hr.setHitLegalBasis(entity.getLegalBasis());
                                         hr.setHitExternalUrl(entity.getInformationUrl());
                                         hr.setHitType(listhandler.getType());
-                                        hr.setEntityType(entity.getType());
+                                        hr.setEntityType(entity.getEntityType().getText());
                                         hr.setHitRemark(entity.getComment());
 
                                         hr.setAbsolutHit(totalHitRateAbsolute);

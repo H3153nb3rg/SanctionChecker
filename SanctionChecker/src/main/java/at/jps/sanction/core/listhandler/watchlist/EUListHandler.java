@@ -52,24 +52,26 @@ public class EUListHandler extends SanctionListHandlerImpl {
                     // line.append("Name : ");
 
                     final WL_Entity entity = new WL_Entity();
-                    addWLEntry(entity);
 
                     entity.setWL_Id(wentity.getId());
+                    addWLEntry(entity);
 
                     if (wentity.getType().equalsIgnoreCase("P")) {
-                        entity.setType("Individual");
+                        entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
                     }
                     else if (wentity.getType().equalsIgnoreCase("E")) {
-                        entity.setType("Entity");
+                        entity.setEntityType(WL_Entity.EntityType.ENTITY);
                     }
                     else {
-                        entity.setType(wentity.getType());
+                        entity.setEntityType(WL_Entity.EntityType.OTHER);
                     }
 
                     entity.addLegalBasis(wentity.getLegalBasis());
                     entity.addInformationUrl(wentity.getPdfLink());
                     entity.setComment(wentity.getRemark());
                     entity.setIssueDate(wentity.getRegDate());
+
+                    entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
 
                     for (final WHOLE.ENTITY.NAME wname : wentity.getNAME()) {
                         // line.append(",").append(

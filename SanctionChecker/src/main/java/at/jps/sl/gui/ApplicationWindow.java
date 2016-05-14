@@ -1216,7 +1216,8 @@ public class ApplicationWindow {
             final WL_Entity entity = guiAdapter.getSanctionListEntityDetails(slhr.getHitListName(), slhr.getHitId());
 
             if (entity != null) {
-                textField_Type.setText((entity.getType() != null ? entity.getType() : " ") + (entity.getEntryType() != null ? " | " + entity.getEntryType() : " "));
+                textField_Type
+                        .setText((entity.getEntityType() != null ? entity.getEntityType().getText() : " ") + (entity.getEntryCategory() != null ? " | " + entity.getEntryCategory().getText() : " "));
 
                 // StringBuilder lbs = new StringBuilder();
                 // for (String lb : entity.getLegalBasises()) {

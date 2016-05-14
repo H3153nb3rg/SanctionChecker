@@ -2,7 +2,6 @@ package at.jps.sanction.model.wl.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,22 +9,53 @@ import javax.persistence.Entity;
 @Entity
 public class WL_Entity implements Serializable {
 
+    public enum EntryCategory {
+        PEP("PEP"), EMBARGO("EMBARGO"), OTHER("OTHER");
+
+        private final String text;
+
+        private EntryCategory(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+    }
+
+    public enum EntityType {
+        INDIVIDUAL("INDIVIDUAL"), ENTITY("ENTITY"), TRANSPORT("TRANSPORT"), OTHER("OTHER");
+
+        private final String text;
+
+        private EntityType(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+    }
+
     /**
      *
      */
-    private static final long       serialVersionUID = 350588830084232520L;
+    private static final long serialVersionUID = 350588830084232520L;
 
-    private List<String>            legalBasises;                                                                                                                                                            // to
-                                                                                                                                                                                                             // add
-                                                                                                                                                                                                             // date
-                                                                                                                                                                                                             // to
-                                                                                                                                                                                                             // LB
-                                                                                                                                                                                                             // !!!!
+    private List<String>      legalBasises;
+    // to
+    // add
+    // date
+    // to
+    // LB
+    // !!!!
 
-    private String                  listName;
-    private String                  comment;
-    private String                  issueDate;
-    private String                  type;
+    private String            listName;
+    private String            comment;
+    private String            issueDate;
+    private EntityType        entityType;
     // Individual
     // /
     // Entity
@@ -34,27 +64,27 @@ public class WL_Entity implements Serializable {
     // /
     // Other
     // ...
-    private String                  wl_id;
-    private List<String>            informationUrls;
+    private String            wl_id;
+    private List<String>      informationUrls;
 
-    private List<WL_Name>           names;
-    private List<WL_Passport>       passports;
-    private List<WL_Address>        addresses;
-    private WL_Attribute            attributes;
+    private List<WL_Name>     names;
+    private List<WL_Passport> passports;
+    private List<WL_Address>  addresses;
+    private WL_Attribute      attributes;
 
-    private String                  entryType;
+    private EntryCategory     entityCategory;
     // PEP
     // /
     // Sanctiontype
 
-    private HashMap<String, String> relations;
+    private List<WL_Relation> relations;
 
     public String getComment() {
         return comment;
     }
 
-    public String getEntryType() {
-        return entryType;
+    public EntryCategory getEntryCategory() {
+        return entityCategory;
     }
 
     public String getWL_Id() {
@@ -120,16 +150,16 @@ public class WL_Entity implements Serializable {
         return addresses;
     }
 
-    public String getType() {
-        return type;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
     public void setComment(final String comment) {
         this.comment = comment;
     }
 
-    public void setEntryType(final String entryType) {
-        this.entryType = entryType;
+    public void setEntryCategory(final EntryCategory entityCategory) {
+        this.entityCategory = entityCategory;
     }
 
     public void setWL_Id(final String id) {
@@ -166,21 +196,31 @@ public class WL_Entity implements Serializable {
         this.passports = passports;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public void setEntityType(final EntityType type) {
+        entityType = type;
     }
 
-    public HashMap<String, String> getRelations() {
+    public List<WL_Relation> getRelations() {
 
         if (relations == null) {
-            relations = new HashMap<String, String>();
+            relations = new ArrayList<WL_Relation>();
         }
 
         return relations;
     }
 
     public void addReleation(final String wl_id, final String type) {
-        getRelations().put(wl_id, type);
+
+        final WL_Relation relation = new WL_Relation();
+        relation.setWlid_from(getWL_Id());
+        relation.setWlid_to(wl_id);
+        relation.setDescription(type);
+
+        addReleation(relation);
+    }
+
+    public void addReleation(final WL_Relation relation) {
+        getRelations().add(relation);
     }
 
     public String getListName() {

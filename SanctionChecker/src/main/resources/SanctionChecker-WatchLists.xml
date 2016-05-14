@@ -10,7 +10,7 @@
 		<property name="histPath" value="${WatchlistsHist.Folder}"/>		
 		<property name="useSysProxy" value="true"	   	 />		
 		
-		<property name="delimiters" value=";,., ,(,),$,.,'"/>
+		<property name="delimiters" value=";,., ,(,),$,.,',[,]"/>
 		<property name="deadCharacters" value=";,?,|,(,),$,.,'"/>
 				
 		<property name="fuzzySearch" value="true"/>
@@ -25,7 +25,9 @@
 		<property name="orderNr" value="3"/>
 		<property name="filename" value="${Watchlists.Folder}/ofac-sdn_advanced.xml"/>
 		<!-- property name="url" value="http://www.treasury.gov/ofac/downloads/sanctions/1.0/sdn_advanced.xml"/ -->
-		
+	
+			
+		<property name="listCatgeory" value="Embargo"/>
 		<property name="listType" value="SL"/>
 			
 	</bean>
@@ -37,6 +39,7 @@
 		<property name="filename" value="${Watchlists.Folder}/global.xml"/>
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
+		<property name="listCatgeory" value="Embargo"/>
 		<property name="listType" value="SL"/>
 			
 	</bean>
@@ -47,6 +50,7 @@
 		<property name="orderNr" value="4"/>
 		<property name="filename" value="C:/Java/git/SanctionChecker/SanctionChecker/lists/indsan.csv"/>
 			
+		<property name="listCatgeory" value="Embargo"/>
 		<property name="listType" value="SAN"/>
 			
 	</bean>
@@ -64,6 +68,7 @@
 		
 		<!-- property name="url" value="http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml"/ -->
 		
+		<property name="listCatgeory" value="PEP"/>
 		<property name="listType" value="PEP"/>
 		
 		<property name="loadDescription1" value="1,2"/>
@@ -84,11 +89,30 @@
 		<!-- property name="httpUser" value="USERNAME"/ -->
 		<!-- property name="httpPwd" value="PWD"/ -->
 		
+		<property name="listCatgeory" value="Embargo"/>
 		<property name="listType" value="SL"/>
 		
 		<property name="loadDescription1" value="3,4"/>
 			
 	</bean>
+
+        <bean id="PANAMALeak" class="at.jps.sanction.core.listhandler.watchlist.PanamaListHandler" parent="GlobalListConfig" >
+		<property name="listName" value="PanaLeak"/>
+		<property name="description" value="Panama Leak Information"/>
+		<property name="orderNr" value="3"/>
+
+		<property name="filenameA" value="${Watchlists.Folder}/panama/Addresses.csv"/>
+		<property name="filenameE" value="${Watchlists.Folder}/panama/Entities.csv"/>
+		<property name="filenameI" value="${Watchlists.Folder}/panama/Intermediaries.csv"/>
+		<property name="filenameO" value="${Watchlists.Folder}/panama/Officers.csv"/>
+		<property name="filenameR" value="${Watchlists.Folder}/panama/all_edges.csv"/>
+		
+		<property name="listCatgeory" value="Embargo"/>
+		<property name="listType" value="PA"/>
+		
+			
+	</bean>
+    
     
    <!-- Reference Lists -->
     <bean id="CountryList" class="at.jps.sanction.core.listhandler.reflist.CountryListHandler" init-method="initialize" scope="singleton">    		

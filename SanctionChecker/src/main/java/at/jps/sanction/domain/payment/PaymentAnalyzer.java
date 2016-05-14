@@ -208,7 +208,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                     for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                         // should field be checked ?
-                        if (!isFieldToCheck(msgFieldName, entity.getType(), listhandler.getListName(), "Name")) { // TODO: only implemented for one Category only!!
+                        if (!isFieldToCheck(msgFieldName, entity.getEntityType().getText(), listhandler.getListName(), "Name")) { // TODO: only implemented for one Category only!!
                             // if (logger.isDebugEnabled()) logger.debug("SKIPPING field: " + msgFieldName);
                             continue;
                         }
@@ -412,7 +412,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                         hr.setHitLegalBasis(entity.getLegalBasis());
                                         hr.setHitExternalUrl(entity.getInformationUrl());
                                         hr.setHitType(listhandler.getType());
-                                        hr.setEntityType(entity.getType());
+                                        hr.setEntityType(entity.getEntityType().getText());
                                         hr.setHitRemark(entity.getComment());
 
                                         hr.setAbsolutHit(totalHitRateAbsolute);

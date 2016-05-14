@@ -28,6 +28,8 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     private String                     delimiters        = " ";
     private String                     deadCharacters    = "";
     private String                     listType          = "";
+    private String                     listCategory      = "";
+
     private String                     description;
     private int                        orderId           = 0;
     private int                        severity          = 0;
@@ -353,6 +355,15 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         for (final WL_Entity entity : getEntityList()) {
             dbh.save_WL_Entity(entity, true);
         }
+    }
+
+    @Override
+    public String getListCategory() {
+        return listCategory;
+    }
+
+    public void setListCategory(String listCategory) {
+        this.listCategory = listCategory;
     }
 
 }

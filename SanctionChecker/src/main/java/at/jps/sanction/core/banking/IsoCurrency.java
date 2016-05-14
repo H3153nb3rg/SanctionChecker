@@ -29,10 +29,7 @@ import java.util.Set;
  */
 public enum IsoCurrency {
 
-    ADB_UNIT_OF_ACCOUNT(
-            "XUA",
-            965,
-            null),
+    ADB_UNIT_OF_ACCOUNT("XUA", 965, null),
     AFGHANI("AFN", 971, 2, IsoCountry.AFGHANISTAN),
     ALGERIAN_DINAR("DZD", 12, 2, IsoCountry.ALGERIA),
     ARGENTINE_PESO("ARS", 32, 2, IsoCountry.ARGENTINA),

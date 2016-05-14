@@ -131,7 +131,14 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                 descr1 += " | " + getDescription3(pfa, descr.getDescription3());
 
-                entity.setEntryType(descr1); // PEP / RCA / SIP ??
+                // entity.setEntityType(descr1); // PEP / RCA / SIP ??
+
+                System.out.println(" description1: " + descr1);
+
+                // TODO: TYpe mapping
+
+                entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
+                entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
 
                 break;
             }
@@ -167,7 +174,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
                 }
             }
         }
-
     }
 
     private void addAddress(final PFA pfa, final WL_Entity entity, final List<PFA.Records.Person.Address> addresses) {
@@ -179,6 +185,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
             // System.out.println("ISOCTRY: " + ISOCtry);
 
             address.setCountry(ISOCtry);
+            address.setCountryISO(ISOCtry);
 
             address.setPlace(pfaAddress.getAddressCity());
             address.setLine(pfaAddress.getAddressLine());
@@ -194,6 +201,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
             // System.out.println("ISOCTRY: " + ISOCtry);
 
             address.setCountry(ISOCtry);
+            address.setCountryISO(ISOCtry);
+
             address.setPlace(cd.getAddressCity());
             address.setLine(cd.getAddressLine());
         }
@@ -209,7 +218,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     passport.setNumber(value.getValue());
 
                     entity.getPassports().add(passport);
-
                 }
             }
         }
@@ -336,7 +344,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                 if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
                     final WL_Entity entity = new WL_Entity();
 
-                    entity.setType("Individual");
+                    entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
                     entity.setWL_Id(pfaPerson.getId());
                     entity.setIssueDate(pfaPerson.getDate());
                     entity.setComment(pfaPerson.getProfileNotes());
@@ -363,7 +371,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                     final WL_Entity entity = new WL_Entity();
 
-                    entity.setType("Entity");
+                    entity.setEntityType(WL_Entity.EntityType.ENTITY);
                     entity.setWL_Id(pfaEntity.getId());
                     entity.setIssueDate(pfaEntity.getDate());
                     entity.setComment(pfaEntity.getProfileNotes());
@@ -384,7 +392,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                         addIDs(entity, pfaEntity.getIDNumberTypes());
 
                         if ((pfaEntity.getVesselDetails() != null) && (pfaEntity.getVesselDetails().size() > 0)) {
-                            entity.setType("Transport");
+                            entity.setEntityType(WL_Entity.EntityType.TRANSPORT);
 
                             // TODO: Implement VesselDetails !!
 

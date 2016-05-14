@@ -33,8 +33,8 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
     private int               relativeHit;
     private int               phraseHit;
 
-    private String            hitType;                                                                                                   // SL,PEP
-    private String            entityType;                                                                                       // person / company / vessel / etc...
+    private String            entryCategory;                                                      // SL,PEP see WL_entity
+    private String            entityType;                                                            // person / company / vessel / etc...
 
     @Override
     public int compareTo(final HitResult other) {
@@ -85,7 +85,7 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
     }
 
     public String getHitType() {
-        return hitType;
+        return entryCategory;
     }
 
     public int getPhraseHit() {
@@ -109,7 +109,7 @@ public class HitResult extends BaseModel implements Serializable, Comparable<Hit
     }
 
     public void setHitType(final String hitType) {
-        this.hitType = hitType;
+        entryCategory = hitType;
     }
 
     public void setPhraseHit(final int phraseHit) {

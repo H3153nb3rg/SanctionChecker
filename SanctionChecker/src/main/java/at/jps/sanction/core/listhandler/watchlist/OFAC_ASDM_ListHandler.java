@@ -289,7 +289,12 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                 final WL_Entity entity = new WL_Entity();
 
                 entity.setWL_Id(prof.getID().toString());
-                entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
+                // entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
+
+                // !!!! TODO: getPartyTypeFromSubType(prof.getPartySubTypeID()
+
+                entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
+                entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
 
                 String cmt = "";
                 for (final Comment comment : prof.getComment()) {

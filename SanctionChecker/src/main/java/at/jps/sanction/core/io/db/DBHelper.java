@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
+import at.jps.sanction.model.wl.entities.WL_Relation;
 
 public class DBHelper {
 
@@ -119,7 +120,7 @@ public class DBHelper {
             stmt.setString(2, getCurrentTimeAsString());
             stmt.setString(3, entity.getWL_Id());
             stmt.setString(4, entity.getComment());
-            stmt.setString(5, entity.getEntryType());
+            stmt.setString(5, entity.getEntityType().getText());
             stmt.setString(6, entity.getIssueDate());
             stmt.setString(7, entity.getListName());
 
@@ -228,15 +229,15 @@ public class DBHelper {
 
             stmt = getConnection().prepareStatement(sql);
 
-            for (final String wl_id : entity.getRelations().keySet()) {
+            for (final WL_Relation relation : entity.getRelations()) {
 
                 final int relId = getUniqueDBId("WL_REL");
 
                 stmt.setInt(1, relId);
                 stmt.setString(2, getCurrentTimeAsString());
-                stmt.setString(3, entity.getRelations().get(wl_id));
-                stmt.setInt(4, id);
-                stmt.setString(5, wl_id);
+                stmt.setString(3, relation.getDescription());
+                stmt.setString(4, relation.getWlid_from());
+                stmt.setString(5, relation.getWlid_to());
 
                 stmt.addBatch();
             }

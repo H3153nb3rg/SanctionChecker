@@ -1,7 +1,6 @@
 package at.jps.sl.gui.model.sanction;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -753,7 +752,7 @@ public class SanctionTableModelHandler implements Serializable {
 
         final WatchListInformant watchlistInformatLocal = watchlistInformat;
 
-        final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getRelations().keySet());
+        // final ArrayList<String> refIdList = new ArrayList<>(focusedEntity.getRelations().keySet());
 
         final TableModel tableModel = new TableModel() {
 
@@ -774,27 +773,25 @@ public class SanctionTableModelHandler implements Serializable {
 
             @Override
             public Object getValueAt(final int rowIndex, final int columnIndex) {
-                String colName = "";
+                String colValue = "";
 
-                // WL_Name name = focusedEntity.getReleations().keySet()..getNames().get(rowIndex);
-
-                final WL_Entity enity = watchlistInformatLocal.getSanctionListEntityDetails(listname, refIdList.get(rowIndex));
+                final WL_Entity enityLinked = watchlistInformatLocal.getSanctionListEntityDetails(listname, focusedEntity.getRelations().get(rowIndex).getWlid_to());
 
                 switch (columnIndex) {
                     case 0:
-                        colName = focusedEntity.getRelations().get(refIdList.get(rowIndex));
+                        colValue = focusedEntity.getRelations().get(rowIndex).getDescription();
                         break;
                     case 1:
-                        colName = enity != null ? (enity.getNames().get(0).getWholeName()) : "unknown";
+                        colValue = enityLinked != null ? (enityLinked.getNames().get(0).getWholeName()) : "unknown";
                         break;
                     case 2:
-                        colName = refIdList.get(rowIndex);
+                        colValue = focusedEntity.getRelations().get(rowIndex).getWlid_to();
                         break;
                     case 3:
-                        colName = enity != null ? enity.getType() : "unknown";
+                        colValue = enityLinked != null ? enityLinked.getEntityType().getText() : "unknown";
                         break;
                 }
-                return colName;
+                return colValue;
 
             }
 
@@ -806,24 +803,24 @@ public class SanctionTableModelHandler implements Serializable {
 
             @Override
             public String getColumnName(final int columnIndex) {
-                String value = "";
+                String colName = "";
                 switch (columnIndex) {
                     case 0:
-                        value = "Relationship";
+                        colName = "Relationship";
                         break;
                     case 1:
-                        value = "Entity";
+                        colName = "Entity";
                         break;
                     case 2:
-                        value = "Id";
+                        colName = "Id";
                         break;
                     case 3:
-                        value = "Type";
+                        colName = "Type";
                         break;
 
                 }
 
-                return value;
+                return colName;
             }
 
             @Override
