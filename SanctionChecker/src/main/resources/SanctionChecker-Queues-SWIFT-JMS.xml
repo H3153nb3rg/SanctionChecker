@@ -54,7 +54,8 @@
 	<!--  JMS JMX Queue monitoring -->
     <bean id="JMXAMQClientAdapter" class="at.jps.sanction.core.monitoring.jmx.JMXAMQClient" scope="singleton" lazy-init="true">		
 		<property name="JMXServerUrl" value="service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi"/>		
-		<property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/>		
+		<!--  property name="objectName" value="org.apache.activemq:BrokerName=localhost,Type=Broker"/ -->		
+		<property name="objectName" value="org.apache.activemq:type=Broker,brokerName=localhost"/>
 	</bean>
 	
 

@@ -16,6 +16,8 @@
    		<property name="tokenLen" value="2" />
    		<property name="handleAsIBAN" value="false" />
    		<property name="handleAsBIC" value="false" />
+   		
+   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="watchlists">
    		    <list>
@@ -24,6 +26,8 @@
    		        <value>INDSAN</value>
    		        <value>FacPep</value>
    		        <value>FacSan</value>
+   		        <value>PANAMALeak</value>
+   		        
    		    </list>    
    		</property>
 		   		

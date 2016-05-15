@@ -109,6 +109,9 @@ public class JMXAMQClient {
 
         final JMXAMQClient jmxc = new JMXAMQClient();
 
+        jmxc.setJMXServerUrl("service:jmx:rmi:///jndi/rmi://localhost:1616/jmxrmi");
+        jmxc.setObjectName("org.apache.activemq:type=Broker,brokerName=localhost");
+
         jmxc.connect();
         jmxc.printAllSizes();
 

@@ -51,7 +51,7 @@
 				<ref bean="INDSANList" />
 				<ref bean="FACPEP" />
 				<ref bean="FACSAN" />
-				<ref local="PANAMALeak"/>
+				<ref bean="PANAMALeak"/>
 			</list>
 		</property>
 
