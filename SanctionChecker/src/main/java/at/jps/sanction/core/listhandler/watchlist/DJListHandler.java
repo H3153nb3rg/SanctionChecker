@@ -38,6 +38,7 @@ import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
 import at.jps.sanction.core.util.country.CountryCodeConverter;
 import at.jps.sanction.model.wl.entities.WL_Address;
+import at.jps.sanction.model.wl.entities.WL_Attribute;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
@@ -133,12 +134,17 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                 // entity.setEntityType(descr1); // PEP / RCA / SIP ??
 
-                System.out.println(" description1: " + descr1);
+                WL_Attribute wla = entity.getAttributes();
 
-                // TODO: TYpe mapping
+                if (wla == null) {
+                    wla = new WL_Attribute();
 
-                entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
-                entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
+                    entity.setAttributes(wla);
+                }
+
+                wla.addAttribute("Description", descr1);
+
+                // System.out.println(" description1: " + descr1);
 
                 break;
             }
@@ -352,6 +358,9 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     final String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
 
                     if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+
+                        entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
+
                         addWLEntry(entity);
 
                         addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
@@ -379,6 +388,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     final String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
 
                     if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+
+                        entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
 
                         addWLEntry(entity);
 

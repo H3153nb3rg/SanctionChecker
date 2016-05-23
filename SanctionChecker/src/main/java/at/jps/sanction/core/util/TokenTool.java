@@ -110,7 +110,7 @@ public class TokenTool {
     public static int compareCheck(final String text1, final String text2, final boolean fuzzy, final int minlen, final double fuzzyValue) {
 
         int deltaValue = text1.length();
-        int minWordLen = text1.length();
+        int minWordLen = deltaValue;
         int percentHitrate = 0;
 
         // +/- fuzzy string compare
@@ -133,7 +133,7 @@ public class TokenTool {
                 }
             }
             else {
-                if (text1.equals(text2)) {  // TODO: ignoreCase ?
+                if (text1.equalsIgnoreCase(text2)) {  // TODO: ignoreCase ?
                     deltaValue = 0;
                 }
             }

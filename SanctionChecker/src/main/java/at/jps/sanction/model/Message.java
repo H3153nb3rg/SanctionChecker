@@ -105,7 +105,7 @@ public class Message extends BaseModel implements Serializable {
 
         final StringBuilder msg = new StringBuilder();
 
-        msg.append("ID: ").append(getId()).append(System.lineSeparator()).append("Content: ").append(getRawContent()).append(System.lineSeparator());
+        msg.append("ID: ").append(getUUID()).append(System.lineSeparator()).append("Content: ").append(getRawContent()).append(System.lineSeparator());
 
         return msg.toString();
     }

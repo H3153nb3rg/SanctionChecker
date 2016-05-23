@@ -9,11 +9,13 @@
 		<property name="locations">
 			<list>
 			    <!-- define environment variables here -->
-				<value>checker.properties</value>
+			    <value>classpath:checker.properties</value>
+			    <value>C:/Java/git/SanctionChecker/SanctionChecker/src/main/resources/checker.properties</value>			    
+				<!--  value>checker.properties</value-->
 			</list>
 		</property>
 
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
 
 	</bean>
 
@@ -35,8 +37,8 @@
 		<property name="streamManagers">
 			<list>
 				<ref bean="StreamManager-SWIFT" />
-				<ref bean="StreamManager-SEPA"/>
-				<ref bean="StreamManager-PERS"/>
+				<!--  ref bean="StreamManager-SEPA"/>
+				<ref bean="StreamManager-PERS"/-->
 			</list>
 		</property>
 	</bean>
@@ -51,7 +53,7 @@
 				<ref bean="INDSANList" />
 				<ref bean="FACPEP" />
 				<ref bean="FACSAN" />
-				<ref bean="PANAMALeak"/>
+				<!-- ref bean="PANAMALeak"/ -->
 			</list>
 		</property>
 

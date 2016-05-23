@@ -26,7 +26,6 @@
 		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
 		<property name="fuzzyVal" value="20"/>		
    		
-   				
    		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="watchlists">
@@ -67,7 +66,7 @@
 		    </list>
 		</property>
 		
-		
+			
 		<!-- 
 		<property name="checkFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		
 		<property name="BICFields" value="53A,56A,57A,58A,59A,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA"/>		
@@ -121,10 +120,11 @@
 				<ref bean="MessageAnalyser-SWIFT"/>
 				<ref bean="MessageAnalyser-SWIFT"/>
 				
-				<!-- analyse results -->
+				<!-- analyse results 
 				<ref bean="PostProcessorHit-SWIFT"/>
 				<ref bean="PostProcessorNoHit-SWIFT"/>
-
+				-->
+				
 				<!-- document result -->
 				<ref bean="OutputProcessorHit-SWIFT"/>
 				<ref bean="OutputProcessorNoHit-SWIFT"/>
@@ -206,7 +206,7 @@
 	<!-- PostProcessors             -->
 	<!-- Task: analyse user results 
 	and bring msg out of the system -->
-	
+	 
 	<bean id="PostProcessorHit-SWIFT" class="at.jps.sanction.domain.payment.swift.worker.SwiftPostHitWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	
 		<!-- Queue read processed msgs -->
@@ -234,7 +234,7 @@
 		</property>	
 		
 	</bean>
-	
+	 
 	
 	<bean id="OutputProcessorHit-SWIFT" class="at.jps.sanction.core.io.file.FileOutputWorker" init-method="initialize" destroy-method="close" scope="prototype">
 	
@@ -242,7 +242,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="FinalHitQueue-SWIFT"/>
+			<ref bean="HitQueue-SWIFT"/>
 		</property>	
 	
 	</bean>
@@ -253,7 +253,7 @@
 		<property name="sleepMillisBetween" value="0"/>
 	
 		<property name="inQueue" >
-			<ref bean="FinalNoHitQueue-SWIFT"/>
+			<ref bean="NoHitQueue-SWIFT"/>
 		</property>	
 	
 	</bean>

@@ -147,55 +147,69 @@ public class AnalysisResult extends BaseModel implements Serializable {
     @Override
     public String toString() {
 
-        final StringBuilder stringbuilder = new StringBuilder();
+        final StringBuilder resultxt = new StringBuilder();
 
-        stringbuilder.append(message.toString()).append(SystemUtils.LINE_SEPARATOR).append("analysistime: ").append(getAnalysisStopTime() - getAnalysisStartTime()).append(" ms")
-                .append(SystemUtils.LINE_SEPARATOR);
+        resultxt.append(message.toString()).append(SystemUtils.LINE_SEPARATOR);
+        resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
+        resultxt.append("analysistime: ").append(getAnalysisStopTime() - getAnalysisStartTime()).append(" ms").append(SystemUtils.LINE_SEPARATOR);
+        resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
 
         if ((hitTokenInfoList != null) && ((hitTokenInfoList.size()) > 0)) {
-            stringbuilder.append("Tokenhits: ");
+            resultxt.append("Tokenhits: ");
             for (final WordHitInfo token : hitTokenInfoList) {
-                stringbuilder.append(token.toString()).append(',');
+                resultxt.append(token.toString()).append(',');
             }
-            stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append(SystemUtils.LINE_SEPARATOR);
         }
 
         if (getHitList() != null) {
-            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
             for (final HitResult hr : getHitList()) {
-                stringbuilder.append(hr.toString());
-                stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+                resultxt.append(hr.toString());
+                resultxt.append(SystemUtils.LINE_SEPARATOR);
+                resultxt.append("------------------").append(SystemUtils.LINE_SEPARATOR);
             }
-            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
         }
 
-        if (getRemovedHitList() != null) {
-            stringbuilder.append("---------- REMOVED !! ---------").append(SystemUtils.LINE_SEPARATOR);
+        if ((getRemovedHitList() != null) && (getRemovedHitList().size() > 0)) {
+            resultxt.append("---------- REMOVED !! ---------").append(SystemUtils.LINE_SEPARATOR);
             for (final HitResult hr : getRemovedHitList()) {
-                stringbuilder.append(hr.toString());
-                stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+                resultxt.append(hr.toString());
+                resultxt.append(SystemUtils.LINE_SEPARATOR);
+                resultxt.append("------------------").append(SystemUtils.LINE_SEPARATOR);
             }
-            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
         }
 
         if (!getProcessSteps().isEmpty()) {
-            stringbuilder.append("----------").append(SystemUtils.LINE_SEPARATOR).append("steps:").append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR).append("Steps:").append(SystemUtils.LINE_SEPARATOR);
 
             for (final ProcessStep step : getProcessSteps()) {
-                stringbuilder.append(step.toString()).append(SystemUtils.LINE_SEPARATOR);
+                resultxt.append(step.toString()).append(SystemUtils.LINE_SEPARATOR);
             }
-            stringbuilder.append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
         }
 
         if ((getCategory() != null) && (getCategory().length() > 0)) {
-            stringbuilder.append("Category: ").append(getCategory()).append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("Category: ").append(getCategory()).append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
         }
 
         if ((getComment() != null) && (getComment().length() > 0)) {
-            stringbuilder.append("Comment: ").append(getComment()).append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("Comment: ").append(getComment()).append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
         }
 
-        return stringbuilder.toString();
+        if (getException() != null) {
+            resultxt.append("ERROR: ");
+            resultxt.append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append(getException());
+            resultxt.append(SystemUtils.LINE_SEPARATOR);
+            resultxt.append("--------------------------------------------------------");
+        }
+
+        return resultxt.toString();
     }
 
     public List<ProcessStep> getProcessSteps() {

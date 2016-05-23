@@ -13,18 +13,18 @@
    		
     <!-- QUEUE CONFIG 1-n -->
     
-    <!--  File based queue implementation -->     
+    <!--  File based queue implementation      
     <import resource="SanctionChecker-Queues-SWIFT-File.xml" />
     <import resource="SanctionChecker-Queues-SEPA-File.xml" />
     <import resource="SanctionChecker-Queues-PERS-File.xml" />
-    
+    -->
     
     <!--  JMS based queue implementation -->
-    <!--      
+    <!-- -->      
     <import resource="SanctionChecker-Queues-SWIFT-JMS.xml" />
     <import resource="SanctionChecker-Queues-SEPA-JMS.xml" />
     <import resource="SanctionChecker-Queues-PERS-JMS.xml" />
-    -->    
+        
     		   
     <!-- WATCHLIST CONFIG 1x -->
     <import resource="SanctionChecker-WatchLists.xml" />

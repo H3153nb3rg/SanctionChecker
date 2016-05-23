@@ -98,20 +98,24 @@ public class StreamManager implements Runnable {
         return null;
     }
 
-    public int getMinAbsVal() {
-        return streamConfig.getMinAbsVal();
+    public int getMinAbsVal(final String fieldname) {
+        return streamConfig.getMinAbsVal(fieldname, false);
     }
 
-    public int getMinRelVal() {
-        return streamConfig.getMinRelVal();
+    public int getMinRelVal(final String fieldname) {
+        return streamConfig.getMinRelVal(fieldname, false);
     }
 
-    public int getMinTokenLen() {
-        return streamConfig.getMinTokenLen();
+    public int getMinTokenLen(final String fieldname) {
+        return streamConfig.getMinTokenLen(fieldname, false);
     }
 
-    public double getFuzzyValue() {
-        return streamConfig.getFuzzyValue();
+    public double getFuzzyValue(final String fieldname) {
+        return streamConfig.getFuzzyValue(fieldname, false);
+    }
+
+    public int getMinimumTokenLen() {
+        return streamConfig.getMinimumTokenLen();
     }
 
     public ValueListHandler getNotSingleWordHitList() {
@@ -219,10 +223,12 @@ public class StreamManager implements Runnable {
             logger.info("start all workers");
         }
 
+        int workerid = 1;
         for (final Worker worker : workers) {
             worker.setStreamManager(this);
 
-            startWorker(worker);
+            startWorker(worker, workerid);
+            workerid++;
         }
 
         if (logger.isInfoEnabled()) {
@@ -261,13 +267,14 @@ public class StreamManager implements Runnable {
         shutdown();
     }
 
-    private void startWorker(final Worker worker) {
+    private void startWorker(final Worker worker, final int workerId) {
 
         if (logger.isInfoEnabled()) {
             logger.info("starting worker: " + worker.getClass().getCanonicalName());
         }
 
         final Thread thread = new Thread(worker);
+        thread.setName(streamName + " - " + worker.getClass().getName() + " " + workerId);
         thread.setDaemon(true);
         thread.start();
     }

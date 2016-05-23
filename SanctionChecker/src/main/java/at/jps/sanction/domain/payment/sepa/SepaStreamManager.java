@@ -24,4 +24,24 @@ public class SepaStreamManager extends PaymentStreamManager {
         return getStreamConfig().isField2Fuzzy(fieldName, true);
     }
 
+    @Override
+    public int getMinAbsVal(final String fieldname) {
+        return getStreamConfig().getMinAbsVal(fieldname, false);
+    }
+
+    @Override
+    public int getMinRelVal(final String fieldname) {
+        return getStreamConfig().getMinRelVal(fieldname, false);
+    }
+
+    @Override
+    public int getMinTokenLen(final String fieldname) {
+        return getStreamConfig().getMinTokenLen(fieldname, false);
+    }
+
+    @Override
+    public double getFuzzyValue(final String fieldname) {
+        return getStreamConfig().getFuzzyValue(fieldname, false);
+    }
+
 }

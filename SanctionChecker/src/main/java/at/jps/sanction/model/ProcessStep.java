@@ -1,10 +1,10 @@
 package at.jps.sanction.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.persistence.Entity;
+
+import at.jps.sanction.core.util.TimeStamp;
 
 @Entity
 public class ProcessStep extends BaseModel implements Serializable {
@@ -63,12 +63,7 @@ public class ProcessStep extends BaseModel implements Serializable {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
 
-        sb.append("User: ").append(getActor()).append(" | ").append("descr: ").append(getRemark()).append(" | ").append("time: ")
-                .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timestamp)));  // TODO:
-        // Timestamp
-        // formatting is
-        // shitty
-        // implemented!!
+        sb.append("User: ").append(getActor()).append(" | ").append("descr: ").append(getRemark()).append(" | ").append("time: ").append(TimeStamp.formatAsReadably(timestamp));
         return sb.toString();
 
     }

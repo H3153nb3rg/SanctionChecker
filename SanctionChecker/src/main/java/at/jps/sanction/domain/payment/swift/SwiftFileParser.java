@@ -41,9 +41,15 @@ public class SwiftFileParser extends FileParserImpl {
                     textmsg.append((char) c);
                 }
                 if (textmsg.length() > 0) {
-                    final Message message = new SwiftMessage(textmsg.toString());
-                    nrTx++;
-                    prepareMessage(message);
+                    try {
+                        final Message message = new SwiftMessage(textmsg.toString());
+                        prepareMessage(message);
+                        nrTx++;
+                    }
+                    catch (final Exception x) {
+                        logger.error("Message creation failed: " + nrTx);
+                        logger.debug("Exception: ", x);
+                    }
                 }
             } while (c != -1);
 

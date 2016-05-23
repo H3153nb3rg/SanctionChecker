@@ -10,12 +10,19 @@ public class FieldCheckConfig {
 
     private String       fieldName;
     private boolean      fuzzy;
-    private int          tokenLen;
+    private int          minTokenLen;
     private String       entityType;
     private String       entityCategory;
     private boolean      handleAsIBAN;
     private boolean      handleAsBIC;
     private List<String> watchlists;
+
+    // single token % of match
+    private int          minRelVal;
+    private int          minAbsVal;
+    // total ( % min(#tokens).length of max(#tokens).length )
+    // private int minRelTokenVal;
+    private int          fuzzyVal;
 
     public String getFieldName() {
         return fieldName;
@@ -33,12 +40,12 @@ public class FieldCheckConfig {
         this.fuzzy = fuzzy;
     }
 
-    public int getTokenLen() {
-        return tokenLen;
+    public int getMinTokenLen() {
+        return minTokenLen;
     }
 
-    public void setTokenLen(final int tokenLen) {
-        this.tokenLen = tokenLen;
+    public void setMinTokenLen(final int tokenLen) {
+        minTokenLen = tokenLen;
     }
 
     public String getEntityType() {
@@ -79,6 +86,30 @@ public class FieldCheckConfig {
 
     public void setEntityCategory(String entityCategory) {
         this.entityCategory = entityCategory;
+    }
+
+    public int getFuzzyVal() {
+        return fuzzyVal;
+    }
+
+    public void setFuzzyVal(int fuzzyVal) {
+        this.fuzzyVal = fuzzyVal;
+    }
+
+    public int getMinRelVal() {
+        return minRelVal;
+    }
+
+    public void setMinRelVal(int minRelVal) {
+        this.minRelVal = minRelVal;
+    }
+
+    public int getMinAbsVal() {
+        return minAbsVal;
+    }
+
+    public void setMinAbsVal(int minAbsVal) {
+        this.minAbsVal = minAbsVal;
     }
 
 }

@@ -79,7 +79,7 @@ public class PanamaListHandler extends SanctionListHandlerImpl {
 
             for (final CSVRecord record : records) {
 
-                System.out.println(filename + " #" + record.get(idcol));
+                // System.out.println(filename + " #" + record.get(idcol));
 
                 final WL_Relation relation = new WL_Relation();
 

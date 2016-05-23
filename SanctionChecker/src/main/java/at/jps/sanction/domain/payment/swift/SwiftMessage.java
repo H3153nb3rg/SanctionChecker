@@ -11,15 +11,13 @@ package at.jps.sanction.domain.payment.swift;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import at.jps.sanction.model.Message;
+import at.jps.sanction.domain.payment.PaymentMessage;
 
 @Entity
 @DiscriminatorValue("SWIFT")
-public class SwiftMessage extends Message {
+public class SwiftMessage extends PaymentMessage {
 
     private static final long serialVersionUID = -7056887127357257079L;
-
-    private String            businessId;
 
     public SwiftMessage() {
         super();
@@ -28,14 +26,6 @@ public class SwiftMessage extends Message {
     public SwiftMessage(final String text) {
         super();
         setRawContent(text);
-    }
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(final String businessId) {
-        this.businessId = businessId;
     }
 
     // public static void main(String[] args) {

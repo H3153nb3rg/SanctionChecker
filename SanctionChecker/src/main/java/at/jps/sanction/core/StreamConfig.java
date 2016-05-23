@@ -7,15 +7,15 @@ import at.jps.sanction.model.queue.Queue;
 
 public interface StreamConfig {
 
-    int getMinRelVal();
+    int getMinRelVal(final String fieldname, boolean reverseContains);
 
-    int getMinAbsVal();
+    int getMinAbsVal(final String fieldname, boolean reverseContains);
 
-    int getMinTokenLen();
+    int getMinTokenLen(final String fieldname, boolean reverseContains);
 
-    double getFuzzyValue();
+    int getMinimumTokenLen();
 
-    double getFuzzyVal();
+    double getFuzzyValue(final String fieldname, boolean reverseContains);
 
     ArrayList<String> getFields2Check();
 

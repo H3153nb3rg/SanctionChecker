@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.model.AnalysisResult;
-import at.jps.sanction.model.HitResult;
 import at.jps.sanction.model.worker.out.OutputWorker;
 
 public class FileOutputWorker extends OutputWorker {
@@ -71,31 +70,34 @@ public class FileOutputWorker extends OutputWorker {
     public void handleMessage(final AnalysisResult message) {
         try {
 
-            logger.info("write Message: " + message.getMessage().getId());
-
-            getWriter().write(message.getMessage().toString());
-
-            if (message.getHitList() != null) {
-
-                for (final HitResult hit : message.getHitList()) {
-                    getWriter().write("--------------------------------------------------------");
-                    getWriter().write(hit.toString());
-                    getWriter().newLine();
-                    getWriter().write("--------------------------------------------------------");
-                    getWriter().newLine();
-
-                }
+            if (logger.isInfoEnabled()) {
+                logger.info("write Message: " + message.getMessage().getUUID());
             }
-            else {
-                final String exception = message.getException();
-                if (exception != null) {
-                    getWriter().write("ERROR: ");
-                    getWriter().write(exception);
-                    getWriter().newLine();
-                    getWriter().write("--------------------------------------------------------");
-                    getWriter().newLine();
-                }
-            }
+
+            getWriter().write(message.toString());
+
+            // if (message.getHitList() != null) {
+            //
+            // for (final HitResult hit : message.getHitList()) {
+            // getWriter().write("--------------------------------------------------------");
+            // getWriter().newLine();
+            // getWriter().write(hit.toString());
+            // getWriter().newLine();
+            // getWriter().write("--------------------------------------------------------");
+            // getWriter().newLine();
+            //
+            // }
+            // }
+            // else {
+            // final String exception = message.getException();
+            // if (exception != null) {
+            // getWriter().write("ERROR: ");
+            // getWriter().write(exception);
+            // getWriter().newLine();
+            // getWriter().write("--------------------------------------------------------");
+            // getWriter().newLine();
+            // }
+            // }
             getWriter().write("========================================================");
             getWriter().newLine();
 

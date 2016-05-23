@@ -158,13 +158,13 @@ public class PersonAnalyzer extends AnalyzerWorker {
 
                 final String msgFieldText = messageContent.getFieldsAndValues().get(PersonMessage.fieldNames[3]);  // "wholename"
 
-                final List<String> msgFieldTokens = TokenTool.getTokenList(msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinTokenLen(),
+                final List<String> msgFieldTokens = TokenTool.getTokenList(msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinimumTokenLen(),
                         getStreamManager().getStopwordList().getValues(), false);
 
                 for (final WL_Entity entity : listhandler.getEntityList()) {
                     for (final WL_Name name : entity.getNames()) {
-                        final List<String> nameTokens = TokenTool.getTokenList(name.getWholeName(), listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinTokenLen(),
-                                getStreamManager().getIndexAusschlussList().getValues(), true);
+                        final List<String> nameTokens = TokenTool.getTokenList(name.getWholeName(), listhandler.getDelimiters(), listhandler.getDeadCharacters(),
+                                getStreamManager().getMinTokenLen(PersonMessage.fieldNames[3]), getStreamManager().getIndexAusschlussList().getValues(), true);
 
                         float totalHitRateRelative = 0;
                         int totalHitRateAbsolute = 0;
@@ -177,10 +177,10 @@ public class PersonAnalyzer extends AnalyzerWorker {
                                 // >>>>> THE COMPARISION <<<<<
 
                                 final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(PersonMessage.fieldNames[3], listhandler),
-                                        getStreamManager().getMinTokenLen(), getStreamManager().getFuzzyValue());
+                                        getStreamManager().getMinTokenLen(PersonMessage.fieldNames[3]), getStreamManager().getFuzzyValue(PersonMessage.fieldNames[3]));
 
                                 // single fuzzy limit !!
-                                if (hitValue > getStreamManager().getMinRelVal()) {// TODO: this should be on list-base
+                                if (hitValue > getStreamManager().getMinRelVal(PersonMessage.fieldNames[3])) {// TODO: this should be on list-base
                                     totalHitRateRelative += hitValue;
 
                                     final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, PersonMessage.fieldNames[3], msgFieldToken,
@@ -228,7 +228,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
                                 if (contains) {
 
                                     totalHitRatePhrase = 100 * minTokens;
-                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal()) {  // TODO: this should be on list-base
+                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(PersonMessage.fieldNames[3])) {  // TODO: this should be on list-base
 
                                         logger.debug("PHRASECHECK: " + msgFieldText + ": " + name.getWholeName() + " --> " + contains);
 
@@ -242,7 +242,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
                             }
                             // hits for one field
                             // TODO: this is a dummy implementation
-                            if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal()) { // TODO: this should be on list-base
+                            if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(PersonMessage.fieldNames[3])) { // TODO: this should be on list-base
 
                                 if (logger.isDebugEnabled()) {
                                     final String keys = TokenTool.buildTokenString(nameTokens, " ");
@@ -254,7 +254,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
 
                             }
 
-                            if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal()) {// TODO: this should be on list-base
+                            if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal(PersonMessage.fieldNames[3])) {// TODO: this should be on list-base
 
                                 if (logger.isDebugEnabled()) {
                                     final String keys = TokenTool.buildTokenString(nameTokens, " ");

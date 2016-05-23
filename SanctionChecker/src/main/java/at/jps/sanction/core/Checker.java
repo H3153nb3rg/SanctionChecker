@@ -220,7 +220,7 @@ public class Checker {
         String configFilename = "SanctionChecker.xml";
         boolean initialized = false;
         ApplicationContext context = null;
-        if (args.length < 0) {
+        if (args.length > 0) {
             configFilename = args[0];
             try {
                 context = new FileSystemXmlApplicationContext(configFilename);

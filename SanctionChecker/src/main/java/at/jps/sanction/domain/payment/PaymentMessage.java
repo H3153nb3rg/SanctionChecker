@@ -6,26 +6,48 @@
  * A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
-package at.jps.sanction.domain.payment.sepa;
+package at.jps.sanction.domain.payment;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 
-import at.jps.sanction.domain.payment.PaymentMessage;
+import at.jps.sanction.model.Message;
 
 @Entity
-@DiscriminatorValue("SEPA")
-public class SepaMessage extends PaymentMessage {
+@Inheritance
+public class PaymentMessage extends Message {
 
-    private static final long serialVersionUID = -4325196787145588987L;
+    private static final long serialVersionUID = 4055207318443230327L;
 
-    public SepaMessage() {
+    private String            businessId;
+
+    public PaymentMessage() {
         super();
     }
 
-    public SepaMessage(final String text) {
+    public PaymentMessage(final String text) {
         super();
         setRawContent(text);
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(final String businessId) {
+        this.businessId = businessId;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder msg = new StringBuilder();
+
+        if (getBusinessId() != null) {
+            msg.append("Business ID: ").append(getBusinessId()).append(System.lineSeparator());
+        }
+        msg.append(super.toString());
+
+        return msg.toString();
     }
 
 }

@@ -62,9 +62,9 @@ public class SanctionHitResult extends HitResult implements Comparable<HitResult
 
         final StringBuilder content = new StringBuilder(super.toString());
 
-        content.append("Listname: ").append(getHitListName()).append(SystemUtils.LINE_SEPARATOR).append("ListId  :  ").append(getHitId()).append(SystemUtils.LINE_SEPARATOR).append("Ext Url : ")
-                .append(getHitExternalUrl()).append(SystemUtils.LINE_SEPARATOR).append("LegBas  : ").append(getHitLegalBasis()).append(SystemUtils.LINE_SEPARATOR).append("OptHint : ")
-                .append(getHitOptimized());
+        content.append("Listname       : ").append(getHitListName()).append(SystemUtils.LINE_SEPARATOR).append("ListId         : ").append(getHitId()).append(SystemUtils.LINE_SEPARATOR)
+                .append("Ext Url        : ").append(getHitExternalUrl()).append(SystemUtils.LINE_SEPARATOR).append("LegBas         : ").append(getHitLegalBasis()).append(SystemUtils.LINE_SEPARATOR)
+                .append("OptHint        : ").append(getHitOptimized());
 
         return content.toString();
 

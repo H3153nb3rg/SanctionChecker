@@ -46,10 +46,16 @@ public class SepaFileParser extends FileParserImpl {
                 } while (line != null);
 
                 if (textmsg.length() > 0) {
-                    final Message message = new SepaMessage(textmsg.toString());
-                    // final Message message = new Message(textmsg.toString());
-                    nrTx++;
-                    prepareMessage(message);
+                    try {
+                        final Message message = new SepaMessage(textmsg.toString());
+                        nrTx++;
+                        prepareMessage(message);
+                    }
+                    catch (final Exception x) {
+                        logger.error("Message creation failed: " + nrTx);
+                        logger.debug("Exception: ", x);
+                    }
+
                 }
             }
             finally {
