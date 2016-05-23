@@ -155,9 +155,9 @@ public class AnalysisResult extends BaseModel implements Serializable {
         resultxt.append("--------------------------------------------------------").append(SystemUtils.LINE_SEPARATOR);
 
         if ((hitTokenInfoList != null) && ((hitTokenInfoList.size()) > 0)) {
-            resultxt.append("Tokenhits: ");
+            resultxt.append("Tokenhits: ").append(SystemUtils.LINE_SEPARATOR);
             for (final WordHitInfo token : hitTokenInfoList) {
-                resultxt.append(token.toString()).append(',');
+                resultxt.append(token.toString()).append(SystemUtils.LINE_SEPARATOR);
             }
             resultxt.append(SystemUtils.LINE_SEPARATOR);
         }

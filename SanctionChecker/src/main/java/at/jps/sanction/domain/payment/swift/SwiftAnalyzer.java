@@ -72,7 +72,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
         boolean checkit = (super.isFieldToCheck(msgFieldName, entityType, listname, entityCategory));
 
         if (checkit) {
-            if (entityType.contentEquals("Transport")) {  // Vessels only in field 70 !
+            if (entityType.contentEquals("TRANSPORT")) {  // Vessels only in field 70 !
                 checkit = msgFieldName.contentEquals("70");
             }
             /*
