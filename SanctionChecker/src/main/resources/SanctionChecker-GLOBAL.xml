@@ -10,7 +10,7 @@
 			<list>
 			    <!-- define environment variables here -->
 			    <value>classpath:checker.properties</value>
-			    <value>C:/Java/git/SanctionChecker/SanctionChecker/src/main/resources/checker.properties</value>			    
+			    <!-- value>C:\Java\git\SanctionChecker\SanctionChecker\src\main\resources\checker.properties</value-->			    
 				<!--  value>checker.properties</value-->
 			</list>
 		</property>

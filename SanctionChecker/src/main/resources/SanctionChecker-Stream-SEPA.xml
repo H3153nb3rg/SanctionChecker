@@ -11,10 +11,19 @@
    <!--  default field config    -->
     <bean id="defaultFieldConfig-SEPA" class="at.jps.sanction.model.FieldCheckConfig" >
    		<property name="fieldName" value="default" />
-   		<property name="fuzzy" value="true" />     
-   		<property name="tokenLen" value="2" />
+
    		<property name="handleAsIBAN" value="false" />
    		<property name="handleAsBIC" value="false" />
+   		
+   		<!-- shorter tokens are not checked -->
+		<property name="minTokenLen" value="2"/>
+		<!-- min % match of single token to count as hit -->
+		<property name="minRelVal" value="79"/>
+		<property name="minAbsVal" value="60"/>		
+		
+		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
+		<property name="fuzzyVal" value="20"/>		
+   		
    		
    		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
@@ -57,12 +66,7 @@
 		        		        		        
 		    </list>
 		</property>
-		
-		
-		<property name="minTokenLen" value="2"/>
-		<property name="minRelVal" value="79"/>
-		<property name="minAbsVal" value="60"/>		
-		<property name="fuzzyVal" value="20"/>
+	
 				
 		<!-- 
 		<property name="checkFields" value="/Nm,/Ctry,/IBAN,/BIC,/AdrLine"/>		
