@@ -55,6 +55,9 @@ public class WL_Entity implements Serializable {
     private String            listName;
     private String            comment;
     private String            issueDate;
+
+    private WL_BirthInfo       birthday;                                // TODO: we should make a map out of it for generic ref of multiple dates
+
     private EntityType        entityType;
     // Individual
     // /
@@ -237,6 +240,14 @@ public class WL_Entity implements Serializable {
 
     public void setAttributes(final WL_Attribute attributes) {
         this.attributes = attributes;
+    }
+
+    public WL_BirthInfo getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(WL_BirthInfo birthday) {
+        this.birthday = birthday;
     }
 
 }

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -24,9 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.list.ofac.SdnList;
 import at.jps.sanction.core.list.ofac.ASDM.Comment;
+import at.jps.sanction.core.list.ofac.ASDM.DatePeriod;
+import at.jps.sanction.core.list.ofac.ASDM.DatePointSchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.DistinctPartySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.DistinctPartySchemaType.Profile;
 import at.jps.sanction.core.list.ofac.ASDM.DocumentedNameSchemaType;
+import at.jps.sanction.core.list.ofac.ASDM.FeatureSchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.IdentitySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.IdentitySchemaType.Alias;
 import at.jps.sanction.core.list.ofac.ASDM.ProfileRelationshipSchemaType;
@@ -40,6 +44,7 @@ import at.jps.sanction.core.list.ofac.ASDM.Sanctions;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType.EntryEvent;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
 
@@ -289,6 +294,42 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                 final WL_Entity entity = new WL_Entity();
 
                 entity.setWL_Id(prof.getID().toString());
+
+                // birthday und so
+                for (final FeatureSchemaType fst : prof.getFeature()) {
+
+                    final BigInteger ftid = fst.getFeatureTypeID();
+
+                    if (ftid.longValue() == 8) { // birthday
+                        for (final FeatureSchemaType.FeatureVersion fv : fst.getFeatureVersion()) {
+
+                            final List<DatePeriod> dps = fv.getDatePeriod();  // one is enough for birth
+
+                            if ((dps != null) && (dps.size() > 0)) {
+
+                                final DatePointSchemaType ddpst = dps.get(0).getStart().getContent().get(0).getValue();
+
+                                if (ddpst != null) {
+                                    final WL_BirthInfo birthday = new WL_BirthInfo();
+
+                                    birthday.setDay(ddpst.getDay().getValue() + "");
+                                    birthday.setMonth(ddpst.getMonth().getValue() + "");
+                                    birthday.setYear(ddpst.getYear().getValue() + "");
+
+                                    System.out.println("fst = " + ftid + " " + birthday.getDay() + "." + birthday.getMonth() + "." + birthday.getYear());
+
+                                    entity.setBirthday(birthday);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
                 // entity.setType(getPartyTypeFromSubType(prof.getPartySubTypeID()));
 
                 // !!!! TODO: getPartyTypeFromSubType(prof.getPartySubTypeID())
@@ -346,7 +387,6 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                                     }
 
                                     name.addToWholeName(dnp.getNamePartValue().getValue());
-
                                 }
                             }
 

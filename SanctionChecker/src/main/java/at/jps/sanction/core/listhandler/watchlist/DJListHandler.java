@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -23,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.list.dj.Associate;
+import at.jps.sanction.core.list.dj.DateDetails;
+import at.jps.sanction.core.list.dj.DateDetails.Date.DateValue;
 import at.jps.sanction.core.list.dj.Descriptions;
 import at.jps.sanction.core.list.dj.Descriptions.Description;
 import at.jps.sanction.core.list.dj.IDNumberTypes;
@@ -39,19 +42,39 @@ import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
 import at.jps.sanction.core.util.country.CountryCodeConverter;
 import at.jps.sanction.model.wl.entities.WL_Address;
 import at.jps.sanction.model.wl.entities.WL_Attribute;
+import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
 
 public class DJListHandler extends SanctionListHandlerImpl {
 
-    private static String LISTNAME = "DowJones";
-    static final Logger   logger   = LoggerFactory.getLogger(DJListHandler.class);
+    private static String           LISTNAME = "DowJones";
+    static final Logger             logger   = LoggerFactory.getLogger(DJListHandler.class);
 
     // private List<String> descr1ToUse;
 
-    private String        loadDescription1;
-    private String        loadDescription2;
+    private String                  loadDescription1;
+    private String                  loadDescription2;
+    private HashMap<String, String> monthTxt;
+
+    {
+        monthTxt = new HashMap<String, String>();
+
+        monthTxt.put("Jan", "01");
+        monthTxt.put("Feb", "02");
+        monthTxt.put("Mar", "03");
+        monthTxt.put("Apr", "04");
+        monthTxt.put("May", "05");
+        monthTxt.put("Jun", "06");
+        monthTxt.put("Jul", "07");
+        monthTxt.put("Aug", "08");
+        monthTxt.put("Sep", "09");
+        monthTxt.put("Oct", "10");
+        monthTxt.put("Nov", "11");
+        monthTxt.put("Dez", "12");
+
+    }
 
     public static void main(final String[] args) {
 
@@ -214,6 +237,27 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
+    private void addBirthInfo(final PFA pfa, final WL_Entity entity, List<DateDetails> dateDetails) {
+        for (final DateDetails dt : dateDetails) {
+            for (final DateDetails.Date d : dt.getDate()) {
+                if (d.getDateType().equalsIgnoreCase("Date of Birth")) {
+                    // steht so drin !?
+
+                    for (final DateValue dv : d.getDateValue()) {
+                        final WL_BirthInfo birthday = new WL_BirthInfo();
+
+                        birthday.setDay(dv.getDay());
+                        birthday.setMonth(monthTxt.get(dv.getMonth()));
+                        birthday.setYear(dv.getYear());
+
+                        entity.setBirthday(birthday);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private void addIDs(final WL_Entity entity, final List<IDNumberTypes> numbers) {
         for (final IDNumberTypes ids : numbers) {
             for (final IDNumberTypes.ID id : ids.getID()) {
@@ -350,18 +394,20 @@ public class DJListHandler extends SanctionListHandlerImpl {
                 if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
                     final WL_Entity entity = new WL_Entity();
 
-                    entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
-                    entity.setWL_Id(pfaPerson.getId());
-                    entity.setIssueDate(pfaPerson.getDate());
-                    entity.setComment(pfaPerson.getProfileNotes());
-
                     final String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
 
                     if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
 
                         entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
 
+                        entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
+                        entity.setWL_Id(pfaPerson.getId());
+                        entity.setIssueDate(pfaPerson.getDate());
+                        entity.setComment(pfaPerson.getProfileNotes());
+
                         addWLEntry(entity);
+
+                        addBirthInfo(pfa, entity, pfaPerson.getDateDetails());
 
                         addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
@@ -380,16 +426,16 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                     final WL_Entity entity = new WL_Entity();
 
-                    entity.setEntityType(WL_Entity.EntityType.ENTITY);
-                    entity.setWL_Id(pfaEntity.getId());
-                    entity.setIssueDate(pfaEntity.getDate());
-                    entity.setComment(pfaEntity.getProfileNotes());
-
                     final String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
 
                     if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
 
                         entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
+
+                        entity.setEntityType(WL_Entity.EntityType.ENTITY);
+                        entity.setWL_Id(pfaEntity.getId());
+                        entity.setIssueDate(pfaEntity.getDate());
+                        entity.setComment(pfaEntity.getProfileNotes());
 
                         addWLEntry(entity);
 

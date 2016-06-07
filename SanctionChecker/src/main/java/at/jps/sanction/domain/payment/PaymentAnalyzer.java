@@ -261,8 +261,12 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 2 !! ");
                         }
 
+                        // we count different tokenhits to calc relweight
+                        final int diffNameTokenHits[] = new int[nameTokens.size()];
+
                         for (final String msgFieldToken : msgFieldTokens) {
 
+                            int ixNameTokenHit = 0;
                             for (final String nameToken : nameTokens) {
 
                                 // check if this combination is not on the NoList list declared as not to check
@@ -281,7 +285,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                             getStreamManager().getMinTokenLen(msgFieldName), getStreamManager().getFuzzyValue(msgFieldName));
 
                                     // single fuzzy limit !!
-                                    if (hitValue > getStreamManager().getMinRelVal(msgFieldName)) {// TODO: this should be on list-base
+                                    if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(msgFieldName))) {// TODO: this should be on list-base
                                         totalHitRateRelative += hitValue;
 
                                         final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
@@ -289,7 +293,10 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                         // single word hit list if not already in
                                         if (!analyzeresult.getHitTokensList().contains(swhi)) {
                                             analyzeresult.getHitTokensList().add(swhi);
+
+                                            diffNameTokenHits[ixNameTokenHit]++;
                                         }
+
                                     }
                                     if (hitValue == 100) {
                                         totalHitRateAbsolute += hitValue;
@@ -298,8 +305,13 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                         // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
                                     }
                                 }
+                                ixNameTokenHit++;
                             }
                         }
+
+                        // 1. sum (hit percent of single tokens) / # of tokens
+                        // 2. # of hits / # tokens
+                        // 3. # of contained tokens / # tokens
 
                         boolean addPhrase = false;
                         boolean addAbs = false;
@@ -310,27 +322,6 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                         if (minTokens > 0) {
 
-                            if (minTokens > 1) {
-                                // eval simple text in text search for
-                                // phrase
-                                // check
-                                // but only if both sides contain more than one token
-                                final boolean contains = TokenTool.checkContains(msgFieldTokens, nameTokens, " ");  // TODO: this is no goood sol in gen
-
-                                if (contains) {
-                                    totalHitRatePhrase = 100 * minTokens;
-                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
-
-                                        logger.debug("PHRASECHECK: " + msgFieldText + ": " + name.getWholeName() + " --> " + contains);
-
-                                        addPhrase = true;
-                                    }
-                                }
-                            }
-                            else {
-                                // no hit but if other hit we go
-                                // totalHitRatePhrase = 100;
-                            }
                             // hits for one field
                             // TODO: this is a dummy implementation
                             if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(msgFieldName)) {
@@ -367,6 +358,31 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                 // +totalHitRateAbsolute);
                             }
 
+                            totalHitRatePhrase = 100 * minTokens;
+                            if (minTokens > 1) {
+                                // eval simple text in text search for
+                                // phrase
+                                // check
+                                // but only if both sides contain more than one token
+                                final boolean contains = TokenTool.checkContains(msgFieldTokens, nameTokens, " ");  // TODO: this is no goood sol in gen
+
+                                if (contains) {
+
+                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
+
+                                        logger.debug("PHRASECHECK: " + msgFieldText + ": " + name.getWholeName() + " --> " + contains);
+
+                                        addPhrase = true;
+                                    }
+                                }
+                                else {
+                                    totalHitRatePhrase = 0;
+                                }
+                            }
+                            else {
+                                // no Phrase hit
+                            }
+
                             // add cumulated hit
                             if ((addAbs) || (addPhrase) || (addRel)) {
 
@@ -389,6 +405,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                         for (final OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
                                             if (optimizationRecord.getWatchListName().equals(listhandler.getListName()) && optimizationRecord.getWatchListId().equals(entity.getWL_Id())
                                                     && optimizationRecord.getFieldName().equals(msgFieldName) && optimizationRecord.getToken().equals(msgFieldText))
+
                                             // TODO: make this more
                                             // versatile !!
                                             {
@@ -406,6 +423,13 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                     }
                                     if (addHit) {
 
+                                        int relWeight = 0;
+                                        for (int i = 0; i < diffNameTokenHits.length; i++) {
+                                            if (diffNameTokenHits[i] != 0) {
+                                                relWeight++;
+                                            }
+                                        }
+
                                         hr.setHitField(msgFieldName);
                                         hr.setHitDescripton(name.getWholeName());
                                         hr.setHitListName(listhandler.getListName());
@@ -417,9 +441,9 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                         hr.setEntityType(entity.getEntityType().getText());
                                         hr.setHitRemark(entity.getComment());
 
-                                        hr.setAbsolutHit(totalHitRateAbsolute);
-                                        hr.setPhraseHit(totalHitRatePhrase);
-                                        hr.setRelativeHit((int) totalHitRateRelative);
+                                        hr.setAbsolutHit(totalHitRateAbsolute / minTokens);
+                                        hr.setPhraseHit(totalHitRatePhrase / minTokens);
+                                        hr.setRelativeHit((relWeight / minTokens) * 100);
 
                                         analyzeresult.addHitResult(hr);
                                     }

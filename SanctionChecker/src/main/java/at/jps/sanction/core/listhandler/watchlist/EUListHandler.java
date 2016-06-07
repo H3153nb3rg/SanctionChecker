@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.list.eu.WHOLE;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.core.util.country.CountryCodeConverter;
+import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
@@ -45,7 +47,9 @@ public class EUListHandler extends SanctionListHandlerImpl {
 
             synchronized (whole) {
 
-                // TODO: complete loading should be implemented
+                // TODO: complete loading should be implemented !!
+
+                // new SimpleDateFormat("yyyy-MM-dd");
 
                 for (final WHOLE.ENTITY wentity : whole.getENTITY()) {
                     // StringBuilder line = new StringBuilder();
@@ -72,6 +76,40 @@ public class EUListHandler extends SanctionListHandlerImpl {
                     entity.setIssueDate(wentity.getRegDate());
 
                     entity.setEntryCategory(WL_Entity.EntryCategory.EMBARGO);
+
+                    for (final WHOLE.ENTITY.BIRTH birth : wentity.getBIRTH()) {
+                        final WL_BirthInfo birthInfo = new WL_BirthInfo();
+
+                        final String ISOCtry = CountryCodeConverter.convert(2, 1, birth.getCOUNTRY());
+
+                        if (ISOCtry != null) {
+                            birthInfo.setCountry(ISOCtry);
+                        }
+                        birthInfo.setPlace(birth.getPLACE());
+
+                        // it is like 1924-02-21...
+                        birthInfo.setYear(birth.getDATE().substring(0, 4));
+                        birthInfo.setMonth(birth.getDATE().substring(5, 7));
+                        birthInfo.setDay(birth.getDATE().substring(8));
+
+                        entity.setBirthday(birthInfo);
+
+                        // Date date;
+                        // try {
+                        // date = sdf.parse(birth.getDATE());
+                        //
+                        // birthInfo.setYear(date.getYear() + "");
+                        // birthInfo.setMonth(date.getMonth() + "");
+                        // birthInfo.setDay(date.getDay() + "");
+                        //
+                        // }
+                        // catch (final ParseException e) {
+                        // logger.error("Birthday parsing failed [" + birth.getDATE() + "] :" + e.toString());
+                        // logger.debug("Exception : ", e);
+                        // }
+
+                        break;
+                    }
 
                     for (final WHOLE.ENTITY.NAME wname : wentity.getNAME()) {
                         // line.append(",").append(
