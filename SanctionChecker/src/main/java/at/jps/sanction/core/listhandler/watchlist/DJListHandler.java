@@ -237,20 +237,42 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
-    private void addBirthInfo(final PFA pfa, final WL_Entity entity, List<DateDetails> dateDetails) {
+    private void addBirthInfo(final PFA pfa, final WL_Entity entity, List<DateDetails> dateDetails, List<PFA.Records.Person.BirthPlace> birthPlaces) {
         for (final DateDetails dt : dateDetails) {
             for (final DateDetails.Date d : dt.getDate()) {
                 if (d.getDateType().equalsIgnoreCase("Date of Birth")) {
                     // steht so drin !?
 
                     for (final DateValue dv : d.getDateValue()) {
-                        final WL_BirthInfo birthday = new WL_BirthInfo();
+                        final WL_BirthInfo birthInfo = new WL_BirthInfo();
 
-                        birthday.setDay(dv.getDay());
-                        birthday.setMonth(monthTxt.get(dv.getMonth()));
-                        birthday.setYear(dv.getYear());
+                        birthInfo.setDay(dv.getDay());
+                        birthInfo.setMonth(monthTxt.get(dv.getMonth()));
+                        birthInfo.setYear(dv.getYear());
 
-                        entity.setBirthday(birthday);
+                        entity.setBirthday(birthInfo);
+
+                        for (final PFA.Records.Person.BirthPlace birthplace : birthPlaces) {
+                            for (final PFA.Records.Person.BirthPlace.Place place : birthplace.getPlace()) {
+
+                                String countryName = place.getName();
+
+                                final int pos = countryName.lastIndexOf(",");
+
+                                if (pos > -1) {
+                                    countryName = countryName.substring(pos + 1);
+                                    birthInfo.setPlace(place.getName().substring(0, pos));
+                                }
+
+                                final String ISOCtry = CountryCodeConverter.convert(4, 1, countryName);
+                                if (ISOCtry != null) {
+                                    birthInfo.setCountry(ISOCtry);
+                                }
+
+                                System.out.println("place:" + birthInfo.getPlace() + " - " + birthInfo.getCountry());
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
@@ -407,7 +429,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
                         addWLEntry(entity);
 
-                        addBirthInfo(pfa, entity, pfaPerson.getDateDetails());
+                        addBirthInfo(pfa, entity, pfaPerson.getDateDetails(), pfaPerson.getBirthPlace());
 
                         addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
