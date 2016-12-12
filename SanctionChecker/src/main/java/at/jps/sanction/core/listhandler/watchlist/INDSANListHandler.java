@@ -10,13 +10,18 @@ package at.jps.sanction.core.listhandler.watchlist;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntityType;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntryCategory;
 import at.jps.sanction.model.wl.entities.WL_Name;
 
 public class INDSANListHandler extends SanctionListHandlerImpl {
@@ -92,6 +97,65 @@ public class INDSANListHandler extends SanctionListHandlerImpl {
                 System.out.println("--------------");
             }
         }
+    }
+
+    @Override
+    public List<SL_Entry> buildSearchListEntries(final String topicName, WL_Entity entity) {
+        List<SL_Entry> entries = null;
+        switch (topicName) {
+            case "EmbargoPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            // case "PepPersonNames":
+            // if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+            //
+            // entries = new ArrayList<>();
+            //
+            // for (final WL_Name name : entity.getNames()) {
+            // final SL_Entry entry = new SL_Entry();
+            // entry.setSearchValue(name.getWholeName());
+            // entries.add(entry);
+            // }
+            // }
+            // break;
+            // case "EmbargoEntityNames":
+            // if ((entity.getEntityType().equals(EntityType.ENTITY) || entity.getEntityType().equals(EntityType.OTHER)) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+            //
+            // entries = new ArrayList<>();
+            //
+            // for (final WL_Name name : entity.getNames()) {
+            // final SL_Entry entry = new SL_Entry();
+            // entry.setSearchValue(name.getWholeName());
+            // entries.add(entry);
+            // }
+            // }
+            // break;
+            // case "EmbargoVesselNames":
+            // if (entity.getEntityType().equals(EntityType.TRANSPORT) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+            //
+            // entries = new ArrayList<>();
+            //
+            // for (final WL_Name name : entity.getNames()) {
+            // final SL_Entry entry = new SL_Entry();
+            // entry.setSearchValue(name.getWholeName());
+            // entries.add(entry);
+            // }
+            // }
+            // break;
+
+            default:
+                break;
+        }
+        return entries;
     }
 
     private void readList(final String filename) {
