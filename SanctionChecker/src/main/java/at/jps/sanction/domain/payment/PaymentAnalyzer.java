@@ -30,8 +30,7 @@ import at.jps.sanction.model.ProcessStep;
 import at.jps.sanction.model.WordHitInfo;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
-import at.jps.sanction.model.wl.entities.WL_Entity;
-import at.jps.sanction.model.wl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 
 public abstract class PaymentAnalyzer extends AnalyzerWorker {
@@ -184,285 +183,296 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
     private void genericListCheck(final SanctionListHandler listhandler, final AnalysisResult analyzeresult) {
 
-        if ((listhandler.getEntityList() != null) && !listhandler.getEntityList().isEmpty()) {
+        final MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
 
-            final MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
+        for (final String searchListName : listhandler.getSearchLists().keySet()) {
 
-            for (final WL_Entity entity : listhandler.getEntityList()) {
+            logger.info("SearchList: " + searchListName);
 
-                // iterate over all entities / addresses /
-                for (final WL_Name name : entity.getNames()) {
+            final List<SL_Entry> searchList = listhandler.getSearchLists().get(searchListName);
 
-                    List<String> nameTokens = name.getTokenizedNames();
+            // if ((listhandler.getEntityList() != null) && !listhandler.getEntityList().isEmpty()) {
 
-                    if (nameTokens == null) { // if not already cached
-                        nameTokens = TokenTool.getTokenList(name.getWholeName(), listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinimumTokenLen(),
-                                getStreamManager().getIndexAusschlussList().getValues(), true);
+            // for (final WL_Entity entity : listhandler.getEntityList()) {
 
-                        name.setTokenizedNames(nameTokens);
-                    }
-                    else {
-                        // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 1 !! ");
-                    }
+            // iterate over all entities / addresses /
+            // for (final WL_Name name : entity.getNames())
+            for (final SL_Entry entry : searchList) {
 
-                    // iterate over all Msg fields
-                    for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
+                List<String> searchTokens = entry.getTokenizedString(listhandler.getListName());
 
-                        // should field be checked ?
-                        if (!isFieldToCheck(msgFieldName, entity.getEntityType().getText(), listhandler.getListName(), "Name")) { // TODO: only implemented for one Category only!!
-                            // if (logger.isDebugEnabled()) logger.debug("SKIPPING field: " + msgFieldName);
-                            continue;
+                if (searchTokens == null) { // if not already cached
+                    searchTokens = TokenTool.getTokenList(entry.getSearchValue(), listhandler.getDelimiters(), listhandler.getDeadCharacters(),
+                            getStreamManager().getMinTokenLen(listhandler.getListName()), getStreamManager().getIndexAusschlussList().getValues(), true);
+
+                    entry.setTokenizedString(listhandler.getListName(), searchTokens);
+                }
+                else {
+                    // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 1 !! ");
+                }
+
+                // iterate over all Msg fields
+                for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
+
+                    // should field be checked ?
+                    if (!isFieldToCheck(msgFieldName, searchListName, listhandler.getListName(), searchListName)) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("SKIPPING field: " + msgFieldName);
                         }
+                        continue;
+                    }
 
-                        float totalHitRateRelative = 0;
-                        int totalHitRateAbsolute = 0;
-                        int totalHitRatePhrase = 0;
+                    float totalHitRateRelative = 0;
+                    int totalHitRateAbsolute = 0;
+                    int totalHitRatePhrase = 0;
 
-                        final String msgFieldText = messageContent.getFieldsAndValues().get(msgFieldName);
+                    final String msgFieldText = messageContent.getFieldsAndValues().get(msgFieldName);
 
-                        List<String> msgFieldTokens = messageContent.getTokenizedField(msgFieldName);
-                        if (msgFieldTokens == null) {
-                            String longText = null;
+                    List<String> msgFieldTokens = messageContent.getTokenizedField(msgFieldName);
+                    if (msgFieldTokens == null) {
+                        String longText = null;
 
-                            // check if BIC expansion should be done
-                            if (getStreamManager().isField2BICTranslate(msgFieldName)) {
-                                longText = BICHelper.extendBIC(msgFieldText);
+                        // check if BIC expansion should be done
+                        if (getStreamManager().isField2BICTranslate(msgFieldName)) {
+                            longText = BICHelper.extendBIC(msgFieldText);
 
-                                if (firstIteration) {// Country check on BIC - ONLY ONCE!!
-                                    // String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
-                                    // String countryLong = getStreamManager().getReferenceListHandlers().get(NCCTListHandler.getInstance().getListName()).getValues().getProperty(countryISO);
-                                    final HitRate hitRate = checkISO9362(msgFieldText);
-                                    if (hitRate != null) {
-                                        // we found an ISO in NCCT
-                                        addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
-                                    }
-                                }
-                            }
-
-                            // userxit for each field 1.time
-                            if (firstIteration) {
-                                final HitRate hitRate = checkFieldSpecific(msgFieldName, msgFieldText);
-
-                                // this is only half baked so far !!!!!
-
+                            if (firstIteration) {// Country check on BIC - ONLY ONCE!!
+                                // String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
+                                // String countryLong = getStreamManager().getReferenceListHandlers().get(NCCTListHandler.getInstance().getListName()).getValues().getProperty(countryISO);
+                                final HitRate hitRate = checkISO9362(msgFieldText);
                                 if (hitRate != null) {
-                                    // (we found an ISO in NCCT)
-                                    // or another user defined hit
+                                    // we found an ISO in NCCT
                                     addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
                                 }
                             }
+                        }
 
-                            msgFieldTokens = TokenTool.getTokenList(longText != null ? msgFieldText + " " + longText : msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(),
-                                    getStreamManager().getMinTokenLen(msgFieldName), getStreamManager().getStopwordList().getValues(), false);
+                        // userxit for each field 1.time
+                        if (firstIteration) {
+                            final HitRate hitRate = checkFieldSpecific(msgFieldName, msgFieldText);
 
-                            messageContent.setTokenizedField(msgFieldName, msgFieldTokens);
+                            // this is only half baked so far !!!!!
+
+                            if (hitRate != null) {
+                                // (we found an ISO in NCCT)
+                                // or another user defined hit
+                                addHitRateResultNCCT(hitRate, analyzeresult, msgFieldName);
+                            }
+                        }
+
+                        msgFieldTokens = TokenTool.getTokenList(longText != null ? msgFieldText + " " + longText : msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(),
+                                getStreamManager().getMinTokenLen(msgFieldName), getStreamManager().getStopwordList().getValues(), false);
+
+                        messageContent.setTokenizedField(msgFieldName, msgFieldTokens);
+                    }
+                    else {
+                        // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 2 !! ");
+                    }
+
+                    // we count different tokenhits to calc relweight
+                    final int diffNameTokenHits[] = new int[searchTokens.size()];
+
+                    for (final String msgFieldToken : msgFieldTokens) {
+
+                        int ixNameTokenHit = 0;
+                        for (final String nameToken : searchTokens) {
+
+                            // check if this combination is not on the NoList list declared as not to check
+                            final boolean isDeclaredAsNoHit = checkIfDeclaredAsNoHit(msgFieldToken, nameToken);
+
+                            if (isDeclaredAsNoHit) {
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("DECLARED AS NOT HIT : " + msgFieldText + ": " + nameToken);
+                                }
+                            }
+                            else {
+
+                                // >>>>> THE COMPARISION <<<<<
+
+                                final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler), getStreamManager().getMinTokenLen(msgFieldName),
+                                        getStreamManager().getFuzzyValue(msgFieldName));
+
+                                // System.out.println(nameToken + " -> " + msgFieldToken + " : " + hitValue);
+
+                                // single fuzzy limit !!
+                                if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(msgFieldName))) {// TODO: this should be on list-base
+                                    totalHitRateRelative += hitValue;
+
+                                    final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entry.getReferencedEntity().getWL_Id(), nameToken, msgFieldName, msgFieldToken,
+                                            (int) hitValue);
+
+                                    // single word hit list if not already in
+                                    if (!analyzeresult.getHitTokensList().contains(swhi)) {
+                                        analyzeresult.getHitTokensList().add(swhi);
+                                    }
+                                    diffNameTokenHits[ixNameTokenHit]++;
+
+                                }
+                                if (hitValue == 100) {
+                                    totalHitRateAbsolute += hitValue;
+                                    // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
+                                    // totalHitRateAbsolute += hitValue;
+                                    // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
+                                }
+                            }
+                            ixNameTokenHit++;
+                        }
+                    }
+
+                    // 1. sum (hit percent of single tokens) / # of tokens
+                    // 2. # of hits / # tokens
+                    // 3. # of contained tokens / # tokens
+
+                    boolean addPhrase = false;
+                    boolean addAbs = false;
+                    boolean addRel = false;
+
+                    // kleineres in größeres wosnsunst...
+                    final int minTokens = Math.min(msgFieldTokens.size(), searchTokens.size());
+
+                    if (minTokens > 0) {
+
+                        // hits for one field
+                        // TODO: this is a dummy implementation
+                        if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(msgFieldName)) {
+
+                            if (logger.isDebugEnabled()) {
+                                final String keys = TokenTool.buildTokenString(searchTokens, " ");
+
+                                logger.debug("RELATIVE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateRelative);
+                            }
+
+                            addRel = true;
+
+                        }
+
+                        if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
+
+                            if (logger.isDebugEnabled()) {
+                                final String keys = TokenTool.buildTokenString(searchTokens, " ");
+
+                                logger.debug("ABSOLUTE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateAbsolute);
+                            }
+
+                            addAbs = true;
+
                         }
                         else {
-                            // if (logger.isDebugEnabled()) logger.debug("---optimized tokenizing 2 !! ");
+                            // if (((totalHitRateAbsolute == 100) &&
+                            // (keyTokens.size() ==1)) ||
+                            // ((totalHitRateAbsolute > 100) &&
+                            // (keyTokens.size() >1)))
+                            // System.out.println(field
+                            // +" <-> "+TokenComparer
+                            // .buildTokenString(keyTokens, " ")
+                            // +totalHitRateAbsolute);
                         }
 
-                        // we count different tokenhits to calc relweight
-                        final int diffNameTokenHits[] = new int[nameTokens.size()];
+                        totalHitRatePhrase = 100 * minTokens;
+                        if (minTokens > 1) {
+                            // eval simple text in text search for
+                            // phrase
+                            // check
+                            // but only if both sides contain more than one token
+                            final boolean contains = TokenTool.checkContains(msgFieldTokens, searchTokens, " ");  // TODO: this is no goood sol in gen
 
-                        for (final String msgFieldToken : msgFieldTokens) {
+                            if (contains) {
 
-                            int ixNameTokenHit = 0;
-                            for (final String nameToken : nameTokens) {
+                                if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
 
-                                // check if this combination is not on the NoList list declared as not to check
-                                final boolean isDeclaredAsNoHit = checkIfDeclaredAsNoHit(msgFieldToken, nameToken);
+                                    logger.debug("PHRASECHECK: " + msgFieldText + ": " + entry.getSearchValue() + " --> " + contains);
 
-                                if (isDeclaredAsNoHit) {
+                                    addPhrase = true;
+                                }
+                            }
+                            else {
+                                totalHitRatePhrase = 0;
+                            }
+                        }
+                        else {
+                            // no Phrase hit
+                        }
+
+                        // add cumulated hit
+                        if ((addAbs) || (addPhrase) || (addRel)) {
+
+                            // remove single word hits which are not relevant
+
+                            final ValueListHandler notSingleWordListHandler = getStreamManager().getNotSingleWordHitList();
+                            int nrOfNotSowords = 0;
+                            if (notSingleWordListHandler != null) {
+                                nrOfNotSowords = TokenTool.compareTokenLists(notSingleWordListHandler.getValues(), searchTokens);
+                            }
+
+                            if ((totalHitRateAbsolute > (nrOfNotSowords * 100)) || (totalHitRateRelative > (nrOfNotSowords * 100)) || (totalHitRatePhrase > (nrOfNotSowords * 100))) {
+
+                                final SanctionHitResult hr = new SanctionHitResult();
+
+                                boolean addHit = true;
+
+                                // check optimizer if we have to cleanup some mess ;-)
+                                if (getStreamManager().getTxNoHitOptimizationListHandler() != null) {
+                                    for (final OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
+                                        if (optimizationRecord.getWatchListName().equals(listhandler.getListName())
+                                                && optimizationRecord.getWatchListId().equals(entry.getReferencedEntity().getWL_Id()) && optimizationRecord.getFieldName().equals(msgFieldName)
+                                                && optimizationRecord.getToken().equals(msgFieldText))
+
+                                        // TODO: make this more
+                                        // versatile !!
+                                        {
+                                            // or remove hit on "Confirmed" level
+                                            if (getStreamManager().getTxNoHitOptimizationListHandler().isAutoDiscardHitsOnConfirmStatus()) {
+                                                // remove it ;-)
+                                                addHit = false;
+                                            }
+                                            else {
+                                                hr.setHitOptimized(optimizationRecord.getStatus());
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (addHit) {
+
+                                    int relWeight = 0;
+                                    for (int i = 0; i < diffNameTokenHits.length; i++) {
+                                        if (diffNameTokenHits[i] != 0) {
+                                            relWeight++;
+                                        }
+                                    }
+
+                                    hr.setHitField(msgFieldName);
+                                    hr.setHitDescripton(entry.getSearchValue());
+                                    hr.setHitListName(listhandler.getListName());
+                                    hr.setHitListPriority(listhandler.getOrderNr());
+                                    hr.setHitId(entry.getReferencedEntity().getWL_Id());
+                                    hr.setHitLegalBasis(entry.getReferencedEntity().getLegalBasis());
+                                    hr.setHitExternalUrl(entry.getReferencedEntity().getInformationUrl());
+                                    hr.setHitType(listhandler.getType());
+                                    hr.setEntityType(entry.getReferencedEntity().getEntityType().getText());
+                                    hr.setHitRemark(entry.getReferencedEntity().getComment());
+
+                                    hr.setAbsolutHit(totalHitRateAbsolute / minTokens);
+                                    hr.setRelativeHit((relWeight * 100) / minTokens);
+                                    hr.setPhraseHit(totalHitRatePhrase / minTokens);
+
+                                    analyzeresult.addHitResult(hr);
+                                }
+                                else {
                                     if (logger.isDebugEnabled()) {
-                                        logger.debug("DECLARED AS NOT HIT : " + msgFieldText + ": " + nameToken);
+                                        logger.debug("Optimizer: " + msgFieldText + " -> " + entry.getSearchValue() + " : hit removed due Confirmed as NOT NEEDED!");
                                     }
-                                }
-                                else {
-
-                                    // >>>>> THE COMPARISION <<<<<
-
-                                    final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler),
-                                            getStreamManager().getMinTokenLen(msgFieldName), getStreamManager().getFuzzyValue(msgFieldName));
-
-                                    // single fuzzy limit !!
-                                    if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(msgFieldName))) {// TODO: this should be on list-base
-                                        totalHitRateRelative += hitValue;
-
-                                        final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entity.getWL_Id(), nameToken, msgFieldName, msgFieldToken, (int) hitValue);
-
-                                        // single word hit list if not already in
-                                        if (!analyzeresult.getHitTokensList().contains(swhi)) {
-                                            analyzeresult.getHitTokensList().add(swhi);
-
-                                            diffNameTokenHits[ixNameTokenHit]++;
-                                        }
-
-                                    }
-                                    if (hitValue == 100) {
-                                        totalHitRateAbsolute += hitValue;
-                                        // hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, false, getStreamManager().getMinTokenLen());
-                                        // totalHitRateAbsolute += hitValue;
-                                        // if (logger.isDebugEnabled()) logger.debug("compare : " + nameToken + " <-> " + msgFieldToken + " (" + hitValue + ")");
-                                    }
-                                }
-                                ixNameTokenHit++;
-                            }
-                        }
-
-                        // 1. sum (hit percent of single tokens) / # of tokens
-                        // 2. # of hits / # tokens
-                        // 3. # of contained tokens / # tokens
-
-                        boolean addPhrase = false;
-                        boolean addAbs = false;
-                        boolean addRel = false;
-
-                        // kleineres in größeres wosnsunst...
-                        final int minTokens = Math.min(msgFieldTokens.size(), nameTokens.size());
-
-                        if (minTokens > 0) {
-
-                            // hits for one field
-                            // TODO: this is a dummy implementation
-                            if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(msgFieldName)) {
-
-                                if (logger.isDebugEnabled()) {
-                                    final String keys = TokenTool.buildTokenString(nameTokens, " ");
-
-                                    logger.debug("RELATIVE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateRelative);
-                                }
-
-                                addRel = true;
-
-                            }
-
-                            if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
-
-                                if (logger.isDebugEnabled()) {
-                                    final String keys = TokenTool.buildTokenString(nameTokens, " ");
-
-                                    logger.debug("ABSOLUTE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateAbsolute);
-                                }
-
-                                addAbs = true;
-
-                            }
-                            else {
-                                // if (((totalHitRateAbsolute == 100) &&
-                                // (keyTokens.size() ==1)) ||
-                                // ((totalHitRateAbsolute > 100) &&
-                                // (keyTokens.size() >1)))
-                                // System.out.println(field
-                                // +" <-> "+TokenComparer
-                                // .buildTokenString(keyTokens, " ")
-                                // +totalHitRateAbsolute);
-                            }
-
-                            totalHitRatePhrase = 100 * minTokens;
-                            if (minTokens > 1) {
-                                // eval simple text in text search for
-                                // phrase
-                                // check
-                                // but only if both sides contain more than one token
-                                final boolean contains = TokenTool.checkContains(msgFieldTokens, nameTokens, " ");  // TODO: this is no goood sol in gen
-
-                                if (contains) {
-
-                                    if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
-
-                                        logger.debug("PHRASECHECK: " + msgFieldText + ": " + name.getWholeName() + " --> " + contains);
-
-                                        addPhrase = true;
-                                    }
-                                }
-                                else {
-                                    totalHitRatePhrase = 0;
                                 }
                             }
                             else {
-                                // no Phrase hit
-                            }
-
-                            // add cumulated hit
-                            if ((addAbs) || (addPhrase) || (addRel)) {
-
-                                // remove single word hits which are not relevant
-
-                                final ValueListHandler notSingleWordListHandler = getStreamManager().getNotSingleWordHitList();
-                                int nrOfNotSowords = 0;
-                                if (notSingleWordListHandler != null) {
-                                    nrOfNotSowords = TokenTool.compareTokenLists(notSingleWordListHandler.getValues(), nameTokens);
-                                }
-
-                                if ((totalHitRateAbsolute > (nrOfNotSowords * 100)) || (totalHitRateRelative > (nrOfNotSowords * 100)) || (totalHitRatePhrase > (nrOfNotSowords * 100))) {
-
-                                    final SanctionHitResult hr = new SanctionHitResult();
-
-                                    boolean addHit = true;
-
-                                    // check optimizer if we have to cleanup some mess ;-)
-                                    if (getStreamManager().getTxNoHitOptimizationListHandler() != null) {
-                                        for (final OptimizationRecord optimizationRecord : getStreamManager().getTxNoHitOptimizationListHandler().getValues()) {
-                                            if (optimizationRecord.getWatchListName().equals(listhandler.getListName()) && optimizationRecord.getWatchListId().equals(entity.getWL_Id())
-                                                    && optimizationRecord.getFieldName().equals(msgFieldName) && optimizationRecord.getToken().equals(msgFieldText))
-
-                                            // TODO: make this more
-                                            // versatile !!
-                                            {
-                                                // or remove hit on "Confirmed" level
-                                                if (getStreamManager().getTxNoHitOptimizationListHandler().isAutoDiscardHitsOnConfirmStatus()) {
-                                                    // remove it ;-)
-                                                    addHit = false;
-                                                }
-                                                else {
-                                                    hr.setHitOptimized(optimizationRecord.getStatus());
-                                                }
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (addHit) {
-
-                                        int relWeight = 0;
-                                        for (int i = 0; i < diffNameTokenHits.length; i++) {
-                                            if (diffNameTokenHits[i] != 0) {
-                                                relWeight++;
-                                            }
-                                        }
-
-                                        hr.setHitField(msgFieldName);
-                                        hr.setHitDescripton(name.getWholeName());
-                                        hr.setHitListName(listhandler.getListName());
-                                        hr.setHitListPriority(listhandler.getOrderNr());
-                                        hr.setHitId(entity.getWL_Id());
-                                        hr.setHitLegalBasis(entity.getLegalBasis());
-                                        hr.setHitExternalUrl(entity.getInformationUrl());
-                                        hr.setHitType(listhandler.getType());
-                                        hr.setEntityType(entity.getEntityType().getText());
-                                        hr.setHitRemark(entity.getComment());
-
-                                        hr.setAbsolutHit(totalHitRateAbsolute / minTokens);
-                                        hr.setPhraseHit(totalHitRatePhrase / minTokens);
-                                        hr.setRelativeHit((relWeight / minTokens) * 100);
-
-                                        analyzeresult.addHitResult(hr);
-                                    }
-                                    else {
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("Optimizer: " + msgFieldText + " -> " + name.getWholeName() + " : hit removed due Confirmed as NOT NEEDED!");
-                                        }
-                                    }
-                                }
-                                else {
-                                    // if (logger.isDebugEnabled()) {
-                                    // logger.debug("NSWH: " + msgFieldText + ": hit removed due to single word hit!");
-                                    // }
-                                }
+                                // if (logger.isDebugEnabled()) {
+                                // logger.debug("NSWH: " + msgFieldText + ": hit removed due to single word hit!");
+                                // }
                             }
                         }
-                        else {
-                            // System.out.println("leereListe breakpoint");
-                        }
+                    }
+                    else {
+                        // System.out.println("leereListe breakpoint");
                     }
                 }
             }

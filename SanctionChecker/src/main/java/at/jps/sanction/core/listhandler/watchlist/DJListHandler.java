@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,10 +41,13 @@ import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
 import at.jps.sanction.core.util.country.CountryCodeConverter;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_Address;
 import at.jps.sanction.model.wl.entities.WL_Attribute;
 import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntityType;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntryCategory;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
 
@@ -59,7 +63,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
     private HashMap<String, String> monthTxt;
 
     {
-        monthTxt = new HashMap<String, String>();
+        monthTxt = new HashMap<>();
 
         monthTxt.put("Jan", "01");
         monthTxt.put("Feb", "02");
@@ -269,7 +273,7 @@ public class DJListHandler extends SanctionListHandlerImpl {
                                     birthInfo.setCountry(ISOCtry);
                                 }
 
-                                System.out.println("place:" + birthInfo.getPlace() + " - " + birthInfo.getCountry());
+                                // System.out.println("place:" + birthInfo.getPlace() + " - " + birthInfo.getCountry());
                                 break;
                             }
                         }
@@ -405,6 +409,93 @@ public class DJListHandler extends SanctionListHandlerImpl {
         }
     }
 
+    @Override
+    public List<SL_Entry> buildSearchListEntries(final String topicName, WL_Entity entity) {
+        List<SL_Entry> entries = null;
+        switch (topicName) {
+            case "EmbargoPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "PepPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoEntityNames":
+                if ((entity.getEntityType().equals(EntityType.ENTITY) || entity.getEntityType().equals(EntityType.OTHER)) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoVesselNames":
+                if (entity.getEntityType().equals(EntityType.TRANSPORT) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+            case "PepPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+        return entries;
+    }
+
     public void buildEntityList(final PFA pfa) {
 
         for (final PFA.Records records : pfa.getRecords()) {
@@ -427,8 +518,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
                         entity.setIssueDate(pfaPerson.getDate());
                         entity.setComment(pfaPerson.getProfileNotes());
 
-                        addWLEntry(entity);
-
                         addBirthInfo(pfa, entity, pfaPerson.getDateDetails(), pfaPerson.getBirthPlace());
 
                         addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
@@ -438,6 +527,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
                         addAddress(pfa, entity, pfaPerson.getAddress());
 
                         addIDs(entity, pfaPerson.getIDNumberTypes());
+
+                        addWLEntry(entity);
                     }
                 }
             }
@@ -459,8 +550,6 @@ public class DJListHandler extends SanctionListHandlerImpl {
                         entity.setIssueDate(pfaEntity.getDate());
                         entity.setComment(pfaEntity.getProfileNotes());
 
-                        addWLEntry(entity);
-
                         addCompanyAddress(pfa, entity, pfaEntity.getCompanyDetails());
 
                         addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
@@ -480,6 +569,8 @@ public class DJListHandler extends SanctionListHandlerImpl {
                             // vd.getVesselType()
                             // }
                         }
+
+                        addWLEntry(entity);
                     }
                 }
             }

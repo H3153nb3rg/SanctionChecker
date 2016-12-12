@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -24,8 +26,11 @@ import org.slf4j.LoggerFactory;
 import at.jps.sanction.core.list.eu.WHOLE;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
 import at.jps.sanction.core.util.country.CountryCodeConverter;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntityType;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntryCategory;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
 
@@ -36,6 +41,93 @@ public class EUListHandler extends SanctionListHandlerImpl {
     private static final Logger logger   = LoggerFactory.getLogger(EUListHandler.class);
 
     private static WHOLE        whole;
+
+    @Override
+    public List<SL_Entry> buildSearchListEntries(final String topicName, WL_Entity entity) {
+        List<SL_Entry> entries = null;
+        switch (topicName) {
+            case "EmbargoPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "PepPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoEntityNames":
+                if ((entity.getEntityType().equals(EntityType.ENTITY) || entity.getEntityType().equals(EntityType.OTHER)) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoVesselNames":
+                if (entity.getEntityType().equals(EntityType.TRANSPORT) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+            case "PepPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+        return entries;
+    }
 
     public void buildEntityList(final WHOLE whole) {
 
@@ -58,7 +150,6 @@ public class EUListHandler extends SanctionListHandlerImpl {
                     final WL_Entity entity = new WL_Entity();
 
                     entity.setWL_Id(wentity.getId());
-                    addWLEntry(entity);
 
                     if (wentity.getType().equalsIgnoreCase("P")) {
                         entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
@@ -87,13 +178,18 @@ public class EUListHandler extends SanctionListHandlerImpl {
                         }
                         birthInfo.setPlace(birth.getPLACE());
 
-                        // it is like 1924-02-21...
-                        birthInfo.setYear(birth.getDATE().substring(0, 4));
-                        birthInfo.setMonth(birth.getDATE().substring(5, 7));
-                        birthInfo.setDay(birth.getDATE().substring(8));
+                        try {
+                            // it is like 1924-02-21...
+                            birthInfo.setYear(birth.getDATE().substring(0, 4));
+                            birthInfo.setMonth(birth.getDATE().substring(5, 7));
+                            birthInfo.setDay(birth.getDATE().substring(8));
 
-                        entity.setBirthday(birthInfo);
-
+                            entity.setBirthday(birthInfo);
+                        }
+                        catch (final Exception x) {
+                            System.err.println("Birthday parsing failed! : " + birth.getDATE());
+                            logger.error("Birthday parsing failed! : " + birth.getDATE());
+                        }
                         // Date date;
                         // try {
                         // date = sdf.parse(birth.getDATE());
@@ -160,6 +256,8 @@ public class EUListHandler extends SanctionListHandlerImpl {
 
                     // System.out.println(entity.getId() + ":" +
                     // line.toString());
+
+                    addWLEntry(entity);
                 }
 
             }

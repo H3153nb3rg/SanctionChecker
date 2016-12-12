@@ -207,7 +207,7 @@ public class LoginView extends LoginForm implements View {
     // Button button = new Button("Log In", new Button.ClickListener() {
     // @Override
     // public void buttonClick(ClickEvent event) {
-    // getUI().getNavigator().navigateTo(HitHandlingView.ViewName);
+    // getUI().getNavigator().navigateTo(HitHandlingCoreView.ViewName);
     // }
     // });
     // return button;

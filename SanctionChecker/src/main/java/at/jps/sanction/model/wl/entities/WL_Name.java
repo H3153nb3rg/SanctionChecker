@@ -1,7 +1,6 @@
 package at.jps.sanction.model.wl.entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -13,19 +12,17 @@ public class WL_Name extends BaseModel implements Serializable {
     /**
      *
      */
-    private static final long      serialVersionUID = -3439411802913057378L;
+    private static final long serialVersionUID = -3439411802913057378L;
 
-    private String                 firstName;
-    private String                 middleName;
-    private String                 LastName;
-    private String                 wholeName;
+    private String            firstName;
+    private String            middleName;
+    private String            LastName;
+    private String            wholeName;
 
-    private String                 description;
+    private String            description;
 
-    private boolean                aka;
-    private boolean                waka;
-
-    transient private List<String> tokenizedNames;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // Helper
+    private boolean           aka;
+    private boolean           waka;
 
     public WL_Name() {
         super();
@@ -65,10 +62,6 @@ public class WL_Name extends BaseModel implements Serializable {
         return LastName;
     }
 
-    public List<String> getTokenizedNames() {
-        return tokenizedNames;
-    }
-
     public String getWholeName() {
         return wholeName;
     }
@@ -95,10 +88,6 @@ public class WL_Name extends BaseModel implements Serializable {
 
     public void setLastName(final String lastName) {
         LastName = lastName;
-    }
-
-    public void setTokenizedNames(final List<String> tokenizedNames) {
-        this.tokenizedNames = tokenizedNames;
     }
 
     public void setWaka(final boolean waka) {

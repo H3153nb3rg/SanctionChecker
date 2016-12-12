@@ -1,5 +1,6 @@
 package at.jps.slcm;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -7,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.vaadin.sliderpanel.SliderPanel;
 import org.vaadin.sliderpanel.SliderPanelBuilder;
 import org.vaadin.sliderpanel.SliderPanelStyles;
@@ -45,7 +47,7 @@ import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sl.gui.AdapterHelper;
 import at.jps.sl.gui.util.GUIConfigHolder;
 import at.jps.slcm.gui.components.UIHelper;
-import at.jps.slcm.gui.views.HitHandlingView;
+import at.jps.slcm.gui.views.HitHandlingCoreView;
 import at.jps.slcm.gui.views.ListSearchView;
 import at.jps.slcm.gui.views.LoginView;
 import at.jps.slcm.gui.views.OptiTxListView;
@@ -87,7 +89,7 @@ public class SlcmUI extends UI {
     CssLayout                                   menu            = new CssLayout();
     CssLayout                                   menuItemsLayout = new CssLayout();
 
-    private final LinkedHashMap<String, String> menuItems       = new LinkedHashMap<String, String>();
+    private final LinkedHashMap<String, String> menuItems       = new LinkedHashMap<>();
 
     private boolean                             testMode        = false;
 
@@ -136,10 +138,29 @@ public class SlcmUI extends UI {
     protected void init(final VaadinRequest request) {
 
         if (!initialized) {
-            @SuppressWarnings("resource")
-            final ApplicationContext context = new ClassPathXmlApplicationContext("SanctionChecker.xml");
-            initialized = true;
 
+            // is there a path (CHECKER_PATH) defined ?
+            final String path = System.getProperty("CHECKER_CONFIG_PATH");
+
+            String configFilename = System.getProperty("CHECKER_CONFIG_FILENAME", "SanctionChecker.xml").trim();
+
+            ApplicationContext context = null;
+            if (path != null) {
+                configFilename = path + File.separator + configFilename;
+
+                try {
+                    context = new FileSystemXmlApplicationContext(configFilename);
+                    initialized = true;
+                }
+                catch (final Exception x) {
+                    System.err.println("filebased config not found: " + configFilename);
+                }
+            }
+
+            if (!initialized) {
+                context = new ClassPathXmlApplicationContext(configFilename);
+                initialized = true;
+            }
             context.getBean("EntityManagement");
 
             final GUIConfigHolder config = (GUIConfigHolder) context.getBean("GUIConfig");
@@ -243,16 +264,17 @@ public class SlcmUI extends UI {
 
     private void addViews() {
 
-        final HitHandlingView hhv = new HitHandlingView(guiAdapter);
-        navigator.addView(HitHandlingView.ViewName, hhv);
+        final HitHandlingCoreView hhv = new HitHandlingCoreView(guiAdapter);
+
+        navigator.addView(HitHandlingCoreView.ViewName, hhv);
         navigator.addView(ListSearchView.ViewName, new ListSearchView(guiAdapter));
 
-        final StreamOverviewView sov = new StreamOverviewView(guiAdapter, HitHandlingView.ViewName);
+        final StreamOverviewView sov = new StreamOverviewView(guiAdapter, HitHandlingCoreView.ViewName);
 
         navigator.addView(StreamOverviewView.ViewName, sov);
 
         menuItems.put(StreamOverviewView.ViewName, "Stream Overview");
-        menuItems.put(HitHandlingView.ViewName, "Case Management");
+        menuItems.put(HitHandlingCoreView.ViewName, "Case Management");
         menuItems.put(ListSearchView.ViewName, "Search in Watchlists");
 
         // add valueLists

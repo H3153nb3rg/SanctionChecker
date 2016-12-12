@@ -11,7 +11,8 @@
 
 	<!--  default field config    -->
     <bean id="defaultFieldConfig-SWIFT" class="at.jps.sanction.model.FieldCheckConfig" >
-   		<property name="fieldName" value="default" />
+   
+        <property name="fieldName" value="default" />
    		<property name="fuzzy" value="true" />     
    		
    		<property name="handleAsIBAN" value="false" />
@@ -26,9 +27,10 @@
 		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
 		<property name="fuzzyVal" value="20"/>		
    		
-   				
-   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
-   		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
+<!--    				
+   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>
+   		<property name="entityType" value="Transport,Individual,Entity"/>  
+    		
    		<property name="watchlists">
    		    <list>
    		        <value>OFAC</value>
@@ -40,11 +42,16 @@
    		        
    		    </list>    
    		</property>
+-->
 		   		
     </bean>    
    
 	<bean id="StreamConfig-SWIFT" class="at.jps.sanction.domain.SanctionStreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
 	
+	    <!-- general field checking rules -->
+	    <property name="fieldConfigFileName" value="${Config.Folder}/SWIFT-FieldSpec.csv"/>
+	    
+	    
 		<!-- fields & fuzziness    -->
 		<!-- mapping to watchlists -->
 		<!-- BICCode check etc     -->

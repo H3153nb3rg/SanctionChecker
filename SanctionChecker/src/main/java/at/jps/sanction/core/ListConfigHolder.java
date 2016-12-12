@@ -1,15 +1,18 @@
 package at.jps.sanction.core;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.lucene.store.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import at.jps.sanction.core.util.string.LuceneIndex;
 import at.jps.sanction.model.listhandler.ReferenceListHandler;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.listhandler.ValueListHandler;
@@ -58,7 +61,7 @@ public class ListConfigHolder implements ApplicationContextAware {
     }
 
     public void setReferenceLists(final List<ReferenceListHandler> referenceListHandlers) {
-        referenceLists = new HashMap<String, ReferenceListHandler>();
+        referenceLists = new HashMap<>();
 
         for (final ReferenceListHandler rlh : referenceListHandlers) {
             referenceLists.put(rlh.getListName(), rlh);
@@ -66,7 +69,7 @@ public class ListConfigHolder implements ApplicationContextAware {
     }
 
     public void setWatchLists(final List<SanctionListHandler> sanctionListHandlers) {
-        watchLists = new HashMap<String, SanctionListHandler>();
+        watchLists = new HashMap<>();
 
         for (final SanctionListHandler slh : sanctionListHandlers) {
             watchLists.put(slh.getListName(), slh);
@@ -74,7 +77,7 @@ public class ListConfigHolder implements ApplicationContextAware {
     }
 
     public void setValueLists(final List<ValueListHandler> valueListHandlers) {
-        valueLists = new HashMap<String, ValueListHandler>();
+        valueLists = new HashMap<>();
 
         for (final ValueListHandler vlh : valueListHandlers) {
             valueLists.put(vlh.getListName(), vlh);
@@ -130,6 +133,7 @@ public class ListConfigHolder implements ApplicationContextAware {
                 @Override
                 public void run() {
                     lh.initialize();
+                    lh.initDone();  // post initialization phase
 
                     reflatch.countDown();
                     logger.info(lh.getListName() + " latched down... " + reflatch.getCount());
@@ -139,6 +143,23 @@ public class ListConfigHolder implements ApplicationContextAware {
 
         try {
             reflatch.await();
+
+            final HashMap<String, Directory> lucyDirs = LuceneIndex.getSearchIndices();
+
+            for (final String key : lucyDirs.keySet()) {
+
+                final Directory dir = lucyDirs.get(key);
+                try {
+                    for (final String entry : dir.listAll()) {
+                        System.out.println("LUCY: " + entry);
+                    }
+                }
+                catch (final IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
         }
         catch (final InterruptedException e) {
             logger.error("Loading Lists background job sync failed!!");
@@ -146,5 +167,7 @@ public class ListConfigHolder implements ApplicationContextAware {
         }
 
         logger.info("Loading Lists done");
+        logger.info("Lists Configuration finished successfully!!");
+        logger.info("-------------------------------------------");
     }
 }

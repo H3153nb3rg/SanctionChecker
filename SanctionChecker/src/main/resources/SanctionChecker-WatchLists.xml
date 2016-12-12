@@ -10,13 +10,24 @@
 		<property name="histPath" value="${WatchlistsHist.Folder}"/>		
 		<property name="useSysProxy" value="true"	   	 />		
 		
-		<property name="delimiters" value=";,., ,(,),$,.,',[,]"/>
+		<property name="delimiters" value=";,., ,(,),$,.,',[,],/"/>
 		<property name="deadCharacters" value=";,?,|,(,),$,.,'"/>
 				
 		<property name="fuzzySearch" value="true"/>
 		<property name="fourEyesPrinciple" value="true"/>
 		<property name="loadWeak" value="false"/>
-		<property name="loadNonPrimary" value="true"/>		
+		<property name="loadNonPrimary" value="true"/>	
+		
+		<!-- shorter tokens are not checked  -->
+		<property name="minTokenLen" value="2"/>
+		<!-- min % match of single token to count as hit -->
+		<property name="minRelVal" value="79"/>
+		<property name="minAbsVal" value="60"/>		
+		
+		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
+		<property name="fuzzyVal" value="20"/>		
+		
+			
 	</bean>
    
    <bean id="OFACList" class="at.jps.sanction.core.listhandler.watchlist.OFAC_ASDM_ListHandler" parent="GlobalListConfig" scope="singleton">
@@ -29,7 +40,15 @@
 			
 		<property name="listCategory" value="Embargo"/>
 		<property name="listType" value="SL"/>
-			
+	
+		<property name="searchListNames">
+   		    <list>
+   		        <value>EmbargoPersonNames</value>
+   		        <value>EmbargoEntityNames</value>
+   		        <value>EmbargoVesselNames</value>
+   		    </list>    
+   		</property>
+	
 	</bean>
    
    <bean id="EUList" class="at.jps.sanction.core.listhandler.watchlist.EUListHandler" parent="GlobalListConfig" scope="singleton">
@@ -42,6 +61,14 @@
 		<property name="listCategory" value="Embargo"/>
 		<property name="listType" value="SL"/>
 			
+		<property name="searchListNames">
+   		    <list>
+   		        <value>EmbargoPersonNames</value>
+   		        <value>EmbargoEntityNames</value>
+   		        <value>EmbargoVesselNames</value>
+   		    </list>    
+   		</property>
+		
 	</bean>
 	   
    <bean id="INDSANList" class="at.jps.sanction.core.listhandler.watchlist.INDSANListHandler" parent="GlobalListConfig" scope="singleton">
@@ -52,6 +79,12 @@
 			
 		<property name="listCategory" value="Embargo"/>
 		<property name="listType" value="SAN"/>
+		
+		<property name="searchListNames">
+   		    <list>
+   		        <value>EmbargoPersonNames</value>
+   		    </list>    
+   		</property>
 			
 	</bean>
    
@@ -72,7 +105,14 @@
 		<property name="listType" value="PEP"/>
 		
 		<property name="loadDescription1" value="1,2"/>
-			
+
+		<property name="searchListNames">
+   		    <list>
+   		        <value>PepPersonNames</value>
+   		    </list>    
+   		</property>
+
+		
 	</bean>
     
     <bean id="FACSAN" class="at.jps.sanction.core.listhandler.watchlist.DJListHandler" parent="GlobalListConfig" >
@@ -93,7 +133,17 @@
 		<property name="listType" value="SL"/>
 		
 		<property name="loadDescription1" value="3,4"/>
-			
+
+		<property name="searchListNames">
+   		    <list>
+   		        <value>EmbargoPersonNames</value>
+   		        <value>EmbargoEntityNames</value>
+   		        <value>EmbargoVesselNames</value>
+   		    </list>    
+   		</property>
+
+
+		
 	</bean>
 
         <bean id="PANAMALeak" class="at.jps.sanction.core.listhandler.watchlist.PanamaListHandler" parent="GlobalListConfig" >

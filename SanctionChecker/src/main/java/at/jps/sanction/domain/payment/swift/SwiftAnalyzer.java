@@ -34,7 +34,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
         if (messageContent == null) {
             messageContent = new MessageContent();
 
-            final HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
+            final HashMap<String, String> fieldsAndValues = new HashMap<>();
             messageContent.setFieldsAndValues(fieldsAndValues);
 
             final String msgText = message.getRawContent();
@@ -48,7 +48,7 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
 
                     // add business XT ID to Message
 
-                    if (msgFieldName.contentEquals("20")) {
+                    if (msgFieldName.contentEquals("20")) {  // TODO: this is not generic enough !!
                         if (message instanceof SwiftMessage) {
                             ((SwiftMessage) message).setBusinessId(msgFieldText.trim());
                         }

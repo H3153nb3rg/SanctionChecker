@@ -6,10 +6,16 @@
 
 	<!-- leverage config -->
 	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+	    <!-- property name="searchSystemEnvironment" value="true" /-->
+    	<!-- property name="searchContextAttributes" value="true" /-->
+    	<!-- property name="contextOverride" value="true" /-->
+    	<property name="ignoreResourceNotFound" value="true" />
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
 		<property name="locations">
 			<list>
+			    <value>file:///${CHECKER_CONFIG_PATH}/SanctionChecker.properties</value>
 			    <!-- define environment variables here -->
-			    <value>classpath:checker.properties</value>
+			    <value>classpath:SanctionChecker.properties</value>
 			    <!-- value>C:\Java\git\SanctionChecker\SanctionChecker\src\main\resources\checker.properties</value-->			    
 				<!--  value>checker.properties</value-->
 			</list>

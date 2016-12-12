@@ -8,6 +8,7 @@
  *******************************************************************************/
 package at.jps.sanction.core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -223,6 +224,14 @@ public class Checker {
         if (args.length > 0) {
             configFilename = args[0];
             try {
+
+                // is there a path (CHECKER_PATH) defined ?
+                final String path = System.getProperty("CHECKER_CONFIG_PATH");
+
+                if (path != null) {
+                    configFilename = path + File.separator + configFilename;
+                }
+
                 context = new FileSystemXmlApplicationContext(configFilename);
                 initialized = true;
             }

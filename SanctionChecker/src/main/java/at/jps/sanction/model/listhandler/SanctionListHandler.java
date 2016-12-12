@@ -9,7 +9,9 @@
 package at.jps.sanction.model.listhandler;
 
 import java.util.List;
+import java.util.Map;
 
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 
 public interface SanctionListHandler {
@@ -40,6 +42,8 @@ public interface SanctionListHandler {
 
     public void initialize();
 
+    public void initDone();
+
     public void setOrderNr(int id);
 
     public void setSeverity(int severity);
@@ -47,4 +51,23 @@ public interface SanctionListHandler {
     public boolean isFuzzySearch();
 
     public boolean isFourEyesPrinciple();
+
+    Map<String, List<SL_Entry>> getSearchLists();
+
+    public int getMinTokenLen();
+
+    public void setMinTokenLen(int minTokenLen);
+
+    public int getMinRelVal();
+
+    public void setMinRelVal(int minRelVal);
+
+    public int getMinAbsVal();
+
+    public void setMinAbsVal(int minAbsVal);
+
+    public double getFuzzyVal();
+
+    public void setFuzzyVal(int fuzzyVal);
+
 }

@@ -107,7 +107,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
         if (messageContent == null) {
             messageContent = new MessageContent();
 
-            final HashMap<String, String> fieldsAndValues = new HashMap<String, String>();
+            final HashMap<String, String> fieldsAndValues = new HashMap<>();
             messageContent.setFieldsAndValues(fieldsAndValues);
 
             final String msgText = message.getRawContent();
@@ -158,8 +158,8 @@ public class PersonAnalyzer extends AnalyzerWorker {
 
                 final String msgFieldText = messageContent.getFieldsAndValues().get(PersonMessage.fieldNames[3]);  // "wholename"
 
-                final List<String> msgFieldTokens = TokenTool.getTokenList(msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(), getStreamManager().getMinimumTokenLen(),
-                        getStreamManager().getStopwordList().getValues(), false);
+                final List<String> msgFieldTokens = TokenTool.getTokenList(msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(),
+                        getStreamManager().getMinTokenLen(listhandler.getListName()), getStreamManager().getStopwordList().getValues(), false);
 
                 for (final WL_Entity entity : listhandler.getEntityList()) {
                     for (final WL_Name name : entity.getNames()) {

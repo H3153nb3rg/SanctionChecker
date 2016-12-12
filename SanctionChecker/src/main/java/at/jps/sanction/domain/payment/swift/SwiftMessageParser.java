@@ -11,6 +11,7 @@ package at.jps.sanction.domain.payment.swift;
 // see http://www-01.ibm.com/support/knowledgecenter/SSBTEG_4.3.0/com.ibm.wbia_adapters.doc/doc/swift/swift72.htm%23HDRI1023624
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class SwiftMessageParser {
         String                          id;
 
         Hashtable<String, String>       fields;
-        Hashtable<String, List<String>> tokenizedfields = new Hashtable<String, List<String>>();
+        Hashtable<String, List<String>> tokenizedfields = new Hashtable<>();
 
         MessageBlock(final String tx) {
 
@@ -38,7 +39,7 @@ public class SwiftMessageParser {
         public Hashtable<String, String> getFields() {
 
             if (fields == null) {
-                fields = new Hashtable<String, String>();
+                fields = new Hashtable<>();
             }
 
             return fields;
@@ -53,6 +54,8 @@ public class SwiftMessageParser {
          * :54A:CRESCHZZ :56A:CHASUS33 :57A:DEUTDEFF :59A:DEUTDEFF :71A:SHA -}
          */
         void parseMsgBlock() {
+
+            final HashMap<String, Integer> fieldCounters = new HashMap<>();
 
             String field = null;
             int startPos = swiftTxMsgBlock.indexOf(":");
@@ -85,6 +88,25 @@ public class SwiftMessageParser {
                 // TODO: ----> this relies in the fact that "." is handled as deadcharacter later on!!
 
                 // getFields().put(field, content.trim().replaceAll("[\\\n|\\\r]", ".").replaceAll("\\s+", " "));
+
+                if (getFields().containsKey(field)) {
+                    Integer counter = null;
+                    if (fieldCounters.containsKey(field)) {
+
+                        counter = fieldCounters.get(field);
+                    }
+                    else {
+                        // new counter
+                        fieldCounters.put(field, new Integer(0));
+                    }
+
+                    field = field + String.format("-%02X", counter);
+
+                    counter++;
+
+                    fieldCounters.put(field, counter);
+                }
+
                 getFields().put(field, content.trim().replaceAll("\\s+", " "));
 
                 startPos = endPos + 1;
@@ -135,7 +157,7 @@ public class SwiftMessageParser {
         int startPos = -1;
         int endPos = -1;
 
-        final ArrayList<MessageBlock> msgBlocks = new ArrayList<MessageBlock>();
+        final ArrayList<MessageBlock> msgBlocks = new ArrayList<>();
 
         while (true) {
             startPos = message.indexOf("{", startPos + 1);

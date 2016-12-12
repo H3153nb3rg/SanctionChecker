@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.FileUtils;
@@ -18,35 +20,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.io.db.DBHelper;
+import at.jps.sanction.core.util.string.LuceneIndex;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_Entity;
 
 public abstract class SanctionListHandlerImpl extends BaseFileHandler implements SanctionListHandler {
 
-    static final Logger                logger            = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
+    static final Logger                 logger            = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
 
-    private String                     delimiters        = " ";
-    private String                     deadCharacters    = "";
-    private String                     listType          = "";
-    private String                     listCategory      = "";
+    private String                      delimiters        = " ";
+    private String                      deadCharacters    = "";
+    private String                      listType          = "";
+    private String                      listCategory      = "";
 
-    private String                     description;
-    private int                        orderId           = 0;
-    private int                        severity          = 0;
+    private String                      description;
+    private int                         orderId           = 0;
+    private int                         severity          = 0;
 
-    private boolean                    fuzzySearch       = false;
-    private boolean                    fourEyesPrinciple = false;
-    private boolean                    useSysProxy       = true;
+    private boolean                     fuzzySearch       = false;
+    private boolean                     fourEyesPrinciple = false;
+    private boolean                     useSysProxy       = true;
 
-    boolean                            loadWeak          = false;
-    boolean                            loadNonPrimary    = true;
+    boolean                             loadWeak          = false;
+    boolean                             loadNonPrimary    = true;
 
-    private String                     httpUser;
-    private String                     httpPwd;
+    private String                      httpUser;
+    private String                      httpPwd;
 
-    private List<WL_Entity>            entityList;
+    private List<WL_Entity>             entityList;
 
-    private HashMap<String, WL_Entity> entityListSortedById;
+    private Map<String, WL_Entity>      entityListSortedById;
+
+    private List<String>                searchListNames;
+
+    private Map<String, List<SL_Entry>> searchLists;
+
+    // ----------------------
+    // ----- search settings
+
+    // <!-- shorter tokens are not checked -->
+    int                                 minTokenLen       = 2;
+
+    // <!-- min % match of single token to count as hit -->
+    int                                 minRelVal         = 79;
+    int                                 minAbsVal         = 60;
+
+    // <!-- % * minTokenlen == Threshold ( fuzzy abort) -->
+    double                              fuzzyVal          = 20;
+
+    // ----------------------
 
     protected void archiveFile(final String filename, final String targetDir, final String targetfilename) {
 
@@ -74,12 +97,12 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         }
     }
 
-    static class MyAuthenticator extends Authenticator {
+    static class MyHTTPAuthenticator extends Authenticator {
 
         String username;
         String pwd;
 
-        public MyAuthenticator(final String username, final String pwd) {
+        public MyHTTPAuthenticator(final String username, final String pwd) {
             super();
             this.username = username;
             this.pwd = pwd;
@@ -113,7 +136,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
             // if usr/pwd is set just do
             if ((getHttpUser() != null) && (getHttpPwd() != null)) {
-                Authenticator.setDefault(new MyAuthenticator(getHttpUser(), getHttpPwd()));
+                Authenticator.setDefault(new MyHTTPAuthenticator(getHttpUser(), getHttpPwd()));
             }
 
             FileUtils.copyURLToFile(new URL(url), targetfile);
@@ -188,6 +211,22 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
         // fourEyesPrinciple = Boolean.parseBoolean(properties.getProperty(PropertyKeys.PROP_LIST_DEF + "." + name + ".4eyesprinciple", "false"));
 
+    }
+
+    @Override
+    public void initDone() {
+        // at this point the lists are loaded - now we start with our post processing
+
+        // now we try to add this stuff to the lucy index
+
+        final LuceneIndex li = new LuceneIndex();
+
+        for (final String topicName : getSearchListNames()) {
+
+            if (getSearchLists().get(topicName) != null) {
+                li.buildIndex(topicName, getSearchLists().get(topicName));
+            }
+        }
     }
 
     @Override
@@ -292,10 +331,10 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         this.fuzzySearch = fuzzySearch;
     }
 
-    protected HashMap<String, WL_Entity> getEntityListSortedById() {
+    protected Map<String, WL_Entity> getEntityListSortedById() {
 
         if (entityListSortedById == null) {
-            entityListSortedById = new HashMap<String, WL_Entity>();
+            entityListSortedById = new HashMap<>();
         }
 
         return entityListSortedById;
@@ -311,7 +350,45 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
         getEntityList().add(entity);
         getEntityListSortedById().put(entity.getWL_Id(), entity);
+
+        // split to simple core searchlists
+        for (final String topicName : getSearchListNames()) {
+
+            try {
+                final List<SL_Entry> slEntries = buildSearchListEntries(topicName, entity);
+
+                if (slEntries != null) {
+
+                    for (final SL_Entry slEntry : slEntries) {
+
+                        slEntry.setReferencedEntity(entity);
+                        try {
+
+                            List<SL_Entry> searchList = getSearchLists().get(topicName);
+
+                            if (searchList == null) {
+                                searchList = new ArrayList<>();
+                                getSearchLists().put(topicName, searchList);
+                            }
+
+                            searchList.add(slEntry);
+                        }
+                        catch (final Exception x) {
+                            System.err.println("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName());
+                            logger.error("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName(), x);
+                        }
+                    }
+                }
+            }
+            catch (final Exception x) {
+                System.err.println("Configuration error: TopicName: " + topicName + " to List " + getListName());
+                logger.error("Configuration error: TopicName: " + topicName + " to List " + getListName(), x);
+
+            }
+        }
     }
+
+    public abstract List<SL_Entry> buildSearchListEntries(final String topicName, WL_Entity entity);
 
     @Override
     public WL_Entity getEntityById(final String wl_id) {
@@ -322,7 +399,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
     public List<WL_Entity> getEntityList() {
 
         if (entityList == null) {
-            entityList = new ArrayList<WL_Entity>();
+            entityList = new ArrayList<>();
         }
 
         return entityList;
@@ -364,6 +441,67 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     public void setListCategory(String listCategory) {
         this.listCategory = listCategory;
+    }
+
+    public List<String> getSearchListNames() {
+        return searchListNames;
+    }
+
+    public void setSearchListNames(List<String> searchListNames) {
+        this.searchListNames = searchListNames;
+    }
+
+    @Override
+    public Map<String, List<SL_Entry>> getSearchLists() {
+
+        if (searchLists == null) {
+            searchLists = new LinkedHashMap<>();
+        }
+        return searchLists;
+    }
+
+    public void setSearchLists(HashMap<String, List<SL_Entry>> searchLists) {
+        this.searchLists = searchLists;
+    }
+
+    @Override
+    public int getMinTokenLen() {
+        return minTokenLen;
+    }
+
+    @Override
+    public void setMinTokenLen(int minTokenLen) {
+        this.minTokenLen = minTokenLen;
+    }
+
+    @Override
+    public int getMinRelVal() {
+        return minRelVal;
+    }
+
+    @Override
+    public void setMinRelVal(int minRelVal) {
+        this.minRelVal = minRelVal;
+    }
+
+    @Override
+    public int getMinAbsVal() {
+        return minAbsVal;
+    }
+
+    @Override
+    public void setMinAbsVal(int minAbsVal) {
+        this.minAbsVal = minAbsVal;
+    }
+
+    @Override
+    public double getFuzzyVal() {
+        return fuzzyVal;
+    }
+
+    @Override
+    public void setFuzzyVal(int fuzzyVal) {
+        this.fuzzyVal = fuzzyVal / 100;
     }
 
 }

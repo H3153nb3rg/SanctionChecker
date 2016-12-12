@@ -20,7 +20,17 @@
 				<entry key="Person" value-ref="StreamConfig-PERS"/>			
 			</map>
 		</property>
+
+		<!--  property name="streamWebView">
+		    <map>
+		        <entry key="Swift" value-ref="Classname-SWIFT"/>
+		        <entry key="Sepa" value-ref="Classname-SEPA"/>			
+				<entry key="Person" value-ref="Classname-PERS"/>			
+			</map>
+		</property-->
 		
+		
+				
 		<!-- field colors -->
 		<property name="fieldColors" >
 			<map>

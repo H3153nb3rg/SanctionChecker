@@ -98,25 +98,25 @@ public class StreamManager implements Runnable {
         return null;
     }
 
-    public int getMinAbsVal(final String fieldname) {
-        return streamConfig.getMinAbsVal(fieldname, false);
+    public int getMinAbsVal(final String listname) {
+        return listConfig.getWatchListByName(listname).getMinAbsVal();
     }
 
-    public int getMinRelVal(final String fieldname) {
-        return streamConfig.getMinRelVal(fieldname, false);
+    public int getMinRelVal(final String listname) {
+        return listConfig.getWatchListByName(listname).getMinRelVal();
     }
 
-    public int getMinTokenLen(final String fieldname) {
-        return streamConfig.getMinTokenLen(fieldname, false);
+    public int getMinTokenLen(final String listname) {
+        return listConfig.getWatchListByName(listname).getMinTokenLen();
     }
 
-    public double getFuzzyValue(final String fieldname) {
-        return streamConfig.getFuzzyValue(fieldname, false);
+    public double getFuzzyValue(final String listname) {
+        return listConfig.getWatchListByName(listname).getFuzzyVal();
     }
 
-    public int getMinimumTokenLen() {
-        return streamConfig.getMinimumTokenLen();
-    }
+    // public int getMinimumTokenLen() {
+    // return streamConfig.getMinimumTokenLen();
+    // }
 
     public ValueListHandler getNotSingleWordHitList() {
         return null;
@@ -382,7 +382,7 @@ public class StreamManager implements Runnable {
 
     public ArrayList<Worker> getWorkers() {
         if (workers == null) {
-            workers = new ArrayList<Worker>();
+            workers = new ArrayList<>();
         }
         return workers;
     }

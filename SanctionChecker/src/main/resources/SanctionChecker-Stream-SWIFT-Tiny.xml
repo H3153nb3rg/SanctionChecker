@@ -17,17 +17,16 @@
    		<property name="handleAsIBAN" value="false" />
    		<property name="handleAsBIC" value="false" />
 
-   		<!-- shorter tokens are not checked -->
-		<property name="minTokenLen" value="2"/>
+   		<!-- shorter tokens are not checked moved to listdeclaration ! -->
+		<!-- property name="minTokenLen" value="2"/ -->
 		<!-- min % match of single token to count as hit -->
-		<property name="minRelVal" value="79"/>
-		<property name="minAbsVal" value="60"/>		
+		<!-- property name="minRelVal" value="79"/ -->
+		<!-- property name="minAbsVal" value="60"/ -->		
 		
 		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
-		<property name="fuzzyVal" value="20"/>		
+		<!-- property name="fuzzyVal" value="20"/ -->		
    		
-   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
-   		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
+   		<!-- 
    		<property name="watchlists">
    		    <list>
    		        <value>OFAC</value>
@@ -39,11 +38,16 @@
    		        
    		    </list>    
    		</property>
-		   		
+		   	 -->
+		   	 	
     </bean>    
    
 	<bean id="StreamConfig-SWIFT" class="at.jps.sanction.domain.SanctionStreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
 	
+	    <!-- general field checking rules -->
+	    <property name="fieldConfigFileName" value="${Config.Folder}/SWIFT-FieldSpec.csv"/>
+	    
+	    
 		<!-- fields & fuzziness    -->
 		<!-- mapping to watchlists -->
 		<!-- BICCode check etc     -->

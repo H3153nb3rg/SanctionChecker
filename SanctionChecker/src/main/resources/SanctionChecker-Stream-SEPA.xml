@@ -28,7 +28,7 @@
    		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
    		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
    		
-   		<property name="watchlists">
+   		<property name="searchlists">
    		    <list>
    		        <value>OFAC</value>
    		        <value>EUList</value>

@@ -7,15 +7,15 @@ import at.jps.sanction.model.queue.Queue;
 
 public interface StreamConfig {
 
-    int getMinRelVal(final String fieldname, boolean reverseContains);
-
-    int getMinAbsVal(final String fieldname, boolean reverseContains);
-
-    int getMinTokenLen(final String fieldname, boolean reverseContains);
-
-    int getMinimumTokenLen();
-
-    double getFuzzyValue(final String fieldname, boolean reverseContains);
+    // int getMinRelVal(final String fieldname, boolean reverseContains);
+    //
+    // int getMinAbsVal(final String fieldname, boolean reverseContains);
+    //
+    // int getMinTokenLen(final String fieldname, boolean reverseContains);
+    //
+    // int getMinimumTokenLen();
+    //
+    // double getFuzzyValue(final String fieldname, boolean reverseContains);
 
     ArrayList<String> getFields2Check();
 
@@ -34,6 +34,8 @@ public interface StreamConfig {
     public boolean isField2BICTranslate(final String fieldName, boolean reverseContains);
 
     public boolean isField2IBANCheck(final String fieldName, boolean reverseContains);
+
+    public boolean isField2ISINCheck(final String fieldName, boolean reverseContains);
 
     public boolean isField2Fuzzy(final String fieldName, boolean reverseContains);
 }

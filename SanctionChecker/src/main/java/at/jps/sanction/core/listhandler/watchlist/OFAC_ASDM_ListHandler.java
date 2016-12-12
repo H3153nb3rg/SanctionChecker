@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -44,16 +45,107 @@ import at.jps.sanction.core.list.ofac.ASDM.Sanctions;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType;
 import at.jps.sanction.core.list.ofac.ASDM.SanctionsEntrySchemaType.EntryEvent;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_BirthInfo;
 import at.jps.sanction.model.wl.entities.WL_Entity;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntityType;
+import at.jps.sanction.model.wl.entities.WL_Entity.EntryCategory;
 import at.jps.sanction.model.wl.entities.WL_Name;
+import at.jps.sanction.model.wl.entities.WL_Passport;
 
 public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
 
-    private final static String LISTNAME  = "OFACList";
-    static final Logger         logger    = LoggerFactory.getLogger(OFAC_ASDM_ListHandler.class);
+    // private final static String LISTNAME = "OFACList";
+    static final Logger logger    = LoggerFactory.getLogger(OFAC_ASDM_ListHandler.class);
 
-    Sanctions                   sanctions = null;
+    Sanctions           sanctions = null;
+
+    @Override
+    public List<SL_Entry> buildSearchListEntries(final String topicName, WL_Entity entity) {
+        List<SL_Entry> entries = null;
+        switch (topicName) {
+            case "EmbargoPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "PepPersonNames":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoEntityNames":
+                if ((entity.getEntityType().equals(EntityType.ENTITY) || entity.getEntityType().equals(EntityType.OTHER)) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoVesselNames":
+                if (entity.getEntityType().equals(EntityType.TRANSPORT) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Name name : entity.getNames()) {
+                        final SL_Entry entry = new SL_Entry();
+                        entry.setSearchValue(name.getWholeName());
+                        entries.add(entry);
+                    }
+                }
+                break;
+            case "EmbargoPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && entity.getEntryCategory().equals(EntryCategory.EMBARGO)) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+            case "PepPassportNumbers":
+                if (entity.getEntityType().equals(EntityType.INDIVIDUAL) && (!entity.getEntryCategory().equals(EntryCategory.EMBARGO))) {
+
+                    entries = new ArrayList<>();
+
+                    for (final WL_Passport passport : entity.getPassports()) {
+                        final SL_Entry entry = new SL_Entry();
+                        if (passport.getType().equals("Passport No.")) {
+                            entry.setSearchValue(passport.getNumber());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+        return entries;
+    }
 
     String getAliasType(final BigInteger aliasType) {
         String aliastype = "";
@@ -343,8 +435,6 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                 }
                 entity.setComment(cmt);
 
-                addWLEntry(entity);
-
                 addRelations(sanctions, entity);
 
                 // String lbt = "( ";
@@ -401,6 +491,8 @@ public class OFAC_ASDM_ListHandler extends SanctionListHandlerImpl {
                     }
                     // System.out.println("-------------");
                 }
+
+                addWLEntry(entity);
             }
         }
 

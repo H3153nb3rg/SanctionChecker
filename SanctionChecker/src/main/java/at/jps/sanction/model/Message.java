@@ -36,8 +36,9 @@ public class Message extends BaseModel implements Serializable {
      */
     private static final long serialVersionUID = 6731885812749283091L;
 
+    // private String rawContent;
     @Lob
-    private String            rawContent;
+    private byte[]            rawContent;
 
     private String            uuid;
 
@@ -64,6 +65,10 @@ public class Message extends BaseModel implements Serializable {
     }
 
     public String getRawContent() {
+        return new String(rawContent);
+    }
+
+    public byte[] getRawContentAsByteArray() {
         return rawContent;
     }
 
@@ -85,6 +90,10 @@ public class Message extends BaseModel implements Serializable {
     }
 
     public void setRawContent(final String content) {
+        rawContent = content.getBytes();
+    }
+
+    public void setRawContent(final byte[] content) {
         rawContent = content;
     }
 

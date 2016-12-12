@@ -1,56 +1,181 @@
 package at.jps.sanction.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import at.jps.sanction.core.util.CSVFileReader;
 import at.jps.sanction.model.FieldCheckConfig;
 import at.jps.sanction.model.queue.Queue;
 
 public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
 
-    final private static int                default_minTokenLen = 2;
-    final private static int                default_minRelVal   = 79;
-    final private static int                default_minAbsVal   = 79;
-    final private static double             default_fuzzyVal    = 20;
+    static final Logger                                    logger            = LoggerFactory.getLogger(SanctionStreamConfig.class);
 
-    final private static String             default_fieldName   = "default";
+    // final private static int default_minTokenLen = 2;
+    // final private static int default_minRelVal = 79;
+    // final private static int default_minAbsVal = 79;
+    // final private static double default_fuzzyVal = 20;
 
-    private ArrayList<String>               fields2Check;
-    private ArrayList<String>               fields2IBAN;
-    private ArrayList<String>               fields2BIC;
-    private ArrayList<String>               fuzzyFields;
+    final private static String                            default_fieldName = "default";
 
-    private LinkedHashMap<String, Integer>  minRelVals;
-    private LinkedHashMap<String, Integer>  minAbsVals;
-    private LinkedHashMap<String, Integer>  minTokenLens;
-    private LinkedHashMap<String, Double>   fuzzyVals;
+    private ArrayList<String>                              fields2Check;
+    private ArrayList<String>                              fields2IBAN;
+    private ArrayList<String>                              fields2BIC;
+    private ArrayList<String>                              fuzzyFields;
 
-    private List<FieldCheckConfig>          fieldsToCheck;
-    private LinkedHashMap<String, Queue<?>> queues;
+    // private LinkedHashMap<String, Integer> minRelVals;
+    // private LinkedHashMap<String, Integer> minAbsVals;
+    // private LinkedHashMap<String, Integer> minTokenLens;
+    // private LinkedHashMap<String, Double> fuzzyVals;
+    //
+    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                           // <--------------
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // tobe
+
+    private Map<String, HashMap<String, FieldCheckConfig>> fieldsPerMessageTypes;
+
+    private LinkedHashMap<String, Queue<?>>                queues;
+
+    private String                                         fieldConfigFileName;
 
     public void initialize() {
 
-        assert getFields2Check() != null : "no fields specified - see configuration";
-        assert getQueues() != null : "no queues specified - see configuration";
-
-        for (final FieldCheckConfig fcc : getFieldsToCheck()) {
-
-            setCheckFields(fcc);
-
-            setFuzzyFields(fcc.getFieldName());  // TODO: ???
-
-            if (fcc.isHandleAsBIC()) {
-                setBICFields(fcc.getFieldName());
-            }
+        try {
+            initializeFieldsCheckConfig();
         }
+        catch (final Exception x) {
+            logger.error("Field mapping initialization failed! ", x);
+        }
+
+        // assert getFields2Check() != null : "no fields specified - see configuration";
+        // assert getQueues() != null : "no queues specified - see configuration";
+        //
+        // for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        //
+        // setCheckFields(fcc);
+        //
+        // setFuzzyFields(fcc.getFieldName()); // TODO: ???
+        //
+        // if (fcc.isHandleAsBIC()) {
+        // setBICFields(fcc.getFieldName());
+        // }
+        // }
+    }
+
+    private void initializeFieldsCheckConfig() {
+
+        final List<String[]> fieldCheckSettings = CSVFileReader.readCSVFile(getFieldConfigFileName(), ",");
+
+        if (fieldsPerMessageTypes == null) {
+            fieldsPerMessageTypes = new LinkedHashMap<>();
+        }
+
+        int csvLine = 1;
+
+        final List<String> watchListSearchLists = new ArrayList<>();
+
+        for (final String[] field : fieldCheckSettings) {  // skip 2 LINES !!!!!!
+
+            if (csvLine == 2) {
+
+                // get watchlist / Searchlist combo Info
+                int index = 0;
+                for (final String header : field) {
+
+                    // leading cols are static use !
+                    if (index > 7) {
+
+                        watchListSearchLists.add(header); // dont split for now
+
+                        // final String wl[] = header.split("/");
+                        //
+                        // if (!watchListSearchLists.containsKey(wl[0])) {
+                        // watchListSearchLists.put(wl[0], new ArrayList<String>());
+                        // }
+                        //
+                        // final List<String> sl = watchListSearchLists.get(wl[0]);
+                        //
+                        // sl.add(wl[1]);
+
+                    }
+                    index++;
+                }
+
+            }
+            else {
+
+                final String messsageType = field[0];
+
+                if (!fieldsPerMessageTypes.containsKey(messsageType)) {
+                    fieldsPerMessageTypes.put(messsageType, new LinkedHashMap<>());
+                }
+
+                final HashMap<String, FieldCheckConfig> fieldsPerMessageType = fieldsPerMessageTypes.get(messsageType);
+
+                final String fieldName = field[1];
+
+                if (!fieldsPerMessageType.containsKey(fieldName)) {
+                    fieldsPerMessageType.put(fieldName, new FieldCheckConfig());
+                }
+
+                final FieldCheckConfig fieldConfig = fieldsPerMessageType.get(fieldName);
+
+                // static fields
+                fieldConfig.setCheckIngoing(field[3].toUpperCase().equals("X"));
+                fieldConfig.setCheckOutgoing(field[4].toUpperCase().equals("X"));
+                fieldConfig.setHandleAsBIC(field[5].toUpperCase().equals("X"));
+                fieldConfig.setHandleAsIBAN(field[6].toUpperCase().equals("X"));
+                fieldConfig.setHandleAsISIN(field[7].toUpperCase().equals("X"));
+
+                for (int ix = 8; ix < field.length; ix++) {
+
+                    if (field[ix] != null) {
+                        if (field[ix].equals("1") || field[ix].equals("2")) {
+
+                            final String searchListName = watchListSearchLists.get(ix - 8);
+
+                            if (searchListName != null) {
+                                fieldConfig.getSearchlists().add(searchListName);
+                            }
+                            else {
+                                System.err.println("searchListName not found: " + searchListName);
+                                logger.error("searchListName not found: " + searchListName);
+                            }
+                        }
+                    }
+                }
+
+                // dynamic fields - indices per watchlist
+
+                // checkConfig.setEntityCategory(entityCategory);
+                // checkConfig.setEntityType(enitityType);
+                // checkConfig.setFieldName(fieldName);
+                // checkConfig.setFuzzy(fuzzy);
+                // checkConfig.setFuzzyVal(fuzzyVal);
+                // checkConfig.setHandleAsBIC(handleAsBIC);
+                // checkConfig.setHandleAsIBAN(handleAsIBAN);
+                // checkConfig.setMinAbsVal(minAbsVal);
+                // checkConfig.setMinRelVal(minRelVal);
+                // checkConfig.setMinTokenLen(tokenLen);
+
+                System.out.println(field);
+            }
+            csvLine++;
+
+        }
+
     }
 
     public void setBICFields(final String fields) {
         if (fields != null) {
-            fields2BIC = new ArrayList<String>();
+            fields2BIC = new ArrayList<>();
         }
         // fields.split(",").
 
@@ -63,7 +188,7 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
 
     public void setIBANFields(final String fields) {
         if (fields != null) {
-            fields2IBAN = new ArrayList<String>();
+            fields2IBAN = new ArrayList<>();
         }
         // fields.split(",").
 
@@ -79,7 +204,7 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
         final String fields = fcc.getFieldName();
 
         if (fields != null) {
-            fields2Check = new ArrayList<String>();
+            fields2Check = new ArrayList<>();
         }
         final StringTokenizer tokenizer = new StringTokenizer(fields, ",");
 
@@ -87,26 +212,26 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
             final String fieldname = tokenizer.nextToken();
             fields2Check.add(fieldname);
 
-            // add values too!!!!
-            if (!getMinAbsVals().containsKey(fieldname)) {
-                getMinAbsVals().put(fieldname, fcc.getMinAbsVal());
-            }
-            if (!getMinRelVals().containsKey(fieldname)) {
-                getMinRelVals().put(fieldname, fcc.getMinRelVal());
-            }
-            if (!getMinTokenLens().containsKey(fieldname)) {
-                getMinTokenLens().put(fieldname, fcc.getMinTokenLen());
-            }
-            if (!getFuzzyVals().containsKey(fieldname)) {
-                getFuzzyVals().put(fieldname, (double) (fcc.getFuzzyVal() / 100));
-            }
+            // // add values too!!!!
+            // if (!getMinAbsVals().containsKey(fieldname)) {
+            // getMinAbsVals().put(fieldname, fcc.getMinAbsVal());
+            // }
+            // if (!getMinRelVals().containsKey(fieldname)) {
+            // getMinRelVals().put(fieldname, fcc.getMinRelVal());
+            // }
+            // if (!getMinTokenLens().containsKey(fieldname)) {
+            // getMinTokenLens().put(fieldname, fcc.getMinTokenLen());
+            // }
+            // if (!getFuzzyVals().containsKey(fieldname)) {
+            // getFuzzyVals().put(fieldname, (double) (fcc.getFuzzyVal() / 100));
+            // }
 
         }
     }
 
     public void setFuzzyFields(final String fields) {
         if (fields != null) {
-            fuzzyFields = new ArrayList<String>();
+            fuzzyFields = new ArrayList<>();
         }
         final StringTokenizer tokenizer = new StringTokenizer(fields, ",");
 
@@ -118,29 +243,26 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     @Override
     public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType, final String entityCategory, final boolean reverseContains) {
         boolean check = false;
-        FieldCheckConfig ffcc = null;
         for (final FieldCheckConfig fcc : getFieldsToCheck()) {
 
             if (reverseContains) {
                 if (fieldName.contains(fcc.getFieldName())) {
-                    check = fcc.getWatchlists().contains(listName);   // TODO: search for default field if no other specified !!!
-                    ffcc = fcc;
+                    check = fcc.getSearchlists().contains(listName);   // TODO: search for default field if no other specified !!!
                 }
             }
             else {
                 if (fcc.getFieldName().contains(fieldName)) {
-                    check = fcc.getWatchlists().contains(listName);
-                    ffcc = fcc;
+                    check = fcc.getSearchlists().contains(listName);
                 }
             }
         }
-        if (((ffcc != null) && (check)) && (entityType != null)) {
-            check = ((ffcc.getEntityType() == null) || (ffcc.getEntityType().isEmpty())) || (ffcc.getEntityType().toLowerCase().contains(entityType.toLowerCase()));
-        }
-
-        if (((ffcc != null) && (check)) && (entityCategory != null)) {
-            check = ((ffcc.getEntityCategory() == null) || (ffcc.getEntityCategory().isEmpty())) || (ffcc.getEntityCategory().toLowerCase().contains(entityCategory.toLowerCase()));
-        }
+        // if (((ffcc != null) && (check)) && (entityType != null)) {
+        // check = ((ffcc.getEntityType() == null) || (ffcc.getEntityType().isEmpty())) || (ffcc.getEntityType().toLowerCase().contains(entityType.toLowerCase()));
+        // }
+        //
+        // if (((ffcc != null) && (check)) && (entityCategory != null)) {
+        // check = ((ffcc.getEntityCategory() == null) || (ffcc.getEntityCategory().isEmpty())) || (ffcc.getEntityCategory().toLowerCase().contains(entityCategory.toLowerCase()));
+        // }
 
         return check;
     }
@@ -182,6 +304,11 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     }
 
     @Override
+    public boolean isField2ISINCheck(final String fieldName, boolean reverseContains) {
+        return false;
+    }
+
+    @Override
     public boolean isField2Fuzzy(final String fieldName, final boolean reverseContains) {
         boolean check = false;
 
@@ -201,49 +328,49 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
         return check;
     }
 
-    @Override
-    public int getMinAbsVal(final String fieldName, boolean reverseContains) {
-
-        final Integer mav = getMinAbsVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
-
-        return (mav != null ? mav : default_minAbsVal);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see at.jps.sanction.domain.swift.StreamConfig1#getMinRelVal()
-     */
-    @Override
-    public int getMinRelVal(final String fieldName, boolean reverseContains) {
-
-        final Integer mrv = getMinRelVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
-
-        return (mrv != null ? mrv : default_minRelVal);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see at.jps.sanction.domain.swift.StreamConfig1#getMinTokenLen()
-     */
-    @Override
-    public int getMinTokenLen(final String fieldName, boolean reverseContains) {
-
-        final Integer mtl = getMinTokenLens().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
-
-        return (mtl != null ? mtl : default_minTokenLen);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see at.jps.sanction.domain.swift.StreamConfig1#getFuzzyValue()
-     */
-    @Override
-    public double getFuzzyValue(final String fieldName, boolean reverseContains) {
-
-        final Double mfv = getFuzzyVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
-
-        return (mfv != null ? mfv : default_fuzzyVal);
-    }
+    // @Override
+    // public int getMinAbsVal(final String fieldName, boolean reverseContains) {
+    //
+    // final Integer mav = getMinAbsVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
+    //
+    // return (mav != null ? mav : default_minAbsVal);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // * @see at.jps.sanction.domain.swift.StreamConfig1#getMinRelVal()
+    // */
+    // @Override
+    // public int getMinRelVal(final String fieldName, boolean reverseContains) {
+    //
+    // final Integer mrv = getMinRelVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
+    //
+    // return (mrv != null ? mrv : default_minRelVal);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // * @see at.jps.sanction.domain.swift.StreamConfig1#getMinTokenLen()
+    // */
+    // @Override
+    // public int getMinTokenLen(final String fieldName, boolean reverseContains) {
+    //
+    // final Integer mtl = getMinTokenLens().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
+    //
+    // return (mtl != null ? mtl : default_minTokenLen);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // * @see at.jps.sanction.domain.swift.StreamConfig1#getFuzzyValue()
+    // */
+    // @Override
+    // public double getFuzzyValue(final String fieldName, boolean reverseContains) {
+    //
+    // final Double mfv = getFuzzyVals().get(getFieldNameFuzzy(getFuzzyVals().keySet(), fieldName, reverseContains));
+    //
+    // return (mfv != null ? mfv : default_fuzzyVal);
+    // }
 
     /**
      * for swift we look for : fieldname IN definition reverseContains = false
@@ -334,45 +461,53 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     // return fuzzyVal;
     // }
 
-    public LinkedHashMap<String, Integer> getMinRelVals() {
+    // public LinkedHashMap<String, Integer> getMinRelVals() {
+    //
+    // if (minRelVals == null) {
+    // minRelVals = new LinkedHashMap<>();
+    // }
+    // return minRelVals;
+    // }
+    //
+    // public LinkedHashMap<String, Integer> getMinAbsVals() {
+    // if (minAbsVals == null) {
+    // minAbsVals = new LinkedHashMap<>();
+    // }
+    // return minAbsVals;
+    // }
+    //
+    // public LinkedHashMap<String, Integer> getMinTokenLens() {
+    // if (minTokenLens == null) {
+    // minTokenLens = new LinkedHashMap<>();
+    // }
+    // return minTokenLens;
+    // }
+    //
+    // public LinkedHashMap<String, Double> getFuzzyVals() {
+    // if (fuzzyVals == null) {
+    // fuzzyVals = new LinkedHashMap<>();
+    // }
+    // return fuzzyVals;
+    // }
 
-        if (minRelVals == null) {
-            minRelVals = new LinkedHashMap<String, Integer>();
-        }
-        return minRelVals;
+    // @Override
+    // public int getMinimumTokenLen() {
+    // int minLen = Integer.MAX_VALUE;
+    // for (final String key : getMinTokenLens().keySet()) {
+    // final int value = getMinTokenLens().get(key);
+    // if (getMinTokenLens().get(key) < minLen) {
+    // minLen = value;
+    // }
+    // }
+    // return minLen;
+    // }
+
+    public String getFieldConfigFileName() {
+        return fieldConfigFileName;
     }
 
-    public LinkedHashMap<String, Integer> getMinAbsVals() {
-        if (minAbsVals == null) {
-            minAbsVals = new LinkedHashMap<String, Integer>();
-        }
-        return minAbsVals;
-    }
-
-    public LinkedHashMap<String, Integer> getMinTokenLens() {
-        if (minTokenLens == null) {
-            minTokenLens = new LinkedHashMap<String, Integer>();
-        }
-        return minTokenLens;
-    }
-
-    public LinkedHashMap<String, Double> getFuzzyVals() {
-        if (fuzzyVals == null) {
-            fuzzyVals = new LinkedHashMap<String, Double>();
-        }
-        return fuzzyVals;
-    }
-
-    @Override
-    public int getMinimumTokenLen() {
-        int minLen = Integer.MAX_VALUE;
-        for (final String key : getMinTokenLens().keySet()) {
-            final int value = getMinTokenLens().get(key);
-            if (getMinTokenLens().get(key) < minLen) {
-                minLen = value;
-            }
-        }
-        return minLen;
+    public void setFieldConfigFileName(String fieldConfigFileName) {
+        this.fieldConfigFileName = fieldConfigFileName;
     }
 
 }
