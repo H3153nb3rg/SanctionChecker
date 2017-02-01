@@ -36,8 +36,8 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     // private LinkedHashMap<String, Integer> minTokenLens;
     // private LinkedHashMap<String, Double> fuzzyVals;
     //
-    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                           // <--------------
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // tobe
+    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 // <--------------
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // tobe
 
     private Map<String, HashMap<String, FieldCheckConfig>> fieldsPerMessageTypes;
 
@@ -46,6 +46,8 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     private String                                         fieldConfigFileName;
 
     public void initialize() {
+
+        assert getFieldConfigFileName() != null : "no field mapping file specified - see configuration";
 
         try {
             initializeFieldsCheckConfig();
@@ -72,10 +74,6 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     private void initializeFieldsCheckConfig() {
 
         final List<String[]> fieldCheckSettings = CSVFileReader.readCSVFile(getFieldConfigFileName(), ",");
-
-        if (fieldsPerMessageTypes == null) {
-            fieldsPerMessageTypes = new LinkedHashMap<>();
-        }
 
         int csvLine = 1;
 
@@ -111,61 +109,67 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
             }
             else {
 
-                final String messsageType = field[0];
+                if (csvLine > 2) {
 
-                if (!fieldsPerMessageTypes.containsKey(messsageType)) {
-                    fieldsPerMessageTypes.put(messsageType, new LinkedHashMap<>());
-                }
+                    final String messsageType = field[0];
 
-                final HashMap<String, FieldCheckConfig> fieldsPerMessageType = fieldsPerMessageTypes.get(messsageType);
+                    // boolean incoming = field[3].toUpperCase().equals("X");
+                    // boolean outgoing = field[4].toUpperCase().equals("X");
 
-                final String fieldName = field[1];
+                    // I + O is in the SAME row but we need 2 records ....
 
-                if (!fieldsPerMessageType.containsKey(fieldName)) {
-                    fieldsPerMessageType.put(fieldName, new FieldCheckConfig());
-                }
+                    if (!getFieldsPerMessageTypes().containsKey(messsageType)) {
+                        getFieldsPerMessageTypes().put(messsageType, new LinkedHashMap<>());
+                    }
 
-                final FieldCheckConfig fieldConfig = fieldsPerMessageType.get(fieldName);
+                    final HashMap<String, FieldCheckConfig> fieldsPerMessageType = getFieldsPerMessageTypes().get(messsageType);
 
-                // static fields
-                fieldConfig.setCheckIngoing(field[3].toUpperCase().equals("X"));
-                fieldConfig.setCheckOutgoing(field[4].toUpperCase().equals("X"));
-                fieldConfig.setHandleAsBIC(field[5].toUpperCase().equals("X"));
-                fieldConfig.setHandleAsIBAN(field[6].toUpperCase().equals("X"));
-                fieldConfig.setHandleAsISIN(field[7].toUpperCase().equals("X"));
+                    for (int io = 3; io < 5; io++) {
 
-                for (int ix = 8; ix < field.length; ix++) {
+                        final boolean mtio = field[io].toUpperCase().equals("X");
 
-                    if (field[ix] != null) {
-                        if (field[ix].equals("1") || field[ix].equals("2")) {
+                        final String fieldName = (((io % 2) != 0) ? "I" : "O") + field[1];
 
-                            final String searchListName = watchListSearchLists.get(ix - 8);
+                        if (!fieldsPerMessageType.containsKey(fieldName)) {
+                            fieldsPerMessageType.put(fieldName, new FieldCheckConfig());
+                        }
 
-                            if (searchListName != null) {
-                                fieldConfig.getSearchlists().add(searchListName);
-                            }
-                            else {
-                                System.err.println("searchListName not found: " + searchListName);
-                                logger.error("searchListName not found: " + searchListName);
+                        final FieldCheckConfig fieldConfig = fieldsPerMessageType.get(fieldName);
+
+                        if ((io % 2) != 0) {
+                            fieldConfig.setCheckIngoing(mtio);
+                        }
+                        else {
+                            fieldConfig.setCheckOutgoing(mtio);
+                        }
+
+                        // static fields
+
+                        fieldConfig.setHandleAsBIC(field[5].toUpperCase().equals("X"));
+                        fieldConfig.setHandleAsIBAN(field[6].toUpperCase().equals("X"));
+                        fieldConfig.setHandleAsISIN(field[7].toUpperCase().equals("X"));
+
+                        for (int ix = 8; ix < field.length; ix++) {
+
+                            if (field[ix] != null) {
+                                if (field[ix].equals("1") || field[ix].equals("2")) {
+
+                                    final String searchListName = watchListSearchLists.get(ix - 8);
+
+                                    if (searchListName != null) {
+                                        fieldConfig.getSearchlists().add(searchListName);
+                                    }
+                                    else {
+                                        System.err.println("searchListName not found: " + searchListName);
+                                        logger.error("searchListName not found: " + searchListName);
+                                    }
+                                }
                             }
                         }
                     }
+
+                    System.out.println(field);
                 }
-
-                // dynamic fields - indices per watchlist
-
-                // checkConfig.setEntityCategory(entityCategory);
-                // checkConfig.setEntityType(enitityType);
-                // checkConfig.setFieldName(fieldName);
-                // checkConfig.setFuzzy(fuzzy);
-                // checkConfig.setFuzzyVal(fuzzyVal);
-                // checkConfig.setHandleAsBIC(handleAsBIC);
-                // checkConfig.setHandleAsIBAN(handleAsIBAN);
-                // checkConfig.setMinAbsVal(minAbsVal);
-                // checkConfig.setMinRelVal(minRelVal);
-                // checkConfig.setMinTokenLen(tokenLen);
-
-                System.out.println(field);
             }
             csvLine++;
 
@@ -240,22 +244,50 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
         }
     }
 
-    @Override
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType, final String entityCategory, final boolean reverseContains) {
-        boolean check = false;
-        for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+    private FieldCheckConfig getFieldsConfigPerMT(final String fieldName, final String messageType) {
+        FieldCheckConfig fcc;
 
-            if (reverseContains) {
-                if (fieldName.contains(fcc.getFieldName())) {
-                    check = fcc.getSearchlists().contains(listName);   // TODO: search for default field if no other specified !!!
-                }
-            }
-            else {
-                if (fcc.getFieldName().contains(fieldName)) {
-                    check = fcc.getSearchlists().contains(listName);
-                }
-            }
+        final HashMap<String, FieldCheckConfig> fields = getFieldsPerMessageTypes().get(messageType);
+
+        // get specific
+
+        fcc = fields.get(fieldName);
+
+        // get default
+
+        // get reverse
+        //
+
+        return fcc;
+    }
+
+    @Override
+    public boolean isFieldToCheck(final String fieldName, final String searchindex, final String watchList, final String messageType, final boolean reverseContains) {
+        boolean check = false;
+        FieldCheckConfig fcc = null;
+
+        if (!reverseContains) {
+            fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o .... //TODO: this is a hack IO is tweaked in
+        }                                                                                                                    // field / type...
+
+        if (fcc != null) {
+            check = fcc.getSearchlists().contains(watchList + "/" + searchindex);
         }
+
+        // for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        //
+        // if (reverseContains) {
+        // if (fieldName.contains(fcc.getFieldName())) {
+        // check = fcc.getSearchlists().contains(searchindex); // TODO: search for default field if no other specified !!!
+        // }
+        // }
+        // else {
+        // if (fcc.getFieldName().contains(fieldName)) {
+        // check = fcc.getSearchlists().contains(searchindex);
+        // }
+        // }
+        // }
+
         // if (((ffcc != null) && (check)) && (entityType != null)) {
         // check = ((ffcc.getEntityType() == null) || (ffcc.getEntityType().isEmpty())) || (ffcc.getEntityType().toLowerCase().contains(entityType.toLowerCase()));
         // }
@@ -268,63 +300,94 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     }
 
     @Override
-    public boolean isField2BICTranslate(final String fieldName, final boolean reverseContains) {
+    public boolean isField2BICTranslate(final String fieldName, final String messageType, final boolean reverseContains) {
         boolean check = false;
-        for (final FieldCheckConfig fcc : getFieldsToCheck()) {
-            if (reverseContains) {
-                if (fieldName.contains(fcc.getFieldName())) {
-                    check = fcc.isHandleAsBIC();
-                }
-            }
-            else {
-                if (fcc.getFieldName().contains(fieldName)) {
-                    check = fcc.isHandleAsBIC();
-                }
-            }
+
+        final FieldCheckConfig fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o ....
+
+        if (fcc != null) {
+            check = fcc.isHandleAsBIC();
         }
+
+        // for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        // if (reverseContains) {
+        // if (fieldName.contains(fcc.getFieldName())) {
+        // check = fcc.isHandleAsBIC();
+        // }
+        // }
+        // else {
+        // if (fcc.getFieldName().contains(fieldName)) {
+        // check = fcc.isHandleAsBIC();
+        // }
+        // }
+        // }
         return check;
     }
 
     @Override
-    public boolean isField2IBANCheck(final String fieldName, final boolean reverseContains) {
+    public boolean isField2IBANCheck(final String fieldName, final String messageType, final boolean reverseContains) {
         boolean check = false;
-        for (final FieldCheckConfig fcc : getFieldsToCheck()) {
-            if (reverseContains) {
-                if (fieldName.contains(fcc.getFieldName())) {
-                    check = fcc.isHandleAsIBAN();
-                }
-            }
-            else {
-                if (fcc.getFieldName().contains(fieldName)) {
-                    check = fcc.isHandleAsIBAN();
-                }
-            }
+
+        final FieldCheckConfig fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o ....
+
+        if (fcc != null) {
+            check = fcc.isHandleAsIBAN();
         }
+
+        //
+        //
+        // for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        // if (reverseContains) {
+        // if (fieldName.contains(fcc.getFieldName())) {
+        // check = fcc.isHandleAsIBAN();
+        // }
+        // }
+        // else {
+        // if (fcc.getFieldName().contains(fieldName)) {
+        // check = fcc.isHandleAsIBAN();
+        // }
+        // }
+        // }
         return check;
     }
 
     @Override
-    public boolean isField2ISINCheck(final String fieldName, boolean reverseContains) {
-        return false;
+    public boolean isField2ISINCheck(final String fieldName, final String messageType, boolean reverseContains) {
+
+        boolean check = false;
+
+        final FieldCheckConfig fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o ....
+
+        if (fcc != null) {
+            check = fcc.isHandleAsISIN();
+        }
+
+        return check;
     }
 
     @Override
-    public boolean isField2Fuzzy(final String fieldName, final boolean reverseContains) {
+    public boolean isField2Fuzzy(final String fieldName, final String messageType, final boolean reverseContains) {
         boolean check = false;
 
-        for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        final FieldCheckConfig fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o ....
 
-            if (reverseContains) {
-                if (fieldName.contains(fcc.getFieldName())) {
-                    check = fcc.isFuzzy();
-                }
-            }
-            else {
-                if (fcc.getFieldName().contains(fieldName)) {
-                    check = fcc.isFuzzy();
-                }
-            }
+        if (fcc != null) {
+            check = fcc.isFuzzy();
         }
+
+        // for (final FieldCheckConfig fcc : getFieldsToCheck()) {
+        //
+        // if (reverseContains) {
+        // if (fieldName.contains(fcc.getFieldName())) {
+        // check = fcc.isFuzzy();
+        // }
+        // }
+        // else {
+        // if (fcc.getFieldName().contains(fieldName)) {
+        // check = fcc.isFuzzy();
+        // }
+        // }
+        // }
         return check;
     }
 
@@ -508,6 +571,19 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
 
     public void setFieldConfigFileName(String fieldConfigFileName) {
         this.fieldConfigFileName = fieldConfigFileName;
+    }
+
+    public Map<String, HashMap<String, FieldCheckConfig>> getFieldsPerMessageTypes() {
+
+        if (fieldsPerMessageTypes == null) {
+            fieldsPerMessageTypes = new LinkedHashMap<>();
+        }
+
+        return fieldsPerMessageTypes;
+    }
+
+    public void setFieldsPerMessageTypes(Map<String, HashMap<String, FieldCheckConfig>> fieldsPerMessageTypes) {
+        this.fieldsPerMessageTypes = fieldsPerMessageTypes;
     }
 
 }

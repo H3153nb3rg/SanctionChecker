@@ -141,7 +141,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
     }
 
     protected boolean isFieldToCheckFuzzy(final String msgFieldName, final SanctionListHandler listhandler) {
-        final boolean fuzzy = listhandler.isFuzzySearch() && getStreamManager().isField2Fuzzy(msgFieldName);
+        final boolean fuzzy = listhandler.isFuzzySearch() && getStreamManager().isField2Fuzzy(msgFieldName, "PERSON");
 
         return fuzzy;
     }

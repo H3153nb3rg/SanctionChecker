@@ -27,15 +27,16 @@ public interface StreamConfig {
 
     public LinkedHashMap<String, Queue<?>> getQueues();
 
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String EntityType, final String EntityCategory, boolean reverseContains);  // fieldname in config (swift) ==
-                                                                                                                                                                  // false <-> config in fieldname
+    public boolean isFieldToCheck(final String fieldName, final String searchIndex, final String watchlist, final String messageType, boolean reverseContains);
+    // fieldname in config (swift) ==
+    // false <-> config in fieldname
     // (sepa) == true
 
-    public boolean isField2BICTranslate(final String fieldName, boolean reverseContains);
+    public boolean isField2BICTranslate(final String fieldName, final String messageType, boolean reverseContains);
 
-    public boolean isField2IBANCheck(final String fieldName, boolean reverseContains);
+    public boolean isField2IBANCheck(final String fieldName, final String messageType, boolean reverseContains);
 
-    public boolean isField2ISINCheck(final String fieldName, boolean reverseContains);
+    public boolean isField2ISINCheck(final String fieldName, final String messageType, boolean reverseContains);
 
-    public boolean isField2Fuzzy(final String fieldName, boolean reverseContains);
+    public boolean isField2Fuzzy(final String fieldName, final String messageType, boolean reverseContains);
 }

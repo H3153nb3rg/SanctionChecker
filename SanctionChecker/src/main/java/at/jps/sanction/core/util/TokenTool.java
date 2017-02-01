@@ -218,7 +218,7 @@ public class TokenTool {
     // else pretokens will be checked against list
     public static List<String> getTokenList(final String text, final String delimiters, final String deadCharacters, final int minlength, final Collection<String> excludeList, final boolean filterTokens) {
 
-        final List<String> textTokens = new ArrayList<String>(10);
+        final List<String> textTokens = new ArrayList<>(10);
 
         if ((text != null) && (text.length() > minlength)) {
 
@@ -235,6 +235,7 @@ public class TokenTool {
             // TODO: transliterate
 
             // remove stopwords - !! dead characters MUST NOT exist in stopwords !!
+            // must be sorted by length !!
             if (!filterTokens) {
                 if (excludeList != null) {
                     for (final String stopword : excludeList) {

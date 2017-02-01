@@ -168,15 +168,15 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
         analyzeresult.addHitResult(hr);
     }
 
-    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname, final String entityCategory) {
-        final boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, listname, entityType, entityCategory));
+    protected boolean isFieldToCheck(final String msgFieldName, final String searchIndex, final String watchListname, final String messageType) {
+        final boolean checkit = (getStreamManager().isFieldToCheck(msgFieldName, searchIndex, watchListname, messageType));
 
         return checkit;
     }
 
-    protected boolean isFieldToCheckFuzzy(final String msgFieldName, final SanctionListHandler listhandler) {
+    protected boolean isFieldToCheckFuzzy(final String msgFieldName, final SanctionListHandler listhandler, final String messageType) {
         // final boolean fuzzy = listhandler.isFuzzySearch() && getStreamManager().isField2Fuzzy(msgFieldName);
-        final boolean fuzzy = getStreamManager().isField2Fuzzy(msgFieldName);
+        final boolean fuzzy = getStreamManager().isField2Fuzzy(msgFieldName, messageType);
 
         return fuzzy;
     }
@@ -215,7 +215,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                 for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                     // should field be checked ?
-                    if (!isFieldToCheck(msgFieldName, searchListName, listhandler.getListName(), searchListName)) {
+                    if (!isFieldToCheck(msgFieldName, searchListName, listhandler.getListName(), messageContent.getMessageType())) {
                         if (logger.isDebugEnabled()) {
                             logger.debug("SKIPPING field: " + msgFieldName);
                         }
@@ -233,7 +233,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                         String longText = null;
 
                         // check if BIC expansion should be done
-                        if (getStreamManager().isField2BICTranslate(msgFieldName)) {
+                        if (getStreamManager().isField2BICTranslate(msgFieldName, messageContent.getMessageType())) {
                             longText = BICHelper.extendBIC(msgFieldText);
 
                             if (firstIteration) {// Country check on BIC - ONLY ONCE!!
@@ -261,7 +261,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                         }
 
                         msgFieldTokens = TokenTool.getTokenList(longText != null ? msgFieldText + " " + longText : msgFieldText, listhandler.getDelimiters(), listhandler.getDeadCharacters(),
-                                getStreamManager().getMinTokenLen(msgFieldName), getStreamManager().getStopwordList().getValues(), false);
+                                getStreamManager().getMinTokenLen(listhandler.getListName()), getStreamManager().getStopwordList().getValues(), false);
 
                         messageContent.setTokenizedField(msgFieldName, msgFieldTokens);
                     }
@@ -289,13 +289,13 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                 // >>>>> THE COMPARISION <<<<<
 
-                                final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler), getStreamManager().getMinTokenLen(msgFieldName),
-                                        getStreamManager().getFuzzyValue(msgFieldName));
+                                final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler, messageContent.getMessageType()),
+                                        getStreamManager().getMinTokenLen(listhandler.getListName()), getStreamManager().getFuzzyValue(listhandler.getListName()));
 
                                 // System.out.println(nameToken + " -> " + msgFieldToken + " : " + hitValue);
 
                                 // single fuzzy limit !!
-                                if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(msgFieldName))) {// TODO: this should be on list-base
+                                if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(listhandler.getListName()))) {
                                     totalHitRateRelative += hitValue;
 
                                     final SanctionHitInfo swhi = new SanctionHitInfo(listhandler.getListName(), entry.getReferencedEntity().getWL_Id(), nameToken, msgFieldName, msgFieldToken,
@@ -334,7 +334,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                         // hits for one field
                         // TODO: this is a dummy implementation
-                        if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(msgFieldName)) {
+                        if ((totalHitRateRelative / minTokens) > getStreamManager().getMinRelVal(listhandler.getListName())) {
 
                             if (logger.isDebugEnabled()) {
                                 final String keys = TokenTool.buildTokenString(searchTokens, " ");
@@ -346,7 +346,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                         }
 
-                        if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
+                        if ((totalHitRateAbsolute / minTokens) > getStreamManager().getMinAbsVal(listhandler.getListName())) {
 
                             if (logger.isDebugEnabled()) {
                                 final String keys = TokenTool.buildTokenString(searchTokens, " ");
@@ -378,7 +378,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                             if (contains) {
 
-                                if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(msgFieldName)) {
+                                if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(listhandler.getListName())) {
 
                                     logger.debug("PHRASECHECK: " + msgFieldText + ": " + entry.getSearchValue() + " --> " + contains);
 
@@ -403,6 +403,8 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             if (notSingleWordListHandler != null) {
                                 nrOfNotSowords = TokenTool.compareTokenLists(notSingleWordListHandler.getValues(), searchTokens);
                             }
+
+                            // TODO: "not single Hit Words" should explicitly be searched and counted !!!!!!!!!
 
                             if ((totalHitRateAbsolute > (nrOfNotSowords * 100)) || (totalHitRateRelative > (nrOfNotSowords * 100)) || (totalHitRatePhrase > (nrOfNotSowords * 100))) {
 

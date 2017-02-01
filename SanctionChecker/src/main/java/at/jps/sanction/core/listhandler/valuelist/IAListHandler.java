@@ -11,7 +11,7 @@ package at.jps.sanction.core.listhandler.valuelist;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,9 @@ public class IAListHandler extends BaseFileHandler implements ValueListHandler {
     }
 
     @Override
-    public Collection<String> getValues() {
+    public List<String> getValues() {
         if (indexAusschluesse == null) {
-            indexAusschluesse = new ArrayList<String>();
+            indexAusschluesse = new ArrayList<>();
         }
         return indexAusschluesse;
     }

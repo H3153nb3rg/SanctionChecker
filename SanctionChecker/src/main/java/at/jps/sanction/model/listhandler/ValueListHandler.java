@@ -1,6 +1,6 @@
 package at.jps.sanction.model.listhandler;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface ValueListHandler {
 
@@ -8,7 +8,7 @@ public interface ValueListHandler {
 
     String getFilename();
 
-    Collection<String> getValues();
+    List<String> getValues();
 
     void initialize();
 }

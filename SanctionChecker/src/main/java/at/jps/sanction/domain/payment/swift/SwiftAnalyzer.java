@@ -41,6 +41,12 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
             final List<SwiftMessageParser.MessageBlock> msgBlocks = SwiftMessageParser.parseMessage(msgText);
 
             for (final SwiftMessageParser.MessageBlock messageBlock : msgBlocks) {
+
+                // get MT type and direction for now IN ONE TOKEN !!
+                if (messageBlock.id.equals("2")) {
+                    messageContent.setMessageType(messageBlock.swiftTxMsgBlock.substring(2, 6));
+                }
+
                 for (final String msgFieldName : messageBlock.getFields().keySet()) {
                     final String msgFieldText = messageBlock.getFields().get(msgFieldName);
 
@@ -115,9 +121,12 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
                 break;
             }
         }
-
-        final String countryISO = msgFieldText.substring(pos, pos + 2);
-        return checkISO4NCCT(countryISO);
+        HitRate hr = null;
+        if (pos > 0) {
+            final String countryISO = msgFieldText.substring(pos, pos + 2);
+            hr = checkISO4NCCT(countryISO);
+        }
+        return hr;
     }
 
 }

@@ -164,20 +164,20 @@ public class StreamManager implements Runnable {
 
     }
 
-    public boolean isFieldToCheck(final String fieldName, final String listName, final String entityType, final String entityCategory) {
-        return streamConfig.isFieldToCheck(fieldName, listName, entityType, entityCategory, false);
+    public boolean isFieldToCheck(final String fieldName, final String searchIndex, final String watchlist, final String messageType) {
+        return streamConfig.isFieldToCheck(fieldName, searchIndex, watchlist, messageType, false);
     }
 
-    public boolean isField2BICTranslate(final String fieldName) {
-        return streamConfig.isField2BICTranslate(fieldName, false);
+    public boolean isField2BICTranslate(final String fieldName, final String messageType) {
+        return streamConfig.isField2BICTranslate(fieldName, messageType, false);
     }
 
-    public boolean isField2IBANCheck(final String fieldName) {
-        return streamConfig.isField2IBANCheck(fieldName, false);
+    public boolean isField2IBANCheck(final String fieldName, final String messageType) {
+        return streamConfig.isField2IBANCheck(fieldName, messageType, false);
     }
 
-    public boolean isField2Fuzzy(final String fieldName) {
-        return streamConfig.isField2Fuzzy(fieldName, false);
+    public boolean isField2Fuzzy(final String fieldName, final String messageType) {
+        return streamConfig.isField2Fuzzy(fieldName, messageType, false);
     }
 
     // private void reportCounterStatus() {

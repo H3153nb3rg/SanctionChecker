@@ -19,10 +19,12 @@ public class MessageContent extends BaseModel implements Serializable {
     private static final long             serialVersionUID = -4252872705897803406L;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private HashMap<String, String>       fieldsAndValues  = new HashMap<String, String>();
+    private HashMap<String, String>       fieldsAndValues  = new HashMap<>();
 
     @Transient
     private HashMap<String, List<String>> fieldsAndValueTokens;
+
+    private String                        messageType;
 
     public MessageContent() {
 
@@ -34,7 +36,7 @@ public class MessageContent extends BaseModel implements Serializable {
 
     public HashMap<String, String> getFieldsAndValues() {
         if (fieldsAndValues == null) {
-            fieldsAndValues = new HashMap<String, String>();
+            fieldsAndValues = new HashMap<>();
         }
         return fieldsAndValues;
     }
@@ -46,7 +48,7 @@ public class MessageContent extends BaseModel implements Serializable {
     public HashMap<String, List<String>> getFieldsAndValueTokens() {
 
         if (fieldsAndValueTokens == null) {
-            fieldsAndValueTokens = new HashMap<String, List<String>>();
+            fieldsAndValueTokens = new HashMap<>();
         }
 
         return fieldsAndValueTokens;
@@ -62,6 +64,14 @@ public class MessageContent extends BaseModel implements Serializable {
 
     public void setTokenizedField(final String fieldName, final List<String> tokens) {
         getFieldsAndValueTokens().put(fieldName, tokens);
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
 }

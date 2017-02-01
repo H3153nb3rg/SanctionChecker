@@ -10,18 +10,18 @@ public class SepaStreamManager extends PaymentStreamManager {
     }
 
     @Override
-    public boolean isField2BICTranslate(final String fieldName) {
-        return getStreamConfig().isField2BICTranslate(fieldName, true);
+    public boolean isField2BICTranslate(final String fieldName, final String messageType) {
+        return getStreamConfig().isField2BICTranslate(fieldName, messageType, true);
     }
 
     @Override
-    public boolean isField2IBANCheck(final String fieldName) {
-        return (getStreamConfig().isField2IBANCheck(fieldName, true) || fieldName.contains("/IBAN"));
+    public boolean isField2IBANCheck(final String fieldName, final String messageType) {
+        return (getStreamConfig().isField2IBANCheck(fieldName, messageType, true) || fieldName.contains("/IBAN"));
     }
 
     @Override
-    public boolean isField2Fuzzy(final String fieldName) {
-        return getStreamConfig().isField2Fuzzy(fieldName, true);
+    public boolean isField2Fuzzy(final String fieldName, final String messageType) {
+        return getStreamConfig().isField2Fuzzy(fieldName, messageType, true);
     }
 
 }
