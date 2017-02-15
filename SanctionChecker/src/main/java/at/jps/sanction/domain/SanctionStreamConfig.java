@@ -36,8 +36,8 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     // private LinkedHashMap<String, Integer> minTokenLens;
     // private LinkedHashMap<String, Double> fuzzyVals;
     //
-    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 // <--------------
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // tobe
+    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // <--------------
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // tobe
 
     private Map<String, HashMap<String, FieldCheckConfig>> fieldsPerMessageTypes;
 
@@ -53,6 +53,9 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
             initializeFieldsCheckConfig();
         }
         catch (final Exception x) {
+
+            x.printStackTrace(System.out);
+
             logger.error("Field mapping initialization failed! ", x);
         }
 
@@ -168,11 +171,27 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
                         }
                     }
 
-                    System.out.println(field);
+                    for (int i = 0; i < field.length; i++) {
+                        System.out.print(field[i] + ",");
+                    }
+                    System.out.println();
+
                 }
             }
             csvLine++;
 
+        }
+
+        // for debugging only
+        for (final String mt : getFieldsPerMessageTypes().keySet()) {
+            System.out.println(mt);
+            final HashMap<String, FieldCheckConfig> fieldsPerMessageType = getFieldsPerMessageTypes().get(mt);
+
+            for (final String field : fieldsPerMessageType.keySet()) {
+                System.out.print(field + ",");
+                fieldsPerMessageType.get(field);
+            }
+            System.out.println();
         }
 
     }
@@ -245,13 +264,14 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     }
 
     private FieldCheckConfig getFieldsConfigPerMT(final String fieldName, final String messageType) {
-        FieldCheckConfig fcc;
+        FieldCheckConfig fcc = null;
 
         final HashMap<String, FieldCheckConfig> fields = getFieldsPerMessageTypes().get(messageType);
 
         // get specific
-
-        fcc = fields.get(fieldName);
+        if (fields != null) {
+            fcc = fields.get(fieldName);
+        }
 
         // get default
 
