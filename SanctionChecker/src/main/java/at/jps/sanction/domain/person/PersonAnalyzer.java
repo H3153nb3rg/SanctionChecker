@@ -80,7 +80,7 @@ public class PersonAnalyzer extends AnalyzerWorker {
             }
 
             final ProcessStep processStep = new ProcessStep();
-            processStep.setRemark("Check");
+            processStep.setRemark(ProcessStep.ProcessStatus.CHECK.name());
             analyzeresult.addProcessStep(processStep);
 
             // getStreamManager().addToHitList(analyzeresult);

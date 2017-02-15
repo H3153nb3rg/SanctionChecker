@@ -9,6 +9,15 @@ import at.jps.sanction.core.util.TimeStamp;
 @Entity
 public class ProcessStep extends BaseModel implements Serializable {
 
+    public enum ProcessStatus {
+        CHECK {
+            @Override
+            public String toString() {
+                return name();
+            }
+        }
+    }
+
     /**
      *
      */

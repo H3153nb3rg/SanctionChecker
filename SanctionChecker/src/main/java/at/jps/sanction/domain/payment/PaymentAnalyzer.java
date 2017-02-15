@@ -106,9 +106,16 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
     private HitRate checkISO9362(final String msgFieldText) {
 
-        final String countryISO = msgFieldText.substring(4, 6); // TODO: hardcoded ISO !!!
+        // TODO: hardcoded ISO !!!
 
-        return checkISO4NCCT(countryISO);
+        try {
+            final String countryISO = msgFieldText.substring(4, 6);
+            return checkISO4NCCT(countryISO);
+        }
+        catch (final Exception x) {
+            // intentional shit !!!!!!!!!!
+            return null;
+        }
     }
 
     protected HitRate checkISO4NCCT(final String mightBecountry) {
@@ -217,7 +224,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                     // should field be checked ?
                     if (!isFieldToCheck(msgFieldName, searchListName, listhandler.getListName(), messageContent.getMessageType())) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("SKIPPING field: " + msgFieldName);
+                            logger.debug("SKIPPING field: " + messageContent.getMessageType() + " / " + msgFieldName);
                         }
                         continue;
                     }
@@ -302,6 +309,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                             (int) hitValue);
 
                                     // single word hit list if not already in
+                                    // add tokens also if not "real hits" ???
                                     if (!analyzeresult.getHitTokensList().contains(swhi)) {
                                         analyzeresult.getHitTokensList().add(swhi);
                                     }
@@ -339,7 +347,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             if (logger.isDebugEnabled()) {
                                 final String keys = TokenTool.buildTokenString(searchTokens, " ");
 
-                                logger.debug("RELATIVE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateRelative);
+                                logger.debug(msgFieldName + ": RELATIVE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateRelative);
                             }
 
                             addRel = true;
@@ -351,7 +359,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                             if (logger.isDebugEnabled()) {
                                 final String keys = TokenTool.buildTokenString(searchTokens, " ");
 
-                                logger.debug("ABSOLUTE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateAbsolute);
+                                logger.debug(msgFieldName + ": ABSOLUTE SUM: " + msgFieldText + ": " + keys + " --> " + totalHitRateAbsolute);
                             }
 
                             addAbs = true;
@@ -380,7 +388,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
                                 if ((totalHitRatePhrase / minTokens) > getStreamManager().getMinAbsVal(listhandler.getListName())) {
 
-                                    logger.debug("PHRASECHECK: " + msgFieldText + ": " + entry.getSearchValue() + " --> " + contains);
+                                    logger.debug(msgFieldName + ": PHRASECHECK: " + msgFieldText + ": " + entry.getSearchValue() + " --> " + contains);
 
                                     addPhrase = true;
                                 }
@@ -462,7 +470,7 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                                 }
                                 else {
                                     if (logger.isDebugEnabled()) {
-                                        logger.debug("Optimizer: " + msgFieldText + " -> " + entry.getSearchValue() + " : hit removed due Confirmed as NOT NEEDED!");
+                                        logger.debug(msgFieldName + ": Optimizer: " + msgFieldText + " -> " + entry.getSearchValue() + " : hit removed due Confirmed as NOT NEEDED!");
                                     }
                                 }
                             }

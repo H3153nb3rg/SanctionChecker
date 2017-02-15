@@ -9,28 +9,24 @@
    <!--                          -->
 
 
-	<!--  default field config    -->
+<!--  default field config    -->
     <bean id="defaultFieldConfig-SWIFT" class="at.jps.sanction.model.FieldCheckConfig" >
-   
-        <property name="fieldName" value="default" />
+   		<property name="fieldName" value="default" />
    		<property name="fuzzy" value="true" />     
    		
    		<property name="handleAsIBAN" value="false" />
    		<property name="handleAsBIC" value="false" />
 
-   		<!-- shorter tokens are not checked -->
-		<property name="minTokenLen" value="2"/>
+   		<!-- shorter tokens are not checked moved to listdeclaration ! -->
+		<!-- property name="minTokenLen" value="2"/ -->
 		<!-- min % match of single token to count as hit -->
-		<property name="minRelVal" value="79"/>
-		<property name="minAbsVal" value="60"/>		
+		<!-- property name="minRelVal" value="79"/ -->
+		<!-- property name="minAbsVal" value="60"/ -->		
 		
 		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
-		<property name="fuzzyVal" value="20"/>		
+		<!-- property name="fuzzyVal" value="20"/ -->		
    		
-<!--    				
-   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>
-   		<property name="entityType" value="Transport,Individual,Entity"/>  
-    		
+   		<!-- 
    		<property name="watchlists">
    		    <list>
    		        <value>OFAC</value>
@@ -42,9 +38,10 @@
    		        
    		    </list>    
    		</property>
--->
-		   		
+		   	 -->
+		   	 	
     </bean>    
+   
    
 	<bean id="StreamConfig-SWIFT" class="at.jps.sanction.domain.SanctionStreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
 	

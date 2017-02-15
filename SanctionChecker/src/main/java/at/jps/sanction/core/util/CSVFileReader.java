@@ -25,7 +25,7 @@ public class CSVFileReader {
             while ((line = br.readLine()) != null) {
 
                 // use comma as separator
-                final String[] tokenline = line.split(separator, -1);
+                final String[] tokenline = line.split(separator + "(?=([^\"]|\"[^\"]*\")*$)", -1);
 
                 content.add(tokenline);
             }
