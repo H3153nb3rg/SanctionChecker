@@ -11,11 +11,11 @@ package at.jps.sanction.domain.payment.swift;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import at.jps.sanction.domain.payment.PaymentMessage;
+import at.jps.sanction.domain.SanctionMessage;
 
 @Entity
 @DiscriminatorValue("SWIFT")
-public class SwiftMessage extends PaymentMessage {
+public class SwiftMessage extends SanctionMessage {
 
     private static final long serialVersionUID = -7056887127357257079L;
 
@@ -27,47 +27,5 @@ public class SwiftMessage extends PaymentMessage {
         super();
         setRawContent(text);
     }
-
-    // public static void main(String[] args) {
-    //
-    // EntityManagerFactory factory;
-    //
-    // factory = Persistence.createEntityManagerFactory("embargo");
-    //
-    // EntityManager em = factory.createEntityManager();
-    //
-    // // Begin a new local transaction so that we can persist a new entity
-    // em.getTransaction().begin();
-    //
-    // // read the existing entries
-    // TypedQuery<Message> q = em.createQuery("select m from Message m order by m.id", Message.class);
-    // // Persons should be empty
-    //
-    // // do we have entries?
-    // boolean createNewEntries = (q.getResultList().size() == 0);
-    //
-    // // No, so lets create new entries
-    // if (createNewEntries) {
-    // for (int i = 0; i < 40; i++) {
-    // Message message = new SwiftMessage();
-    // message.setContent("This is a Message " + i);
-    // message.getId();
-    // em.persist(message);
-    // }
-    // }
-    // else {
-    // for (Message message : q.getResultList()) {
-    // System.out.println(message);
-    // }
-    // Query q1 = em.createQuery("delete from Message");
-    // q1.executeUpdate();
-    //
-    // }
-    //
-    // // Commit the transaction, which will cause the entity to
-    // // be stored in the database
-    // em.getTransaction().commit();
-    //
-    // }
 
 }

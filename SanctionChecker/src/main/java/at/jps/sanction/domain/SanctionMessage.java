@@ -6,7 +6,7 @@
  * A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
-package at.jps.sanction.domain.payment;
+package at.jps.sanction.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -15,17 +15,17 @@ import at.jps.sanction.model.Message;
 
 @Entity
 @Inheritance
-public class PaymentMessage extends Message {
+public class SanctionMessage extends Message {
 
     private static final long serialVersionUID = 4055207318443230327L;
 
     private String            businessId;
 
-    public PaymentMessage() {
+    public SanctionMessage() {
         super();
     }
 
-    public PaymentMessage(final String text) {
+    public SanctionMessage(final String text) {
         super();
         setRawContent(text);
     }

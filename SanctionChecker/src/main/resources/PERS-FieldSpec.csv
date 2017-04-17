@@ -1,0 +1,9 @@
+FIELDDESCRIPTION,,,Check Enabled,Check Enabled,Special Checks (NCCT),,,,Watchlist/Searchlist usage,,,
+"Message Type",Tag,Field Name,IN data,OUT data,BIC,IBAN,ISIN,ISO,FacSan/EmbargoPersonNames,FacSan/EmbargoEntityNames,FacSan/EmbargoVesselNames,FacPep/PepPersonNames
+Person,Wholename,Wholename,X,X,0,0,0,0,2,2,0,2
+Person,ID,Passport ID,X,X,0,0,0,0,2,2,0,2
+Person,Address,Address,X,X,0,0,0,0,0,0,0,0
+Person,City,City,X,X,0,0,0,0,0,0,0,0
+Person,CountryISO,CountryISO,X,X,0,0,0,1,0,0,0,0
+Person,FormerWholename,FormerWholename,X,X,0,0,0,0,2,2,0,2
+Person,CustomerNumber,Number,0,0,0,0,0,0,0,0,0,0

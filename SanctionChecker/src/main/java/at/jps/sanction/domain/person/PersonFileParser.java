@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import at.jps.sanction.core.io.file.FileParserImpl;
 import at.jps.sanction.model.Message;
 
+// This version expects a csv file with columns named as the fields in the check config !
+
 public class PersonFileParser extends FileParserImpl {
 
     static final Logger logger = LoggerFactory.getLogger(PersonFileParser.class);
@@ -31,10 +33,24 @@ public class PersonFileParser extends FileParserImpl {
             final BufferedReader input = new BufferedReader(new FileReader(file));
             try {
                 String line = null; // not declared within while loop
+
+                int linenr = 0;
+                String headerLine = "";
                 while ((line = input.readLine()) != null) {
 
-                    final Message message = new PersonMessage(line);
-                    prepareMessage(message);
+                    if (linenr == 0) {
+                        headerLine = line;
+                    }
+                    else {
+                        // line.split("," + "(?=([^\"]|\"[^\"]*\")*$)", -1);
+
+                        if (linenr > 0) {
+
+                            final Message message = new PersonMessage(headerLine + "|" + line);
+                            prepareMessage(message);
+                        }
+                    }
+                    linenr++;
                 }
             }
             finally {

@@ -114,7 +114,23 @@ public class Message extends BaseModel implements Serializable {
 
         final StringBuilder msg = new StringBuilder();
 
-        msg.append("ID: ").append(getUUID()).append(System.lineSeparator()).append("Content: ").append(getRawContent()).append(System.lineSeparator());
+        msg.append("ID: ").append(getUUID()).append(System.lineSeparator());
+
+        // parsed details are available:
+        if (messageContent != null) {
+
+            msg.append("----").append(System.lineSeparator());
+
+            for (final String field : messageContent.getFieldsAndValues().keySet()) {
+                final String content = messageContent.getFieldsAndValues().get(field);
+
+                msg.append("field").append(" : ").append(content).append(System.lineSeparator());
+            }
+
+        }
+        else {
+            msg.append("Content: ").append(getRawContent()).append(System.lineSeparator());
+        }
 
         return msg.toString();
     }

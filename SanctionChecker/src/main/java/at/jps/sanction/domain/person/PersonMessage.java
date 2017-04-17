@@ -11,41 +11,19 @@ package at.jps.sanction.domain.person;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import at.jps.sanction.model.Message;
+import at.jps.sanction.domain.SanctionMessage;
 
 @Entity
 @DiscriminatorValue("PERS")
-public class PersonMessage extends Message {
-
-    public static final String fieldNames[]     = { "firstName", "middleName", "lastName", "wholeName", "street", "zipcode", "city", "country", "birthday", "birthplace", "birthcountry" }; // "title",
+public class PersonMessage extends SanctionMessage {
 
     /**
      *
      */
-    private static final long  serialVersionUID = -1203049679430095362L;
-    //
-    // private String firstName;
-    // private String middleName;
-    // private String lastName;
-    // private String wholeName;
-    // private String title;
-    // private String street;
-    // private String city;
-    // private String country;
-    // private String birthday;
-    // private String birthplace;
-    // private String birthcountry;
+    private static final long serialVersionUID = -1203049679430095362L;
 
     public PersonMessage(final String text) {
         super();
         setRawContent(text);
-
-        parseMessage(text);
     }
-
-    private void parseMessage(String text) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

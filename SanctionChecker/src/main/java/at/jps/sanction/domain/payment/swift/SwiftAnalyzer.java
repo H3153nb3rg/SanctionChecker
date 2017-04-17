@@ -14,12 +14,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.jps.sanction.domain.payment.PaymentAnalyzer;
+import at.jps.sanction.domain.SanctionAnalyzer;
 import at.jps.sanction.model.HitRate;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 
-public class SwiftAnalyzer extends PaymentAnalyzer {
+public class SwiftAnalyzer extends SanctionAnalyzer {
 
     static final Logger logger = LoggerFactory.getLogger(SwiftAnalyzer.class);
 
@@ -72,22 +72,22 @@ public class SwiftAnalyzer extends PaymentAnalyzer {
         return getFieldsToCheckInternal(message);
     }
 
-    @Override
-    protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname, final String entityCategory) {
-
-        boolean checkit = (super.isFieldToCheck(msgFieldName, entityType, listname, entityCategory));
-
-        if (checkit) {
-            if (entityType.contentEquals("TRANSPORT")) {  // Vessels only in field 70 !
-                checkit = msgFieldName.contentEquals("70");
-            }
-            /*
-             * else if ((listname.equals("INDKTO") && ( msgFieldName.equals("KS")) ....
-             */
-        }
-
-        return checkit;
-    }
+    // @Override
+    // protected boolean isFieldToCheck(final String msgFieldName, final String entityType, final String listname, final String entityCategory) {
+    //
+    // boolean checkit = (super.isFieldToCheck(msgFieldName, entityType, listname, entityCategory));
+    //
+    // if (checkit) {
+    // if (entityType.contentEquals("TRANSPORT")) { // Vessels only in field 70 !
+    // checkit = msgFieldName.contentEquals("70");
+    // }
+    // /*
+    // * else if ((listname.equals("INDKTO") && ( msgFieldName.equals("KS")) ....
+    // */
+    // }
+    //
+    // return checkit;
+    // }
 
     @Override
     protected HitRate checkFieldSpecific(final String msgFieldName, final String msgFieldText) {

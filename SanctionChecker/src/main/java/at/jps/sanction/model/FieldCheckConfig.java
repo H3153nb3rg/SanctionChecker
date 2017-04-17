@@ -13,6 +13,7 @@ public class FieldCheckConfig {
     private boolean      handleAsIBAN;
     private boolean      handleAsBIC;
     private boolean      handleAsISIN;
+    private boolean      handleAsISOCountry;
 
     private boolean      checkIngoing;
     private boolean      checkOutgoing;
@@ -88,44 +89,20 @@ public class FieldCheckConfig {
         searchlists = watchlists;
     }
 
-    // public String getEntityCategory() {
-    // return entityCategory;
-    // }
-    //
-    // public void setEntityCategory(String entityCategory) {
-    // this.entityCategory = entityCategory;
-    // }
-
-    // public int getFuzzyVal() {
-    // return fuzzyVal;
-    // }
-    //
-    // public void setFuzzyVal(int fuzzyVal) {
-    // this.fuzzyVal = fuzzyVal;
-    // }
-    //
-    // public int getMinRelVal() {
-    // return minRelVal;
-    // }
-    //
-    // public void setMinRelVal(int minRelVal) {
-    // this.minRelVal = minRelVal;
-    // }
-    //
-    // public int getMinAbsVal() {
-    // return minAbsVal;
-    // }
-    //
-    // public void setMinAbsVal(int minAbsVal) {
-    // this.minAbsVal = minAbsVal;
-    // }
-
     public boolean isHandleAsISIN() {
         return handleAsISIN;
     }
 
     public void setHandleAsISIN(boolean handleAsISIN) {
         this.handleAsISIN = handleAsISIN;
+    }
+
+    public boolean isHandleAsISOCountry() {
+        return handleAsISOCountry;
+    }
+
+    public void setHandleAsISOCountry(boolean handleISOCountry) {
+        handleAsISOCountry = handleISOCountry;
     }
 
     public boolean isCheckIngoing() {

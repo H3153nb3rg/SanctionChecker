@@ -91,14 +91,11 @@ public class SwiftMessageParser {
 
                 if (getFields().containsKey(field)) {
                     Integer counter = null;
-                    if (fieldCounters.containsKey(field)) {
-
-                        counter = fieldCounters.get(field);
-                    }
-                    else {
+                    if (!fieldCounters.containsKey(field)) {
                         // new counter
                         fieldCounters.put(field, new Integer(0));
                     }
+                    counter = fieldCounters.get(field);
 
                     field = field + String.format("-%02X", counter);
 

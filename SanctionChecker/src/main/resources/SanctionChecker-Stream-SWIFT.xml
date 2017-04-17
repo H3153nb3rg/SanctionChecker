@@ -52,25 +52,26 @@
 		<!-- fields & fuzziness    -->
 		<!-- mapping to watchlists -->
 		<!-- BICCode check etc     -->
+		<!-- 
 		<property name="fieldsToCheck">
 		    <list>		        
-		        <!-- global setting for all fields not explicitly mentioned -->
+		        
 		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SWIFT" >
 		       		<property name="fieldName" value="default" />		       		
 		        </bean>    
 		        		        
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SWIFT" > <!-- BIC fields -->
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SWIFT" > 
 		       		<property name="fieldName" value="53A,56A,57A,58A,59A,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA" />
 		       		<property name="handleAsBIC" value="true" />
 		        </bean>    
 		        
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SWIFT" > <!-- standard fields -->
+		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-SWIFT" > 
 		       		<property name="fieldName" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F" />		       		
 		        </bean>    
 		        		        		        
 		    </list>
 		</property>
-		
+		-->
 		
 		<!-- 
 		<property name="checkFields" value="20,21R,23B,28D,32A,32B,33B,50K,53A,56A,57A,58A,59A,59,70,71A,KS,KH,KOA,BBA,ABD,DCA,DSA,ZHA,ABA,UBA,50F,59F"/>		

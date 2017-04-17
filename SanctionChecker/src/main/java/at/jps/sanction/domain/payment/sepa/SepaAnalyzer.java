@@ -18,7 +18,7 @@ import at.jps.sanction.domain.payment.PaymentAnalyzer;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 
-public class SepaAnalyzer extends PaymentAnalyzer {
+public class SepaAnalyzer extends SanctionAnalyzer {
 
     static final Logger         logger = LoggerFactory.getLogger(SepaAnalyzer.class);
 

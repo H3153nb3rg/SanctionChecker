@@ -36,8 +36,8 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
     // private LinkedHashMap<String, Integer> minTokenLens;
     // private LinkedHashMap<String, Double> fuzzyVals;
     //
-    private List<FieldCheckConfig>                         fieldsToCheck;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // <--------------
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // tobe
+    // private List<FieldCheckConfig> fieldsToCheck; // <--------------
+    // tobe
 
     private Map<String, HashMap<String, FieldCheckConfig>> fieldsPerMessageTypes;
 
@@ -131,7 +131,7 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
 
                         final boolean mtio = field[io].toUpperCase().equals("X");
 
-                        final String fieldName = (((io % 2) != 0) ? "I" : "O") + field[1];
+                        final String fieldName = ((((io % 2) != 0) ? "I" : "O") + field[1]).toUpperCase();
 
                         if (!fieldsPerMessageType.containsKey(fieldName)) {
                             fieldsPerMessageType.put(fieldName, new FieldCheckConfig());
@@ -151,8 +151,9 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
                         fieldConfig.setHandleAsBIC(field[5].toUpperCase().equals("X"));
                         fieldConfig.setHandleAsIBAN(field[6].toUpperCase().equals("X"));
                         fieldConfig.setHandleAsISIN(field[7].toUpperCase().equals("X"));
+                        fieldConfig.setHandleAsISOCountry(field[8].toUpperCase().equals("X"));
 
-                        for (int ix = 8; ix < field.length; ix++) {
+                        for (int ix = 9; ix < field.length; ix++) {
 
                             if (field[ix] != null) {
                                 if (field[ix].equals("1") || field[ix].equals("2")) {
@@ -270,7 +271,7 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
 
         // get specific
         if (fields != null) {
-            fcc = fields.get(fieldName);
+            fcc = fields.get(fieldName.toUpperCase());
         }
 
         // get default
@@ -289,6 +290,12 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
         if (!reverseContains) {
             fcc = getFieldsConfigPerMT(messageType.substring(0, 1) + fieldName, messageType.substring(1));// !!!! first digit is i/o .... //TODO: this is a hack IO is tweaked in
         }                                                                                                                    // field / type...
+
+        if (logger.isDebugEnabled()) {
+            if (fcc == null) {
+                logger.debug("undefined field: " + messageType.substring(1) + " / " + fieldName);
+            }
+        }
 
         if (fcc != null) {
             check = fcc.getSearchlists().contains(watchList + "/" + searchindex);
@@ -520,13 +527,13 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
         this.queues = queues;
     }
 
-    public List<FieldCheckConfig> getFieldsToCheck() {
-        return fieldsToCheck;
-    }
-
-    public void setFieldsToCheck(final List<FieldCheckConfig> fieldsToCheck) {
-        this.fieldsToCheck = fieldsToCheck;
-    }
+    // public List<FieldCheckConfig> getFieldsToCheck() {
+    // return fieldsToCheck;
+    // }
+    //
+    // public void setFieldsToCheck(final List<FieldCheckConfig> fieldsToCheck) {
+    // this.fieldsToCheck = fieldsToCheck;
+    // }
 
     // public int getMinTokenLen() {
     // return minTokenLen;

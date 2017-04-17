@@ -6,7 +6,7 @@
  * A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
-package at.jps.sanction.domain.payment;
+package at.jps.sanction.domain;
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,11 +33,11 @@ import at.jps.sanction.model.listhandler.ValueListHandler;
 import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.worker.AnalyzerWorker;
 
-public abstract class PaymentAnalyzer extends AnalyzerWorker {
+public abstract class SanctionAnalyzer extends AnalyzerWorker {
 
-    static final Logger logger = LoggerFactory.getLogger(PaymentAnalyzer.class);
+    static final Logger logger = LoggerFactory.getLogger(SanctionAnalyzer.class);
 
-    public PaymentAnalyzer() {
+    public SanctionAnalyzer() {
         super();
     }
 
@@ -192,11 +192,11 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
 
         final MessageContent messageContent = getFieldsToCheck(analyzeresult.getMessage());
 
-        for (final String searchListName : listhandler.getSearchLists().keySet()) {
+        for (final String searchIndexName : listhandler.getSearchLists().keySet()) {
 
-            logger.info("SearchList: " + searchListName);
+            logger.info("SearchList: " + searchIndexName);
 
-            final List<SL_Entry> searchList = listhandler.getSearchLists().get(searchListName);
+            final List<SL_Entry> searchList = listhandler.getSearchLists().get(searchIndexName);
 
             // if ((listhandler.getEntityList() != null) && !listhandler.getEntityList().isEmpty()) {
 
@@ -222,9 +222,11 @@ public abstract class PaymentAnalyzer extends AnalyzerWorker {
                 for (final String msgFieldName : messageContent.getFieldsAndValues().keySet()) {
 
                     // should field be checked ?
-                    if (!isFieldToCheck(msgFieldName, searchListName, listhandler.getListName(), messageContent.getMessageType())) {
+                    if (!isFieldToCheck(msgFieldName, searchIndexName, listhandler.getListName(), messageContent.getMessageType())) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("SKIPPING field: " + messageContent.getMessageType() + " / " + msgFieldName);
+                            if (!msgFieldName.equalsIgnoreCase("XX")) {
+                                logger.debug("SKIPPING field: " + messageContent.getMessageType() + " / " + msgFieldName + "  for " + searchIndexName);
+                            }
                         }
                         continue;
                     }

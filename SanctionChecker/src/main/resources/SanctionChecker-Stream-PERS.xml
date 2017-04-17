@@ -11,70 +11,28 @@
 
 	<!--  default field config    -->
     <bean id="defaultFieldConfig-PERS" class="at.jps.sanction.model.FieldCheckConfig" >
+   		
    		<property name="fieldName" value="default" />
+   		
    		<property name="handleAsIBAN" value="false" />
    		<property name="handleAsBIC" value="false" />
    		
    		<!-- shorter tokens are not checked -->
-		<property name="minTokenLen" value="2"/>
+		<!-- <property name="minTokenLen" value="2"/> -->
 		<!-- min % match of single token to count as hit -->
-		<property name="minRelVal" value="79"/>
-		<property name="minAbsVal" value="60"/>		
+		<!-- <property name="minRelVal" value="79"/> -->
+		<!-- <property name="minAbsVal" value="60"/> -->
 		
 		<!-- % * minTokenlen == Threshold ( fuzzy abort) -->
-		<property name="fuzzyVal" value="20"/>		
-   		
-   		
-   		<property name="entityType" value="Transport,Individual,Entity"/>  <!-- if supported this flags listentries see Entity -->
-   		<property name="entityCategory" value="Name,Address,Birthday,Country"/>  <!-- if supported this flags listentries see Entity -->
-   		<property name="watchlists">
-   		    <list>
-   		        <value>OFAC</value>
-   		        <value>EUList</value>
-   		        <value>INDSAN</value>
-   		        <value>FacPep</value>
-   		        <value>FacSan</value>
-   		        <value>PANAMALeak</value>
-   		    </list>    
-   		</property>
+		<!-- <property name="fuzzyVal" value="20"/>		-->
+   		  		
 		   		
     </bean>    
    
 	<bean id="StreamConfig-PERS" class="at.jps.sanction.domain.SanctionStreamConfig" init-method="initialize" scope="singleton" lazy-init="true">
 	
-		<!-- fields & fuzziness    -->
-		<!-- mapping to watchlists -->
-		<!-- BICCode check etc     -->
-		<property name="fieldsToCheck">
-		    <list>		        
-		        <!-- global setting for all fields not explicitly mentioned -->
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" >
-		       		<property name="fieldName" value="default" />		       		
-		        </bean>    
-		        		        
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- standard fields -->
-		       		<property name="fieldName" value="firstName, middleName, lastName, wholeName, street, zipcode, city, country, birthday, birthplace, birthcountry" />		       		
-		        </bean>    
-		        
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- name fields -->
-		       		<property name="fieldName" value="firstName, middleName, lastName, wholeName" />		       		
-		       		<property name="entityCategory" value="Name"/>  <!-- only check names -->
-		        </bean>    
-		        
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- address fields -->
-		       		<property name="fieldName" value="street, zipcode, city, country, birthplace, birthcountry" />	
-		       		<property name="entityCategory" value="Address"/>  <!-- only check address -->	       		
-		        </bean>    
-
-		        <bean class="at.jps.sanction.model.FieldCheckConfig"  parent="defaultFieldConfig-PERS" > <!-- Birthday -->
-		       		<property name="fieldName" value="birthday" />	
-		       		<property name="entityCategory" value="Birthday"/>  <!-- only check address -->	       		
-		        </bean>    
-		        		        
-		        		        		        		        		        		        
-		    </list>
-		</property>
-	
+	    <!-- general field checking rules -->
+	    <property name="fieldConfigFileName" value="${Config.Folder}/PERS-FieldSpec.csv"/>
 		
 		
 		<!-- Queues that will be used by GUI application -->

@@ -11,11 +11,11 @@ package at.jps.sanction.domain.payment.sepa;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import at.jps.sanction.domain.payment.PaymentMessage;
+import at.jps.sanction.domain.SanctionMessage;
 
 @Entity
 @DiscriminatorValue("SEPA")
-public class SepaMessage extends PaymentMessage {
+public class SepaMessage extends SanctionMessage {
 
     private static final long serialVersionUID = -4325196787145588987L;
 
