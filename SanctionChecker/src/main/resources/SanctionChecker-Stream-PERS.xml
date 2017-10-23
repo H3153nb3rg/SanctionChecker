@@ -43,11 +43,11 @@
 		        
 		        <entry key="hitQueue" value-ref="HitQueue-PERS"/>
 		        <entry key="noHitQueue" value-ref="NoHitQueue-PERS"/>
-
+<!-- 
 		        <entry key="postProcessHitQueue" value-ref="PostHitQueue-PERS"/>
 		        <entry key="postProcessNoHitQueue" value-ref="PostNoHitQueue-PERS"/>
 		        
-		        
+	 -->	        
 		        <entry key="finalHitQueue" value-ref="FinalHitQueue-PERS"/>
 		        <entry key="finalNoHitQueue" value-ref="FinalNoHitQueue-PERS"/>
 		        		        
@@ -172,7 +172,8 @@
 	
 		<!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="PostHitQueue-PERS"/>
+			<!-- ref bean="PostHitQueue-PERS"/ -->
+			<ref bean="HitQueue-PERS"/>
 		</property>	
 
 		<!-- Queue write msgs -->
@@ -186,7 +187,8 @@
 	
 		<!-- Queue read processed msgs -->
 		<property name="inQueue" >
-			<ref bean="PostNoHitQueue-PERS"/>
+			<!-- ref bean="PostNoHitQueue-PERS"/ -->
+			<ref bean="NoHitQueue-PERS"/>
 		</property>	
 
 		<!-- Queue write msgs -->

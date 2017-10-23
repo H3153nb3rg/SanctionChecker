@@ -18,8 +18,6 @@ import at.jps.sanction.core.banking.iban.Iban;
 import at.jps.sanction.core.listhandler.reflist.NCCTListHandler;
 import at.jps.sanction.core.util.BICHelper;
 import at.jps.sanction.core.util.TokenTool;
-import at.jps.sanction.domain.SanctionHitInfo;
-import at.jps.sanction.domain.SanctionHitResult;
 import at.jps.sanction.model.AnalysisResult;
 import at.jps.sanction.model.HitRate;
 import at.jps.sanction.model.HitResult;
@@ -88,14 +86,14 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
             if (logger.isInfoEnabled()) {
                 logger.info(" message has hits: " + message.getUUID());
             }
-            // getStreamManager().addToHitList(analyzeresult);
+
             getHitQueue().addMessage(analyzeresult);
         }
         else {
             if (logger.isInfoEnabled()) {
                 logger.info(" message has NO hits: " + message.getUUID());
             }
-            // getStreamManager().addToNoHitList(analyzeresult);
+
             getNoHitQueue().addMessage(analyzeresult);
         }
 
@@ -301,7 +299,7 @@ public abstract class SanctionAnalyzer extends AnalyzerWorker {
                                 final float hitValue = TokenTool.compareCheck(nameToken, msgFieldToken, isFieldToCheckFuzzy(msgFieldName, listhandler, messageContent.getMessageType()),
                                         getStreamManager().getMinTokenLen(listhandler.getListName()), getStreamManager().getFuzzyValue(listhandler.getListName()));
 
-                                // System.out.println(nameToken + " -> " + msgFieldToken + " : " + hitValue);
+                                System.out.println(nameToken + " -> " + msgFieldToken + " : " + hitValue);
 
                                 // single fuzzy limit !!
                                 if ((hitValue > 0) && (hitValue > getStreamManager().getMinRelVal(listhandler.getListName()))) {

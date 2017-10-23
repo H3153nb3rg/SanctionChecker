@@ -139,7 +139,7 @@ public class TokenTool {
             }
         }
 
-        percentHitrate = (int) (1 - ((double) deltaValue / minWordLen)) * 100;
+        percentHitrate = (int) ((1 - ((double) deltaValue / minWordLen)) * 100);
 
         // percentHitrate = 100 - ((100 / ((float) (text1.length()))) * deltaValue);
         // percentHitrate = 100 - ((100 / minWordLen) * deltaValue);

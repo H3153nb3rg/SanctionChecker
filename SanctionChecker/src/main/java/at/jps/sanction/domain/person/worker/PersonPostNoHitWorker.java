@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.model.AnalysisResult;
-import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.PostNoHitWorker;
 
 public class PersonPostNoHitWorker extends PostNoHitWorker {
@@ -13,12 +12,7 @@ public class PersonPostNoHitWorker extends PostNoHitWorker {
 
     @Override
     public void handleMessage(final AnalysisResult message) {
-
-        // add for further Processing
-        final Queue<AnalysisResult> outputQueue = getOutQueue();
-        if (outputQueue != null) {
-            outputQueue.addMessage(message);
-        }
+        super.handleMessage(message);
 
     }
 

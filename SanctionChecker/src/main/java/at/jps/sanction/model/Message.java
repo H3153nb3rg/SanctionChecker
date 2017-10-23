@@ -124,7 +124,7 @@ public class Message extends BaseModel implements Serializable {
             for (final String field : messageContent.getFieldsAndValues().keySet()) {
                 final String content = messageContent.getFieldsAndValues().get(field);
 
-                msg.append("field").append(" : ").append(content).append(System.lineSeparator());
+                msg.append(field).append(" : ").append(content).append(System.lineSeparator());
             }
 
         }

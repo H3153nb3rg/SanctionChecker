@@ -48,6 +48,7 @@ abstract public class OutputWorker extends Worker {
 
             if (message != null) {
                 handleMessage(message);
+                finishMessage(message);
             }
 
         }
@@ -90,7 +91,20 @@ abstract public class OutputWorker extends Worker {
         inQueue = queue;
     }
 
-    abstract public void handleMessage(AnalysisResult message);
+    public void handleMessage(AnalysisResult message) {
+        if (logger.isInfoEnabled()) {
+            logger.info("handle Message: " + message.getMessage().getUUID());
+        }
+
+    }
+
+    public void finishMessage(AnalysisResult message) {
+        {
+            if (logger.isInfoEnabled()) {
+                logger.info("finished Message: " + message.getMessage().getUUID());
+            }
+        }
+    }
 
     public long getSleepMillisBetween() {
         return sleepMillisBetween;

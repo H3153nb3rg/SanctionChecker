@@ -167,6 +167,9 @@ public class SanctionStreamConfig implements at.jps.sanction.core.StreamConfig {
                                         System.err.println("searchListName not found: " + searchListName);
                                         logger.error("searchListName not found: " + searchListName);
                                     }
+
+                                    fieldConfig.setFuzzy(field[ix].equals("2"));
+
                                 }
                             }
                         }

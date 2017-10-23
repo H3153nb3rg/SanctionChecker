@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.jps.sanction.core.io.db.DBHelper;
+import at.jps.sanction.core.listhandler.tool.WordWeightAnalyser;
 import at.jps.sanction.core.util.string.LuceneIndex;
 import at.jps.sanction.model.listhandler.SanctionListHandler;
 import at.jps.sanction.model.wl.entities.SL_Entry;
@@ -27,23 +28,23 @@ import at.jps.sanction.model.wl.entities.WL_Entity;
 
 public abstract class SanctionListHandlerImpl extends BaseFileHandler implements SanctionListHandler {
 
-    static final Logger                 logger            = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
+    static final Logger                 logger             = LoggerFactory.getLogger(SanctionListHandlerImpl.class);
 
-    private String                      delimiters        = " ";
-    private String                      deadCharacters    = "";
-    private String                      listType          = "";
-    private String                      listCategory      = "";
+    private String                      delimiters         = " ";
+    private String                      deadCharacters     = "";
+    private String                      listType           = "";
+    private String                      listCategory       = "";
 
     private String                      description;
-    private int                         orderId           = 0;
-    private int                         severity          = 0;
+    private int                         orderId            = 0;
+    private int                         severity           = 0;
 
-    private boolean                     fuzzySearch       = false;
-    private boolean                     fourEyesPrinciple = false;
-    private boolean                     useSysProxy       = true;
+    private boolean                     fuzzySearch        = false;
+    private boolean                     fourEyesPrinciple  = false;
+    private boolean                     useSysProxy        = true;
 
-    boolean                             loadWeak          = false;
-    boolean                             loadNonPrimary    = true;
+    boolean                             loadWeak           = false;
+    boolean                             loadNonPrimary     = true;
 
     private String                      httpUser;
     private String                      httpPwd;
@@ -56,18 +57,20 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     private Map<String, List<SL_Entry>> searchLists;
 
+    protected static WordWeightAnalyser wordWeightAnalyser = new WordWeightAnalyser();
+
     // ----------------------
     // ----- search settings
 
     // <!-- shorter tokens are not checked -->
-    int                                 minTokenLen       = 2;
+    int                                 minTokenLen        = 2;
 
     // <!-- min % match of single token to count as hit -->
-    int                                 minRelVal         = 79;
-    int                                 minAbsVal         = 60;
+    int                                 minRelVal          = 79;
+    int                                 minAbsVal          = 60;
 
     // <!-- % * minTokenlen == Threshold ( fuzzy abort) -->
-    double                              fuzzyVal          = 20;
+    double                              fuzzyVal           = 20;
 
     // ----------------------
 
@@ -351,39 +354,44 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
         getEntityList().add(entity);
         getEntityListSortedById().put(entity.getWL_Id(), entity);
 
+        // statistics
+        wordWeightAnalyser.addEntity(getListName(), entity);
+
         // split to simple core searchlists
-        for (final String topicName : getSearchListNames()) {
+        if (getSearchListNames() != null) {
+            for (final String topicName : getSearchListNames()) {
 
-            try {
-                final List<SL_Entry> slEntries = buildSearchListEntries(topicName, entity);
+                try {
+                    final List<SL_Entry> slEntries = buildSearchListEntries(topicName, entity);
 
-                if (slEntries != null) {
+                    if (slEntries != null) {
 
-                    for (final SL_Entry slEntry : slEntries) {
+                        for (final SL_Entry slEntry : slEntries) {
 
-                        slEntry.setReferencedEntity(entity);
-                        try {
+                            slEntry.setReferencedEntity(entity);
+                            try {
 
-                            List<SL_Entry> searchList = getSearchLists().get(topicName);
+                                List<SL_Entry> searchList = getSearchLists().get(topicName);
 
-                            if (searchList == null) {
-                                searchList = new ArrayList<>();
-                                getSearchLists().put(topicName, searchList);
+                                if (searchList == null) {
+                                    searchList = new ArrayList<>();
+                                    getSearchLists().put(topicName, searchList);
+                                }
+
+                                searchList.add(slEntry);
                             }
-
-                            searchList.add(slEntry);
-                        }
-                        catch (final Exception x) {
-                            System.err.println("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName());
-                            logger.error("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName(), x);
+                            catch (final Exception x) {
+                                System.err.println("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName());
+                                logger.error("Configuration error add WLEntry TopicName: " + topicName + " to List " + getListName(), x);
+                            }
                         }
                     }
                 }
-            }
-            catch (final Exception x) {
-                System.err.println("Configuration error: TopicName: " + topicName + " to List " + getListName());
-                logger.error("Configuration error: TopicName: " + topicName + " to List " + getListName(), x);
+                catch (final Exception x) {
+                    System.err.println("Configuration error: TopicName: " + topicName + " to List " + getListName());
+                    logger.error("Configuration error: TopicName: " + topicName + " to List " + getListName(), x);
 
+                }
             }
         }
     }
@@ -501,7 +509,7 @@ public abstract class SanctionListHandlerImpl extends BaseFileHandler implements
 
     @Override
     public void setFuzzyVal(int fuzzyVal) {
-        this.fuzzyVal = fuzzyVal / 100;
+        this.fuzzyVal = ((double) fuzzyVal) / 100;
     }
 
 }

@@ -13,7 +13,6 @@ import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 import at.jps.sanction.model.OptimizationRecord;
 import at.jps.sanction.model.listhandler.OptimizationListHandler;
-import at.jps.sanction.model.queue.Queue;
 import at.jps.sanction.model.worker.PostNoHitWorker;
 
 public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
@@ -25,11 +24,13 @@ public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
     @Override
     public void handleMessage(final AnalysisResult message) {
 
+        super.handleMessage(message);
+
         final OptimizationListHandler optiListHandler = getOptimizationListHandler();
 
         // TODO: this is NOT good - we have to parse again.....
 
-        final ArrayList<OptimizationRecord> orList = new ArrayList<OptimizationRecord>();
+        final ArrayList<OptimizationRecord> orList = new ArrayList<>();
 
         // we add records as we go on
         for (final HitResult slhr : message.getHitList()) {
@@ -62,12 +63,6 @@ public abstract class PaymentPostNoHitWorker extends PostNoHitWorker {
         filterList(optiListHandler, orList);
 
         optiListHandler.writeList(optiListHandler.getValues(), false);
-
-        // add for further Processing
-        final Queue<AnalysisResult> outputQueue = getOutQueue();
-        if (outputQueue != null) {
-            outputQueue.addMessage(message);
-        }
 
     }
 

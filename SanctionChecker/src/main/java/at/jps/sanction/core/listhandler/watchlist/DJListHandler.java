@@ -16,6 +16,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -40,6 +41,7 @@ import at.jps.sanction.core.list.dj.SanctionsReferences;
 import at.jps.sanction.core.list.dj.SourceDescription;
 import at.jps.sanction.core.list.dj.SourceDescription.Source;
 import at.jps.sanction.core.listhandler.SanctionListHandlerImpl;
+import at.jps.sanction.core.listhandler.tool.WordWeight;
 import at.jps.sanction.core.util.country.CountryCodeConverter;
 import at.jps.sanction.model.wl.entities.SL_Entry;
 import at.jps.sanction.model.wl.entities.WL_Address;
@@ -50,6 +52,7 @@ import at.jps.sanction.model.wl.entities.WL_Entity.EntityType;
 import at.jps.sanction.model.wl.entities.WL_Entity.EntryCategory;
 import at.jps.sanction.model.wl.entities.WL_Name;
 import at.jps.sanction.model.wl.entities.WL_Passport;
+import gcardone.junidecode.Junidecode;
 
 public class DJListHandler extends SanctionListHandlerImpl {
 
@@ -84,11 +87,13 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
         final DJListHandler djh = new DJListHandler();
 
-        final PFA pfa = djh.readList("C:/Users/johannes/workspaces/SanctionList/SLHandler/src/lists/ST_xml_1039_001_201511230002_f.xml");
+        final PFA pfa = djh.readList("C:\\Users\\johannes\\Data\\SanctionChecker\\SanctionLists\\ST_xml_1039_002_201704260001_f.xml");
 
         djh.buildEntityList(pfa);
 
         System.out.println("size: " + djh.getEntityList().size());
+
+        djh.printNames();
 
     }
 
@@ -193,6 +198,9 @@ public class DJListHandler extends SanctionListHandlerImpl {
                     if ((wholeName == null) || (wholeName.length() < 1)) {
                         wholeName = nameValue.getFirstName() + " " + (nameValue.getMiddleName() != null ? nameValue.getMiddleName() : " ") + " " + nameValue.getSurname();
                     }
+
+                    // Transliterate !!!
+                    wholeName = Junidecode.unidecode(wholeName);
 
                     // name.setDescription(nameValue.)
 
@@ -498,81 +506,130 @@ public class DJListHandler extends SanctionListHandlerImpl {
 
     public void buildEntityList(final PFA pfa) {
 
-        for (final PFA.Records records : pfa.getRecords()) {
+        if (pfa != null) {
+            for (final PFA.Records records : pfa.getRecords()) {
 
-            for (final PFA.Records.Person pfaPerson : records.getPerson()) {
+                for (final PFA.Records.Person pfaPerson : records.getPerson()) {
 
-                // add description filter !!
+                    // add description filter !!
 
-                if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
-                    final WL_Entity entity = new WL_Entity();
+                    if ((pfaPerson.getActiveStatus() != null) && (pfaPerson.getActiveStatus().equalsIgnoreCase("Active"))) {
+                        final WL_Entity entity = new WL_Entity();
 
-                    final String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
+                        final String descr1 = addDescriptions(pfa, entity, pfaPerson.getDescriptions());
 
-                    if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+                        if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
 
-                        entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
+                            entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
 
-                        entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
-                        entity.setWL_Id(pfaPerson.getId());
-                        entity.setIssueDate(pfaPerson.getDate());
-                        entity.setComment(pfaPerson.getProfileNotes());
+                            entity.setEntityType(WL_Entity.EntityType.INDIVIDUAL);
+                            entity.setWL_Id(pfaPerson.getId());
+                            entity.setIssueDate(pfaPerson.getDate());
+                            entity.setComment(pfaPerson.getProfileNotes());
 
-                        addBirthInfo(pfa, entity, pfaPerson.getDateDetails(), pfaPerson.getBirthPlace());
+                            addBirthInfo(pfa, entity, pfaPerson.getDateDetails(), pfaPerson.getBirthPlace());
 
-                        addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
+                            addSanctionReferenzes(pfa, entity, pfaPerson.getSanctionsReferences());
 
-                        addSourceDescription(entity, pfaPerson.getSourceDescription());
-                        addName(entity, pfaPerson.getNameDetails());
-                        addAddress(pfa, entity, pfaPerson.getAddress());
+                            addSourceDescription(entity, pfaPerson.getSourceDescription());
+                            addName(entity, pfaPerson.getNameDetails());
+                            addAddress(pfa, entity, pfaPerson.getAddress());
 
-                        addIDs(entity, pfaPerson.getIDNumberTypes());
+                            addIDs(entity, pfaPerson.getIDNumberTypes());
 
-                        addWLEntry(entity);
+                            addWLEntry(entity);
+                        }
+                    }
+                }
+
+                for (final PFA.Records.Entity pfaEntity : records.getEntity()) {
+
+                    if ((pfaEntity.getActiveStatus() != null) && (pfaEntity.getActiveStatus().equalsIgnoreCase("Active"))) {
+
+                        final WL_Entity entity = new WL_Entity();
+
+                        final String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
+
+                        if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+
+                            entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
+
+                            entity.setEntityType(WL_Entity.EntityType.ENTITY);
+                            entity.setWL_Id(pfaEntity.getId());
+                            entity.setIssueDate(pfaEntity.getDate());
+                            entity.setComment(pfaEntity.getProfileNotes());
+
+                            addCompanyAddress(pfa, entity, pfaEntity.getCompanyDetails());
+
+                            addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
+
+                            addSourceDescription(entity, pfaEntity.getSourceDescription());
+                            addName(entity, pfaEntity.getNameDetails());
+
+                            addIDs(entity, pfaEntity.getIDNumberTypes());
+
+                            if ((pfaEntity.getVesselDetails() != null) && (pfaEntity.getVesselDetails().size() > 0)) {
+                                entity.setEntityType(WL_Entity.EntityType.TRANSPORT);
+
+                                // TODO: Implement VesselDetails !!
+
+                                // for( PFA.Records.Entity.VesselDetails vd: pfaEntity.getVesselDetails())
+                                // {
+                                // vd.getVesselType()
+                                // }
+                            }
+
+                            addWLEntry(entity);
+                        }
                     }
                 }
             }
+        }
+    }
 
-            for (final PFA.Records.Entity pfaEntity : records.getEntity()) {
+    public void printNames() {
+        final HashMap<String, WordWeight> wwl = wordWeightAnalyser.getWordWeightList(getListName());
 
-                if ((pfaEntity.getActiveStatus() != null) && (pfaEntity.getActiveStatus().equalsIgnoreCase("Active"))) {
+        for (final WL_Entity entity : getEntityList()) {
+            for (final WL_Name name : entity.getNames()) {
 
-                    final WL_Entity entity = new WL_Entity();
+                final StringBuilder sb = new StringBuilder();
 
-                    final String descr1 = addDescriptions(pfa, entity, pfaEntity.getDescriptions());
+                sb.append(name.getWholeName()).append(";");
 
-                    if ((loadDescription1 == null) || (loadDescription1.length() == 0) || loadDescription1.contains(descr1)) {
+                final StringTokenizer textTokenizer = new StringTokenizer(name.getWholeName(), " ;-/()");
 
-                        entity.setEntryCategory(getListCategory().equalsIgnoreCase("PEP") ? WL_Entity.EntryCategory.PEP : WL_Entity.EntryCategory.EMBARGO);
+                WordWeight minValue = null;
+                final ArrayList<WordWeight> mvl = new ArrayList<>();
 
-                        entity.setEntityType(WL_Entity.EntityType.ENTITY);
-                        entity.setWL_Id(pfaEntity.getId());
-                        entity.setIssueDate(pfaEntity.getDate());
-                        entity.setComment(pfaEntity.getProfileNotes());
+                while (textTokenizer.hasMoreElements()) {
+                    final String token = textTokenizer.nextToken();
 
-                        addCompanyAddress(pfa, entity, pfaEntity.getCompanyDetails());
+                    final WordWeight ww = wwl.get(token);
+                    if (ww != null) {
+                        sb.append(ww.getToken() + "(" + ww.getCounter() + ")");
 
-                        addSanctionReferenzes(pfa, entity, pfaEntity.getSanctionsReferences());
-
-                        addSourceDescription(entity, pfaEntity.getSourceDescription());
-                        addName(entity, pfaEntity.getNameDetails());
-
-                        addIDs(entity, pfaEntity.getIDNumberTypes());
-
-                        if ((pfaEntity.getVesselDetails() != null) && (pfaEntity.getVesselDetails().size() > 0)) {
-                            entity.setEntityType(WL_Entity.EntityType.TRANSPORT);
-
-                            // TODO: Implement VesselDetails !!
-
-                            // for( PFA.Records.Entity.VesselDetails vd: pfaEntity.getVesselDetails())
-                            // {
-                            // vd.getVesselType()
-                            // }
+                        if (textTokenizer.hasMoreElements()) {
+                            sb.append(",");
                         }
 
-                        addWLEntry(entity);
+                        if ((minValue == null) || (minValue.getCounter() > ww.getCounter())) {
+                            minValue = ww;
+                            mvl.add(ww);
+                        }
+                        else if ((minValue == null) || (minValue.getCounter() == ww.getCounter())) {
+                            mvl.add(ww);
+                        }
                     }
+
                 }
+                sb.append(";");
+
+                for (final WordWeight wordWeight : mvl) {
+                    sb.append(wordWeight.getToken() + ",");
+                }
+
+                System.out.println(sb.toString());
             }
         }
     }

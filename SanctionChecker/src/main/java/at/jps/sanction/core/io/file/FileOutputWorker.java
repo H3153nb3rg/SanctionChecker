@@ -68,6 +68,9 @@ public class FileOutputWorker extends OutputWorker {
 
     @Override
     public void handleMessage(final AnalysisResult message) {
+
+        super.handleMessage(message);
+
         try {
 
             if (logger.isInfoEnabled()) {

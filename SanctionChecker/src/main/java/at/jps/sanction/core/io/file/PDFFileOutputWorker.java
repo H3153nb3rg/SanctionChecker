@@ -44,6 +44,9 @@ public class PDFFileOutputWorker extends FileOutputWorker {
 
     @Override
     public void handleMessage(final AnalysisResult message) {
+
+        super.handleMessage(message);
+
         try {
 
             logger.info("write Message: " + message.getMessage().getId());

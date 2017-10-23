@@ -14,7 +14,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.jps.sanction.domain.payment.PaymentAnalyzer;
+import at.jps.sanction.domain.SanctionAnalyzer;
 import at.jps.sanction.model.Message;
 import at.jps.sanction.model.MessageContent;
 
@@ -22,8 +22,8 @@ public class SepaAnalyzer extends SanctionAnalyzer {
 
     static final Logger         logger = LoggerFactory.getLogger(SepaAnalyzer.class);
 
-    static private List<String> messageTypes;                                                                                                                                                                                                                                                                                          // nix
-                                                                                                                                                                                                                                                                                                                                       // good
+    static private List<String> messageTypes;                                                                                                                                                                                                                                                                                                                                  // nix
+                                                                                                                                                                                                                                                                                                                                                                               // good
 
     public SepaAnalyzer() {
         super();

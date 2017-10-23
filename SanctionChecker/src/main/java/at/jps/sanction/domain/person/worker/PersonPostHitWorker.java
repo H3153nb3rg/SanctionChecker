@@ -5,6 +5,6 @@ import org.slf4j.LoggerFactory;
 
 public class PersonPostHitWorker extends PersonPostNoHitWorker {
 
-    static final Logger logger = LoggerFactory.getLogger(PersonPostNoHitWorker.class);
+    static final Logger logger = LoggerFactory.getLogger(PersonPostHitWorker.class);
 
 }
